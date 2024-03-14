@@ -20,7 +20,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import Email from 'next-auth/providers/email'
 
 const LoginForm = () => {
   const router = useRouter()
@@ -74,7 +73,8 @@ const LoginForm = () => {
                     <Input
                       {...field}
                       type="email"
-                      placeholder="example@email.com"
+                      placeholder="Email"
+                      icon="heroicons:user"
                     />
                   </FormControl>
                   <FormMessage />
@@ -88,7 +88,12 @@ const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" placeholder="********" />
+                    <Input
+                      {...field}
+                      type="password"
+                      placeholder="Password"
+                      icon="heroicons:lock-closed"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

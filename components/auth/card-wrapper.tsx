@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/card'
 import { Header } from './header'
 import { BackButton } from './back-button'
-import { SubHeader } from './sub-header'
 
 type CardWrapperProps = {
   children: React.ReactNode
@@ -30,9 +29,7 @@ export const CardWrapper = ({
     <Card className="w-auto">
       <CardHeader>
         <Header label={headerLabel} />
-        <CardDescription>
-          <SubHeader label={description} />
-        </CardDescription>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>{children}</CardContent>
       <CardFooter>

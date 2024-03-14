@@ -6,7 +6,7 @@ import { CardWrapper } from './card-wrapper'
 
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { LoginSchema } from './schema'
+import { LoginSchema } from './login-schema'
 
 import {
   Form,
@@ -62,7 +62,7 @@ const LoginForm = () => {
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-6">
+          <div className="space-y-4">
             <FormField
               control={form.control}
               name="email"

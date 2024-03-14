@@ -1,12 +1,20 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardDescription,
+  CardFooter,
+} from '@/components/ui/card'
 import { Header } from './header'
 import { BackButton } from './back-button'
+import { SubHeader } from './sub-header'
 
 type CardWrapperProps = {
   children: React.ReactNode
   headerLabel: string
+  description: string
   backButtonLabel: string
   backButtonHref: string
 }
@@ -14,13 +22,17 @@ type CardWrapperProps = {
 export const CardWrapper = ({
   children,
   headerLabel,
+  description,
   backButtonLabel,
   backButtonHref,
 }: CardWrapperProps) => {
   return (
-    <Card className="w-[23rem]">
+    <Card className="w-auto">
       <CardHeader>
         <Header label={headerLabel} />
+        <CardDescription>
+          <SubHeader label={description} />
+        </CardDescription>
       </CardHeader>
       <CardContent>{children}</CardContent>
       <CardFooter>

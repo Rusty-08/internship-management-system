@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import {
   Card,
-  CardContent,
+  CardHeader,
   CardTitle,
   CardDescription,
   CardFooter,
@@ -18,10 +18,10 @@ type Testimonial = {
 
 const TestimonialCard = ({ id, name, text, role, imgUrl }: Testimonial) => {
   return (
-    <Card key={id} className="p-5 bg-card">
-      <CardContent className="text-justify text-secondary-foreground text-sm text-slate-400">
+    <Card key={id}>
+      <CardHeader className="text-justify text-secondary-foreground text-sm text-slate-400">
         <CardDescription>{text}</CardDescription>
-      </CardContent>
+      </CardHeader>
       <CardFooter className="flex flex-row-reverse justify-end gap-4">
         <div>
           <CardTitle>{name}</CardTitle>

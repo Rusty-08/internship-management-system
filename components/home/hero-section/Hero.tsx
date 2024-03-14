@@ -4,12 +4,15 @@ import Image from 'next/image'
 
 const Hero = () => {
   return (
-    <div className="flex justify-between py-10 items-center gap-4">
-      <div className="flex flex-grow flex-col w-1/2 gap-7 items-center md:items-start">
-        <h1 className="text-2xl md:text-3xl font-bold text-center md:text-left">
+    <div
+      style={{ height: 'calc(100vh - 5rem)' }}
+      className="flex justify-between py-10 items-center gap-10"
+    >
+      <div className="flex flex-col w-1/2 gap-7 items-center md:items-start">
+        <h1 className="text-2xl md:text-4xl font-bold text-center md:text-left">
           A Place to enhance you skills
         </h1>
-        <p className="text-sm text-center md:text-left md:text-sm">
+        <p className="text-sm text-text text-center md:text-left md:text-sm">
           Our platform is dedicated to connecting talented individuals with
           dynamic internship opportunities that empower growth, innovation, and
           success. Join us in the pursuit of excellence as we champion your

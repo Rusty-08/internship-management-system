@@ -56,7 +56,8 @@ const LoginForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Sign In"
+      headerLabel="Welcome To Portal"
+      description="Enter your credentials to access your account"
       backButtonLabel="Don't have an account?"
       backButtonHref="/"
     >
@@ -95,7 +96,7 @@ const LoginForm = () => {
             />
           </div>
           <Button disabled={isSubmitting} className="w-full">
-            {isSubmitting ? <LoadingSpinner /> : 'Sign In'}
+            {isSubmitting ? <LoadingSpinner /> : 'Login'}
           </Button>
         </form>
       </Form>

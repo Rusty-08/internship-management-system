@@ -5,6 +5,7 @@ import LoginButton from '@/components/auth/login-button'
 
 import { Profile } from './profile'
 import { useSession } from 'next-auth/react'
+import { ThemeToggle } from '../theme/theme-toggle'
 
 const Navbar = () => {
   const { status, data: session } = useSession()
@@ -12,11 +13,14 @@ const Navbar = () => {
   return (
     <div className="h-20 w-screen flex items-center justify-between px-[10%]">
       <Link href="/">logo</Link>
-      {status === 'authenticated' ? (
-        <Profile user={session?.user?.name} />
-      ) : (
-        <LoginButton />
-      )}
+      <div className="flex items-center gap-x-4">
+        <ThemeToggle />
+        {status === 'authenticated' ? (
+          <Profile user={session?.user?.name} />
+        ) : (
+          <LoginButton />
+        )}
+      </div>
     </div>
   )
 }

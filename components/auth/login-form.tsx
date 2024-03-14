@@ -3,7 +3,6 @@ import { LoadingSpinner } from '@/components/loader/circular'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { CardWrapper } from './card-wrapper'
-
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { LoginSchema } from './login-schema'
@@ -21,6 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import Email from 'next-auth/providers/email'
 
 const LoginForm = () => {
   const router = useRouter()
@@ -56,7 +56,8 @@ const LoginForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Sign In"
+      headerLabel="Welcome To Internship Portal"
+      subHeaderLabel="Enter your credentials to access your account"
       backButtonLabel="Don't have an account?"
       backButtonHref="/"
     >
@@ -73,7 +74,7 @@ const LoginForm = () => {
                     <Input
                       {...field}
                       type="email"
-                      placeholder="example@gmail.com"
+                      placeholder="example@email.com"
                     />
                   </FormControl>
                   <FormMessage />
@@ -94,8 +95,8 @@ const LoginForm = () => {
               )}
             />
           </div>
-          <Button disabled={isSubmitting} className="w-full">
-            {isSubmitting ? <LoadingSpinner /> : 'Sign In'}
+          <Button disabled={isSubmitting} className="w-full text-base">
+            {isSubmitting ? <LoadingSpinner /> : 'Login'}
           </Button>
         </form>
       </Form>

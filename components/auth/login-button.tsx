@@ -21,7 +21,7 @@ const LoginButton = ({
       // open modal
       return
     } else {
-      router.push('/auth/login')
+      router.replace('/auth/login')
     }
   }
 

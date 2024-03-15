@@ -7,6 +7,13 @@ export function middleware(request: NextRequest) {
   if (currentUser && request.nextUrl.pathname.startsWith('/auth')) {
     return Response.redirect(new URL('/', request.url))
   }
+
+  if (
+    (!currentUser && request.nextUrl.pathname.startsWith('/admin')) ||
+    (!currentUser && request.nextUrl.pathname.startsWith('/intern'))
+  ) {
+    return Response.redirect(new URL('/', request.url))
+  }
 }
 
 export const config = {

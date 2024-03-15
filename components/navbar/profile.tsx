@@ -1,3 +1,4 @@
+'use client'
 import { signOut } from 'next-auth/react'
 
 import {
@@ -12,6 +13,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { PersonIcon } from '@radix-ui/react-icons'
+import { useRouter } from 'next/navigation'
 
 type ProfileProps = {
   image?: string
@@ -19,6 +21,13 @@ type ProfileProps = {
 }
 
 export const Profile = ({ image, user }: ProfileProps) => {
+  const router = useRouter()
+
+  const handleSignOut = () => {
+    signOut()
+    router.push('/')
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none">
@@ -32,7 +41,7 @@ export const Profile = ({ image, user }: ProfileProps) => {
       <DropdownMenuContent>
         <DropdownMenuLabel>{user ?? 'Anonymous'}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut()}>Sign Out</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleSignOut}>Sign Out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

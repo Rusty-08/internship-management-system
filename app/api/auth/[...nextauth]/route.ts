@@ -4,6 +4,7 @@ import CredentialsProviders from 'next-auth/providers/credentials'
 import bcrypt from 'bcrypt'
 import { connectDB } from '@/lib/connect-db'
 import prisma from '@/lib/prisma'
+import { PrismaAdapter } from '@auth/prisma-adapter'
 
 const authOptions = {
   providers: [
@@ -37,8 +38,13 @@ const authOptions = {
     strategy: 'jwt',
   },
   secret: process.env.NEXTAUTH_SECRET,
+  adapter: PrismaAdapter(prisma),
   callbacks: {
-    session({ session, token, user }) {
+    jwt({ token, user }) {
+      return { ...token, ...user }
+    },
+    session({ session, token }) {
+      session.user.role = token.role
       return session
     },
   },

@@ -8,7 +8,7 @@ const Hero = () => {
       style={{ height: 'calc(100vh - 5rem)' }}
       className="flex justify-between py-10 items-center gap-10"
     >
-      <div className="flex flex-col w-1/2 gap-7 items-center md:items-start">
+      <div className="flex flex-grow flex-col w-1/2 gap-7 items-center md:items-start">
         <h1 className="text-2xl md:text-4xl font-bold text-center md:text-left">
           A Place to enhance you skills
         </h1>
@@ -24,10 +24,10 @@ const Hero = () => {
       </div>
       <Image
         alt="hero"
-        src="/heroImage.jpg"
-        width={100}
-        height={100}
-        className="rounded-2xl hidden md:block object-cover w-1/2"
+        src="/innovation.svg"
+        width={90}
+        height={90}
+        className="hidden md:block object-cover w-1/2"
       />
     </div>
   )

@@ -2,7 +2,7 @@ export const data = [
   {
     id: 1,
     name: 'Jonathan Doe',
-    text: 'Jonathan has been a key player in our team, consistently delivering high-quality code. His attention to detail and dedication to frontend development have greatly improved our project.',
+    text: 'Jonathan has been a key player in our team, consistently delivering high-quality code. His attention to detail and dedication to frontend development have greatly improved our project. He is always eager to learn new technologies and apply them effectively in his work.',
     role: 'Frontend Developer',
     imgUrl: '/Avatar.jpg',
   },
@@ -16,7 +16,7 @@ export const data = [
   {
     id: 3,
     name: 'Rusty Amazing',
-    text: 'Rusty has a comprehensive understanding of both frontend and backend development. His ability to solve complex problems and implement robust solutions has been invaluable to our team.',
+    text: 'Rusty has a comprehensive understanding of both frontend and backend development. His ability to solve complex problems and implement robust solutions has been invaluable to our team. His expertise spans across multiple technologies and he has a knack for picking up new technologies quickly.',
     role: 'FullStack Developer',
     imgUrl: '/Avatar.jpg',
   },
@@ -30,7 +30,7 @@ export const data = [
   {
     id: 5,
     name: 'Ken Chan',
-    text: "Ken is a talented UI/UX designer who consistently delivers intuitive and visually appealing designs. His keen eye for detail and understanding of user behavior have greatly improved our product's usability.",
+    text: "Ken is a talented UI/UX designer who consistently delivers intuitive and visually appealing designs. His keen eye for detail and understanding of user behavior have greatly improved our product's usability. He is always up-to-date with the latest design trends and applies them effectively in his designs.",
     role: 'UI/UX Designer',
     imgUrl: '/Avatar.jpg',
   },
@@ -44,7 +44,7 @@ export const data = [
   {
     id: 7,
     name: 'Jane Smith',
-    text: "Jane is a creative UI/UX designer who excels at transforming complex ideas into simple, intuitive designs. Her user-centric approach has been instrumental in improving our product's usability.",
+    text: "Jane is a creative UI/UX designer who excels at transforming complex ideas into simple, intuitive designs. Her user-centric approach has been instrumental in improving our product's usability. She is always pushing the boundaries of design and consistently comes up with innovative solutions.",
     role: 'UI/UX Designer',
     imgUrl: '/Girl Avatar.jpg',
   },
@@ -58,7 +58,7 @@ export const data = [
   {
     id: 9,
     name: 'Robert Brown',
-    text: 'Robert is a proficient UI/UX designer whose innovative designs have consistently improved the user experience of our product. His ability to balance aesthetics and functionality in his designs is commendable.',
+    text: 'Robert is a proficient UI/UX designer whose innovative designs have consistently improved the user experience of our product. His ability to balance aesthetics and functionality in his designs is commendable. He is also a great team player and always willing to go the extra mile to meet project deadlines.',
     role: 'UI/UX Designer',
     imgUrl: '/Avatar.jpg',
   },

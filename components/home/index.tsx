@@ -1,7 +1,7 @@
 import React from 'react'
 import Hero from './hero-section/Hero'
-import Stacks from '@/components/stacks'
-import Testimonials from '@/components/testimonial'
+import Stacks from '@/components/home/stacks'
+import Testimonials from '@/components/home/testimonial'
 
 const HeroSection = () => {
   return (

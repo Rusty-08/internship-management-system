@@ -6,6 +6,7 @@ import LoginButton from '@/components/auth/login-button'
 import { Profile } from './profile'
 import { useSession } from 'next-auth/react'
 import { ThemeToggle } from '../theme/theme-toggle'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const Navbar = () => {
   const { status, data: session } = useSession()

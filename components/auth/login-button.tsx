@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { signOut } from 'next-auth/react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 type LoginButtonProps = {
@@ -9,26 +10,13 @@ type LoginButtonProps = {
   asChild?: boolean
 }
 
-const LoginButton = ({
-  mode = 'redirect',
-  asChild,
-  ...props
-}: LoginButtonProps) => {
+const LoginButton = ({ mode = 'redirect', ...props }: LoginButtonProps) => {
   const router = useRouter()
 
-  const handleClick = () => {
-    if (mode === 'modal') {
-      // open modal
-      return
-    } else {
-      router.replace('/auth/login')
-    }
-  }
-
   return (
-    <Button onClick={handleClick} {...props}>
-      Sign In
-    </Button>
+    <Link href="/auth/login">
+      <Button {...props}>Sign In</Button>
+    </Link>
   )
 }
 export default LoginButton

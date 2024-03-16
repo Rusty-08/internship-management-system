@@ -7,7 +7,7 @@ type SectionHeaderProps = {
 
 const SectionHeader = ({ header, subHeader }: SectionHeaderProps) => {
   return (
-    <div className="mb-10 w-full flex flex-col items-center">
+    <div className="mb-10 w-full flex text-center flex-col items-center">
       <CustomIcon
         icon="pepicons-print:dots-x"
         className="text-primary"

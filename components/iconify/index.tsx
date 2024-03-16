@@ -9,5 +9,5 @@ type CustomIconProps = {
 } & IconProps
 
 export const CustomIcon = ({ icon, className, ...props }: CustomIconProps) => {
-  return <Icon className={cn('text-base', className)} icon={icon} {...props} />
+  return <Icon className={cn('text-xl', className)} icon={icon} {...props} />
 }

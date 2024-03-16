@@ -12,12 +12,14 @@ const Navbar = () => {
   const { status, data: session } = useSession()
 
   return (
-    <div className="h-20 w-screen flex items-center justify-between px-4 md:px-[10%]">
+    <div className="h-20 w-full flex items-center justify-between px-4 md:px-[10%]">
       <Link href="/">logo</Link>
       <div className="flex items-center gap-x-4">
         <ThemeToggle />
         {status === 'authenticated' ? (
-          <Profile user={session?.user?.name} />
+          <Profile 
+            user={session?.user?.name}
+            role={session?.user?.role} />
         ) : (
           <LoginButton />
         )}

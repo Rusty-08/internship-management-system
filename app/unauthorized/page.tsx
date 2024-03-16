@@ -27,7 +27,7 @@ const Denied = () => {
           <div className="text-center space-y-2">
             <h1 className="text-xl font-semibold">Unauthorized Access</h1>
             <p className="text-text">
-              You don&apos;t have permission to access this Page
+              You don&apos;t have permission to access this page
             </p>
           </div>
         </CardContent>

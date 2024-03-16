@@ -1,7 +1,7 @@
 'use client'
 import HeroSection from '@/components/home'
-import Footer from '@/components/layout/footer'
-import Navbar from '@/components/layout/navbar'
+import Footer from '@/components/home/footer'
+import Navbar from '@/components/home/navbar'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -25,7 +25,7 @@ export default function Home() {
 
   if (status === 'unauthenticated') {
     return (
-      <main className="flex h-auto flex-col overflow-hidden">
+      <main className="flex container h-auto flex-col overflow-hidden">
         <Navbar />
         <HeroSection />
         <Footer />

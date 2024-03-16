@@ -1,11 +1,11 @@
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
-import AuthPropvider from '@/components/session'
+import AuthPropvider from '@/components/providers/session'
 
 import { siteConfig } from '@/configs/site'
 import { cn } from '@/lib/utils'
-import { ThemeProvider } from '@/components/theme/theme-provider'
+import { ThemeProvider } from '@/components/providers/theme/theme-provider'
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700', '800'],

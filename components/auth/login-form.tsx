@@ -1,5 +1,5 @@
 'use client'
-import { LoadingSpinner } from '@/components/loader/circular'
+import { LoadingSpinner } from '@/components/spinner/circular'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { CardWrapper } from './card-wrapper'

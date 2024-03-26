@@ -18,18 +18,26 @@ const Sidebar = ({ sideLinks }: { sideLinks: SidebarLinkType[] }) => {
             <h1 className="text-primary/30 text-xs uppercase font-thin mt-5">
               {link.category}
             </h1>
-            {link.links.map(item => (
-              <Button
-                className={`${
-                  path === item.path && 'text-primary'
-                } flex justify-start gap-5 w-full`}
-                variant={'ghost'}
-                onClick={() => router.push(item.path)}
-              >
-                <CustomIcon icon={item.icon} />
-                {item.name}
-              </Button>
-            ))}
+            <ul>
+              {link.links.map(item => (
+                <li
+                  className={`${
+                    path === item.path
+                      ? 'text-primary border-l-[1px] border-primary'
+                      : 'text-accent-foreground/50 border-l-[1px] border-primary/10'
+                  } `}
+                >
+                  <Button
+                    className={`flex justify-start gap-5 w-full rounded-none transition-all duration-75`}
+                    variant={'ghost'}
+                    onClick={() => router.push(item.path)}
+                  >
+                    <CustomIcon icon={item.icon} />
+                    {item.name}
+                  </Button>
+                </li>
+              ))}
+            </ul>
           </React.Fragment>
         ))}
       </div>

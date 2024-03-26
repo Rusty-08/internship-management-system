@@ -9,7 +9,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { Session } from 'next-auth'
 
-const Navbar = async () => {
+const HomeNavbar = async () => {
   const session = await getServerSession(authOptions)
   const { role, name } = (session?.user as Session['user']) || {}
 
@@ -27,4 +27,4 @@ const Navbar = async () => {
   )
 }
 
-export default Navbar
+export default HomeNavbar

@@ -13,8 +13,6 @@ export async function middleware(request: NextRequest) {
   const currentUser = session?.user
   const role = currentUser?.role
 
-  console.log(role)
-
   if (
     !currentUser &&
     (request.nextUrl.pathname.startsWith('/admin') ||

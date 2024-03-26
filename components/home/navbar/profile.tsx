@@ -14,7 +14,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { CustomIcon } from '@/components/iconify'
-import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 
 type ProfileProps = {

@@ -20,10 +20,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import { Session } from 'next-auth'
-import { revalidatePath } from 'next/cache'
+import { useState } from 'react'
+import { Card, CardHeader } from '@/components/ui/card'
+import { CustomIcon } from '@/components/iconify'
+import ErrorCard from './error-card'
 
 const LoginForm = () => {
   const router = useRouter()
@@ -34,8 +34,9 @@ const LoginForm = () => {
       password: '',
     },
   })
+  const [isValidUser, setIsValidUser] = useState(true)
 
-  const { isSubmitting } = form.formState
+  const { isSubmitting, errors } = form.formState
 
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     const { email, password } = values
@@ -47,13 +48,13 @@ const LoginForm = () => {
         redirect: false,
       })
 
-      if (res?.error) {
-        console.error('An unexpected error happened:', res.error)
+      if (res?.ok) {
+        router.push('/')
+      } else {
+        setIsValidUser(false)
       }
-
-      router.push('/')
     } catch (error) {
-      console.error('An unexpected error happened:', error)
+      setIsValidUser(false)
     }
   }
 
@@ -77,11 +78,13 @@ const LoginForm = () => {
                     <Input
                       {...field}
                       type="email"
-                      placeholder="Email"
+                      placeholder="sample@gmail.com"
                       icon="heroicons:user"
                     />
                   </FormControl>
-                  <FormMessage />
+                  {errors.email && (
+                    <FormMessage>{errors.email.message}</FormMessage>
+                  )}
                 </FormItem>
               )}
             />
@@ -99,10 +102,13 @@ const LoginForm = () => {
                       icon="heroicons:lock-closed"
                     />
                   </FormControl>
-                  <FormMessage />
+                  {errors.password && (
+                    <FormMessage>{errors.password.message}</FormMessage>
+                  )}
                 </FormItem>
               )}
             />
+            {!isValidUser && <ErrorCard>Invalid email or password</ErrorCard>}
           </div>
           <Button disabled={isSubmitting} className="w-full text-base">
             {isSubmitting ? <LoadingSpinner /> : 'Login'}

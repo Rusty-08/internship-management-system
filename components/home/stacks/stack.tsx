@@ -37,7 +37,7 @@ const Stack = ({ image, title, desc, link }: StackProps) => {
           rel="noopener noreferrer"
         >
           Learn more
-          <CustomIcon icon="heroicons:arrow-right" />
+          <CustomIcon width={15} icon="heroicons:arrow-right" />
         </a>
       </CardFooter>
     </Card>

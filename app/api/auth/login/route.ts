@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server'
 import prisma from '../../../../lib/prisma'
 import { connectDB } from '@/lib/connect-db'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 export async function POST(req: Request) {
+  const { email, password } = await req.json()
+
   try {
     await connectDB()
-    const { email, password } = await req.json()
     const user = await prisma.user.findUnique({ where: { email } })
 
     if (!user || !(await bcrypt.compare(password, user.password))) {

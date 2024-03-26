@@ -1,7 +1,7 @@
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
-import AuthPropvider from '@/components/providers/session'
+import AuthProvider from '@/components/providers/session'
 
 import { siteConfig } from '@/configs/site'
 import { cn } from '@/lib/utils'
@@ -41,7 +41,7 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <AuthPropvider>{children}</AuthPropvider>
+          <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>
       </body>
     </html>

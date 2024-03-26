@@ -6,7 +6,7 @@ import {
   CardTitle,
   CardDescription,
   CardFooter,
-} from '../../ui/card'
+} from '@/components/ui/card'
 
 type Testimonial = {
   id: number

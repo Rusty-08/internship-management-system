@@ -20,6 +20,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { Session } from 'next-auth'
+import { revalidatePath } from 'next/cache'
 
 const LoginForm = () => {
   const router = useRouter()
@@ -47,7 +51,7 @@ const LoginForm = () => {
         console.error('An unexpected error happened:', res.error)
       }
 
-      router.replace('/')
+      router.push('/')
     } catch (error) {
       console.error('An unexpected error happened:', error)
     }

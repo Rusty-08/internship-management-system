@@ -11,7 +11,7 @@ const Hero = () => {
       <div className="flex text-center md:text-left flex-grow flex-col w-1/2 gap-7 items-center md:items-start">
         <div className="space-y-3">
           <p className="text-primary">OnDemand Innovation</p>
-          <h1 className="text-3xl md:text-5xl font-bold">
+          <h1 className="text-3xl md:text-[3.2rem] font-bold leading-tight">
             A Place to enhance your <span className="text-primary">skills</span>
           </h1>
         </div>
@@ -27,9 +27,10 @@ const Hero = () => {
       </div>
       <Image
         alt="hero"
-        src="/innovation.svg"
-        width={90}
-        height={90}
+        src="/home/innovation.svg"
+        loading="lazy"
+        width="0"
+        height="0"
         className="hidden lg:block object-cover w-1/2"
       />
     </div>

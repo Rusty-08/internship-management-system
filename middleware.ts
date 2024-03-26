@@ -13,6 +13,8 @@ export async function middleware(request: NextRequest) {
   const currentUser = session?.user
   const role = currentUser?.role
 
+  console.log(role)
+
   if (
     !currentUser &&
     (request.nextUrl.pathname.startsWith('/admin') ||
@@ -30,8 +32,17 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (currentUser && request.nextUrl.pathname.startsWith('/auth')) {
-    return Response.redirect(new URL('/', request.url))
+  if (
+    currentUser &&
+    (request.nextUrl.pathname.startsWith('/auth') ||
+      request.nextUrl.pathname === '/')
+  ) {
+    if (role === 'ADMIN') {
+      return Response.redirect(new URL('/admin', request.url))
+    }
+    if (role === 'INTERN') {
+      return Response.redirect(new URL('/intern', request.url))
+    }
   }
 }
 

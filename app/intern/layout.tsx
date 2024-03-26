@@ -5,7 +5,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   return (
     <section className="container">
       <Navbar />
-      <div className="px-[10%]">{children}</div>
+      <div className="px-[8%]">{children}</div>
     </section>
   )
 }

@@ -11,7 +11,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       <ProgressBar
         height="3px"
         color="#86B6F6"
-        options={{ showSpinner: true }}
+        options={{ showSpinner: false }}
         shallowRouting
       />
       {children}

@@ -5,7 +5,7 @@ import Testimonials from '@/components/home/testimonial'
 
 const HeroSection = () => {
   return (
-    <section className="px-4 md:px-[10%] flex flex-col">
+    <section className="px-4 md:px-[8%] flex flex-col">
       <Hero />
       <Stacks />
       <Testimonials />

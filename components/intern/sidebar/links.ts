@@ -20,7 +20,7 @@ export const sidebarLinks = [
       },
       {
         name: 'Chat',
-        path: '/admin/chat',
+        path: '/intern/chat',
         icon: 'ic:twotone-chat',
       },
     ],
@@ -30,12 +30,12 @@ export const sidebarLinks = [
     links: [
       {
         name: 'Pre-Registration',
-        path: '/admin/pre-registration',
+        path: '/intern/pre-registration',
         icon: 'ic:twotone-group-add',
       },
       {
         name: 'Student Assessment',
-        path: '/admin/student-assessment',
+        path: '/intern/student-assessment',
         icon: 'solar:notes-bold-duotone',
       },
     ],
@@ -45,7 +45,7 @@ export const sidebarLinks = [
     links: [
       {
         name: 'Individual Form',
-        path: '/admin/individual-form',
+        path: '/intern/individual-form',
         icon: 'solar:pen-2-bold-duotone',
       },
     ],
@@ -55,17 +55,17 @@ export const sidebarLinks = [
     links: [
       {
         name: 'My Grades',
-        path: '/admin/my-grades',
+        path: '/intern/my-grades',
         icon: 'solar:clipboard-list-bold-duotone',
       },
       {
         name: 'My Permanent Record',
-        path: '/admin/my-permanent-record',
+        path: '/intern/my-permanent-record',
         icon: 'solar:square-academic-cap-2-bold-duotone',
       },
       {
         name: 'Enrollment Status',
-        path: '/admin/enrollment-status',
+        path: '/intern/enrollment-status',
         icon: 'solar:pen-new-square-bold-duotone',
       },
     ],

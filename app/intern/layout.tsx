@@ -2,12 +2,12 @@ import { ReactNode } from 'react'
 
 import Sidebar from '@/components/layout/sidebar'
 import Navbar from '@/components/layout/navbar'
-import { sidebarLinks } from '@/components/intern/sidebar/links'
+import { internSidebarLinks } from '@/components/intern/sidebar/links'
 
 const InternLayout = ({ children }: { children: ReactNode }) => {
   return (
     <section className="min-h-screen flex relative w-full">
-      <Sidebar sideLinks={sidebarLinks} />
+      <Sidebar sideLinks={internSidebarLinks} />
       <Navbar />
       <div
         style={{ minHeight: 'calc(100vh - 7rem)' }}

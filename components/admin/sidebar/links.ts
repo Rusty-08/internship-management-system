@@ -9,13 +9,13 @@ export type SidebarLinkType = {
   links: SidebarLinkItemType[]
 }
 
-export const sidebarLinks = [
+export const adminSidebarLinks = [
   {
     category: '',
     links: [
       {
         name: 'Dashboard',
-        path: '/intern',
+        path: '/admin',
         icon: 'ic:twotone-dashboard',
       },
       {
@@ -26,11 +26,11 @@ export const sidebarLinks = [
     ],
   },
   {
-    category: 'ACADEMIC',
+    category: 'INTENS',
     links: [
       {
-        name: 'Pre-Registration',
-        path: '/admin/pre-registration',
+        name: 'Account Manager',
+        path: '/admin/account-manager',
         icon: 'ic:twotone-group-add',
       },
       {
@@ -41,7 +41,7 @@ export const sidebarLinks = [
     ],
   },
   {
-    category: 'PROFILE',
+    category: 'MENTORS',
     links: [
       {
         name: 'Individual Form',

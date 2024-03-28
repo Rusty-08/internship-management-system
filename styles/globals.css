@@ -8,6 +8,28 @@ body,
   height: 100%;
 }
 
+/* scrollbar */
+
+::-webkit-scrollbar {
+  width: 0.3rem;
+  border-radius: 0.2rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(215.4 16.3% 20.9%);
+  border-radius: 0.2rem;
+}
+
+/* sidebar */
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+.sidebar:hover::-webkit-scrollbar-thumb {
+  background: hsl(215.4 16.3% 20.9%);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

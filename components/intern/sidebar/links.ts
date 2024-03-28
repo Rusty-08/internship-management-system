@@ -9,7 +9,7 @@ export type SidebarLinkType = {
   links: SidebarLinkItemType[]
 }
 
-export const sidebarLinks = [
+export const internSidebarLinks = [
   {
     category: '',
     links: [

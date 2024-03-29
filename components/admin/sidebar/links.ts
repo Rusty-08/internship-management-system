@@ -26,7 +26,7 @@ export const adminSidebarLinks = [
     ],
   },
   {
-    category: 'INTENS',
+    category: 'INTERNS',
     links: [
       {
         name: 'Account Manager',

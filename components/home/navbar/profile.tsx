@@ -13,7 +13,7 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
-import { CustomIcon } from '@/components/iconify'
+import { CustomIcon } from '@/components/@core/iconify'
 import { useState } from 'react'
 
 type ProfileProps = {

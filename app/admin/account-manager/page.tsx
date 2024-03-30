@@ -1,14 +1,13 @@
-import prisma from '@/lib/prisma'
 import { columns } from './accounts'
-import { DataTable } from '@/components/ui/data-table'
 import { getInternUsers } from '@/utils/users'
+import { AccountsTable } from './_components/accounts-table'
 
-export default async function DemoPage() {
+export default async function AccountManager() {
   const data = await getInternUsers()
 
   return (
     <section className="py-5">
-      <DataTable columns={columns} data={data} />
+      <AccountsTable columns={columns} data={data} />
     </section>
   )
 }

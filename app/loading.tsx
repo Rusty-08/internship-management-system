@@ -1,4 +1,4 @@
-import { LoadingSpinner } from '@/components/spinner/circular'
+import { LoadingSpinner } from '@/components/@core/spinner/circular'
 
 const Loading = () => <LoadingSpinner size={40} />
 

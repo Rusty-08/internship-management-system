@@ -40,7 +40,12 @@ export default function RootLayout({
           poppins.className,
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>
       </body>

@@ -1,4 +1,4 @@
-import { CustomIcon } from '@/components/iconify'
+import { CustomIcon } from '@/components/@core/iconify'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import React from 'react'
 

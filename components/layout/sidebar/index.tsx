@@ -2,7 +2,7 @@
 import React from 'react'
 import { SidebarLinkType } from '@/components/admin/sidebar/links'
 import { Button } from '@/components/ui/button'
-import { CustomIcon } from '@/components/iconify'
+import { CustomIcon } from '@/components/@core/iconify'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 

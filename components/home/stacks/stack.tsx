@@ -7,7 +7,7 @@ import {
   CardFooter,
 } from '@/components/ui/card'
 
-import { CustomIcon } from '@/components/iconify'
+import { CustomIcon } from '@/components/@core/iconify'
 
 type StackProps = {
   image?: string

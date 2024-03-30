@@ -1,5 +1,5 @@
 'use client'
-import { LoadingSpinner } from '@/components/spinner/circular'
+import { LoadingSpinner } from '@/components/@core/spinner/circular'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { CardWrapper } from './card-wrapper'
@@ -22,7 +22,7 @@ import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Card, CardHeader } from '@/components/ui/card'
-import { CustomIcon } from '@/components/iconify'
+import { CustomIcon } from '@/components/@core/iconify'
 import ErrorCard from './error-card'
 
 const LoginForm = () => {

@@ -1,5 +1,5 @@
 import { Card, CardHeader } from '@/components/ui/card'
-import { CustomIcon } from '@/components/iconify'
+import { CustomIcon } from '@/components/@core/iconify'
 import { FormMessage } from '@/components/ui/form'
 import { ReactNode } from 'react'
 import { ClassNameValue, twMerge } from 'tailwind-merge'

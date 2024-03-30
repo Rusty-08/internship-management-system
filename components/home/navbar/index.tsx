@@ -4,10 +4,10 @@ import Image from 'next/image'
 import LoginButton from '@/components/auth/login-button'
 
 import { Profile } from './profile'
-import { ThemeToggle } from '@/components/providers/theme/theme-toggle'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { Session } from 'next-auth'
+import { ThemeToggle } from '@/components/providers/theme/theme-toggle'
 
 const HomeNavbar = async () => {
   const session = await getServerSession(authOptions)

@@ -1,4 +1,4 @@
-import { CustomIcon } from '@/components/iconify'
+import { CustomIcon } from '@/components/@core/iconify'
 
 type SectionHeaderProps = {
   header: string

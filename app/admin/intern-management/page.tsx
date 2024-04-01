@@ -1,7 +1,13 @@
-import { ComingSoon } from '@/app/intern/chat/page'
+import { columns } from './accounts'
+import { getInternUsers } from '@/utils/users'
+import { AccountsTable } from './_components/accounts-table'
 
-const InternManagement = () => {
-  return <ComingSoon pageName="Intern Management" />
+export default async function AccountManager() {
+  const data = await getInternUsers()
+
+  return (
+    <section className="py-5">
+      <AccountsTable columns={columns} data={data} />
+    </section>
+  )
 }
-
-export default InternManagement

@@ -1,7 +1,7 @@
 import { ComingSoon } from '@/app/intern/chat/page'
 
-const InternshipManagement = () => {
+const InternManagement = () => {
   return <ComingSoon pageName="Internship Management" />
 }
 
-export default InternshipManagement
+export default InternManagement

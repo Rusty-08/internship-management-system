@@ -58,7 +58,7 @@ export function FormDialog() {
           name,
           email,
           password: '@default123',
-          role: 'MENTOR',
+          role: 'INTERN',
         }),
       })
 

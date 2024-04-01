@@ -12,3 +12,15 @@ export async function getInternUsers(): Promise<UserSubset[]> {
     },
   })
 }
+
+export async function getMentorUsers(): Promise<UserSubset[]> {
+  return await prisma.user.findMany({
+    where: {
+      role: 'MENTOR',
+    },
+    select: {
+      name: true,
+      email: true,
+    },
+  })
+}

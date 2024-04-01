@@ -1,4 +1,4 @@
-import { UserSubset } from '@/app/admin/account-manager/accounts'
+import { UserSubset } from '@/app/admin/mentor-management/accounts'
 import prisma from '@/lib/prisma'
 
 export async function getInternUsers(): Promise<UserSubset[]> {

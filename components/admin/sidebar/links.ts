@@ -1,73 +1,32 @@
-export type SidebarLinkItemType = {
-  name: string
-  path: string
-  icon: string
-}
-
-export type SidebarLinkType = {
-  category: string
-  links: SidebarLinkItemType[]
-}
-
 export const adminSidebarLinks = [
   {
-    category: '',
-    links: [
-      {
-        name: 'Dashboard',
-        path: '/admin',
-        icon: 'ic:twotone-dashboard',
-      },
-      {
-        name: 'Chat',
-        path: '/admin/chat',
-        icon: 'ic:twotone-chat',
-      },
-    ],
+    name: 'Dashboard',
+    path: '/admin',
+    icon: 'ic:twotone-dashboard',
   },
   {
-    category: 'INTERNS',
-    links: [
-      {
-        name: 'Account Manager',
-        path: '/admin/account-manager',
-        icon: 'ic:twotone-group-add',
-      },
-      {
-        name: 'Student Assessment',
-        path: '/admin/student-assessment',
-        icon: 'solar:notes-bold-duotone',
-      },
-    ],
+    name: 'Intern Management',
+    path: '/admin/intern-management',
+    icon: 'ph:users-three-duotone',
   },
   {
-    category: 'MENTORS',
-    links: [
-      {
-        name: 'Individual Form',
-        path: '/admin/individual-form',
-        icon: 'solar:pen-2-bold-duotone',
-      },
-    ],
+    name: 'Mentor Management',
+    path: '/admin/mentor-management',
+    icon: 'solar:users-group-two-rounded-bold-duotone',
   },
   {
-    category: 'REPORTS',
-    links: [
-      {
-        name: 'My Grades',
-        path: '/admin/my-grades',
-        icon: 'solar:clipboard-list-bold-duotone',
-      },
-      {
-        name: 'My Permanent Record',
-        path: '/admin/my-permanent-record',
-        icon: 'solar:square-academic-cap-2-bold-duotone',
-      },
-      {
-        name: 'Enrollment Status',
-        path: '/admin/enrollment-status',
-        icon: 'solar:pen-new-square-bold-duotone',
-      },
-    ],
+    name: 'Internship Management',
+    path: '/admin/internship-management',
+    icon: 'ic:twotone-task',
+  },
+  {
+    name: 'Reports',
+    path: '/admin/reports',
+    icon: 'solar:pen-2-bold-duotone',
+  },
+  {
+    name: 'Archived Records',
+    path: '/admin/archived-records',
+    icon: 'solar:inbox-archive-bold-duotone',
   },
 ]

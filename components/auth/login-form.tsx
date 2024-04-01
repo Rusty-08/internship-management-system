@@ -21,8 +21,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { Card, CardHeader } from '@/components/ui/card'
-import { CustomIcon } from '@/components/@core/iconify'
 import ErrorCard from './error-card'
 
 const LoginForm = () => {

@@ -15,6 +15,9 @@ import { useState } from 'react'
 import { DataTablePagination } from '@/components/@core/table/pagination'
 import { DataTable } from '@/components/@core/table/data-table'
 import { SearchFilter } from '@/components/@core/table/seach-filter'
+import { Button } from '@/components/ui/button'
+import { CustomIcon } from '@/components/@core/iconify'
+import { FormDialog } from './register-form'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -48,11 +51,16 @@ export function AccountsTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center mb-4">
+      <div className="flex items-center justify-between mb-4">
         <SearchFilter column="name" table={table} />
+        <FormDialog />
       </div>
       <div className="rounded-md border overflow-hidden">
-        <DataTable columns={columns} table={table} />
+        <DataTable
+          columns={columns}
+          table={table}
+          searchOutput={`${columnFilters[0]?.value}`}
+        />
       </div>
       <div className="flex items-center justify-between py-3">
         <DataTablePagination table={table} />

@@ -12,16 +12,20 @@ const Navbar = async () => {
 
   return (
     <div
-      style={{ width: 'calc(100% - 22rem)' }}
-      className="fixed rounded-full bg-background flex items-center justify-between px-6 h-20 top-4 left-80 ml-4 border"
+      style={{ width: 'calc(100% - 20rem)' }}
+      className="fixed z-50 bg-background flex items-center justify-center p-4 h-28 top-0 left-80"
     >
-      <p className="text-text font-thin">
-        Welcome back!{' '}
-        <span className="text-secondary-foreground font-semibold">{name}</span>
-      </p>
-      <div className="flex items-center gap-x-4">
-        <ThemeToggle />
-        {role ? <Profile user={name} role={role} /> : <LoginButton />}
+      <div className="rounded-full flex items-center justify-between px-6 w-full h-full border">
+        <p className="text-text font-thin">
+          Welcome back!{' '}
+          <span className="text-secondary-foreground font-semibold">
+            {name}
+          </span>
+        </p>
+        <div className="flex items-center gap-x-4">
+          <ThemeToggle />
+          {role ? <Profile user={name} role={role} /> : <LoginButton />}
+        </div>
       </div>
     </div>
   )

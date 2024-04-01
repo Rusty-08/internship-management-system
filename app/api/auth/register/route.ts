@@ -5,9 +5,9 @@ import bcrypt from 'bcryptjs'
 
 export async function POST(req: Request) {
   try {
-    const { name, email, password } = await req.json()
+    const { name, email, password, role } = await req.json()
 
-    if (!email || !password) {
+    if (!name || !email || !password) {
       return NextResponse.json({ message: 'Invalid input' }, { status: 400 })
     }
 
@@ -28,8 +28,11 @@ export async function POST(req: Request) {
         name: name ?? 'Anonymous',
         email: email,
         password: hashedPassword,
+        role: role ?? 'USER',
       },
     })
+
+    console.log('User created:', user)
 
     return NextResponse.json({ user }, { status: 201 })
   } catch {

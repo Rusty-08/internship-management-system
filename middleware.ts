@@ -28,14 +28,16 @@ export async function middleware(request: NextRequest) {
   if (
     !currentUser &&
     (request.nextUrl.pathname.startsWith('/admin') ||
-      request.nextUrl.pathname.startsWith('/intern'))
+      request.nextUrl.pathname.startsWith('/intern') ||
+      request.nextUrl.pathname.startsWith('/mentor'))
   ) {
     return Response.redirect(new URL('/', request.url))
   }
 
   if (
     (role !== 'ADMIN' && request.nextUrl.pathname.startsWith('/admin')) ||
-    (role !== 'INTERN' && request.nextUrl.pathname.startsWith('/intern'))
+    (role !== 'INTERN' && request.nextUrl.pathname.startsWith('/intern')) ||
+    (role !== 'MENTOR' && request.nextUrl.pathname.startsWith('/mentor'))
   ) {
     return Response.redirect(new URL('/unauthorized', request.url))
   }
@@ -50,6 +52,9 @@ export async function middleware(request: NextRequest) {
     }
     if (role === 'INTERN' && request.nextUrl.pathname !== '/intern') {
       return Response.redirect(new URL('/intern', request.url))
+    }
+    if (role === 'MENTOR' && request.nextUrl.pathname !== '/mentor') {
+      return Response.redirect(new URL('/mentor', request.url))
     }
   }
 }

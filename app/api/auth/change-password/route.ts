@@ -3,12 +3,15 @@ import prisma from '../../../../lib/prisma'
 import { connectDB } from '@/lib/connect-db'
 import { Session, getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import bcrypt from 'bcryptjs'
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions)
   const { email } = (session?.user as Session['user']) || {}
 
-  const { newPassword } = await req.json()
+  const { password } = await req.json()
+
+  const hashPassword = await bcrypt.hash(password, 10)
 
   try {
     await connectDB()
@@ -20,7 +23,7 @@ export async function POST(req: Request) {
 
     const updatedUser = await prisma.user.update({
       where: { email },
-      data: { password: newPassword, passwordChangeRequired: false },
+      data: { password: hashPassword, passwordChangeRequired: false },
     })
 
     return NextResponse.json({ user: updatedUser }, { status: 201 })

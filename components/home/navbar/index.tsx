@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
-import LoginButton from '@/components/auth/login-button'
+import LoginButton from '@/components/auth/login/login-button'
 
 import { Profile } from './profile'
 import { getServerSession } from 'next-auth/next'

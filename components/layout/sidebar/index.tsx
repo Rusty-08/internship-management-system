@@ -16,7 +16,7 @@ const Sidebar = ({ sideLinks }: { sideLinks: SidebarLinkProps }) => {
 
   return (
     <div
-      style={{ background: 'hsl(222.2 84% 4.9%)' }}
+      style={{ background: 'hsl(222.2 47.4% 11.2%)' }}
       className="fixed flex flex-col left-0 top-0 h-screen w-80 pb-4 border-r border-secondary"
     >
       <div className="flex h-28 p-3 border-b border-primary/20"></div>
@@ -25,10 +25,10 @@ const Sidebar = ({ sideLinks }: { sideLinks: SidebarLinkProps }) => {
           <Link
             key={item.path}
             href={item.path}
-            className={`flex border-l-4 border-l-transparent py-2.5 justify-start items-center w-full rounded-none transition-all duration-75 hover:bg-primary/10 ${
+            className={`flex border-l-4 py-2.5 justify-start items-center w-full rounded-none transition-all duration-75 hover:bg-primary/10 ${
               path === item.path
                 ? 'text-white border-l-primary bg-primary/10'
-                : 'text-white/50'
+                : 'text-white/50 border-l-transparent'
             } `}
           >
             <div className="flex justify-center w-16">

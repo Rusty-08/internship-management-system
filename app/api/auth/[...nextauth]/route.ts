@@ -43,7 +43,12 @@ export const authOptions: NextAuthOptions = {
       return { ...token, ...user }
     },
     async session({ session, token }) {
+      const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+      })
+
       session.user.role = token.role
+      session.user.passwordChangeRequired = user.passwordChangeRequired
       return session
     },
   },

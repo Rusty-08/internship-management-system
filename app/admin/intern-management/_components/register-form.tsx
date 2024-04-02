@@ -27,7 +27,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { RegistrationSchema } from './registration-schema'
-import ErrorCard from '@/components/auth/error-card'
+import ErrorCard from '@/components/auth/login/error-card'
 import { useState } from 'react'
 import { revalidatePath } from 'next/cache'
 import { useRouter } from 'next/navigation'

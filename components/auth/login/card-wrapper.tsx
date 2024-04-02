@@ -12,8 +12,8 @@ type CardWrapperProps = {
   children: React.ReactNode
   headerLabel: string
   subHeaderLabel: string
-  backButtonLabel: string
-  backButtonHref: string
+  backButtonLabel?: string
+  backButtonHref?: string
 }
 
 export const CardWrapper = ({
@@ -32,9 +32,11 @@ export const CardWrapper = ({
         </CardDescription>
       </CardHeader>
       <CardContent>{children}</CardContent>
-      <CardFooter>
-        <BackButton label={backButtonLabel} href={backButtonHref} />
-      </CardFooter>
+      {backButtonLabel && backButtonHref && (
+        <CardFooter>
+          <BackButton label={backButtonLabel} href={backButtonHref} />
+        </CardFooter>
+      )}
     </Card>
   )
 }

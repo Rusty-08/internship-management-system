@@ -1,5 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import LoginButton from '@/components/auth/login-button'
+import LoginButton from '@/components/auth/login/login-button'
 import { Profile } from '@/components/home/navbar/profile'
 import { ThemeToggle } from '@/components/providers/theme/theme-toggle'
 import { Session } from 'next-auth'

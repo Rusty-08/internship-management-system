@@ -29,16 +29,35 @@ enum UserRole {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String    @unique
-  password      String
-  emailVerified DateTime?
-  image         String?
-  role          UserRole? @default(USER)
+  id                     String    @id @default(auto()) @map("_id") @db.ObjectId
+  name                   String?
+  email                  String    @unique
+  password               String
+  passwordChangeRequired Boolean   @default(true)
+  emailVerified          DateTime?
+  image                  String?
+  role                   UserRole? @default(USER)
 
   accounts Account[]
   sessions Session[]
+  intern   Intern?
+  mentor   Mentor?
+}
+
+model Intern {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @unique @db.ObjectId
+  // Add intern-specific fields here
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Mentor {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @unique @db.ObjectId
+  // Add mentor-specific fields here
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Account {

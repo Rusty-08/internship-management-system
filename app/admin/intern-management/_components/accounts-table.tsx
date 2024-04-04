@@ -15,8 +15,6 @@ import { useState } from 'react'
 import { DataTablePagination } from '@/components/@core/table/pagination'
 import { DataTable } from '@/components/@core/table/data-table'
 import { SearchFilter } from '@/components/@core/table/seach-filter'
-import { Button } from '@/components/ui/button'
-import { CustomIcon } from '@/components/@core/iconify'
 import { FormDialog } from './register-form'
 
 interface DataTableProps<TData, TValue> {

@@ -25,10 +25,10 @@ const Sidebar = ({ sideLinks }: { sideLinks: SidebarLinkProps }) => {
           <Link
             key={item.path}
             href={item.path}
-            className={`flex border-l-4 py-2.5 justify-start items-center w-full rounded-none transition-all duration-75 hover:bg-primary/10 ${
+            className={`flex py-2.5 justify-start items-center w-full rounded-none transition-all duration-75 hover:bg-primary/10 ${
               path === item.path
-                ? 'text-white border-l-primary bg-primary/10'
-                : 'text-white/50 border-l-transparent'
+                ? 'text-white border-l-4 border-l-primary bg-primary/10'
+                : 'text-white/50'
             } `}
           >
             <div className="flex justify-center w-16">

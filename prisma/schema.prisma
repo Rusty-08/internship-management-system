@@ -35,29 +35,23 @@ model User {
   password               String
   passwordChangeRequired Boolean   @default(true)
   emailVerified          DateTime?
-  image                  String?
+  image                  String?   @default("/general/images/male-avatar.svg")
   role                   UserRole? @default(USER)
+  expertise              String?
 
   accounts Account[]
   sessions Session[]
-  intern   Intern?
-  mentor   Mentor?
+
+  internProfile Profile? @relation("UserToProfile")
+  mentorProfile Profile? @relation("MentorToProfile")
 }
 
-model Intern {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @unique @db.ObjectId
-  // Add intern-specific fields here
-
-  user User @relation(fields: [userId], references: [id])
-}
-
-model Mentor {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @unique @db.ObjectId
-  // Add mentor-specific fields here
-
-  user User @relation(fields: [userId], references: [id])
+model Profile {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  mentor   User?   @relation("MentorToProfile", fields: [mentorId], references: [id], onDelete: Cascade)
+  mentorId String? @unique @db.ObjectId
+  user     User    @relation("UserToProfile", fields: [userId], references: [id], onDelete: Cascade)
+  userId   String  @unique @db.ObjectId
 }
 
 model Account {

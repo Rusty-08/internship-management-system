@@ -29,11 +29,27 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { RegistrationSchema } from './registration-schema'
 import ErrorCard from '@/components/auth/login/error-card'
 import { useState } from 'react'
-import { revalidatePath } from 'next/cache'
 import { useRouter } from 'next/navigation'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+
+const sampleExpertise = [
+  'Frontend Developer',
+  'Backend Developer',
+  'Fullstack Developer',
+  'Mobile Developer',
+  'UI/UX Designer',
+  'Data Scientist',
+]
 
 export function FormDialog() {
   const router = useRouter()
+  const [isOpen, setIsOpen] = useState(false)
   const [isEmailTaken, setIsEmailTaken] = useState(false)
   const form = useForm<z.infer<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
@@ -46,7 +62,7 @@ export function FormDialog() {
   const { isSubmitting, errors } = form.formState
 
   const onSubmit = async (values: z.infer<typeof RegistrationSchema>) => {
-    const { name, email } = values
+    const { name, email, expertise } = values
 
     try {
       const res = await fetch('/api/auth/register', {
@@ -57,8 +73,8 @@ export function FormDialog() {
         body: JSON.stringify({
           name,
           email,
-          password: '@default123',
           role: 'MENTOR',
+          expertise,
         }),
       })
 
@@ -69,12 +85,13 @@ export function FormDialog() {
       console.error(error)
     } finally {
       form.reset()
+      setIsOpen(false)
       router.refresh()
     }
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
       <DialogTrigger asChild>
         <Button className="gap-2">
           <CustomIcon icon="ic:sharp-add" />
@@ -115,6 +132,32 @@ export function FormDialog() {
                     {errors.email && (
                       <FormMessage>{errors.email.message}</FormMessage>
                     )}
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="expertise"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mentor</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select the mentor" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {sampleExpertise.map(expertise => (
+                          <SelectItem key={expertise} value={expertise}>
+                            {expertise}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />

@@ -15,18 +15,17 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DataTableColumnHeader } from '@/components/@core/table/column-header'
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
 
-export type UserSubset = {
+export type MentorUsersSubset = {
+  id: string | null
+  image: string | null
   name: string | null
   email: string | null
+  role: string | null
 }
 
-type SortingHeaderProps = {
-  column: Column<UserSubset, unknown>
-  header: string
-}
-
-export const columns: ColumnDef<UserSubset>[] = [
+export const columns: ColumnDef<MentorUsersSubset>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -48,6 +47,22 @@ export const columns: ColumnDef<UserSubset>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: 'image',
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} />
+    },
+    cell: ({ row }) => {
+      return (
+        <Avatar className="w-8 h-8">
+          <AvatarImage
+            src={`${row.original.image}`}
+            alt={`${row.original.name}`}
+          />
+        </Avatar>
+      )
+    },
+  },
+  {
     accessorKey: 'name',
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Name" />
@@ -57,6 +72,12 @@ export const columns: ColumnDef<UserSubset>[] = [
     accessorKey: 'email',
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Email" />
+    },
+  },
+  {
+    accessorKey: 'role',
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Role" />
     },
   },
   {

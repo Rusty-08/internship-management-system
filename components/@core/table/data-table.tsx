@@ -33,7 +33,7 @@ export function DataTable<TData, TValue>({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map(header => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="px-4">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -54,8 +54,13 @@ export function DataTable<TData, TValue>({
                 data-state={row.getIsSelected() && 'selected'}
               >
                 {row.getVisibleCells().map(cell => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  <TableCell key={cell.id} className="px-4 text-text">
+                    {(() => {
+                      return flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )
+                    })()}
                   </TableCell>
                 ))}
               </TableRow>
@@ -73,10 +78,14 @@ export function DataTable<TData, TValue>({
                     className="h-[15rem] w-auto object-cover"
                   />
                   <h1 className="text-lg text-text font-medium">
-                    {searchOutput ? 'No Records Found for' : 'No Records Found'}
-                    <span className="text-secondary-foreground">
-                      {searchOutput && ` "${searchOutput}"`}
-                    </span>
+                    {searchOutput == undefined
+                      ? 'No Records Found for'
+                      : 'No Records Found'}
+                    {searchOutput == undefined && (
+                      <span className="text-secondary-foreground">
+                        {` "${searchOutput}"`}
+                      </span>
+                    )}
                   </h1>
                 </div>
               </TableCell>

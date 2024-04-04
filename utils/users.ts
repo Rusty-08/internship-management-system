@@ -1,4 +1,5 @@
-import { UserSubset } from '@/app/admin/mentor-management/accounts'
+import { InternsUsersSubset } from '@/app/admin/intern-management/accounts'
+import { MentorUsersSubset } from '@/app/admin/mentor-management/accounts'
 import prisma from '@/lib/prisma'
 import { UserRole } from '@prisma/client'
 
@@ -26,26 +27,52 @@ export async function getUserByEmail(email: string): Promise<User | null> {
   }
 }
 
-export async function getInternUsers(): Promise<UserSubset[]> {
-  return await prisma.user.findMany({
+export async function getInternUsers(): Promise<InternsUsersSubset[]> {
+  const users = await prisma.user.findMany({
     where: {
       role: 'INTERN',
     },
     select: {
+      image: true,
       name: true,
       email: true,
+      internProfile: {
+        select: {
+          mentor: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
     },
   })
+  return users.map(user => ({
+    image: user.image,
+    name: user.name,
+    email: user.email,
+    mentor: user.internProfile?.mentor?.name || 'none',
+  }))
 }
 
-export async function getMentorUsers(): Promise<UserSubset[]> {
-  return await prisma.user.findMany({
+export async function getMentorUsers(): Promise<MentorUsersSubset[]> {
+  const users = await prisma.user.findMany({
     where: {
       role: 'MENTOR',
     },
     select: {
+      id: true,
+      image: true,
       name: true,
       email: true,
+      expertise: true,
     },
   })
+  return users.map(user => ({
+    id: user.id,
+    image: user.image,
+    name: user.name,
+    email: user.email,
+    role: user.expertise || 'none',
+  }))
 }

@@ -1,6 +1,6 @@
 import { columns } from './accounts'
-import { getInternUsers } from '@/utils/users'
 import { AccountsTable } from './_components/accounts-table'
+import { getInternUsers } from '@/utils/users'
 
 export default async function AccountManager() {
   const data = await getInternUsers()

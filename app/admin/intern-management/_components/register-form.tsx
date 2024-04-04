@@ -13,7 +13,7 @@ import {
 import { LoadingSpinner } from '@/components/@core/spinner/circular'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { set, z } from 'zod'
 
 import {
   Form,
@@ -22,31 +22,42 @@ import {
   FormLabel,
   FormItem,
   FormMessage,
+  FormDescription,
 } from '@/components/ui/form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { RegistrationSchema } from './registration-schema'
 import ErrorCard from '@/components/auth/login/error-card'
-import { useState } from 'react'
-import { revalidatePath } from 'next/cache'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { MentorUsersSubset } from '@/app/admin/mentor-management/accounts'
 
 export function FormDialog() {
+  const [mentors, setMentors] = useState<MentorUsersSubset[]>([])
   const router = useRouter()
+  const [isOpen, setIsOpen] = useState(false)
   const [isEmailTaken, setIsEmailTaken] = useState(false)
   const form = useForm<z.infer<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
     defaultValues: {
       name: '',
       email: '',
+      mentor: '',
     },
   })
 
   const { isSubmitting, errors } = form.formState
 
   const onSubmit = async (values: z.infer<typeof RegistrationSchema>) => {
-    const { name, email } = values
+    const { name, email, mentor } = values
 
     try {
       const res = await fetch('/api/auth/register', {
@@ -57,8 +68,8 @@ export function FormDialog() {
         body: JSON.stringify({
           name,
           email,
-          password: '@default123',
           role: 'INTERN',
+          mentor,
         }),
       })
 
@@ -69,12 +80,33 @@ export function FormDialog() {
       console.error(error)
     } finally {
       form.reset()
+      setIsOpen(false)
       router.refresh()
     }
   }
 
+  useEffect(() => {
+    const fetchMentors = async () => {
+      const res = await fetch('/api/auth/users/mentors', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (res) {
+        const data = await res.json()
+        setMentors(data)
+      } else {
+        console.log('No response from server')
+      }
+    }
+
+    fetchMentors()
+  }, [])
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
       <DialogTrigger asChild>
         <Button className="gap-2">
           <CustomIcon icon="ic:sharp-add" />
@@ -115,6 +147,35 @@ export function FormDialog() {
                     {errors.email && (
                       <FormMessage>{errors.email.message}</FormMessage>
                     )}
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="mentor"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mentor</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select the mentor" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {mentors.map(mentor => (
+                          <SelectItem
+                            key={mentor.email}
+                            value={mentor.id ?? ''}
+                          >
+                            {mentor.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />

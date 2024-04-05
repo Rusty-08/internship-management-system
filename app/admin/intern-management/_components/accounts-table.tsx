@@ -2,6 +2,7 @@
 
 import {
   ColumnFiltersState,
+  Row,
   SortingState,
   getCoreRowModel,
   getFilteredRowModel,
@@ -16,6 +17,8 @@ import { DataTable } from '@/components/@core/table/data-table'
 import { SearchFilter } from '@/components/@core/table/seach-filter'
 import { InternsUsersSubset, columns } from '../accounts'
 import { FormDialog } from './register-form'
+import { z } from 'zod'
+import { RegistrationSchema } from './registration-schema'
 
 export default function AccountsTable({
   data,
@@ -23,12 +26,26 @@ export default function AccountsTable({
   data: InternsUsersSubset[]
 }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [formMode, setFormMode] = useState<'edit' | 'create' | 'view'>('create')
   const [sorting, setSorting] = useState<SortingState>([])
   const [rowSelection, setRowSelection] = useState({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [editData, setEditData] = useState<z.infer<typeof RegistrationSchema>>({
+    id: '',
+    name: '',
+    email: '',
+    mentor: '',
+  })
 
-  const handleEdit = () => {
+  const handleEdit = (row: Row<InternsUsersSubset>) => {
+    setFormMode('edit')
     setIsOpen(true)
+    setEditData({
+      id: row.original.id || '',
+      name: row.original.name || '',
+      email: row.original.email || '',
+      mentor: row.original.mentorId || '',
+    })
   }
 
   const handleArchive = () => null
@@ -61,7 +78,13 @@ export default function AccountsTable({
     <div className="py-5">
       <div className="flex items-center justify-between mb-4">
         <SearchFilter column="name" table={table} />
-        <FormDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+        <FormDialog
+          mode={formMode}
+          setMode={setFormMode}
+          initialValues={editData}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
       </div>
       <div className="rounded-md border overflow-hidden">
         <DataTable

@@ -40,13 +40,25 @@ import {
 } from '@/components/ui/select'
 import { MentorUsersSubset } from '@/app/admin/mentor-management/accounts'
 import { fetchMentorUsers } from '@/utils/users'
+import { InternsUsersSubset } from '../accounts'
+
+type FormActions = 'edit' | 'create' | 'view'
 
 type FormDialogProps = {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
+  initialValues?: z.infer<typeof RegistrationSchema>
+  mode?: FormActions
+  setMode: (mode: FormActions) => void
 }
 
-export function FormDialog({ isOpen, setIsOpen }: FormDialogProps) {
+export function FormDialog({
+  isOpen,
+  setIsOpen,
+  initialValues,
+  mode,
+  setMode,
+}: FormDialogProps) {
   const [mentors, setMentors] = useState<MentorUsersSubset[]>([])
   const router = useRouter()
   const [isEmailTaken, setIsEmailTaken] = useState(false)
@@ -65,18 +77,35 @@ export function FormDialog({ isOpen, setIsOpen }: FormDialogProps) {
     const { name, email, mentor } = values
 
     try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          role: 'INTERN',
-          mentor,
-        }),
-      })
+      let res
+      if (mode === 'edit') {
+        res = await fetch('/api/auth/users/update-interns', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: initialValues?.id,
+            name,
+            email,
+            role: 'INTERN',
+            mentor,
+          }),
+        })
+      } else {
+        res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            role: 'INTERN',
+            mentor,
+          }),
+        })
+      }
 
       if (res.status === 400) {
         setIsEmailTaken(true)
@@ -99,10 +128,24 @@ export function FormDialog({ isOpen, setIsOpen }: FormDialogProps) {
     fetchMentors()
   }, [])
 
+  useEffect(() => {
+    if (initialValues) {
+      form.setValue('name', initialValues.name ?? '')
+      form.setValue('email', initialValues.email ?? '')
+      form.setValue('mentor', initialValues.mentor ?? '')
+    }
+  }, [initialValues])
+
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
       <DialogTrigger asChild>
-        <Button className="gap-2">
+        <Button
+          className="gap-2"
+          onClick={() => {
+            setMode('create')
+            form.reset()
+          }}
+        >
           <CustomIcon icon="ic:sharp-add" />
           Add Account
         </Button>

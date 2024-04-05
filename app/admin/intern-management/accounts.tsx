@@ -18,10 +18,12 @@ import { DataTableColumnHeader } from '@/components/@core/table/column-header'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 
 export type InternsUsersSubset = {
+  id: string | null
   image: string | null
   name: string | null
   email: string | null
   mentor: string | null
+  mentorId: string | null
 }
 
 export const columns = (actions: {

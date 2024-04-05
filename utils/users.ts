@@ -66,6 +66,7 @@ export async function getInternUsers(): Promise<InternsUsersSubset[]> {
       role: 'INTERN',
     },
     select: {
+      id: true,
       image: true,
       name: true,
       email: true,
@@ -73,6 +74,7 @@ export async function getInternUsers(): Promise<InternsUsersSubset[]> {
         select: {
           mentor: {
             select: {
+              id: true,
               name: true,
             },
           },
@@ -81,10 +83,12 @@ export async function getInternUsers(): Promise<InternsUsersSubset[]> {
     },
   })
   return users.map(user => ({
+    id: user.id,
     image: user.image,
     name: user.name,
     email: user.email,
     mentor: user.internProfile?.mentor?.name || 'none',
+    mentorId: user.internProfile?.mentor?.id || 'none',
   }))
 }
 

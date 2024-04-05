@@ -1,7 +1,6 @@
 'use client'
 
 import {
-  ColumnDef,
   ColumnFiltersState,
   SortingState,
   getCoreRowModel,
@@ -15,24 +14,35 @@ import { useState } from 'react'
 import { DataTablePagination } from '@/components/@core/table/pagination'
 import { DataTable } from '@/components/@core/table/data-table'
 import { SearchFilter } from '@/components/@core/table/seach-filter'
+import { InternsUsersSubset, columns } from '../accounts'
 import { FormDialog } from './register-form'
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-}
-
-export function AccountsTable<TData, TValue>({
-  columns,
+export default function AccountsTable({
   data,
-}: DataTableProps<TData, TValue>) {
+}: {
+  data: InternsUsersSubset[]
+}) {
+  const [isOpen, setIsOpen] = useState(false)
   const [sorting, setSorting] = useState<SortingState>([])
   const [rowSelection, setRowSelection] = useState({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
+  const handleEdit = () => {
+    setIsOpen(true)
+  }
+
+  const handleArchive = () => null
+  const handleViewDetails = () => null
+
+  const actions = {
+    edit: handleEdit,
+    archive: handleArchive,
+    viewDetails: handleViewDetails,
+  }
+
   const table = useReactTable({
     data,
-    columns,
+    columns: columns(actions),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -48,14 +58,14 @@ export function AccountsTable<TData, TValue>({
   })
 
   return (
-    <div>
+    <div className="py-5">
       <div className="flex items-center justify-between mb-4">
         <SearchFilter column="name" table={table} />
-        <FormDialog />
+        <FormDialog isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
       <div className="rounded-md border overflow-hidden">
         <DataTable
-          columns={columns}
+          columns={columns(actions)}
           table={table}
           searchOutput={`${columnFilters[0]?.value}`}
         />

@@ -15,6 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { CustomIcon } from '@/components/@core/iconify'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 type ProfileProps = {
   image?: string
@@ -23,10 +24,11 @@ type ProfileProps = {
 }
 
 export const Profile = ({ image, user, role }: ProfileProps) => {
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <DropdownMenu onOpenChange={setIsOpen}>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger className="outline-none">
         <Avatar>
           <AvatarImage src={image} />
@@ -43,20 +45,24 @@ export const Profile = ({ image, user, role }: ProfileProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-52" align="end">
         <DropdownMenuLabel>
-          <div className="flex gap-2 items-center py-1">
-            <Avatar>
-              <AvatarImage src={image} />
-              <AvatarFallback className="text-text">
-                <CustomIcon icon="lets-icons:user-alt-duotone" />
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <h1 className="line-clamp-1">{user ?? 'Anonymous'}</h1>
-              <p className="text-text font-normal">
-                {role?.toLocaleLowerCase()}
-              </p>
+          <Link onClick={() => setIsOpen(false)} href="/admin/profile">
+            <div className="flex group gap-2 items-center cursor-pointer py-1">
+              <Avatar>
+                <AvatarImage src={image} />
+                <AvatarFallback className="text-text">
+                  <CustomIcon icon="lets-icons:user-alt-duotone" />
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <h1 className="line-clamp-1 group-hover:text-primary">
+                  {user ?? 'Anonymous'}
+                </h1>
+                <p className="text-text font-normal">
+                  {role?.toLocaleLowerCase()}
+                </p>
+              </div>
             </div>
-          </div>
+          </Link>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div className="p-1">

@@ -39,11 +39,16 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { MentorUsersSubset } from '@/app/admin/mentor-management/accounts'
+import { fetchMentorUsers } from '@/utils/users'
 
-export function FormDialog() {
+type FormDialogProps = {
+  isOpen: boolean
+  setIsOpen: (open: boolean) => void
+}
+
+export function FormDialog({ isOpen, setIsOpen }: FormDialogProps) {
   const [mentors, setMentors] = useState<MentorUsersSubset[]>([])
   const router = useRouter()
-  const [isOpen, setIsOpen] = useState(false)
   const [isEmailTaken, setIsEmailTaken] = useState(false)
   const form = useForm<z.infer<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
@@ -86,22 +91,11 @@ export function FormDialog() {
   }
 
   useEffect(() => {
+    // for listing mentors in the select dropdown
     const fetchMentors = async () => {
-      const res = await fetch('/api/auth/users/mentors', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (res) {
-        const data = await res.json()
-        setMentors(data)
-      } else {
-        console.log('No response from server')
-      }
+      const data = await fetchMentorUsers()
+      setMentors(data)
     }
-
     fetchMentors()
   }, [])
 

@@ -140,14 +140,14 @@ export function FormDialog() {
                 name="expertise"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Mentor</FormLabel>
+                    <FormLabel>Role</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select the mentor" />
+                          <SelectValue placeholder="Select the role" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>

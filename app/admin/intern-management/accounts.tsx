@@ -2,7 +2,7 @@
 
 import { CustomIcon } from '@/components/@core/iconify'
 
-import { Column, ColumnDef } from '@tanstack/react-table'
+import { Column, ColumnDef, Row } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -24,7 +24,9 @@ export type InternsUsersSubset = {
   mentor: string | null
 }
 
-export const columns: ColumnDef<InternsUsersSubset>[] = [
+export const columns = (actions: {
+  [key: string]: (row: Row<InternsUsersSubset>) => void
+}): ColumnDef<InternsUsersSubset>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -94,9 +96,15 @@ export const columns: ColumnDef<InternsUsersSubset>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem>Archive</DropdownMenuItem>
-              <DropdownMenuItem>View Details</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => actions.edit(row)}>
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => actions.archive(row)}>
+                Archive
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => actions.viewDetails(row)}>
+                View Details
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

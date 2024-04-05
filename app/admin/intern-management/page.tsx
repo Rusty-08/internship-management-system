@@ -1,13 +1,11 @@
-import { columns } from './accounts'
-import { AccountsTable } from './_components/accounts-table'
+import React from 'react'
+import AccountsTable from './_components/accounts-table'
 import { getInternUsers } from '@/utils/users'
 
-export default async function AccountManager() {
+const InternManagement = async () => {
   const data = await getInternUsers()
 
-  return (
-    <section className="py-5">
-      <AccountsTable columns={columns} data={data} />
-    </section>
-  )
+  return <AccountsTable data={data} />
 }
+
+export default InternManagement

@@ -95,9 +95,15 @@ export const columns: ColumnDef<MentorUsersSubset>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem>Archive</DropdownMenuItem>
-              <DropdownMenuItem>View Details</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Archive
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                View Details
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

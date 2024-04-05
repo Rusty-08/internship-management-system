@@ -21,7 +21,40 @@ export async function getUserByEmail(email: string): Promise<User | null> {
   })
 
   if (res.ok) {
-    return res.json()
+    const data = res.json()
+    return data
+  } else {
+    return null
+  }
+}
+
+export const fetchMentorUsers = async () => {
+  const res = await fetch('/api/auth/users/mentors', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (res.ok) {
+    const data = await res.json()
+    return data
+  } else {
+    return null
+  }
+}
+
+export const fetchInternUsers = async () => {
+  const res = await fetch('/api/auth/users/interns', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (res.ok) {
+    const data = await res.json()
+    return data
   } else {
     return null
   }

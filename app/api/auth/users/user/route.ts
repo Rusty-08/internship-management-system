@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import prisma from '../../../../../lib/prisma'
 import { connectDB } from '@/lib/connect-db'
+import prisma from '@/lib/prisma'
 
 export async function POST(req: Request) {
   const { email } = await req.json()
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'No User Exists' }, { status: 401 })
     }
 
-    return NextResponse.json({ user }, { status: 201 })
+    return NextResponse.json(user, { status: 201 })
   } catch (error) {
     return NextResponse.json(
       { message: 'Could not verify user' },

@@ -1,16 +1,11 @@
 import { InternsUsersSubset } from '@/app/admin/intern-management/accounts'
 import { MentorUsersSubset } from '@/app/admin/mentor-management/accounts'
 import prisma from '@/lib/prisma'
-import { UserRole } from '@prisma/client'
 
-type User = {
-  email: string
-  passwordChangeRequired: boolean
-  role: UserRole | null
-}
-
-export async function getUserByEmail(email: string): Promise<User | null> {
-  const res = await fetch('/api/auth/user', {
+export async function getUserByEmail(
+  email: string,
+): Promise<InternsUsersSubset | null> {
+  const res = await fetch('/api/auth/users/user', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -15,7 +15,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DataTableColumnHeader } from '@/components/@core/table/column-header'
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import Link from 'next/link'
 
 export type InternsUsersSubset = {
   id: string | null
@@ -55,12 +56,16 @@ export const columns = (actions: {
       return <DataTableColumnHeader column={column} />
     },
     cell: ({ row }) => {
+      const name = row.original.name
+      const fallback = name
+        ?.split(' ')
+        .map(n => n[0])
+        .join('')
+
       return (
         <Avatar className="w-8 h-8">
-          <AvatarImage
-            src={`${row.original.image}`}
-            alt={`${row.original.name}`}
-          />
+          <AvatarImage src={`${row.original.image}`} alt={`${name}`} />
+          <AvatarFallback>{fallback}</AvatarFallback>
         </Avatar>
       )
     },
@@ -69,6 +74,19 @@ export const columns = (actions: {
     accessorKey: 'name',
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Name" />
+    },
+    cell: ({ row }) => {
+      const path = `/admin/intern-management/${
+        row.original.email?.split('@')[0]
+      }`
+      return (
+        <Link
+          href={path}
+          className="font-medium hover:text-secondary-foreground"
+        >
+          {row.original.name}
+        </Link>
+      )
     },
   },
   {
@@ -79,9 +97,7 @@ export const columns = (actions: {
   },
   {
     accessorKey: 'mentor',
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Mentor" />
-    },
+    header: 'Mentor',
   },
   {
     id: 'actions',

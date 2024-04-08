@@ -77,11 +77,11 @@ export function DataTable<TData, TValue>({
                     height="0"
                     className="h-[15rem] w-auto object-cover"
                   />
-                  <h1 className="text-lg text-text font-medium">
-                    {searchOutput == undefined
+                  <h1 className="text-lg text-text text-center w-2/3 font-medium">
+                    {searchOutput !== undefined
                       ? 'No Records Found for'
                       : 'No Records Found'}
-                    {searchOutput == undefined && (
+                    {searchOutput !== undefined && (
                       <span className="text-secondary-foreground">
                         {` "${searchOutput}"`}
                       </span>

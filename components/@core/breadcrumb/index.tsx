@@ -25,7 +25,7 @@ export function BreadcrumbWrapper({ links, current }: BreadcrumbProps) {
         {links.map(link => (
           <Fragment key={link.path}>
             <BreadcrumbItem>
-              <BreadcrumbLink>
+              <BreadcrumbLink asChild>
                 <Link href={link.path}>{link.title}</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>

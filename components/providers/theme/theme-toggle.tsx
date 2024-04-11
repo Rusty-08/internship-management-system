@@ -38,14 +38,19 @@ export function ThemeToggle() {
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="p-2 min-w-36">
+      <DropdownMenuContent align="end" className="p-2 min-w-40">
         {themes.map(({ icon: Icon, label }) => (
           <DropdownMenuItem
             key={label}
             onClick={() => setTheme(label.toLowerCase())}
+            className={`${
+              theme === label.toLowerCase()
+                ? 'bg-muted text-primary'
+                : 'bg-transparent'
+            } group cursor-pointer`}
           >
-            <Icon className="mr-2 size-4" />
-            <span>{label}</span>
+            <Icon className="mr-2 group-hover:text-primary size-4" />
+            <span className="group-hover:text-primary">{label}</span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

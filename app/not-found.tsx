@@ -1,9 +1,10 @@
 'use client'
+
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-const NotFound = () => {
+export const NotFoundPage = () => {
   const router = useRouter()
 
   return (
@@ -25,5 +26,7 @@ const NotFound = () => {
     </div>
   )
 }
+
+const NotFound = () => <NotFoundPage />
 
 export default NotFound

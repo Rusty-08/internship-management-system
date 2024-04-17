@@ -1,7 +1,6 @@
-import React from 'react'
 import SectionHeader from '../header'
-import { stacksData } from './stacks-data'
 import Stack from './stack'
+import { stacksData } from './stacks-data'
 
 const Stacks = () => {
   return (
@@ -13,7 +12,8 @@ const Stacks = () => {
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {stacksData.map((stack, index) => (
           <Stack
-            key={index}
+            key={`${stack.id}-${index}`}
+            id={stack.id}
             image={stack.image}
             title={stack.title}
             desc={stack.desc}

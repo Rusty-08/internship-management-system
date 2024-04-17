@@ -1,32 +1,41 @@
 import {
   Card,
-  CardTitle,
-  CardHeader,
-  CardDescription,
   CardContent,
+  CardDescription,
   CardFooter,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card'
+import Image from 'next/image'
 
 import { CustomIcon } from '@/components/@core/iconify'
 
 type StackProps = {
-  image?: string
+  id: string
+  image: string
   title: string
   desc: string
   link: string
 }
 
-const Stack = ({ image, title, desc, link }: StackProps) => {
+const Stack = ({ id, image, title, desc, link }: StackProps) => {
   return (
-    <Card>
+    <Card key={id}>
       <CardHeader>
-        {/* <Image src={image} alt={title} /> */}
-        <div className="bg-muted h-28 rounded-md" />
+        <Image
+          className="rounded-sm object-cover h-48"
+          src={image}
+          alt={title}
+          width={400}
+          height={100}
+        />
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
           <CardTitle>{title}</CardTitle>
-          <CardDescription>{desc}</CardDescription>
+          <CardDescription className="line-clamp-3 hover:line-clamp-none">
+            {desc}
+          </CardDescription>
         </div>
       </CardContent>
       <CardFooter>

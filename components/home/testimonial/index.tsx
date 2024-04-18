@@ -1,22 +1,43 @@
-import React from 'react'
-import { data } from './testimonialData'
-import TestimonialCard from './testimonial-card'
-import SectionHeader from '../header'
+'use client'
+
+import SectionHeader from '@/components/home/header'
+import { data } from '@/components/home/testimonial/data'
+import TestimonialCard from '@/components/home/testimonial/testimonial-card'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
+import Autoplay from 'embla-carousel-autoplay'
+import { useRef } from 'react'
 
 const Testimonials = () => {
+  const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: true }))
   return (
     <section className="py-20">
       <SectionHeader
         header="What our intern say"
         subHeader="This testimonial section is dedicated to showcasing the exceptional talent and dedication of our team members. Each testimonial reflects the individual's unique contributions and skills that they bring to our team."
       />
-      <div className="mt-8 [column-fill:_balance] gap-4 sm:columns-2 lg:columns-3">
-        {data.map(testimonial => (
-          <div key={testimonial.id} className="mb-8 sm:break-inside-avoid">
-            <TestimonialCard {...testimonial} />
-          </div>
-        ))}
-      </div>
+      <>
+        <Carousel
+          plugins={[plugin.current]}
+          onMouseEnter={plugin.current.stop}
+          onMouseLeave={plugin.current.reset}
+        >
+          <CarouselContent>
+            {data.map(testimonial => (
+              <CarouselItem key={testimonial.id}>
+                <TestimonialCard {...testimonial} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselNext />
+          <CarouselPrevious />
+        </Carousel>
+      </>
     </section>
   )
 }

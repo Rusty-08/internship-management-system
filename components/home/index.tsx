@@ -1,5 +1,4 @@
-import React from 'react'
-import Hero from './hero-section/Hero'
+import Hero from '@/components/home/hero-section/Hero'
 import Stacks from '@/components/home/stacks'
 import Testimonials from '@/components/home/testimonial'
 

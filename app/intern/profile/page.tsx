@@ -1,7 +1,10 @@
-import { ComingSoon } from "@/app/intern/chat/page"
+import Profile from '@/components/layout/profile'
+import { getCurrentUserEmail } from '@/utils/users'
 
-const InternProfile = () => {
-  return <ComingSoon pageName="Profile" />
+const InternProfile = async () => {
+  const currentUserEmail = await getCurrentUserEmail()
+
+  return <Profile email={currentUserEmail} />
 }
 
 export default InternProfile

@@ -7,7 +7,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   return (
     <section className="min-h-screen flex relative w-full">
       <Sidebar sideLinks={adminSidebarLinks} />
-      <Navbar />
+      <Navbar profilePath="/admin/profile" />
       <div
         style={{ minHeight: 'calc(100vh - 7rem)' }}
         className="ml-80 mt-24 p-4 flex-grow"

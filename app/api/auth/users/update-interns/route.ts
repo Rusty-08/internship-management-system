@@ -6,8 +6,6 @@ export async function PUT(req: Request) {
   try {
     const { id, name, email, role, expertise, mentor } = await req.json()
 
-    console.log({ id, name, email, role, expertise, mentor })
-
     if (!id || !name || !email) {
       return NextResponse.json({ message: 'Invalid input' }, { status: 400 })
     }

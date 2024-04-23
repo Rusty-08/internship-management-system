@@ -1,4 +1,5 @@
 'use client'
+
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 
@@ -18,12 +19,18 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 type ProfileProps = {
-  image?: string
+  image: string | null
   user?: string | null
   role?: string | null
+  profilePath: string
 }
 
-export const Profile = ({ image, user, role }: ProfileProps) => {
+export const ProfileAvatar = ({
+  image,
+  user,
+  role,
+  profilePath,
+}: ProfileProps) => {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -31,7 +38,7 @@ export const Profile = ({ image, user, role }: ProfileProps) => {
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger className="outline-none">
         <Avatar>
-          <AvatarImage src={image} />
+          <AvatarImage src={image ? image : undefined} />
           <AvatarFallback
             className={`hover:text-primary border ${
               isOpen
@@ -45,10 +52,10 @@ export const Profile = ({ image, user, role }: ProfileProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-52" align="end">
         <DropdownMenuLabel>
-          <Link onClick={() => setIsOpen(false)} href="/admin/profile">
+          <Link onClick={() => setIsOpen(false)} href={profilePath}>
             <div className="flex group gap-2 items-center cursor-pointer py-1">
               <Avatar>
-                <AvatarImage src={image} />
+                <AvatarImage src={image ? image : undefined} />
                 <AvatarFallback className="text-text">
                   <CustomIcon icon="lets-icons:user-alt-duotone" />
                 </AvatarFallback>

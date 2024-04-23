@@ -1,13 +1,14 @@
-import { NextResponse } from 'next/server'
-import { connectDB } from '@/lib/connect-db'
+import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 
-export async function POST(req: Request) {
-  const { email } = await req.json()
-
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { email: string } },
+) {
   try {
-    await connectDB()
-    const user = await prisma.user.findUnique({ where: { email } })
+    const user = await prisma.user.findUnique({
+      where: { email: params.email },
+    })
 
     if (!user) {
       return NextResponse.json({ message: 'No User Exists' }, { status: 401 })

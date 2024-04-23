@@ -14,48 +14,37 @@ export async function middleware(request: NextRequest) {
   const role = currentUser?.role
   const isFirstLogin = currentUser?.passwordChangeRequired
 
-  if (
-    isFirstLogin == undefined &&
-    request.nextUrl.pathname === '/auth/change-password'
-  ) {
-    return Response.redirect(new URL('/auth/login', request.url))
-  }
+  const path = request.nextUrl.pathname
 
-  if (isFirstLogin && request.nextUrl.pathname !== '/auth/change-password') {
-    return Response.redirect(new URL('/auth/change-password', request.url))
-  }
+  switch (true) {
+    case isFirstLogin == undefined && path === '/auth/change-password':
+      return Response.redirect(new URL('/auth/login', request.url))
 
-  if (
-    !currentUser &&
-    (request.nextUrl.pathname.startsWith('/admin') ||
-      request.nextUrl.pathname.startsWith('/intern') ||
-      request.nextUrl.pathname.startsWith('/mentor'))
-  ) {
-    return Response.redirect(new URL('/', request.url))
-  }
+    case isFirstLogin && path !== '/auth/change-password':
+      return Response.redirect(new URL('/auth/change-password', request.url))
 
-  if (
-    (role !== 'ADMIN' && request.nextUrl.pathname.startsWith('/admin')) ||
-    (role !== 'INTERN' && request.nextUrl.pathname.startsWith('/intern')) ||
-    (role !== 'MENTOR' && request.nextUrl.pathname.startsWith('/mentor'))
-  ) {
-    return Response.redirect(new URL('/unauthorized', request.url))
-  }
+    case !currentUser &&
+      (path.startsWith('/admin') ||
+        path.startsWith('/intern') ||
+        path.startsWith('/mentor')):
+      return Response.redirect(new URL('/', request.url))
 
-  if (
-    !isFirstLogin &&
-    (request.nextUrl.pathname.startsWith('/auth') ||
-      request.nextUrl.pathname === '/')
-  ) {
-    if (role === 'ADMIN' && request.nextUrl.pathname !== '/admin') {
-      return Response.redirect(new URL('/admin', request.url))
-    }
-    if (role === 'INTERN' && request.nextUrl.pathname !== '/intern') {
-      return Response.redirect(new URL('/intern', request.url))
-    }
-    if (role === 'MENTOR' && request.nextUrl.pathname !== '/mentor') {
-      return Response.redirect(new URL('/mentor', request.url))
-    }
+    case (role !== 'ADMIN' && path.startsWith('/admin')) ||
+      (role !== 'INTERN' && path.startsWith('/intern')) ||
+      (role !== 'MENTOR' && path.startsWith('/mentor')):
+      return Response.redirect(new URL('/unauthorized', request.url))
+
+    case !isFirstLogin && (path.startsWith('/auth') || path === '/'):
+      if (role === 'ADMIN' && path !== '/admin') {
+        return Response.redirect(new URL('/admin', request.url))
+      }
+      if (role === 'INTERN' && path !== '/intern') {
+        return Response.redirect(new URL('/intern', request.url))
+      }
+      if (role === 'MENTOR' && path !== '/mentor') {
+        return Response.redirect(new URL('/mentor', request.url))
+      }
+      break
   }
 }
 

@@ -15,6 +15,7 @@ import { useRef } from 'react'
 
 const Testimonials = () => {
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: true }))
+
   return (
     <section className="py-20">
       <SectionHeader

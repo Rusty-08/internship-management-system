@@ -1,14 +1,10 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import LoginButton from '@/components/auth/login/login-button'
-import { Profile } from '@/components/home/navbar/profile'
+import { ProfileAvatar } from '@/components/home/navbar/profile'
 import { ThemeToggle } from '@/components/providers/theme/theme-toggle'
-import { Session } from 'next-auth'
-import { getServerSession } from 'next-auth'
-import React from 'react'
+import { getCurrentUser } from '@/utils/users'
 
-const Navbar = async () => {
-  const session = await getServerSession(authOptions)
-  const { role, name } = (session?.user as Session['user']) || {}
+const Navbar = async ({ profilePath }: { profilePath: string }) => {
+  const user = await getCurrentUser()
 
   return (
     <div
@@ -19,12 +15,21 @@ const Navbar = async () => {
         <p className="text-text font-thin">
           Welcome back!{' '}
           <span className="text-secondary-foreground font-semibold">
-            {name}
+            {user?.name}
           </span>
         </p>
         <div className="flex items-center gap-x-4">
           <ThemeToggle />
-          {role ? <Profile user={name} role={role} /> : <LoginButton />}
+          {user ? (
+            <ProfileAvatar
+              user={user.name}
+              role={user.role}
+              image={user.image}
+              profilePath={profilePath}
+            />
+          ) : (
+            <LoginButton />
+          )}
         </div>
       </div>
     </div>

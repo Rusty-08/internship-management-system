@@ -1,26 +1,37 @@
 import { InternsUsersSubset } from '@/app/admin/intern-management/accounts'
 import { MentorUsersSubset } from '@/app/admin/mentor-management/accounts'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import prisma from '@/lib/prisma'
+import { Session, getServerSession } from 'next-auth'
 
-export async function getUserByEmail(
-  email: string,
-): Promise<InternsUsersSubset | null> {
-  const res = await fetch('/api/auth/users/user', {
-    method: 'POST',
+export async function getCurrentUserEmail() {
+  const session = await getServerSession(authOptions)
+  const { email } = (session?.user as Session['user']) || {}
+  return email
+}
+
+// Client-side function to get the current user by email
+export async function getUserByEmail(email: string) {
+  const res = await fetch(`/api/auth/users/user/${email}`, {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      email,
-    }),
   })
 
   if (res.ok) {
-    const data = res.json()
+    const data = await res.json()
     return data
   } else {
     return null
   }
+}
+
+// Server-side function to get the current user
+export async function getCurrentUser() {
+  const email = await getCurrentUserEmail()
+  const user = await prisma.user.findUnique({ where: { email } })
+  return user
 }
 
 export const fetchMentorUsers = async () => {

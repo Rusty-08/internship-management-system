@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server'
 import prisma from '../../../../lib/prisma'
 import { connectDB } from '@/lib/connect-db'
-import { Session, getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import bcrypt from 'bcryptjs'
+import { getCurrentUser } from '@/utils/users'
+import { User } from '@prisma/client'
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions)
-  const { email } = (session?.user as Session['user']) || {}
+  const currUser = await getCurrentUser<User>()
+  const email = currUser?.email
 
   const { password } = await req.json()
 

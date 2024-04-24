@@ -15,7 +15,7 @@ import { useState } from 'react'
 import { DataTablePagination } from '@/components/@core/table/pagination'
 import { DataTable } from '@/components/@core/table/data-table'
 import { SearchFilter } from '@/components/@core/table/seach-filter'
-import { InternsUsersSubset, columns } from '../accounts'
+import { InternsUsersSubset, accountColumns } from './accounts-columns'
 import { FormDialog } from './register-form'
 import { z } from 'zod'
 import { RegistrationSchema } from './registration-schema'
@@ -59,7 +59,7 @@ export default function AccountsTable({
 
   const table = useReactTable({
     data,
-    columns: columns(actions),
+    columns: accountColumns(actions),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -88,7 +88,7 @@ export default function AccountsTable({
       </div>
       <div className="rounded-md border overflow-hidden">
         <DataTable
-          columns={columns(actions)}
+          columns={accountColumns(actions)}
           table={table}
           searchOutput={`${columnFilters[0]?.value}`}
         />

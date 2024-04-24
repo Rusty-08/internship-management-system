@@ -1,4 +1,4 @@
-import { InternsUsersSubset } from '@/app/admin/intern-management/accounts'
+import { InternsUsersSubset } from '@/app/admin/intern-management/_components/accounts-columns'
 import { MentorUsersSubset } from '@/app/admin/mentor-management/accounts'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import prisma from '@/lib/prisma'

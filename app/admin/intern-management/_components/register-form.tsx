@@ -40,7 +40,7 @@ import {
 } from '@/components/ui/select'
 import { MentorUsersSubset } from '@/app/admin/mentor-management/accounts'
 import { fetchMentorUsers } from '@/utils/users'
-import { InternsUsersSubset } from '../accounts'
+import { InternsUsersSubset } from './accounts-columns'
 
 type FormActions = 'edit' | 'create' | 'view'
 

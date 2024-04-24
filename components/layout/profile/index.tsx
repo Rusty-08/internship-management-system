@@ -4,7 +4,7 @@ import Image from 'next/image'
 import profileBg from '@/public/general/images/profile-bg.jpg'
 import { getUserByEmail } from '@/utils/users'
 import { useEffect, useState } from 'react'
-import { InternsUsersSubset } from '@/app/admin/intern-management/accounts'
+import { InternsUsersSubset } from '@/app/admin/intern-management/_components/accounts-columns'
 import { useRouter } from 'next/navigation'
 import { BreadcrumbWrapper } from '@/components/@core/breadcrumb'
 import { LoadingSpinner } from '@/components/@core/spinner/circular'
@@ -62,7 +62,9 @@ const Profile = ({ email, breadcrumbLinks }: ProfileProps) => {
 
   return (
     <div className="space-y-6 pt-2">
-      {breadcrumbLinks && <BreadcrumbWrapper links={breadcrumbLinks} current="Profile" />}
+      {breadcrumbLinks && (
+        <BreadcrumbWrapper links={breadcrumbLinks} current="Profile" />
+      )}
       <div className="bg-muted flex flex-col justify-center rounded-md overflow-hidden min-h-40 w-full shadow">
         {loading && <LoadingSpinner size={40} />}
         {data && !loading && (

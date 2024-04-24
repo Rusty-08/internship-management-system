@@ -6,7 +6,7 @@ import { internSidebarLinks } from '@/components/intern/sidebar/links'
 
 const InternLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <section className="min-h-screen flex relative w-full">
+    <main className="min-h-screen flex relative w-full">
       <Sidebar sideLinks={internSidebarLinks} />
       <Navbar profilePath="/intern/profile" />
       <div
@@ -15,7 +15,7 @@ const InternLayout = ({ children }: { children: ReactNode }) => {
       >
         {children}
       </div>
-    </section>
+    </main>
   )
 }
 

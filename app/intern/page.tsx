@@ -1,6 +1,4 @@
-import React from 'react'
-
-const Admin = () => {
+const Intern = () => {
   return (
     <div className="h-full flex items-center justify-center flex-col">
       <h1 className="text-2xl mb-2 font-semibold">This is intern page</h1>
@@ -9,4 +7,4 @@ const Admin = () => {
   )
 }
 
-export default Admin
+export default Intern

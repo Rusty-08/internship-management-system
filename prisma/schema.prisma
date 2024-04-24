@@ -29,15 +29,16 @@ enum UserRole {
 }
 
 model User {
-  id                     String    @id @default(auto()) @map("_id") @db.ObjectId
+  id                     String       @id @default(auto()) @map("_id") @db.ObjectId
   name                   String?
-  email                  String    @unique
+  email                  String       @unique
   password               String
-  passwordChangeRequired Boolean   @default(true)
+  passwordChangeRequired Boolean      @default(true)
   emailVerified          DateTime?
-  image                  String?   @default("/general/images/male-avatar.svg")
-  role                   UserRole? @default(USER)
+  image                  String?      @default("/general/images/male-avatar.svg")
+  role                   UserRole?    @default(USER)
   expertise              String?
+  attendance             Attendance[]
 
   accounts Account[]
   sessions Session[]
@@ -52,6 +53,19 @@ model Profile {
   mentorId String? @unique @db.ObjectId
   user     User    @relation("UserToProfile", fields: [userId], references: [id], onDelete: Cascade)
   userId   String  @unique @db.ObjectId
+}
+
+model Attendance {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  internId   String  @db.ObjectId
+  date       String
+  timeInAM   String?
+  timeOutAM  String?
+  timeInPM   String?
+  timeOutPM  String?
+  totalHours String?
+
+  intern User @relation(fields: [internId], references: [id], onDelete: Cascade)
 }
 
 model Account {

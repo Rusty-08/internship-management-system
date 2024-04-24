@@ -1,4 +1,4 @@
-import { InternsUsersSubset } from '@/app/admin/intern-management/accounts'
+import { InternsUsersSubset } from '@/app/admin/intern-management/_components/accounts-columns'
 
 export async function saveImage(
   email: string,

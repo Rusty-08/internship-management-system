@@ -27,7 +27,7 @@ export type InternsUsersSubset = {
   mentorId: string | null
 }
 
-export const columns = (actions: {
+export const accountColumns = (actions: {
   [key: string]: (row: Row<InternsUsersSubset>) => void
 }): ColumnDef<InternsUsersSubset>[] => [
   {

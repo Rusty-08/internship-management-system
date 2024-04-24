@@ -5,7 +5,7 @@ import { adminSidebarLinks } from '@/components/admin/sidebar/links'
 
 const AdminLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <section className="min-h-screen flex relative w-full">
+    <main className="min-h-screen flex relative w-full">
       <Sidebar sideLinks={adminSidebarLinks} />
       <Navbar profilePath="/admin/profile" />
       <div
@@ -14,7 +14,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
       >
         {children}
       </div>
-    </section>
+    </main>
   )
 }
 

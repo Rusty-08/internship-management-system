@@ -38,7 +38,7 @@ export const TooltipWrapper = ({ children, tooltip }: TooltipWrapperProps) => {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger>{children}</TooltipTrigger>
+        <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent className="bg-muted-foreground" sideOffset={10}>
           {tooltip}
         </TooltipContent>

@@ -2,10 +2,9 @@
 
 import { CustomIcon } from '@/components/@core/iconify'
 
-import { Column, ColumnDef, Row } from '@tanstack/react-table'
+import { ColumnDef, Row } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,26 +29,6 @@ export type InternsUsersSubset = {
 export const accountColumns = (actions: {
   [key: string]: (row: Row<InternsUsersSubset>) => void
 }): ColumnDef<InternsUsersSubset>[] => [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
-        onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={value => row.toggleSelected(!!value)}
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     accessorKey: 'image',
     header: ({ column }) => {

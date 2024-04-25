@@ -2,10 +2,10 @@
 
 import { CustomIcon } from '@/components/@core/iconify'
 
-import { Column, ColumnDef } from '@tanstack/react-table'
+import { ColumnDef, Row } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,27 +25,9 @@ export type MentorUsersSubset = {
   role: string | null
 }
 
-export const columns: ColumnDef<MentorUsersSubset>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
-        onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={value => row.toggleSelected(!!value)}
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+export const accountColumns = (actions: {
+  [key: string]: (row: Row<MentorUsersSubset>) => void
+}): ColumnDef<MentorUsersSubset>[] => [
   {
     accessorKey: 'image',
     header: ({ column }) => {
@@ -95,13 +77,22 @@ export const columns: ColumnDef<MentorUsersSubset>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => actions.edit(row)}
+              >
                 Edit
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => actions.archieve(row)}
+              >
                 Archive
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => actions.viewDetails(row)}
+              >
                 View Details
               </DropdownMenuItem>
             </DropdownMenuContent>

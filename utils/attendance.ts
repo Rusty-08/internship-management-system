@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
 import { getCurrentUser, getUserByEmail } from './users'
 import { AttendanceProps } from '@/app/intern/my-attendance/_components/attendance-columns'
-import { differenceInHours, format, parse } from 'date-fns'
+import { differenceInHours, differenceInMinutes, format, parse } from 'date-fns'
 
 export async function getInternAttendance(): Promise<AttendanceProps[]> {
   const user = await getCurrentUser()
@@ -29,15 +29,26 @@ export const getTotalHours = (
   timeOutPM: string,
   timeInPM: string,
 ) => {
-  const totalHoursAM = differenceInHours(
+  const totalMinutesAM = differenceInMinutes(
     parse(timeOutAM, 'h:mm a', new Date()),
     parse(timeInAM, 'h:mm a', new Date()),
   )
-  const totalHoursPM = differenceInHours(
+
+  if (!timeOutPM || !timeInPM) {
+    const hoursAM = Math.floor(totalMinutesAM / 60)
+    const minutesAM = totalMinutesAM % 60
+    return `${hoursAM}:${minutesAM.toString().padStart(2, '0')}`
+  }
+
+  const totalMinutesPM = differenceInMinutes(
     parse(timeOutPM, 'h:mm a', new Date()),
     parse(timeInPM, 'h:mm a', new Date()),
   )
-  return totalHoursAM + totalHoursPM
+  const totalMinutes = totalMinutesAM + totalMinutesPM
+  const hours = Math.floor(totalMinutes / 60)
+  const minutes = totalMinutes % 60
+
+  return `${hours}:${minutes.toString().padStart(2, '0')}`
 }
 
 export const addAttendance = async (email: string) => {

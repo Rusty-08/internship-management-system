@@ -13,18 +13,23 @@ import { DataTablePagination } from '@/components/@core/table/pagination'
 import { Button } from '@/components/ui/button'
 import { CustomIcon } from '@/components/@core/iconify'
 import DatePicker from 'react-datepicker'
-import { useState } from 'react'
+import { FormEvent, FormEventHandler, useState } from 'react'
 import { addAttendance } from '@/utils/attendance'
-import { LoadingSpinner } from '@/components/@core/spinner/circular'
 import { useRouter } from 'next/navigation'
+import { AttendanceConfirmation } from './attendance-confirmation'
+import { User } from '@prisma/client'
+
+type AttendanceTableProps = {
+  data: AttendanceProps[]
+  user: User | null
+  mode: string
+}
 
 export default function AttendanceTable({
   data,
-  email,
-}: {
-  data: AttendanceProps[]
-  email: string
-}) {
+  user,
+  mode,
+}: AttendanceTableProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [startDate, setStartDate] = useState(new Date())
@@ -36,9 +41,10 @@ export default function AttendanceTable({
     getPaginationRowModel: getPaginationRowModel(),
   })
 
-  const addCurrentAttendance = async () => {
+  const addCurrentAttendance = async (event: FormEvent) => {
+    event.preventDefault()
     setLoading(true)
-    await addAttendance(email)
+    await addAttendance(user?.email || '')
     setLoading(false)
     router.refresh()
   }
@@ -65,9 +71,12 @@ export default function AttendanceTable({
             <CustomIcon icon="clarity:export-line" className="mr-2" />
             Export
           </Button>
-          <Button className="w-32" onClick={addCurrentAttendance}>
-            {loading ? <LoadingSpinner /> : 'Time In'}
-          </Button>
+          <AttendanceConfirmation
+            mode={mode}
+            addCurrentAttendance={addCurrentAttendance}
+            user={user}
+            loading={loading}
+          />
         </div>
       </div>
       <div>

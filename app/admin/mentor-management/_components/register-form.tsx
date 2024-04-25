@@ -28,7 +28,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { RegistrationSchema } from './registration-schema'
 import ErrorCard from '@/components/auth/login/error-card'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Select,
@@ -47,9 +47,24 @@ const sampleExpertise = [
   'Data Scientist',
 ]
 
-export function FormDialog() {
+type FormActions = 'edit' | 'create' | 'view'
+
+type FormDialogProps = {
+  isOpen: boolean
+  setIsOpen: (open: boolean) => void
+  initialValues?: z.infer<typeof RegistrationSchema>
+  mode?: FormActions
+  setMode: (mode: FormActions) => void
+}
+
+export function FormDialog({
+  isOpen,
+  setIsOpen,
+  initialValues,
+  mode,
+  setMode,
+}: FormDialogProps) {
   const router = useRouter()
-  const [isOpen, setIsOpen] = useState(false)
   const [isEmailTaken, setIsEmailTaken] = useState(false)
   const form = useForm<z.infer<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
@@ -65,18 +80,35 @@ export function FormDialog() {
     const { name, email, expertise } = values
 
     try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          role: 'MENTOR',
-          expertise,
-        }),
-      })
+      let res
+      if (mode === 'edit') {
+        res = await fetch('/api/auth/users/update-account', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: initialValues?.id,
+            name,
+            email,
+            role: 'MENTOR',
+            expertise,
+          }),
+        })
+      } else {
+        res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            role: 'MENTOR',
+            expertise,
+          }),
+        })
+      }
 
       if (res.status === 400) {
         setIsEmailTaken(true)
@@ -90,10 +122,24 @@ export function FormDialog() {
     }
   }
 
+  useEffect(() => {
+    if (initialValues) {
+      form.setValue('name', initialValues.name ?? '')
+      form.setValue('email', initialValues.email ?? '')
+      form.setValue('expertise', initialValues.expertise ?? '')
+    }
+  }, [initialValues, form])
+
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
       <DialogTrigger asChild>
-        <Button className="gap-2">
+        <Button
+          className="gap-2"
+          onClick={() => {
+            setMode('create')
+            form.reset()
+          }}
+        >
           <CustomIcon icon="ic:sharp-add" />
           Add Account
         </Button>

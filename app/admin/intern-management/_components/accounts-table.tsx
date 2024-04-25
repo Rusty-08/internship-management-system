@@ -77,7 +77,7 @@ export default function AccountsTable({
   return (
     <div className="py-5">
       <div className="flex items-center justify-between mb-4">
-        <SearchFilter column="name" table={table} />
+        <SearchFilter column="name" table={table} search="intern" />
         <FormDialog
           mode={formMode}
           setMode={setFormMode}

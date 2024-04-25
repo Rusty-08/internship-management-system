@@ -1,5 +1,5 @@
 import { InternsUsersSubset } from '@/app/admin/intern-management/_components/accounts-columns'
-import { MentorUsersSubset } from '@/app/admin/mentor-management/accounts'
+import { MentorUsersSubset } from '@/app/admin/mentor-management/_components/accounts-column'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import prisma from '@/lib/prisma'
 import { Session, getServerSession } from 'next-auth'

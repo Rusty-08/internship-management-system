@@ -13,7 +13,7 @@ import {
 import { LoadingSpinner } from '@/components/@core/spinner/circular'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
-import { set, z } from 'zod'
+import { z } from 'zod'
 
 import {
   Form,
@@ -22,7 +22,6 @@ import {
   FormLabel,
   FormItem,
   FormMessage,
-  FormDescription,
 } from '@/components/ui/form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -38,9 +37,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { MentorUsersSubset } from '@/app/admin/mentor-management/accounts'
+import { MentorUsersSubset } from '@/app/admin/mentor-management/_components/accounts-column'
 import { fetchMentorUsers } from '@/utils/users'
-import { InternsUsersSubset } from './accounts-columns'
 
 type FormActions = 'edit' | 'create' | 'view'
 
@@ -79,7 +77,7 @@ export function FormDialog({
     try {
       let res
       if (mode === 'edit') {
-        res = await fetch('/api/auth/users/update-interns', {
+        res = await fetch('/api/auth/users/update-account', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -134,7 +132,7 @@ export function FormDialog({
       form.setValue('email', initialValues.email ?? '')
       form.setValue('mentor', initialValues.mentor ?? '')
     }
-  }, [initialValues])
+  }, [initialValues, form])
 
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>

@@ -7,35 +7,33 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 
 import { DataTableColumnHeader } from '@/components/@core/table/column-header'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import Link from 'next/link'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 
-export type InternsUsersSubset = {
+export type MentorUsersSubset = {
   id: string | null
   image: string | null
   name: string | null
   email: string | null
-  mentor: string | null
-  mentorId: string | null
+  role: string | null
 }
 
 export const accountColumns = (actions: {
-  [key: string]: (row: Row<InternsUsersSubset>) => void
-}): ColumnDef<InternsUsersSubset>[] => [
+  [key: string]: (row: Row<MentorUsersSubset>) => void
+}): ColumnDef<MentorUsersSubset>[] => [
   {
     accessorKey: 'name',
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Name" />
     },
-
     cell: ({ row }) => {
       const name = row.original.name
       const fallback = name
         ?.split(' ')
         .map(n => n[0])
         .join('')
-      const path = `/admin/intern-management/${
+      const path = `/admin/mentor-management/${
         row.original.email?.split('@')[0]
       }`
       return (
@@ -61,8 +59,10 @@ export const accountColumns = (actions: {
     },
   },
   {
-    accessorKey: 'mentor',
-    header: 'Mentor',
+    accessorKey: 'role',
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Role" />
+    },
   },
   {
     id: 'actions',

@@ -44,6 +44,7 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: 'jwt',
+    maxAge: 86400, // automcatilly sign out after 24 hours
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {

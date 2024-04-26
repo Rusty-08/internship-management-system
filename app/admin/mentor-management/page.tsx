@@ -1,4 +1,3 @@
-import { columns } from './accounts'
 import { getMentorUsers } from '@/utils/users'
 import { AccountsTable } from './_components/accounts-table'
 
@@ -7,7 +6,7 @@ export default async function AccountManager() {
 
   return (
     <section className="py-5">
-      <AccountsTable columns={columns} data={data} />
+      <AccountsTable data={data} />
     </section>
   )
 }

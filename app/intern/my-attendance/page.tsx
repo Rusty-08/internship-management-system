@@ -1,4 +1,4 @@
-import { getInternAttendance } from '@/utils/attendance'
+import { getAttendanceMode, getInternAttendance } from '@/utils/attendance'
 import AttendanceTable from './_components/attendance-table'
 import { getCurrentUser } from '@/utils/users'
 
@@ -6,14 +6,12 @@ const MyAttendance = async () => {
   const attendance = await getInternAttendance()
   const user = await getCurrentUser()
 
-  const mode =
-    !attendance[attendance.length - 1].timeOutAM ||
-    !attendance[attendance.length - 1].timeOutPM
-      ? 'Time out'
-      : 'Time In'
+  const mode = getAttendanceMode(attendance)
 
   return (
-    <AttendanceTable data={attendance} user={user} mode={mode} />
+    <div className='py-5'>
+      <AttendanceTable data={attendance} user={user} mode={mode} />
+    </div>
   )
 }
 

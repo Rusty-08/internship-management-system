@@ -18,6 +18,8 @@ type AttendanceConfirmationProps = {
   mode: string
   user: User | null
   loading: boolean
+  isOpen: boolean
+  setIsOpenHandler: () => void
 }
 
 export function AttendanceConfirmation({
@@ -25,11 +27,11 @@ export function AttendanceConfirmation({
   mode,
   user,
   loading,
+  isOpen,
+  setIsOpenHandler,
 }: AttendanceConfirmationProps) {
-  const [isOpen, setIsOpen] = useState(false)
-
   return (
-    <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
+    <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
       <DialogTrigger asChild>
         <Button className="w-32">{mode}</Button>
       </DialogTrigger>
@@ -40,12 +42,7 @@ export function AttendanceConfirmation({
             Please verify your information. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        <form
-          onSubmit={e => {
-            addCurrentAttendance(e)
-            setIsOpen(false)
-          }}
-        >
+        <form onSubmit={addCurrentAttendance}>
           <div className="grid gap-4 py-4">
             <div className="space-y-1">
               <span className="text-text text-sm">Name</span>

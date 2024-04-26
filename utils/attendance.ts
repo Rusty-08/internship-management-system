@@ -2,11 +2,16 @@ import prisma from '@/lib/prisma'
 import { getCurrentUser, getUserByEmail } from './users'
 import { AttendanceProps } from '@/app/intern/my-attendance/_components/attendance-columns'
 import { differenceInHours, differenceInMinutes, format, parse } from 'date-fns'
+import { Attendance } from '@prisma/client'
 
-export async function getInternAttendance(): Promise<AttendanceProps[]> {
+// Get attendance by user email or current user
+export async function getInternAttendance(
+  email?: string,
+): Promise<AttendanceProps[]> {
   const user = await getCurrentUser()
+
   const result = await prisma.user.findUnique({
-    where: { email: user?.email },
+    where: { email: email || user?.email },
     select: {
       attendance: {
         select: {
@@ -63,4 +68,28 @@ export const addAttendance = async (email: string) => {
       internId: user?.id,
     }),
   })
+}
+
+export const getAttendanceMode = (attendance: AttendanceProps[]) => {
+  const currentTime = new Date()
+  const currentHour = currentTime.getHours()
+
+  let mode = 'Time In'
+
+  if (attendance.length) {
+    if (currentHour < 12) {
+      if (!attendance[attendance.length - 1].timeOutAM) {
+        mode = 'Time out'
+      }
+    } else if (currentHour >= 12 && currentHour < 24) {
+      if (
+        attendance[attendance.length - 1].timeInPM &&
+        !attendance[attendance.length - 1].timeOutPM
+      ) {
+        mode = 'Time out'
+      }
+    }
+  }
+
+  return mode
 }

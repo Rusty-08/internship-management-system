@@ -23,16 +23,19 @@ type AttendanceTableProps = {
   data: AttendanceProps[]
   user: User | null
   mode: string
+  showTimeInBtn?: boolean
 }
 
 export default function AttendanceTable({
   data,
   user,
   mode,
+  showTimeInBtn = true,
 }: AttendanceTableProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [startDate, setStartDate] = useState(new Date())
+  const [isOpen, setIsOpen] = useState(false)
 
   const table = useReactTable({
     data,
@@ -46,11 +49,14 @@ export default function AttendanceTable({
     setLoading(true)
     await addAttendance(user?.email || '')
     setLoading(false)
+    setIsOpen(false)
     router.refresh()
   }
 
+  const setIsOpenHandler = () => setIsOpen(!isOpen)
+
   return (
-    <div className="py-5">
+    <>
       <div className="flex justify-between mb-4">
         <DatePicker
           showIcon
@@ -71,12 +77,16 @@ export default function AttendanceTable({
             <CustomIcon icon="clarity:export-line" className="mr-2" />
             Export
           </Button>
-          <AttendanceConfirmation
-            mode={mode}
-            addCurrentAttendance={addCurrentAttendance}
-            user={user}
-            loading={loading}
-          />
+          {showTimeInBtn && (
+            <AttendanceConfirmation
+              mode={mode}
+              addCurrentAttendance={addCurrentAttendance}
+              user={user}
+              loading={loading}
+              isOpen={isOpen}
+              setIsOpenHandler={setIsOpenHandler}
+            />
+          )}
         </div>
       </div>
       <div>
@@ -87,6 +97,6 @@ export default function AttendanceTable({
           <DataTablePagination table={table} />
         </div>
       </div>
-    </div>
+    </>
   )
 }

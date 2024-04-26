@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import profileBg from '@/public/general/images/profile-bg.jpg'
 import { getUserByEmail } from '@/utils/users'
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { InternsUsersSubset } from '@/app/admin/intern-management/_components/accounts-columns'
 import { useRouter } from 'next/navigation'
 import { BreadcrumbWrapper } from '@/components/@core/breadcrumb'
@@ -16,9 +16,10 @@ import { saveImage } from '@/utils/saveImage'
 type ProfileProps = {
   breadcrumbLinks?: { title: string; path: string }[]
   email: string
+  children: ReactNode
 }
 
-const Profile = ({ email, breadcrumbLinks }: ProfileProps) => {
+const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
   const [data, setData] = useState<InternsUsersSubset | null>(null)
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
@@ -65,7 +66,11 @@ const Profile = ({ email, breadcrumbLinks }: ProfileProps) => {
       {breadcrumbLinks && (
         <BreadcrumbWrapper links={breadcrumbLinks} current="Profile" />
       )}
-      <div className="bg-muted flex flex-col justify-center rounded-md overflow-hidden min-h-40 w-full shadow">
+      <div
+        className={`bg-muted flex flex-col justify-center rounded-md overflow-hidden ${
+          loading ? 'h-[23rem]' : 'min-h-40'
+        } w-full`}
+      >
         {loading && <LoadingSpinner size={40} />}
         {data && !loading && (
           <>
@@ -77,7 +82,7 @@ const Profile = ({ email, breadcrumbLinks }: ProfileProps) => {
               height="0"
               className="w-full max-w-full object-cover max-h-60"
             />
-            <div className="px-12 min-h-40 relative">
+            <div className="px-12 min-h-32 relative">
               <div className="w-36 group h-36 overflow-hidden absolute -top-10 bg-muted border-muted hover:border-primary/10 transition-all ease-in-out duration-300 z-10 rounded-full border-[0.4rem]">
                 <Image
                   src={data.image || ''}
@@ -121,6 +126,7 @@ const Profile = ({ email, breadcrumbLinks }: ProfileProps) => {
           </>
         )}
       </div>
+      <div className="flex flex-col">{children}</div>
     </div>
   )
 }

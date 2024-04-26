@@ -23,9 +23,11 @@ import { useState } from 'react'
 import { LoginSchema } from '@/components/auth/login/login-schema'
 import { CardWrapper } from '@/components/auth/login/card-wrapper'
 import ErrorCard from '@/components/auth/login/error-card'
+import { getUserByEmail } from '@/utils/users'
 
 const LoginForm = () => {
   const router = useRouter()
+  const [isValidUser, setIsValidUser] = useState(true)
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -33,25 +35,21 @@ const LoginForm = () => {
       password: '',
     },
   })
-  const [isValidUser, setIsValidUser] = useState(true)
 
-  const { isSubmitting, errors } = form.formState
+  const { errors, isSubmitting } = form.formState
 
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     const { email, password } = values
+    const user = await getUserByEmail(email)
 
     try {
-      const res = await signIn('credentials', {
+      await signIn('credentials', {
         email,
         password,
         redirect: false,
       })
 
-      if (res?.ok) {
-        router.push('/')
-      } else {
-        setIsValidUser(false)
-      }
+      router.push(`/${user?.role?.toLowerCase()}`)
     } catch (error) {
       setIsValidUser(false)
     }

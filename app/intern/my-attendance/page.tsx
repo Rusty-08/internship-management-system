@@ -9,7 +9,7 @@ const MyAttendance = async () => {
   const mode = getAttendanceMode(attendance)
 
   return (
-    <div className='py-5'>
+    <div className="py-5">
       <AttendanceTable data={attendance} user={user} mode={mode} />
     </div>
   )

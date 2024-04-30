@@ -31,11 +31,9 @@ const Stack = ({ id, image, title, desc, link }: StackProps) => {
         />
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
-          <CardTitle>{title}</CardTitle>
-          <CardDescription className="line-clamp-3 hover:line-clamp-none">
-            {desc}
-          </CardDescription>
+        <div className="space-y-4">
+          <CardTitle className="leading-5">{title}</CardTitle>
+          <CardDescription className="line-clamp-3">{desc}</CardDescription>
         </div>
       </CardContent>
       <CardFooter>

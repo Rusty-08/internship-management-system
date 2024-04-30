@@ -6,7 +6,7 @@ import { getUserByEmail } from '@/utils/users'
 import { ReactNode, useEffect, useState } from 'react'
 import { InternsUsersSubset } from '@/app/admin/intern-management/_components/accounts-columns'
 import { useRouter } from 'next/navigation'
-import { BreadcrumbWrapper } from '@/components/@core/breadcrumb'
+import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { LoadingSpinner } from '@/components/@core/spinner/circular'
 import { NotFoundPage } from '@/app/not-found'
 import { Input } from '@/components/ui/input'
@@ -126,7 +126,7 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
           </>
         )}
       </div>
-      <div className="flex flex-col">{children}</div>
+      {!loading && <div className="flex flex-col">{children}</div>}
     </div>
   )
 }

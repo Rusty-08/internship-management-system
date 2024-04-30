@@ -3,7 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 
 export type AttendanceProps = {
-  date: String
+  date: string
   timeInAM: string | null
   timeOutAM: string | null
   timeInPM: string | null
@@ -14,30 +14,30 @@ export type AttendanceProps = {
 export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
   {
     accessorKey: 'date',
-    header: 'DATE',
+    header: 'Date',
     cell: ({ row }) => (
       <p className="text-foreground">{row.getValue('date')}</p>
     ),
   },
   {
     accessorKey: 'timeInAM',
-    header: 'TIME-IN',
+    header: 'Time In',
   },
   {
     accessorKey: 'timeOutAM',
-    header: 'TIME-OUT',
+    header: 'Time Out',
   },
   {
     accessorKey: 'timeInPM',
-    header: 'TIME-IN',
+    header: 'Time In',
   },
   {
     accessorKey: 'timeOutPM',
-    header: 'TIME-OUT',
+    header: 'Tim Out',
   },
   {
     accessorKey: 'totalHours',
-    header: 'TOTAL',
+    header: 'Total Hours',
     cell: ({ row }) => (
       <p className="text-foreground">{row.getValue('totalHours')}</p>
     ),

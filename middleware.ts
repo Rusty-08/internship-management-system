@@ -45,6 +45,8 @@ export async function middleware(request: NextRequest) {
         return Response.redirect(new URL('/mentor', request.url))
       }
       break
+    case !currentUser && path.startsWith('/api'):
+      return Response.redirect(new URL('auth/login', request.url))
   }
 }
 

@@ -7,7 +7,10 @@ export async function POST(req: Request) {
   const { internId } = await req.json()
 
   try {
-    const time = format(new Date(), 'h:mm aa')
+    const currentDate = new Date()
+    const time = format(currentDate, 'h:mm aa')
+    // direct the attendance in PM if it is already 1 PM
+    const isAfternoon = currentDate.getHours() >= 13
 
     // Find today's attendance record for the intern
     const attendance = await prisma.attendance.findFirst({
@@ -17,32 +20,32 @@ export async function POST(req: Request) {
       },
     })
 
-    if (!attendance || !attendance.timeInAM) {
-      // If the attendance record doesn't exist, create a new one
-      await prisma.attendance.create({
-        data: {
-          internId,
-          date: format(new Date(), 'EEE, MMM dd'),
-          timeInAM: time,
-          totalHours: '0',
-        },
-      })
-    } else {
-      // If the attendance record exists, update the first null field with the current time
-      if (!attendance.timeOutAM) {
+    // If it's morning and there's no attendance record, create one
+    if (!isAfternoon) {
+      if (!attendance || !attendance.timeInAM) {
+        // If the attendance record doesn't exist, create a new one
+        await prisma.attendance.create({
+          data: {
+            internId,
+            date: format(new Date(), 'EEE, MMM dd'),
+            timeInAM: time,
+            totalHours: '0',
+          },
+        })
+      } else if (!attendance.timeOutAM) {
         await prisma.attendance.update({
           where: { id: attendance.id },
           data: {
             timeOutAM: time,
-            totalHours: getTotalHours(
-              time,
-              attendance.timeInAM,
-              '',
-              '',
-            ),
+            totalHours: getTotalHours(time, attendance.timeInAM, '', ''),
           },
         })
-      } else if (!attendance.timeInPM) {
+      }
+    }
+
+    if (attendance && isAfternoon) {
+      // if no time-in AM and already afternoon, time-in in the afternoon
+      if (!attendance.timeInPM) {
         await prisma.attendance.update({
           where: { id: attendance.id },
           data: { timeInPM: time },
@@ -53,14 +56,33 @@ export async function POST(req: Request) {
           data: {
             timeOutPM: time,
             totalHours: getTotalHours(
-              attendance.timeOutAM,
-              attendance.timeInAM,
+              attendance.timeOutAM || '',
+              attendance.timeInAM || '',
               time,
-              attendance.timeInPM,
+              attendance.timeInPM || '',
             ),
           },
         })
       }
+    }
+
+    // If it's afternoon and there's no attendance record, create one
+    if (isAfternoon && !attendance) {
+      await prisma.attendance.create({
+        data: {
+          internId,
+          date: format(new Date(), 'EEE, MMM dd'),
+          timeInPM: time,
+          totalHours: '0',
+        },
+      })
+    }
+
+    if (attendance && attendance.timeOutPM) {
+      return NextResponse.json(
+        { message: 'Exceed the limit of attempt' },
+        { status: 401 },
+      )
     }
   } catch {
     return NextResponse.json(

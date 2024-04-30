@@ -6,7 +6,7 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
 
-import { DataTableColumnHeader } from '@/components/@core/table/column-header'
+import { DataTableColumnHeader } from '@/components/@core/ui/table/column-header'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import Link from 'next/link'
 import { TooltipWrapper } from '@/components/ui/tooltip'
@@ -68,11 +68,11 @@ export const accountColumns = (actions: {
     id: 'actions',
     cell: ({ row }) => {
       return (
-        <div className="flex justify-end gap-1">
+        <div className="flex justify-end">
           <TooltipWrapper tooltip="Edit">
             <Button
               variant="ghost"
-              size="icon"
+              size="circle"
               onClick={() => actions.edit(row)}
             >
               <CustomIcon icon="heroicons:pencil-square" />
@@ -81,7 +81,7 @@ export const accountColumns = (actions: {
           <TooltipWrapper tooltip="Archive">
             <Button
               variant="ghost"
-              size="icon"
+              size="circle"
               onClick={() => actions.archive(row)}
             >
               <CustomIcon icon="heroicons:archive-box" />

@@ -1,6 +1,6 @@
 import { ComingSoon } from '@/app/intern/chat/page'
 import AttendanceTable from '@/app/intern/my-attendance/_components/attendance-table'
-import { TabsWrapper } from '@/components/@core/tabs'
+import { TabsWrapper } from '@/components/@core/ui/tabs'
 import Profile from '@/components/layout/profile'
 
 import { TabsContent } from '@/components/ui/tabs'
@@ -25,12 +25,12 @@ const UserProfile = async ({
     <Profile email={`${profile}@gmail.com`} breadcrumbLinks={breadcrumbLinks}>
       <TabsWrapper triggers={['Overview', 'Attendance']}>
         <TabsContent value="overview">
-          <div className="border my-4 flex items-center justify-center min-h-[20rem] rounded-sm">
+          <div className="border-t my-4 flex items-center justify-center min-h-[20rem] rounded-sm">
             <ComingSoon pageName="Profile Overview" />
           </div>
         </TabsContent>
         <TabsContent value="attendance">
-          <div className="min-h-[20rem] my-4 rounded-sm">
+          <div className="border-t min-h-[20rem] my-4 py-4 rounded-sm">
             <AttendanceTable
               data={attendance}
               user={user}

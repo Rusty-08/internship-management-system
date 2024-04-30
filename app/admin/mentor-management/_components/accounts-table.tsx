@@ -12,9 +12,9 @@ import {
 } from '@tanstack/react-table'
 
 import { useState } from 'react'
-import { DataTablePagination } from '@/components/@core/table/pagination'
-import { DataTable } from '@/components/@core/table/data-table'
-import { SearchFilter } from '@/components/@core/table/seach-filter'
+import { DataTablePagination } from '@/components/@core/ui/table/pagination'
+import { DataTable } from '@/components/@core/ui/table/data-table'
+import { SearchFilter } from '@/components/@core/ui/table/seach-filter'
 import { FormDialog } from './register-form'
 import { z } from 'zod'
 import { RegistrationSchema } from './registration-schema'

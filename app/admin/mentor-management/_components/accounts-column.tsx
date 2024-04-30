@@ -6,7 +6,7 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
 
-import { DataTableColumnHeader } from '@/components/@core/table/column-header'
+import { DataTableColumnHeader } from '@/components/@core/ui/table/column-header'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import Link from 'next/link'
 import { TooltipWrapper } from '@/components/ui/tooltip'

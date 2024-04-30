@@ -18,9 +18,10 @@ import { useRouter } from 'next/navigation'
 import { AttendanceConfirmation } from './attendance-confirmation'
 import { User } from '@prisma/client'
 import { format, isWithinInterval, parse, startOfMonth } from 'date-fns'
-import { DateRange } from 'react-day-picker'
+
 import { DateRangeFilter } from './data-picker'
 import { useToast } from '@/components/ui/use-toast'
+import { DateRange } from 'react-day-picker'
 
 type AttendanceTableProps = {
   data: AttendanceProps[]
@@ -101,10 +102,7 @@ export default function AttendanceTable({
       <div className="flex justify-between mb-4">
         <DateRangeFilter date={date} setDate={setDate} />
         <div className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={downloadAttendance}
-          >
+          <Button variant="outline" onClick={downloadAttendance}>
             <CustomIcon icon="clarity:export-line" className="mr-2" />
             Export
           </Button>

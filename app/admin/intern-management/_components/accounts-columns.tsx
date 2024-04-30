@@ -1,7 +1,6 @@
 'use client'
 
 import { CustomIcon } from '@/components/@core/iconify'
-import { useState } from 'react'
 import { ColumnDef, Row } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
@@ -10,7 +9,6 @@ import { DataTableColumnHeader } from '@/components/@core/ui/table/column-header
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import Link from 'next/link'
 import { TooltipWrapper } from '@/components/ui/tooltip'
-import { FormDialog } from './register-form'
 
 export type InternsUsersSubset = {
   id: string | null
@@ -21,10 +19,6 @@ export type InternsUsersSubset = {
   mentorId: string | null
   isArchived?: boolean | null
 }
-// const [isOpen, setIsOpen] = useState(false)
-// const [formMode, setFormMode] = useState<
-//   'edit' | 'create' | 'view' | 'archive'
-// >('create')
 
 export const accountColumns = (actions: {
   [key: string]: (row: Row<InternsUsersSubset>) => void
@@ -76,36 +70,41 @@ export const accountColumns = (actions: {
     cell: ({ row }) => {
       return (
         <div className="flex justify-end">
-          <TooltipWrapper tooltip="Edit">
-            <Button
-              variant="ghost"
-              size="circle"
-              onClick={() => actions.edit(row)}
+          {!row.original.isArchived && (
+            <TooltipWrapper tooltip="Edit">
+              <Button
+                variant="ghost"
+                size="circle"
+                onClick={() => actions.edit(row)}
+              >
+                {row.original.isArchived === false && (
+                  <CustomIcon icon="heroicons:pencil-square" />
+                )}
+              </Button>
+            </TooltipWrapper>
+          )}
+          <div>
+            {/* <ArchiveConfirmation row={row} archive={actions.archive(row)} /> */}
+            <TooltipWrapper
+              tooltip={
+                row.original.isArchived === false ? 'Archive' : 'Restore'
+              }
             >
-              {row.original.isArchived === false && (
-                <CustomIcon icon="heroicons:pencil-square" />
-              )}
-            </Button>
-          </TooltipWrapper>
-
-          <TooltipWrapper
-            tooltip={row.original.isArchived === false ? 'Archive' : 'Restore'}
-          >
-            <Button
-              variant="ghost"
-              size="circle"
-              onClick={() => actions.archive(row)}
-            >
-              {row.original.isArchived === false ? (
-                <>
-                  <CustomIcon icon="heroicons:archive-box" />
-                 
-                </>
-              ) : (
-                <CustomIcon icon="ic:outline-restore" />
-              )}
-            </Button>
-          </TooltipWrapper>
+              <Button
+                variant="ghost"
+                size="circle"
+                onClick={() => actions.openArchiveConfirmation(row)}
+              >
+                {row.original.isArchived === false ? (
+                  <>
+                    <CustomIcon icon="heroicons:archive-box" />
+                  </>
+                ) : (
+                  <CustomIcon icon="ic:outline-restore" />
+                )}
+              </Button>
+            </TooltipWrapper>
+          </div>
         </div>
       )
     },

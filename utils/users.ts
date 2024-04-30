@@ -2,7 +2,6 @@ import { InternsUsersSubset } from '@/app/admin/intern-management/_components/ac
 import { MentorUsersSubset } from '@/app/admin/mentor-management/_components/accounts-column'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import prisma from '@/lib/prisma'
-import { User } from '@prisma/client'
 import { Session, getServerSession } from 'next-auth'
 
 export async function getCurrentUserEmail() {
@@ -73,11 +72,15 @@ export const fetchInternUsers = async () => {
   }
 }
 
-export async function getInternUsers(): Promise<InternsUsersSubset[]> {
+export async function getInternUsers(
+  isArchived: boolean,
+): Promise<InternsUsersSubset[]> {
   const users = await prisma.user.findMany({
     where: {
       role: 'INTERN',
+      isArchived: isArchived,
     },
+
     select: {
       id: true,
       image: true,
@@ -102,6 +105,7 @@ export async function getInternUsers(): Promise<InternsUsersSubset[]> {
     email: user.email,
     mentor: user.internProfile?.mentor?.name || 'none',
     mentorId: user.internProfile?.mentor?.id || 'none',
+    isArchived: isArchived,
   }))
 }
 
@@ -126,3 +130,12 @@ export async function getMentorUsers(): Promise<MentorUsersSubset[]> {
     role: user.expertise || 'none',
   }))
 }
+
+// export async function archiveAccount(id: string) {
+//   await prisma.user.update({
+//     where: { id },
+//     data: {
+//       isArchived: true,
+//     },
+//   })
+// }

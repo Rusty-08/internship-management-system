@@ -4,7 +4,8 @@ import { NextResponse } from 'next/server'
 
 export async function PUT(req: Request) {
   try {
-    const { id, name, email, role, expertise, mentor } = await req.json()
+    const { id, name, email, role, expertise, mentor, isArchived } =
+      await req.json()
 
     if (!id || !name || !email) {
       return NextResponse.json({ message: 'Invalid input' }, { status: 400 })
@@ -25,6 +26,7 @@ export async function PUT(req: Request) {
         email: email ?? user.email,
         role: role ?? user.role,
         expertise: role === 'MENTOR' ? expertise : user.expertise,
+        isArchived: isArchived || false,
         internProfile:
           role === 'INTERN' && mentor
             ? {

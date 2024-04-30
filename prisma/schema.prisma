@@ -39,6 +39,7 @@ model User {
   role                   UserRole?    @default(USER)
   expertise              String?
   attendance             Attendance[]
+  isArchived             Boolean      @default(false)
 
   accounts Account[]
   sessions Session[]

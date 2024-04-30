@@ -1,7 +1,7 @@
 'use client'
 
 import { CustomIcon } from '@/components/@core/iconify'
-
+import { useState } from 'react'
 import { ColumnDef, Row } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
@@ -10,6 +10,7 @@ import { DataTableColumnHeader } from '@/components/@core/ui/table/column-header
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import Link from 'next/link'
 import { TooltipWrapper } from '@/components/ui/tooltip'
+import { FormDialog } from './register-form'
 
 export type InternsUsersSubset = {
   id: string | null
@@ -18,7 +19,12 @@ export type InternsUsersSubset = {
   email: string | null
   mentor: string | null
   mentorId: string | null
+  isArchived?: boolean | null
 }
+// const [isOpen, setIsOpen] = useState(false)
+// const [formMode, setFormMode] = useState<
+//   'edit' | 'create' | 'view' | 'archive'
+// >('create')
 
 export const accountColumns = (actions: {
   [key: string]: (row: Row<InternsUsersSubset>) => void
@@ -38,6 +44,7 @@ export const accountColumns = (actions: {
       const path = `/admin/intern-management/${
         row.original.email?.split('@')[0]
       }`
+
       return (
         <div className="flex items-center gap-3">
           <Avatar className="w-8 h-8">
@@ -75,16 +82,28 @@ export const accountColumns = (actions: {
               size="circle"
               onClick={() => actions.edit(row)}
             >
-              <CustomIcon icon="heroicons:pencil-square" />
+              {row.original.isArchived === false && (
+                <CustomIcon icon="heroicons:pencil-square" />
+              )}
             </Button>
           </TooltipWrapper>
-          <TooltipWrapper tooltip="Archive">
+
+          <TooltipWrapper
+            tooltip={row.original.isArchived === false ? 'Archive' : 'Restore'}
+          >
             <Button
               variant="ghost"
               size="circle"
               onClick={() => actions.archive(row)}
             >
-              <CustomIcon icon="heroicons:archive-box" />
+              {row.original.isArchived === false ? (
+                <>
+                  <CustomIcon icon="heroicons:archive-box" />
+                 
+                </>
+              ) : (
+                <CustomIcon icon="ic:outline-restore" />
+              )}
             </Button>
           </TooltipWrapper>
         </div>

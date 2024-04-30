@@ -1,5 +1,4 @@
 'use client'
-
 import {
   ColumnFiltersState,
   Row,
@@ -10,23 +9,26 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-
 import { useState } from 'react'
-import { DataTablePagination } from '@/components/@core/ui/table/pagination'
-import { DataTable } from '@/components/@core/ui/table/data-table'
-import { SearchFilter } from '@/components/@core/ui/table/seach-filter'
 import { InternsUsersSubset, accountColumns } from './accounts-columns'
 import { FormDialog } from './register-form'
 import { z } from 'zod'
 import { RegistrationSchema } from './registration-schema'
+import { SearchFilter } from '@/components/@core/ui/table/seach-filter'
+import { DataTable } from '@/components/@core/ui/table/data-table'
+import { DataTablePagination } from '@/components/@core/ui/table/pagination'
 
 export default function AccountsTable({
   data,
+  simpleTable,
 }: {
   data: InternsUsersSubset[]
+  simpleTable?: boolean
 }) {
   const [isOpen, setIsOpen] = useState(false)
-  const [formMode, setFormMode] = useState<'edit' | 'create' | 'view'>('create')
+  const [formMode, setFormMode] = useState<
+    'edit' | 'create' | 'view' | 'archive'
+  >('create')
   const [sorting, setSorting] = useState<SortingState>([])
   const [rowSelection, setRowSelection] = useState({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -48,13 +50,26 @@ export default function AccountsTable({
     })
   }
 
-  const handleArchive = () => null
-  const handleViewDetails = () => null
+  const handleArchive = async (row: Row<InternsUsersSubset>) => {
+    try {
+      await fetch('/api/auth/users/update-account', {
+        method: 'PUT',
+        body: JSON.stringify({
+          id: row.original.id || '',
+          name: row.original.name || '',
+          email: row.original.email || '',
+          isArchived: row.original.isArchived ? false : true,
+        }),
+      })
+      location.reload()
+    } catch {
+      console.error('Could not archive user')
+    }
+  }
 
   const actions = {
     edit: handleEdit,
     archive: handleArchive,
-    viewDetails: handleViewDetails,
   }
 
   const table = useReactTable({
@@ -78,15 +93,19 @@ export default function AccountsTable({
     <div className="py-5">
       <div className="flex items-center justify-between mb-4">
         <SearchFilter column="name" table={table} search="intern" />
-        <FormDialog
-          mode={formMode}
-          setMode={setFormMode}
-          initialValues={editData}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-        />
+        {simpleTable && (
+          <>
+            <FormDialog
+              mode={formMode}
+              setMode={setFormMode}
+              initialValues={editData}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+            />
+          </>
+        )}
       </div>
-      <div className="rounded-md border overflow-hidden">
+      <div className="rounded-md border overflow-hidden ">
         <DataTable
           columns={accountColumns(actions)}
           table={table}

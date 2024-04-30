@@ -40,7 +40,7 @@ import {
 import { MentorUsersSubset } from '@/app/admin/mentor-management/_components/accounts-column'
 import { fetchMentorUsers } from '@/utils/users'
 
-type FormActions = 'edit' | 'create' | 'view'
+type FormActions = 'edit' | 'create' | 'view' | 'archive'
 
 type FormDialogProps = {
   isOpen: boolean

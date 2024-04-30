@@ -2,7 +2,10 @@ import prisma from '@/lib/prisma'
 import { getCurrentUser, getUserByEmail } from './users'
 import { AttendanceProps } from '@/app/intern/my-attendance/_components/attendance-columns'
 import { differenceInMinutes, parse } from 'date-fns'
+<<<<<<< Updated upstream
 import * as XLSX from 'xlsx'
+=======
+>>>>>>> Stashed changes
 
 // Get attendance by user email or current user
 export async function getInternAttendance(

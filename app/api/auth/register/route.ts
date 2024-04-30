@@ -31,6 +31,7 @@ export async function POST(req: Request) {
         password: hashedPassword,
         role: role ?? 'USER',
         expertise: role === 'MENTOR' ? expertise : undefined,
+        isArchived: false,
         internProfile:
           role === 'INTERN' && mentor
             ? {

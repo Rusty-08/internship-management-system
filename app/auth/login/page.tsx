@@ -49,7 +49,11 @@ const LoginForm = () => {
         redirect: false,
       })
 
-      router.push(`/${user?.role?.toLowerCase()}`)
+      if (user?.isArchived) {
+        setIsValidUser(false)
+      } else {
+        router.push(`/${user?.role?.toLowerCase()}`)
+      }
     } catch (error) {
       setIsValidUser(false)
     }

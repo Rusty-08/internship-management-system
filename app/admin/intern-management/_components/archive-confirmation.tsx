@@ -9,6 +9,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { InternsUsersSubset } from './accounts-columns'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { CustomIcon } from '@/components/@core/iconify'
 
 type ArchiveConfirmationProps = {
   user: InternsUsersSubset | undefined
@@ -31,6 +33,7 @@ export function ArchiveConfirmation({
     event.preventDefault()
     archive()
   }
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
       <DialogContent className="sm:max-w-[425px]">
@@ -39,12 +42,26 @@ export function ArchiveConfirmation({
             {isArchivedPage ? 'Restore' : 'Archive'} User Account
           </DialogTitle>
           <DialogDescription>
-            You are about to {isArchivedPage ? 'restore' : 'archive'}{' '}
-            <span className="font-semibold">{user?.name}</span>. Please confirm
-            your action.
+            You are about to {isArchivedPage ? 'restore' : 'archive'} the
+            account of <span className="font-semibold">{user?.name}</span>.
+            Please confirm your action.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <Alert variant={isArchivedPage ? 'default' : 'destructive'}>
+              <CustomIcon
+                className={`${isArchivedPage ? 'text-text' : 'text-red-500'}`}
+                icon={isArchivedPage ? 'eva:info-fill' : 'bx:bxs-error'}
+              />
+              <AlertTitle>Reminder</AlertTitle>
+              <AlertDescription>
+                If you confirm this action, the user{' '}
+                {isArchivedPage ? 'can now' : 'will no longer'} be able to
+                access the system.
+              </AlertDescription>
+            </Alert>
+          </div>
           <DialogFooter>
             <Button type="submit" className="w-full">
               {loading ? <LoadingSpinner /> : 'Save changes'}

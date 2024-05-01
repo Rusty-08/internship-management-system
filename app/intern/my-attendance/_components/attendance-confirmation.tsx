@@ -45,13 +45,13 @@ export function AttendanceConfirmation({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{mode}</DialogTitle>
+          <DialogTitle>Attendance - {mode}</DialogTitle>
           <DialogDescription>
             Please verify the information. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={addCurrentAttendance}>
-          <div className="grid gap-4 grid-cols-2 pt-2 pb-4">
+          <div className="grid gap-4 border grid-cols-2 rounded-md p-3 px-4">
             <div className="space-y-1">
               <span className="text-text text-sm">Name</span>
               <p className="text-foreground">{user?.name}</p>
@@ -71,8 +71,8 @@ export function AttendanceConfirmation({
               <p className="text-foreground">{format(new Date(), 'h:mm aa')}</p>
             </div>
           </div>
-          <DialogFooter>
-            <Button type="submit" className="w-40">
+          <DialogFooter className="pt-6">
+            <Button type="submit" className="w-full">
               {loading ? <LoadingSpinner /> : 'Save changes'}
             </Button>
           </DialogFooter>

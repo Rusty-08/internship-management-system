@@ -31,8 +31,13 @@ export const authOptions: NextAuthOptions = {
             role: true,
             password: true,
             passwordChangeRequired: true,
+            isArchived: true,
           },
         })
+
+        if (user.isArchived) {
+          return Promise.resolve(null)
+        }
 
         if (user && (await bcrypt.compare(password, user.password))) {
           return Promise.resolve(user)

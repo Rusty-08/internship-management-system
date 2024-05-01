@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
 import { getCurrentUser, getUserByEmail } from './users'
 import { AttendanceProps } from '@/app/intern/my-attendance/_components/attendance-columns'
-import { differenceInMinutes, parse } from 'date-fns'
+import { differenceInMinutes, format, parse } from 'date-fns'
 import * as XLSX from 'xlsx'
 
 // Get attendance by user email or current user
@@ -91,12 +91,16 @@ export const getAttendanceMode = (attendance: AttendanceProps[]) => {
 
   let mode = 'Time In'
 
+  const currentDate = format(new Date(), 'EEE, MMM dd')
+
+  if (!attendance.length) return mode
+  if (attendance[attendance.length - 1].date !== currentDate) return mode
+
   if (attendance.length) {
     if (currentHour < 12 && attendance[attendance.length - 1].timeInAM) {
       mode = 'Time out'
     } else if (
       currentHour >= 12.5 &&
-      currentHour < 24 &&
       attendance[attendance.length - 1].timeInPM
     ) {
       mode = 'Time out'

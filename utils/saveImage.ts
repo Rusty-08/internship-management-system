@@ -1,9 +1,10 @@
 import { InternsUsersSubset } from '@/app/admin/intern-management/_components/accounts-columns'
+import { User } from '@prisma/client'
 
 export async function saveImage(
   email: string,
   picture: string,
-): Promise<InternsUsersSubset | null> {
+): Promise<User | null> {
   const res = await fetch('/api/profile/save-image', {
     method: 'POST',
     headers: {

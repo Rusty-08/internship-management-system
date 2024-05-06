@@ -5,7 +5,7 @@ import { getInternUsers } from '@/utils/users'
 const InternManagement = async () => {
   const data = await getInternUsers(false)
 
-  return <AccountsTable data={data} simpleTable={true} />
+  return <AccountsTable data={data} />
 }
 
 export default InternManagement

@@ -1,8 +1,12 @@
-import { ComingSoon } from '@/app/intern/chat/page'
-import React from 'react'
+import TaskCard, { TaskCardProps } from './_components/task-card'
+import TaskWrapper from './_components/task-wrapper'
 
 const TasksManagement = () => {
-  return <ComingSoon pageName="Tasks Management page" />
+  return (
+    <div className="py-5">
+      <TaskWrapper />
+    </div>
+  )
 }
 
 export default TasksManagement

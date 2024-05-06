@@ -7,11 +7,12 @@ import { ReactNode, useEffect, useState } from 'react'
 import { InternsUsersSubset } from '@/app/admin/intern-management/_components/accounts-columns'
 import { useRouter } from 'next/navigation'
 import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
-import { LoadingSpinner } from '@/components/@core/spinner/circular'
 import { NotFoundPage } from '@/app/not-found'
 import { Input } from '@/components/ui/input'
 import { CustomIcon } from '@/components/@core/iconify'
 import { saveImage } from '@/utils/saveImage'
+import { LoadingSpinner } from '@/components/@core/loading'
+import { User } from '@prisma/client'
 
 type ProfileProps = {
   breadcrumbLinks?: { title: string; path: string }[]
@@ -20,7 +21,7 @@ type ProfileProps = {
 }
 
 const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
-  const [data, setData] = useState<InternsUsersSubset | null>(null)
+  const [data, setData] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const router = useRouter()
@@ -67,11 +68,11 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
         <BreadcrumbWrapper links={breadcrumbLinks} current="Profile" />
       )}
       <div
-        className={`bg-muted flex flex-col justify-center rounded-md overflow-hidden ${
+        className={`layout-loading bg-muted flex flex-col justify-center rounded-md overflow-hidden ${
           loading ? 'h-[23rem]' : 'min-h-40'
         } w-full`}
       >
-        {loading && <LoadingSpinner size={40} />}
+        {loading && <LoadingSpinner width="7rem" />}
         {data && !loading && (
           <>
             <Image
@@ -109,9 +110,10 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
                   />
                   {uploading && (
                     <LoadingSpinner
-                      style={{ left: 'calc(50% - 12.5px)' }}
-                      className="absolute stroke-white"
-                      size={25}
+                      styles={{
+                        position: 'absolute',
+                        left: 'calc(50% - 1.5rem)',
+                      }}
                     />
                   )}
                 </div>

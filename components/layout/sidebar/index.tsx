@@ -17,10 +17,10 @@ const Sidebar = ({ sideLinks }: { sideLinks: SidebarLinkProps }) => {
   return (
     <div
       style={{ background: 'hsl(222.2 47.4% 11.2%)' }}
-      className="fixed flex flex-col left-0 top-0 h-screen w-80 pb-4 border-r border-secondary"
+      className="fixed flex flex-col left-0 top-0 h-screen w-[18rem] pb-4"
     >
-      <div className="flex h-28 p-3 border-b border-primary/20"></div>
-      <div className="sidebar flex flex-col overflow-y-auto flex-grow gap-1 py-4">
+      <div className="flex h-28 p-3 border-b border-secondary"></div>
+      <div className="sidebar flex flex-col overflow-y-auto flex-grow gap-1 py-6">
         {sideLinks.map(item => (
           <Link
             key={item.path}

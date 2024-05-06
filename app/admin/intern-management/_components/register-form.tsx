@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 
-import { LoadingSpinner } from '@/components/@core/spinner/circular'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -39,6 +38,7 @@ import {
 } from '@/components/ui/select'
 import { MentorUsersSubset } from '@/app/admin/mentor-management/_components/accounts-column'
 import { fetchMentorUsers } from '@/utils/users'
+import { LoadingSpinner } from '@/components/@core/loading'
 
 type FormActions = 'edit' | 'create' | 'view' | 'archive'
 
@@ -150,7 +150,7 @@ export function FormDialog({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add Account</DialogTitle>
+          <DialogTitle>{mode === 'edit' ? 'Edit' : 'Add'} Account</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -230,7 +230,11 @@ export function FormDialog({
                   </Button>
                 </DialogClose>
                 <Button disabled={isSubmitting} className="w-40 text-base">
-                  {isSubmitting ? <LoadingSpinner /> : 'Save Account'}
+                  {isSubmitting ? (
+                    <LoadingSpinner />
+                  ) : (
+                    `Save ${mode === 'edit' ? 'Changes' : 'Account'}`
+                  )}
                 </Button>
               </div>
             </DialogFooter>

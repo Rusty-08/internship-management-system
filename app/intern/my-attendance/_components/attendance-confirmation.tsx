@@ -1,4 +1,3 @@
-import { LoadingSpinner } from '@/components/@core/spinner/circular'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,8 +10,9 @@ import {
 } from '@/components/ui/dialog'
 import { User } from '@prisma/client'
 import { format } from 'date-fns'
-import { FormEvent, useState } from 'react'
+import { FormEvent } from 'react'
 import { AttendanceProps } from './attendance-columns'
+import { LoadingSpinner } from '@/components/@core/loading'
 
 type AttendanceConfirmationProps = {
   addCurrentAttendance: (e: FormEvent) => void
@@ -72,7 +72,7 @@ export function AttendanceConfirmation({
             </div>
           </div>
           <DialogFooter className="pt-6">
-            <Button type="submit" className="w-full">
+            <Button disabled={loading} type="submit" className="w-full">
               {loading ? <LoadingSpinner /> : 'Save changes'}
             </Button>
           </DialogFooter>

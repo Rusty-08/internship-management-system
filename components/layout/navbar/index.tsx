@@ -8,8 +8,8 @@ const Navbar = async ({ profilePath }: { profilePath: string }) => {
 
   return (
     <div
-      style={{ width: 'calc(100% - 20rem)' }}
-      className="fixed z-50 bg-background flex items-center justify-center p-4 h-28 top-0 left-80"
+      style={{ width: 'calc(100% - 18rem)' }}
+      className="fixed z-50 bg-background flex items-center justify-center p-4 h-28 top-0 left-[18rem]"
     >
       <div className="rounded-full flex items-center justify-between px-6 w-full h-full border">
         <p className="text-text font-thin">

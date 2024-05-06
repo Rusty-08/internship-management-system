@@ -12,7 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import Image from 'next/image'
+
+import NoRecords from '../no-records'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -68,26 +69,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length}>
-                <div className="flex justify-center flex-col items-center pb-4">
-                  <Image
-                    alt="no records"
-                    loading="eager"
-                    src={'/general/images/no-records.svg'}
-                    width="0"
-                    height="0"
-                    className="h-[15rem] w-auto object-cover"
-                  />
-                  <h1 className="text-lg text-text text-center w-2/3 font-medium">
-                    {searchOutput !== undefined
-                      ? 'No Records Found for'
-                      : 'No Records Found'}
-                    {searchOutput !== undefined && (
-                      <span className="text-secondary-foreground">
-                        {` "${searchOutput}"`}
-                      </span>
-                    )}
-                  </h1>
-                </div>
+                <NoRecords searchOutput={searchOutput} />
               </TableCell>
             </TableRow>
           )}

@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 
-import { LoadingSpinner } from '@/components/@core/spinner/circular'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -37,6 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { LoadingSpinner } from '@/components/@core/loading'
 
 const sampleExpertise = [
   'Frontend Developer',

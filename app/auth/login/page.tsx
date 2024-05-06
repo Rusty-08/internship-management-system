@@ -1,6 +1,5 @@
 'use client'
 
-import { LoadingSpinner } from '@/components/@core/spinner/circular'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
@@ -24,6 +23,7 @@ import { LoginSchema } from '@/components/auth/login/login-schema'
 import { CardWrapper } from '@/components/auth/login/card-wrapper'
 import ErrorCard from '@/components/auth/login/error-card'
 import { getUserByEmail } from '@/utils/users'
+import { LoadingSpinner } from '@/components/@core/loading'
 
 const LoginForm = () => {
   const router = useRouter()

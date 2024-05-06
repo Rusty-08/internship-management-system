@@ -1,5 +1,9 @@
-import { LoadingSpinner } from '@/components/@core/spinner/circular'
+import { LoadingSpinner } from '@/components/@core/loading'
 
-const Loading = () => <LoadingSpinner size={50} />
+const Loading = () => (
+  <div className="layout-loading w-full h-full">
+    <LoadingSpinner width="7rem" />
+  </div>
+)
 
 export default Loading

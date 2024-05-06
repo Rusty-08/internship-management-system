@@ -10,7 +10,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
       <Navbar profilePath="/admin/profile" />
       <div
         style={{ minHeight: 'calc(100vh - 7rem)' }}
-        className="ml-80 mt-24 p-4 flex-grow"
+        className="ml-[18rem] mt-24 p-4 flex-grow"
       >
         {children}
       </div>

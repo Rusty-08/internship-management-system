@@ -1,4 +1,3 @@
-import { LoadingSpinner } from '@/components/@core/spinner/circular'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,6 +10,7 @@ import {
 import { InternsUsersSubset } from './accounts-columns'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { CustomIcon } from '@/components/@core/iconify'
+import { LoadingSpinner } from '@/components/@core/loading'
 
 type ArchiveConfirmationProps = {
   user: InternsUsersSubset | undefined
@@ -63,8 +63,8 @@ export function ArchiveConfirmation({
             </Alert>
           </div>
           <DialogFooter>
-            <Button type="submit" className="w-full">
-              {loading ? <LoadingSpinner /> : 'Save changes'}
+            <Button disabled={loading} type="submit" className="w-full">
+              {loading ? <LoadingSpinner /> : 'Save Changes'}
             </Button>
           </DialogFooter>
         </form>

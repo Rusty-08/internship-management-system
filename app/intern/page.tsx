@@ -1,3 +1,5 @@
+import { LoadingSpinner } from '@/components/@core/loading'
+
 const Intern = () => {
   return (
     <div className="h-full flex items-center justify-center flex-col">

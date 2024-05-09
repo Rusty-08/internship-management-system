@@ -1,14 +1,12 @@
 import { InternsUsersSubset } from '@/app/admin/intern-management/_components/accounts-columns'
 import { MentorUsersSubset } from '@/app/admin/mentor-management/_components/accounts-column'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { auth } from '@/auth'
 import prisma from '@/lib/prisma'
 import { User } from '@prisma/client'
-import { Session, getServerSession } from 'next-auth'
 
 export async function getCurrentUserEmail() {
-  const session = await getServerSession(authOptions)
-  const { email } = (session?.user as Session['user']) || {}
-  return email
+  const session = await auth()
+  return session?.user.email
 }
 
 // Server-side function to get the current user by email

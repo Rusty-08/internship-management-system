@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import Image from 'next/image'
+import heroImage from '@/public/home/innovation.svg'
 
 const Hero = () => {
   return (
@@ -27,8 +28,7 @@ const Hero = () => {
       </div>
       <Image
         alt="hero"
-        src="/home/innovation.svg"
-        loading="lazy"
+        src={heroImage}
         width="0"
         height="0"
         className="hidden lg:block object-cover w-1/2"

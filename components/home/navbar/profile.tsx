@@ -1,12 +1,10 @@
 'use client'
 
-import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -15,14 +13,14 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { CustomIcon } from '@/components/@core/iconify'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { ReactNode, useState } from 'react'
 
 type ProfileProps = {
   image: string | null
   user?: string | null
   role?: string | null
   profilePath: string
+  children?: ReactNode
 }
 
 export const ProfileAvatar = ({
@@ -30,8 +28,8 @@ export const ProfileAvatar = ({
   user,
   role,
   profilePath,
+  children,
 }: ProfileProps) => {
-  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -72,19 +70,7 @@ export const ProfileAvatar = ({
           </Link>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <div className="p-1">
-          <DropdownMenuItem
-            className="py-2 group px-0 cursor-pointer"
-            onClick={() => signOut()}
-          >
-            <span className="w-12 group-hover:text-primary flex justify-center">
-              <CustomIcon icon="lets-icons:sign-out-squre-duotone-line" />
-            </span>
-            <Link className="group-hover:text-primary" href="/">
-              Sign Out
-            </Link>
-          </DropdownMenuItem>
-        </div>
+        <div className="p-1">{children}</div>
       </DropdownMenuContent>
     </DropdownMenu>
   )

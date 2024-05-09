@@ -72,7 +72,7 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
           loading ? 'h-[23rem]' : 'min-h-40'
         } w-full`}
       >
-        {loading && <LoadingSpinner width="7rem" />}
+        {loading && <LoadingSpinner width="6rem" />}
         {data && !loading && (
           <>
             <Image

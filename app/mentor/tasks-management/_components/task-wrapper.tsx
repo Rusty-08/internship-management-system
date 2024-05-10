@@ -6,6 +6,8 @@ import { SearchFilter } from './search-filter'
 import TaskCard from './task-card'
 import NoRecords from '@/components/@core/ui/no-records'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { CustomIcon } from '@/components/@core/iconify'
 
 type Props = {}
 
@@ -24,7 +26,12 @@ const TaskWrapper = (props: Props) => {
           search={searchTasks}
           setSearch={setSearchTasks}
         />
-        <Button>Create Task</Button>
+        <Link href="/mentor/tasks-management/create">
+          <Button>
+            <span className="mr-2">Create Task</span>
+            <CustomIcon icon="lucide:circle-plus" />
+          </Button>
+        </Link>
       </div>
       {filteredTasks.length ? (
         <div className="grid grid-cols-2 gap-4">

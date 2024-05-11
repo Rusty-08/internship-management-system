@@ -1,13 +1,14 @@
-import HeroSection from '@/components/home'
-import Footer from '@/components/home/footer'
-import HomeNavbar from '@/components/home/navbar'
+import Hero from '@/components/home/hero-section/Hero'
+import HomeWrapper from '@/components/home/layout/home-layout'
+import Stacks from '@/components/home/stacks'
+import Testimonials from '@/components/home/testimonial'
 
 export default async function Home() {
   return (
-    <main className="flex container h-auto flex-col overflow-hidden">
-      <HomeNavbar />
-      <HeroSection />
-      <Footer />
-    </main>
+    <HomeWrapper>
+      <Hero />
+      <Stacks />
+      <Testimonials />
+    </HomeWrapper>
   )
 }

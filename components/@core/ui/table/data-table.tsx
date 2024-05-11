@@ -27,7 +27,7 @@ export function DataTable<TData, TValue>({
   searchOutput,
 }: DataTableProps<TData, TValue>) {
   return (
-    <div className="rounded-md border overflow-hidden">
+    <div className="border border-primary/10 rounded-md overflow-hidden">
       <Table>
         <TableHeader className="bg-muted">
           {table.getHeaderGroups().map(headerGroup => (

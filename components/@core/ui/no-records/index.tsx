@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import React from 'react'
 import { ClassNameValue } from 'tailwind-merge'
+import NoRecordsImage from '@/public/general/images/no-records.svg'
 
 type NoRecordsProps = {
   searchOutput?: string
@@ -20,7 +21,7 @@ const NoRecords = ({ searchOutput, className, ...props }: NoRecordsProps) => {
       <Image
         alt="no records"
         loading="eager"
-        src={'/general/images/no-records.svg'}
+        src={NoRecordsImage}
         width="0"
         height="0"
         className="h-[15rem] w-auto object-cover"

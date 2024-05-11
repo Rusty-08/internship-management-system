@@ -1,7 +1,5 @@
-'use client'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
 type LoginButtonProps = {
   mode?: 'modal' | 'redirect'

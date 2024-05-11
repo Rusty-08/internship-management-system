@@ -13,6 +13,7 @@ import { CustomIcon } from '@/components/@core/iconify'
 import { saveImage } from '@/utils/saveImage'
 import { LoadingSpinner } from '@/components/@core/loading'
 import { User } from '@prisma/client'
+import { cn } from '@/lib/utils'
 
 type ProfileProps = {
   breadcrumbLinks?: { title: string; path: string }[]
@@ -101,7 +102,12 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
                     icon="mage:image-upload"
                     width={40}
                     height={40}
-                    className="opacity-0 transform scale-0 text-white absolute group-hover:opacity-100 transition-all ease-in-out duration-300 group-hover:scale-100"
+                    className={cn(
+                      'opacity-0 transform scale-0 text-white absolute transition-all ease-in-out duration-300 group-hover:scale-100',
+                      uploading
+                        ? 'group-hover:opacity-0'
+                        : 'group-hover:opacity-100',
+                    )}
                   />
                   <Input
                     type="file"

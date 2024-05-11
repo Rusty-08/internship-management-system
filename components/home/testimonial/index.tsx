@@ -22,23 +22,22 @@ const Testimonials = () => {
         header="What our intern say"
         subHeader="This testimonial section is dedicated to showcasing the exceptional talent and dedication of our team members. Each testimonial reflects the individual's unique contributions and skills that they bring to our team."
       />
-      <>
-        <Carousel
-          plugins={[plugin.current]}
-          onMouseEnter={plugin.current.stop}
-          onMouseLeave={plugin.current.reset}
-        >
-          <CarouselContent>
-            {data.map(testimonial => (
-              <CarouselItem key={testimonial.id}>
-                <TestimonialCard {...testimonial} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselNext />
-          <CarouselPrevious />
-        </Carousel>
-      </>
+      <Carousel
+        plugins={[plugin.current]}
+        onMouseEnter={plugin.current.stop}
+        onMouseLeave={plugin.current.reset}
+        opts={{ align: 'center', loop: true }}
+      >
+        <CarouselContent className="items-center">
+          {data.map(testimonial => (
+            <CarouselItem key={testimonial.id}>
+              <TestimonialCard {...testimonial} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselNext />
+        <CarouselPrevious />
+      </Carousel>
     </section>
   )
 }

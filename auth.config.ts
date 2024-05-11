@@ -1,7 +1,7 @@
 import { User, UserRole } from '@prisma/client'
 import type { NextAuthConfig } from 'next-auth'
 
-const publicRoutes = ['/', '/auth/login']
+const privateRoutes = ['/admin', '/intern', '/mentor']
 
 export const authConfig = {
   session: {
@@ -32,8 +32,8 @@ export const authConfig = {
             return false
         }
       }
-      if (publicRoutes.includes(nextUrl.pathname)) return true
-      return Response.redirect(new URL('/', nextUrl))
+      if (!privateRoutes.includes(nextUrl.pathname)) return true
+      // return Response.redirect(new URL('/', nextUrl))
     },
     async jwt({ token, user }) {
       if (user) {

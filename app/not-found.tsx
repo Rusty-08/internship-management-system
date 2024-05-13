@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import notFound from '@/public/general/images/not-found.svg'
 
 export const NotFoundPage = () => {
   const router = useRouter()
@@ -10,7 +11,7 @@ export const NotFoundPage = () => {
   return (
     <div className="h-screen w-full flex items-center justify-center flex-col">
       <Image
-        src={'/general/images/not-found.svg'}
+        src={notFound}
         alt="not found"
         width="0"
         loading="eager"

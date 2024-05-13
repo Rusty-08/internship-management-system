@@ -1,12 +1,14 @@
 import { getMentorUsers } from '@/utils/users'
 import { AccountsTable } from './_components/accounts-table'
+import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 
-export default async function AccountManager() {
+export default async function MentorManagement() {
   const data = await getMentorUsers()
 
   return (
-    <section className="py-5">
+    <div className="py-2 space-y-6">
+      <BreadcrumbWrapper links={[]} current="Mentor Management" />
       <AccountsTable data={data} />
-    </section>
+    </div>
   )
 }

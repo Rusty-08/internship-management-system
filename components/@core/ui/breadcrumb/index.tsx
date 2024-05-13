@@ -33,7 +33,9 @@ export function BreadcrumbWrapper({ links, current }: BreadcrumbProps) {
           </Fragment>
         ))}
         <BreadcrumbItem>
-          <BreadcrumbPage>{current}</BreadcrumbPage>
+          <BreadcrumbPage className="text-base text-semibold">
+            {current}
+          </BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

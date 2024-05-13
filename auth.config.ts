@@ -32,8 +32,13 @@ export const authConfig = {
             return false
         }
       }
-      if (!privateRoutes.includes(nextUrl.pathname)) return true
-      // return Response.redirect(new URL('/', nextUrl))
+      if (
+        nextUrl.pathname !== '/' &&
+        !nextUrl.pathname.startsWith('/auth')
+      ) {
+        return Response.redirect(new URL('/', nextUrl))
+      }
+      return true
     },
     async jwt({ token, user }) {
       if (user) {

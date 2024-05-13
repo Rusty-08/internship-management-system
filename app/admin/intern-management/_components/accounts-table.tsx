@@ -22,12 +22,12 @@ import { ArchiveConfirmation } from './archive-confirmation'
 
 type AccountTableProps = {
   data: InternsUsersSubset[]
-  isAchivedPage?: boolean
+  isArchivedPage?: boolean
 }
 
 export default function AccountsTable({
   data,
-  isAchivedPage = false,
+  isArchivedPage = false,
 }: AccountTableProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [formMode, setFormMode] = useState<
@@ -109,18 +109,18 @@ export default function AccountsTable({
   })
 
   return (
-    <div className="py-5">
+    <div>
       <ArchiveConfirmation
         isOpen={openDialog}
         user={archiveIntern?.original}
         setIsOpenHandler={() => setOpenDialog(!openDialog)}
         archive={handleArchive}
         loading={loading}
-        isArchivedPage={isAchivedPage}
+        isArchivedPage={isArchivedPage}
       />
       <div className="flex items-center justify-between mb-4">
         <SearchFilter column="name" table={table} search="intern" />
-        {!isAchivedPage && (
+        {!isArchivedPage && (
           <FormDialog
             mode={formMode}
             setMode={setFormMode}

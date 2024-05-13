@@ -26,7 +26,7 @@ const TaskWrapper = (props: Props) => {
           search={searchTasks}
           setSearch={setSearchTasks}
         />
-        <Link href="/mentor/tasks-management/create">
+        <Link href="/mentor/tasks-management/task-form">
           <Button>
             <span className="mr-2">Create Task</span>
             <CustomIcon icon="lucide:circle-plus" />

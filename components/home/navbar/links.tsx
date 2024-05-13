@@ -10,14 +10,14 @@ const NavLinks = () => {
   const pathname = usePathname()
 
   return (
-    <div className="flex items-center gap-8">
+    <div className="flex items-center">
       {links.map(link => (
         <Link
           key={link.name}
           href={link.path}
           className={cn(
-            'text-foreground hover:text-primary font-medium transition-colors',
-            pathname == link.path && 'text-primary',
+            'text-text text-sm hover:text-primary py-1.5 px-6 rounded-full font-medium transition-colors',
+            pathname == link.path && 'text-primary bg-primary/10',
           )}
         >
           {link.name}

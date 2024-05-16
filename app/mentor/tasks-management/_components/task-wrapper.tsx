@@ -8,10 +8,28 @@ import NoRecords from '@/components/@core/ui/no-records'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { CustomIcon } from '@/components/@core/iconify'
+import { File, TaskStatus } from '@prisma/client'
 
-type Props = {}
+type FileProps = {
+  id: string
+  name: string | null
+  url: string | null
+}
 
-const TaskWrapper = (props: Props) => {
+type TaskProps = {
+  id: string
+  title: string
+  description: string
+  status: TaskStatus
+  dueDate: string
+  files?: FileProps[]
+}
+
+type TaskWrapperProps = {
+  tasks: TaskProps[]
+}
+
+const TaskWrapper = ({ tasks }: TaskWrapperProps) => {
   const [searchTasks, setSearchTasks] = useState('')
 
   const filteredTasks = tasks.filter(task =>
@@ -37,12 +55,11 @@ const TaskWrapper = (props: Props) => {
         <div className="grid grid-cols-2 gap-4">
           {filteredTasks.map(task => (
             <TaskCard
-              key={task.taskNumber}
-              taskNumber={task.taskNumber}
+              key={task.id}
               title={task.title}
               description={task.description}
               status={task.status}
-              date={task.date}
+              date={task.dueDate}
             />
           ))}
         </div>

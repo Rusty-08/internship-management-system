@@ -6,7 +6,7 @@ import { getCurrentUser } from '@/utils/users'
 import { User } from '@prisma/client'
 
 export async function POST(req: Request) {
-  const currUser = await getCurrentUser<User>()
+  const currUser = await getCurrentUser()
   const email = currUser?.email
 
   const { password } = await req.json()

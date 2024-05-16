@@ -46,6 +46,8 @@ model User {
 
   internProfile Profile? @relation("UserToProfile")
   mentorProfile Profile? @relation("MentorToProfile")
+  files         File[]
+  tasks         Task[]   @relation("mentorTask")
 }
 
 model Profile {
@@ -67,6 +69,35 @@ model Attendance {
   totalHours String?
 
   intern User @relation(fields: [internId], references: [id], onDelete: Cascade)
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+model Task {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  status      TaskStatus
+  dueDate     String
+  mentorId    String     @unique @db.ObjectId
+
+  mentor User   @relation("mentorTask", fields: [mentorId], references: [id], onDelete: Cascade)
+  files  File[] // A task can have multiple files
+}
+
+model File {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  name   String?
+  url    String?
+  userId String  @db.ObjectId
+  taskId String  @db.ObjectId
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
 }
 
 model Account {

@@ -7,17 +7,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { TaskStatus } from '@prisma/client'
 
 export type TaskCardProps = {
-  taskNumber: number
   title: string
   description: string
-  status: 'completed' | 'in-progress' | 'pending'
+  status: TaskStatus
   date: string
 }
 
 const TaskCard = ({
-  taskNumber,
   title,
   description,
   status,

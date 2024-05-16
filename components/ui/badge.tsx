@@ -15,11 +15,11 @@ const badgeVariants = cva(
         destructive:
           'border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80',
         outline: 'text-foreground',
-        completed:
+        COMPLETED:
           'border-transparent bg-completed/10 text-completed shadow hover:bg-completed/20',
-        'in-progress':
+        IN_PROGRESS:
           'border-transparent bg-in-progress/10 text-in-progress shadow hover:bg-in-progress/20',
-        pending:
+        PENDING:
           'border-transparent bg-pending/10 text-pending shadow hover:bg-pending/20',
       },
     },

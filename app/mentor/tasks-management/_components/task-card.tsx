@@ -8,25 +8,30 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { TaskStatus } from '@prisma/client'
+import { format, parseISO } from 'date-fns'
 
 export type TaskCardProps = {
   title: string
   description: string
   status: TaskStatus
-  date: string
+  startDate: string
+  endDate: string
 }
 
 const TaskCard = ({
   title,
   description,
   status,
-  date,
+  startDate,
+  endDate,
 }: TaskCardProps) => {
+  const formattedStartDate = format(parseISO(startDate), 'LLL dd, y')
+  const formattedEndDate = format(parseISO(endDate), 'LLL dd, y')
   return (
     <Card>
       <CardHeader>
         <div className="flex justify-between">
-          <span className="text-sm text-muted-foreground">{date}</span>
+          <span className="text-sm text-muted-foreground">{`${formattedStartDate} - ${formattedEndDate}`}</span>
           <Badge variant={status}>{status}</Badge>
         </div>
         <CardTitle className="text-xl mb-4">{title}</CardTitle>

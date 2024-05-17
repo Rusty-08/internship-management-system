@@ -17,7 +17,8 @@ const TasksManagement = async () => {
           title: true,
           description: true,
           status: true,
-          dueDate: true,
+          startDate: true,
+          endDate: true,
           files: {
             select: {
               id: true,

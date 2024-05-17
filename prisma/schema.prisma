@@ -82,7 +82,8 @@ model Task {
   title       String
   description String
   status      TaskStatus
-  dueDate     String
+  startDate   String
+  endDate     String
   mentorId    String     @unique @db.ObjectId
 
   mentor User   @relation("mentorTask", fields: [mentorId], references: [id], onDelete: Cascade)

@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { storage } from '@/lib/firebase'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { uploadFile } from './_actions/upload-file'
+import { createTask } from './_actions/create-task'
 
 const Admin = () => {
   // return <ComingSoon pageName="Mentor Dashboard" />
@@ -52,7 +52,7 @@ const Admin = () => {
   // }
 
   return (
-    <form action={uploadFile}>
+    <form action={createTask}>
       <div className="space-y-1">
         <Label htmlFor="file">Attach File</Label>
         <Input

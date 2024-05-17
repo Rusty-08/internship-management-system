@@ -21,7 +21,8 @@ type TaskProps = {
   title: string
   description: string
   status: TaskStatus
-  dueDate: string
+  startDate: string
+  endDate: string
   files?: FileProps[]
 }
 
@@ -59,7 +60,8 @@ const TaskWrapper = ({ tasks }: TaskWrapperProps) => {
               title={task.title}
               description={task.description}
               status={task.status}
-              date={task.dueDate}
+              startDate={task.startDate}
+              endDate={task.endDate}
             />
           ))}
         </div>

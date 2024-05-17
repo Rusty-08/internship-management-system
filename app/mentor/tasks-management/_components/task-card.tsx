@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card'
 import { TaskStatus } from '@prisma/client'
 import { format, parseISO } from 'date-fns'
+import { CustomIcon } from '@/components/@core/iconify'
 
 export type TaskCardProps = {
   title: string
@@ -38,7 +39,13 @@ const TaskCard = ({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter>
-        <Button variant="outline">View Details</Button>
+        <div className="flex justify-between gap-2 w-full">
+          <Button variant="outline">View Details</Button>
+
+          <Button variant="ghost" size="circle" className="text-text">
+            <CustomIcon icon="iconamoon:edit-duotone" className="w-5 h-5" />
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   )

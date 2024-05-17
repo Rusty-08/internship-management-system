@@ -1,20 +1,43 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
+import React, { FormEvent, useMemo, useState } from 'react'
 import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { DatePickerWithRange } from '@/components/@core/ui/date-range-picker'
+import { useRouter } from 'next/navigation'
 import { DateRange } from 'react-day-picker'
 import { Button } from '@/components/ui/button'
 import { CustomIcon } from '@/components/@core/iconify'
 import { formatISO } from 'date-fns'
 import { createTask } from '@/app/mentor/_actions/create-task'
+import { useMutation } from '@tanstack/react-query'
+import { LoadingSpinner } from '@/components/@core/loading'
 
 const links = [{ title: 'Tasks Management', path: '/mentor/tasks-management' }]
 
 const TaskForm = () => {
+  const router = useRouter()
+
+  const handleSubmit = async (formData: FormData) => {
+    try {
+      await createTask(formData)
+      router.push('/mentor/tasks-management')
+      router.refresh()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const {
+    mutate: addTask,
+    isPending,
+    isError,
+  } = useMutation({
+    mutationFn: handleSubmit,
+  })
+
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
     to: new Date(),
@@ -43,7 +66,7 @@ const TaskForm = () => {
       <div className="mt-6 border rounded-md p-8">
         <h1 className="text-xl font-semibold mb-5">Upload New Task</h1>
 
-        <form action={createTask} className="space-y-4">
+        <form action={addTask} className="space-y-4">
           <div className="flex flex-col gap-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
@@ -102,9 +125,16 @@ const TaskForm = () => {
             </div>
           </div>
           <div className="flex justify-end">
-            <Button type="submit">
-              <span className="mr-1">Upload Task</span>
-              <CustomIcon icon="lucide:arrow-right" />
+            <Button disabled={isPending} className="w-40 text-base">
+              {isPending ? (
+                <LoadingSpinner />
+              ) : (
+                <>
+                  <span className="mr-1">Upload Task</span>
+
+                  <CustomIcon icon="lucide:arrow-right" />
+                </>
+              )}
             </Button>
           </div>
         </form>

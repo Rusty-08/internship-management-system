@@ -20,7 +20,7 @@ export const createTask = async (formData: FormData) => {
 
   const uploadTask = uploadBytesResumable(storageRef, file, metadata)
 
-  try {
+  await new Promise((resolve, reject) => {
     uploadTask.on(
       'state_changed',
       snapshot => {
@@ -31,6 +31,7 @@ export const createTask = async (formData: FormData) => {
       error => {
         // Handle unsuccessful uploads
         console.error(error)
+        reject()
       },
 
       async () => {
@@ -62,12 +63,10 @@ export const createTask = async (formData: FormData) => {
 
         console.log('New task created with ID', newTask.id)
         console.log('New file created with ID', newFile.id)
+        resolve(undefined)
       },
     )
-  } catch (error) {
-    console.error(error)
-  }
-
-  revalidatePath('/mentor/tasks-management')
-  redirect('/mentor/tasks-management')
+  })
+  // revalidatePath('/mentor/tasks-management')
+  // redirect('/mentor/tasks-management')
 }

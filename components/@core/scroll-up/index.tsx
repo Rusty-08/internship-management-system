@@ -25,7 +25,6 @@ const ScrollUp = () => {
   return (
     <Button
       onClick={() => scroll.scrollToTop({ duration: 300 })}
-      variant="secondary"
       className={cn(
         'fixed bottom-8 pb-1 right-6 shadow-md transform transition-all duration-300 ease-in-out',
         isVisible

@@ -8,7 +8,7 @@ const InternManagement = async () => {
 
   return (
     <div className="py-2 space-y-6">
-      <BreadcrumbWrapper links={[]} current="Intern Management" />
+      <BreadcrumbWrapper current="Intern Management" />
       <AccountsTable data={data} />
     </div>
   )

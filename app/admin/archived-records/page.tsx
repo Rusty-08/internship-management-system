@@ -8,7 +8,7 @@ const ArchivedRecords = async () => {
 
   return (
     <div className="py-2 space-y-6">
-      <BreadcrumbWrapper links={[]} current="Archived Records" />
+      <BreadcrumbWrapper current="Archived Records" />
       <AccountsTable data={data} isArchivedPage={isArchivedPage} />
     </div>
   )

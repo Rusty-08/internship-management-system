@@ -166,7 +166,7 @@ const LoginForm = () => {
     <CardWrapper
       headerLabel="Internship Portal"
       subHeaderLabel="Enter your credentials to access your account"
-      backButtonLabel="Don't have an account?"
+      backButtonLabel="Go back to home page?"
       backButtonHref="/"
     >
       <Form {...form}>

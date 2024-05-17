@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/breadcrumb'
 
 type BreadcrumbProps = {
-  links: {
+  links?: {
     title: string
     path: string
   }[]
@@ -22,18 +22,19 @@ export function BreadcrumbWrapper({ links, current }: BreadcrumbProps) {
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        {links.map(link => (
-          <Fragment key={link.path}>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href={link.path}>{link.title}</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-          </Fragment>
-        ))}
+        {links &&
+          links.map(link => (
+            <Fragment key={link.path}>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href={link.path}>{link.title}</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+            </Fragment>
+          ))}
         <BreadcrumbItem>
-          <BreadcrumbPage className="text-base text-semibold">
+          <BreadcrumbPage className="text-semibold text-foreground">
             {current}
           </BreadcrumbPage>
         </BreadcrumbItem>

@@ -8,23 +8,22 @@ const Hero = () => {
   return (
     <div
       style={{ height: 'calc(100vh - 6rem)' }}
-      className="flex justify-between py-10 w-full items-center gap-10 relative"
+      className="flex justify-between py-10 w-full items-center sm:max-h-[auto] md:max-h-[700px] gap-10 relative"
     >
-      <div className="flex text-center md:text-left flex-grow flex-col gap-7 items-center md:items-start">
-        <div className="space-y-2 w-3/5">
+      <div className="flex text-center md:text-left flex-grow flex-col gap-5 items-center md:items-start">
+        <div className="space-y-2 w-1/2">
           <p className="text-primary font-medium">OnDemand Innovation</p>
-          <h1 className="text-3xl md:text-[4rem] font-bold leading-tight">
+          <h1 className="text-3xl md:text-[3.75rem] font-bold leading-tight">
             A Place to enhance your <span className="text-primary">skills</span>
           </h1>
         </div>
-        <p className="text-text w-1/2">
+        <p className="text-text text-xl w-1/2">
           Our platform is dedicated to connecting talented individuals with
           dynamic internship opportunities that empower growth, innovation, and
-          success. Join us in the pursuit of excellence as we champion your
-          journey towards a brighter future.
+          success.
         </p>
         <Button
-          className="rounded-full text-[0.9rem] py-6 px-4 gap-2"
+          className="rounded-full text-[0.9rem] py-6 px-4 gap-2 mt-2"
           variant="gradient"
         >
           <CustomIcon icon="iconamoon:link-external-light" height="1.5rem" />

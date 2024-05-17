@@ -32,7 +32,9 @@ body,
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --sidebar: 222.2 47.4% 11.2%;
+    --navbar: 0 0% 100%;
+    --background: 210, 40%, 96%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -59,6 +61,8 @@ body,
   }
 
   .dark {
+    --sidebar: 222.2 47.4% 11.2%;
+    --navbar: 222.2 47.4% 11.2%;
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;

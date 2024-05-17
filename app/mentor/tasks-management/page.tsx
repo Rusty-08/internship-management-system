@@ -31,7 +31,7 @@ const TasksManagement = async () => {
   })
   return (
     <div className="py-2 space-y-6">
-      <BreadcrumbWrapper links={[]} current="Tasks Management" />
+      <BreadcrumbWrapper current="Tasks Management" />
       <TaskWrapper tasks={mentorTasks?.tasks || []} />
     </div>
   )

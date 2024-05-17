@@ -15,16 +15,13 @@ const Navbar = ({ profilePath }: { profilePath: string }) => {
   const user = session?.user
 
   return (
-    <div
-      style={{ background: 'hsl(222.2 47.4% 11.2%)' }}
-      className="flex items-center border-l shadow border-muted justify-between px-10 h-20"
-    >
-      <p className="text-text text-sm font-medium">
+    <div className="flex items-center border-l bg-navbar border-slate-800 justify-between px-10 h-20">
+      <p className="text-text font-medium">
         Internship Management System v0.0.1
       </p>
       <div className="flex items-center gap-x-4">
         <ThemeToggle />
-        {user ? (
+        {user && (
           <ProfileAvatar
             user={user.name}
             role={user.role}
@@ -46,8 +43,6 @@ const Navbar = ({ profilePath }: { profilePath: string }) => {
               </DropdownMenuItem>
             </form>
           </ProfileAvatar>
-        ) : (
-          <LoginButton />
         )}
       </div>
     </div>

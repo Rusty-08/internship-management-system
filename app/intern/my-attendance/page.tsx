@@ -11,7 +11,7 @@ const MyAttendance = async () => {
 
   return (
     <div className="py-2 space-y-6">
-      <BreadcrumbWrapper links={[]} current="My Attendance" />
+      <BreadcrumbWrapper current="My Attendance" />
       <AttendanceTable data={attendance} user={user} mode={mode} />
     </div>
   )

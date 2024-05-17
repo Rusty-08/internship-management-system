@@ -7,7 +7,7 @@ export default async function MentorManagement() {
 
   return (
     <div className="py-2 space-y-6">
-      <BreadcrumbWrapper links={[]} current="Mentor Management" />
+      <BreadcrumbWrapper current="Mentor Management" />
       <AccountsTable data={data} />
     </div>
   )

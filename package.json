@@ -41,6 +41,7 @@
     "react-datepicker": "^6.9.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
+    "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.0",
     "react-scroll": "^1.9.0",
     "tailwind-merge": "^2.2.1",

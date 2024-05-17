@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { CustomIcon } from '@/components/@core/iconify'
 import { File, TaskStatus } from '@prisma/client'
+import TaskForm from './task-form'
 
 type FileProps = {
   id: string
@@ -32,6 +33,7 @@ type TaskWrapperProps = {
 
 const TaskWrapper = ({ tasks }: TaskWrapperProps) => {
   const [searchTasks, setSearchTasks] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
 
   const filteredTasks = tasks.filter(task =>
     task.title.toLowerCase().includes(searchTasks.toLowerCase()),
@@ -45,12 +47,7 @@ const TaskWrapper = ({ tasks }: TaskWrapperProps) => {
           search={searchTasks}
           setSearch={setSearchTasks}
         />
-        <Link href="/mentor/tasks-management/task-form">
-          <Button>
-            <span className="mr-2">Create Task</span>
-            <CustomIcon icon="lucide:circle-plus" />
-          </Button>
-        </Link>
+        <TaskForm isOpen={isOpen} setIsOpen={setIsOpen} mode={'add'} />
       </div>
       {filteredTasks.length ? (
         <div className="grid grid-cols-2 gap-4">
@@ -62,6 +59,7 @@ const TaskWrapper = ({ tasks }: TaskWrapperProps) => {
               status={task.status}
               startDate={task.startDate}
               endDate={task.endDate}
+              setIsOpen={setIsOpen}
             />
           ))}
         </div>

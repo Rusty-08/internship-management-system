@@ -27,12 +27,9 @@ export function SearchFilter({
     replace(`${pathname}?${params.toString()}`)
   }, 200)
 
-  // useEffect(() => {
-  //   const query = searchParams.get(search || '')
-  // }, [searchParams, search])
-
   return (
     <Input
+      icon="heroicons:magnifying-glass"
       placeholder="Search tasks"
       onChange={event => handleSearch(event.target.value)}
       defaultValue={searchParams.get(search || '')?.toString()}

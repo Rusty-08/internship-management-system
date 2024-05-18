@@ -37,6 +37,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { LoadingSpinner } from '@/components/@core/loading'
+import AddButton from '@/components/@core/ui/add-button'
 
 const sampleExpertise = [
   'Frontend Developer',
@@ -133,16 +134,14 @@ export function FormDialog({
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
       <DialogTrigger asChild>
-        <Button
-          className="gap-2"
+        <AddButton
           onClick={() => {
             setMode('create')
             form.reset()
           }}
         >
-          <CustomIcon icon="ic:sharp-add" />
           Add Account
-        </Button>
+        </AddButton>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

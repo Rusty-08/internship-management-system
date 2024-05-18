@@ -30,7 +30,7 @@ const UserProfile = async ({
           </div>
         </TabsContent>
         <TabsContent value="attendance">
-          <div className="border-t min-h-[20rem] my-4 py-4 rounded-sm">
+          <div className="min-h-[20rem] my-4 p-4 bg-card rounded-md">
             <AttendanceTable
               data={attendance}
               user={user}

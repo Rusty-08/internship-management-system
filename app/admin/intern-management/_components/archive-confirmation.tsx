@@ -63,9 +63,14 @@ export function ArchiveConfirmation({
             </Alert>
           </div>
           <DialogFooter>
-            <Button disabled={loading} type="submit" className="w-full">
-              {loading ? <LoadingSpinner /> : 'Save Changes'}
-            </Button>
+            <div className="flex gap-2 justify-end pt-2">
+              <Button variant="outline" onClick={setIsOpenHandler}>
+                Cancel
+              </Button>
+              <Button disabled={loading} type="submit" className="w-40">
+                {loading ? <LoadingSpinner /> : 'Save Changes'}
+              </Button>
+            </div>
           </DialogFooter>
         </form>
       </DialogContent>

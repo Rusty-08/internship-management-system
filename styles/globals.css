@@ -12,6 +12,7 @@ body,
 
 ::-webkit-scrollbar {
   width: 0.3rem;
+  height: 0.3rem;
   border-radius: 0.2rem;
 }
 
@@ -56,7 +57,7 @@ body,
     --radius: 0.75rem;
 
     --completed: 120 100% 25%; /* green */
-    --pending: 60 100% 50%; /* yellow */
+    --pending: 60 100% 30%; /* yellow */
     --in-progress: 240 100% 50%; /* blue */
   }
 
@@ -65,7 +66,7 @@ body,
     --navbar: 222.2 47.4% 11.2%;
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 222.2 47.4% 11.2%;
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;

@@ -60,7 +60,9 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
   }, [email, router])
 
   if (!loading && !data) {
-    return <NotFoundPage />
+    return (
+      <NotFoundPage className="bg-transparent from-transparent to-transparent backdrop-blur-none h-[80vh]" />
+    )
   }
 
   return (
@@ -69,7 +71,7 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
         <BreadcrumbWrapper links={breadcrumbLinks} current="Profile" />
       )}
       <div
-        className={`layout-loading bg-muted flex flex-col justify-center rounded-md overflow-hidden ${
+        className={`layout-loading bg-card flex flex-col justify-center rounded-md overflow-hidden ${
           loading ? 'h-[23rem]' : 'min-h-40'
         } w-full`}
       >

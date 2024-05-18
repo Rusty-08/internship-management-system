@@ -12,6 +12,7 @@ import { format, parseISO } from 'date-fns'
 import { CustomIcon } from '@/components/@core/iconify'
 import { Dispatch, SetStateAction } from 'react'
 import TaskForm from './task-form'
+import { TooltipWrapper } from '@/components/ui/tooltip'
 
 export type TaskCardProps = {
   title: string
@@ -30,10 +31,10 @@ const TaskCard = ({
   endDate,
   setIsOpen,
 }: TaskCardProps) => {
-  const formattedStartDate = format(parseISO(startDate), 'LLL dd, y')
+  const formattedStartDate = format(parseISO(startDate), 'LLL dd')
   const formattedEndDate = format(parseISO(endDate), 'LLL dd, y')
   return (
-    <Card>
+    <Card className="bg-transparent">
       <CardHeader>
         <div className="flex justify-between">
           <span className="text-sm text-muted-foreground">{`${formattedStartDate} - ${formattedEndDate}`}</span>
@@ -45,15 +46,16 @@ const TaskCard = ({
       <CardFooter>
         <div className="flex justify-between gap-2 w-full">
           <Button variant="outline">View Details</Button>
-
-          <Button
-            variant="ghost"
-            size="circle"
-            className="text-text"
-            onClick={() => setIsOpen(true)}
-          >
-            <CustomIcon icon="iconamoon:edit-duotone" className="w-5 h-5" />
-          </Button>
+          <TooltipWrapper tooltip="Edit Task">
+            <Button
+              variant="ghost"
+              size="circle"
+              className="text-text"
+              onClick={() => setIsOpen(true)}
+            >
+              <CustomIcon icon="iconamoon:edit-duotone" className="w-5 h-5" />
+            </Button>
+          </TooltipWrapper>
         </div>
       </CardFooter>
     </Card>

@@ -9,7 +9,7 @@ const InternManagement = async () => {
   return (
     <div className="py-2 space-y-6">
       <BreadcrumbWrapper current="Intern Management" />
-      <AccountsTable data={data} />
+      <AccountsTable data={[]} />
     </div>
   )
 }

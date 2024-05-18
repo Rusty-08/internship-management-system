@@ -2,7 +2,6 @@ import { Input } from '@/components/ui/input'
 import { Table } from '@tanstack/react-table'
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { useDebouncedCallback } from 'use-debounce'
 
 interface SearchFilterProps<TData> {
   column: string
@@ -19,8 +18,9 @@ export function SearchFilter<TData>({
   const pathName = usePathname()
   const { replace } = useRouter()
 
-  const handleSearch = useDebouncedCallback((term: string) => {
+  const handleSearch = (term: string) => {
     const params = new URLSearchParams(searchParams)
+
     if (term) {
       params.set(search || '', term)
       table.getColumn(column)?.setFilterValue(term)
@@ -28,22 +28,24 @@ export function SearchFilter<TData>({
       params.delete(search || '')
       table.getColumn(column)?.setFilterValue(undefined)
     }
+
     replace(`${pathName}?${params.toString()}`)
-  }, 200)
+  }
 
   useEffect(() => {
     const query = searchParams.get(search || '')
     if (query) {
       table.getColumn(column)?.setFilterValue(query)
     }
-  }, [column, searchParams, table, search])
+  }, [])
 
   return (
     <Input
       placeholder="Search by name"
+      icon="heroicons:magnifying-glass"
       onChange={event => handleSearch(event.target.value)}
       defaultValue={searchParams.get(search || '')?.toString()}
-      className="max-w-sm"
+      className="w-[20rem]"
     />
   )
 }

@@ -23,6 +23,7 @@ import { LoadingSpinner } from '@/components/@core/loading'
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -30,6 +31,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import AddButton from '@/components/@core/ui/add-button'
 
 const links = [{ title: 'Tasks Management', path: '/mentor/tasks-management' }]
 
@@ -85,17 +87,12 @@ const TaskForm = ({ isOpen, mode, setIsOpen }: FormPropsTypes) => {
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
       <DialogTrigger asChild>
-        <Button>
-          <span className="mr-2">Create Task</span>
-          <CustomIcon icon="lucide:circle-plus" />
-        </Button>
+        <AddButton>Create Task</AddButton>
       </DialogTrigger>
-
-      <DialogContent className="p-8">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Upload New Task</DialogTitle>
         </DialogHeader>
-
         <div className="py-2">
           <form action={addTask} className="space-y-4">
             <div className="flex flex-col gap-4">
@@ -133,7 +130,6 @@ const TaskForm = ({ isOpen, mode, setIsOpen }: FormPropsTypes) => {
                   readOnly
                 />
               </div>
-
               <div className="space-y-1">
                 <Label htmlFor="descriptions">Descriptions</Label>
                 <Textarea
@@ -154,19 +150,29 @@ const TaskForm = ({ isOpen, mode, setIsOpen }: FormPropsTypes) => {
                 />
               </div>
             </div>
-            <div className="flex justify-end">
-              <Button disabled={isPending} className="w-40 text-base">
-                {isPending ? (
-                  <LoadingSpinner />
-                ) : (
-                  <>
-                    <span className="mr-1">Upload Task</span>
-
-                    <CustomIcon icon="lucide:arrow-right" />
-                  </>
-                )}
-              </Button>
-            </div>
+            <DialogFooter>
+              <div className="flex justify-end space-x-2">
+                <DialogClose>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    // onClick={() => form.reset()}
+                  >
+                    Cancel
+                  </Button>
+                </DialogClose>
+                <Button disabled={isPending} className="w-40">
+                  {isPending ? (
+                    <LoadingSpinner />
+                  ) : (
+                    <>
+                      <span className="mr-1">Upload Task</span>
+                      <CustomIcon icon="lucide:arrow-right" />
+                    </>
+                  )}
+                </Button>
+              </div>
+            </DialogFooter>
           </form>
         </div>
       </DialogContent>

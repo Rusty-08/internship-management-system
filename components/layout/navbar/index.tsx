@@ -21,29 +21,27 @@ const Navbar = ({ profilePath }: { profilePath: string }) => {
       </p>
       <div className="flex items-center gap-x-4">
         <ThemeToggle />
-        {user && (
-          <ProfileAvatar
-            user={user.name}
-            role={user.role}
-            image={user.image}
-            profilePath={profilePath}
-          >
-            <form action={logout}>
-              <DropdownMenuItem className="group p-0 hover:text-primary cursor-pointer">
-                <Button
-                  type="submit"
-                  variant="ghost"
-                  className="justify-start px-0 w-full"
-                >
-                  <span className="w-12 group-hover:text-primary flex justify-center">
-                    <CustomIcon icon="lets-icons:sign-out-squre-duotone-line" />
-                  </span>
-                  Sign Out
-                </Button>
-              </DropdownMenuItem>
-            </form>
-          </ProfileAvatar>
-        )}
+        <ProfileAvatar
+          user={user?.name}
+          role={user?.role}
+          image={user?.image || ''}
+          profilePath={profilePath}
+        >
+          <form action={logout}>
+            <DropdownMenuItem className="group p-0 hover:text-primary cursor-pointer">
+              <Button
+                type="submit"
+                variant="ghost"
+                className="justify-start px-0 w-full"
+              >
+                <span className="w-12 group-hover:text-primary flex justify-center">
+                  <CustomIcon icon="lets-icons:sign-out-squre-duotone-line" />
+                </span>
+                Sign Out
+              </Button>
+            </DropdownMenuItem>
+          </form>
+        </ProfileAvatar>
       </div>
     </div>
   )

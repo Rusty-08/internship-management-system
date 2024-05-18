@@ -50,7 +50,7 @@ const TaskWrapper = ({ tasks }: TaskWrapperProps) => {
         <TaskForm isOpen={isOpen} setIsOpen={setIsOpen} mode={'add'} />
       </div>
       {filteredTasks.length ? (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {filteredTasks.map(task => (
             <TaskCard
               key={task.id}

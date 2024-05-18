@@ -39,6 +39,7 @@ import {
 import { MentorUsersSubset } from '@/app/admin/mentor-management/_components/accounts-column'
 import { fetchMentorUsers } from '@/utils/users'
 import { LoadingSpinner } from '@/components/@core/loading'
+import AddButton from '@/components/@core/ui/add-button'
 
 type FormActions = 'edit' | 'create' | 'view' | 'archive'
 
@@ -137,16 +138,14 @@ export function FormDialog({
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
       <DialogTrigger asChild>
-        <Button
-          className="gap-2"
+        <AddButton
           onClick={() => {
             setMode('create')
             form.reset()
           }}
         >
-          <CustomIcon icon="ic:sharp-add" />
           Add Account
-        </Button>
+        </AddButton>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -219,17 +218,21 @@ export function FormDialog({
               )}
             </div>
             <DialogFooter>
-              <div className="flex gap-1">
+              <div className="flex gap-2">
                 <DialogClose>
                   <Button
                     type="button"
-                    variant="ghost"
+                    variant="outline"
                     onClick={() => form.reset()}
                   >
                     Cancel
                   </Button>
                 </DialogClose>
-                <Button disabled={isSubmitting} className="w-40 text-base">
+                <Button
+                  disabled={isSubmitting}
+                  className="w-40 text-base"
+                  type="submit"
+                >
                   {isSubmitting ? (
                     <LoadingSpinner />
                   ) : (

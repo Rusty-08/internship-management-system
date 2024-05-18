@@ -148,12 +148,17 @@ import { useForm } from 'react-hook-form'
 import { LoginSchema } from '@/components/auth/login/login-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useMutation } from '@tanstack/react-query'
 
 const LoginForm = () => {
-  const [errorMessage, authenticateLogin] = useFormState(
-    authenticate,
-    undefined,
-  )
+  const {
+    data: errorMessage,
+    mutate: authenticateLogin,
+    isPending,
+  } = useMutation({
+    mutationFn: async (formData: FormData) => await authenticate(formData),
+  })
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -171,7 +176,7 @@ const LoginForm = () => {
     >
       <Form {...form}>
         <form action={authenticateLogin}>
-          <div className="space-y-4 mb-8">
+          <div className="space-y-4 mb-6">
             <FormField
               control={form.control}
               name="email"
@@ -181,6 +186,7 @@ const LoginForm = () => {
                   <FormControl>
                     <Input
                       {...field}
+                      disabled={isPending}
                       type="email"
                       placeholder="sample@gmail.com"
                       icon="heroicons:user"
@@ -198,6 +204,7 @@ const LoginForm = () => {
                   <FormControl>
                     <Input
                       {...field}
+                      disabled={isPending}
                       type="password"
                       placeholder="Password"
                       icon="heroicons:lock-closed"

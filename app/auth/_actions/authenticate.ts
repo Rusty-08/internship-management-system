@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 export async function authenticate(
-  prevState: string | undefined,
+  // prevState: string | undefined,
   formData: FormData,
 ) {
   try {
@@ -26,6 +26,6 @@ export async function authenticate(
 
 export const logout = async () => {
   await signOut()
+  revalidatePath('/')
   redirect('/')
-  // revalidatePath('/')
 }

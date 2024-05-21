@@ -2,6 +2,7 @@ import { Input } from '@/components/ui/input'
 import { Table } from '@tanstack/react-table'
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { FiSearch } from 'react-icons/fi'
 
 interface SearchFilterProps<TData> {
   column: string
@@ -42,7 +43,7 @@ export function SearchFilter<TData>({
   return (
     <Input
       placeholder="Search by name"
-      icon="heroicons:magnifying-glass"
+      icon={FiSearch}
       onChange={event => handleSearch(event.target.value)}
       defaultValue={searchParams.get(search || '')?.toString()}
       className="w-[20rem]"

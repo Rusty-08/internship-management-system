@@ -4,7 +4,6 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
 
-import { IoArchiveOutline } from 'react-icons/io5'
 import { LuArchiveRestore } from 'react-icons/lu'
 import { FiEdit3 } from 'react-icons/fi'
 
@@ -14,7 +13,7 @@ import Link from 'next/link'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 import { UserSubset } from '@/components/@core/ui/table/account-table/types'
 
-export const accountColumns = (actions: {
+export const archiveColumns = (actions: {
   [key: string]: (row: Row<UserSubset>) => void
 }): ColumnDef<UserSubset>[] => [
   {
@@ -56,47 +55,29 @@ export const accountColumns = (actions: {
     },
   },
   {
-    accessorKey: 'mentor',
-    header: 'Mentor',
+    accessorKey: 'role',
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Role" />
+    },
+    cell: ({ row }) => {
+      const role = row.original.role ?? ''
+      return <p>{role.charAt(0).toUpperCase() + role.slice(1).toLowerCase()}</p>
+    },
   },
   {
     id: 'actions',
     cell: ({ row }) => {
       return (
         <div className="flex justify-end">
-          {!row.original.isArchived && (
-            <TooltipWrapper tooltip="Edit">
-              <Button
-                variant="ghost"
-                size="circle"
-                onClick={() => actions.edit(row)}
-              >
-                {row.original.isArchived === false && <FiEdit3 size="1.1rem" />}
-              </Button>
-            </TooltipWrapper>
-          )}
-          <div>
-            {/* <ArchiveConfirmation row={row} archive={actions.archive(row)} /> */}
-            <TooltipWrapper
-              tooltip={
-                row.original.isArchived === false ? 'Archive' : 'Restore'
-              }
+          <TooltipWrapper tooltip="Restore">
+            <Button
+              variant="ghost"
+              size="circle"
+              onClick={() => actions.openArchiveConfirmation(row)}
             >
-              <Button
-                variant="ghost"
-                size="circle"
-                onClick={() => actions.openArchiveConfirmation(row)}
-              >
-                {row.original.isArchived === false ? (
-                  <>
-                    <IoArchiveOutline size="1.1rem" />
-                  </>
-                ) : (
-                  <LuArchiveRestore size="1.1rem" />
-                )}
-              </Button>
-            </TooltipWrapper>
-          </div>
+              <LuArchiveRestore size="1.1rem" />
+            </Button>
+          </TooltipWrapper>
         </div>
       )
     },

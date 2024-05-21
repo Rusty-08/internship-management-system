@@ -1,12 +1,7 @@
 import { CustomIcon } from '@/components/@core/iconify'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { siteConfig } from '@/configs/site'
 import React from 'react'
-
-const socialMedia = [
-  { href: '', icon: 'ri:facebook-fill' },
-  { href: '', icon: 'ri:instagram-fill' },
-  { href: '', icon: 'ri:linkedin-fill' },
-]
 
 const Footer = () => {
   return (
@@ -15,11 +10,11 @@ const Footer = () => {
         <p>Internship Management System v0.1.0</p>
       </div>
       <div className="flex gap-3">
-        {socialMedia.map((item, idx) => (
+        {siteConfig.socialMedia.map((item, idx) => (
           <a href={item.href} key={idx} className="hover:text-primary">
             <Avatar>
               <AvatarFallback>
-                <CustomIcon className="text-lg" icon={item.icon} />
+                <item.icon size="1.1rem" />
               </AvatarFallback>
             </Avatar>
           </a>

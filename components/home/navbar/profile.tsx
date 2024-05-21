@@ -12,6 +12,8 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
+import { RiUserSmileFill } from "react-icons/ri"
+
 import { CustomIcon } from '@/components/@core/iconify'
 import { ReactNode, useState } from 'react'
 
@@ -44,7 +46,7 @@ export const ProfileAvatar = ({
                 : 'text-text border-transparent'
             }`}
           >
-            <CustomIcon icon="lets-icons:user-alt-duotone" />
+            <RiUserSmileFill size="1.3rem" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

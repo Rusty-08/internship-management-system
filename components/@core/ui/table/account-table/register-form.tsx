@@ -1,4 +1,3 @@
-import { CustomIcon } from '@/components/@core/iconify'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -36,12 +35,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { MentorUsersSubset } from '@/app/admin/mentor-management/_components/accounts-column'
 import { fetchMentorUsers } from '@/utils/users'
 import { LoadingSpinner } from '@/components/@core/loading'
 import AddButton from '@/components/@core/ui/add-button'
+import { UserSubset } from './types'
 
-type FormActions = 'edit' | 'create' | 'view' | 'archive'
+const sampleExpertise = [
+  'Frontend Developer',
+  'Backend Developer',
+  'Fullstack Developer',
+  'Mobile Developer',
+  'UI/UX Designer',
+  'Data Scientist',
+]
+
+type FormActions = 'edit' | 'create'
 
 type FormDialogProps = {
   isOpen: boolean
@@ -49,6 +57,7 @@ type FormDialogProps = {
   initialValues?: z.infer<typeof RegistrationSchema>
   mode?: FormActions
   setMode: (mode: FormActions) => void
+  role: 'INTERN' | 'MENTOR'
 }
 
 export function FormDialog({
@@ -57,8 +66,9 @@ export function FormDialog({
   initialValues,
   mode,
   setMode,
+  role,
 }: FormDialogProps) {
-  const [mentors, setMentors] = useState<MentorUsersSubset[]>([])
+  const [mentors, setMentors] = useState<UserSubset[]>([])
   const router = useRouter()
   const [isEmailTaken, setIsEmailTaken] = useState(false)
   const form = useForm<z.infer<typeof RegistrationSchema>>({
@@ -67,13 +77,14 @@ export function FormDialog({
       name: '',
       email: '',
       mentor: '',
+      expertise: '',
     },
   })
 
   const { isSubmitting, errors } = form.formState
 
   const onSubmit = async (values: z.infer<typeof RegistrationSchema>) => {
-    const { name, email, mentor } = values
+    const { name, email, mentor, expertise } = values
 
     try {
       let res
@@ -87,8 +98,9 @@ export function FormDialog({
             id: initialValues?.id,
             name,
             email,
-            role: 'INTERN',
-            mentor,
+            role,
+            mentor: role === 'INTERN' ? mentor : null,
+            expertise: role === 'INTERN' ? null : expertise,
           }),
         })
       } else {
@@ -100,8 +112,9 @@ export function FormDialog({
           body: JSON.stringify({
             name,
             email,
-            role: 'INTERN',
+            role,
             mentor,
+            expertise,
           }),
         })
       }
@@ -132,6 +145,7 @@ export function FormDialog({
       form.setValue('name', initialValues.name ?? '')
       form.setValue('email', initialValues.email ?? '')
       form.setValue('mentor', initialValues.mentor ?? '')
+      form.setValue('expertise', initialValues.expertise ?? '')
     }
   }, [initialValues, form])
 
@@ -184,35 +198,65 @@ export function FormDialog({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="mentor"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Mentor</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select the mentor" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {mentors.map(mentor => (
-                          <SelectItem
-                            key={mentor.email}
-                            value={mentor.id ?? ''}
-                          >
-                            {mentor.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
+              {role === 'INTERN' && (
+                <FormField
+                  control={form.control}
+                  name="mentor"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Mentor</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select the mentor" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {mentors.map(mentor => (
+                            <SelectItem
+                              key={mentor.email}
+                              value={mentor.id ?? ''}
+                            >
+                              {mentor.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              )}
+              {role === 'MENTOR' && (
+                <FormField
+                  control={form.control}
+                  name="expertise"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Role</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select the role" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {sampleExpertise.map(expertise => (
+                            <SelectItem key={expertise} value={expertise}>
+                              {expertise}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              )}
               {isEmailTaken && (
                 <ErrorCard>The Email is already existing</ErrorCard>
               )}

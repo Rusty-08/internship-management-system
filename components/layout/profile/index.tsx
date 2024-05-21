@@ -4,16 +4,16 @@ import Image from 'next/image'
 import profileBg from '@/public/general/images/profile-bg.jpg'
 import { getUserByEmail } from '@/utils/users'
 import { ReactNode, useEffect, useState } from 'react'
-import { InternsUsersSubset } from '@/app/admin/intern-management/_components/accounts-columns'
 import { useRouter } from 'next/navigation'
 import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { NotFoundPage } from '@/app/not-found'
 import { Input } from '@/components/ui/input'
-import { CustomIcon } from '@/components/@core/iconify'
 import { saveImage } from '@/utils/saveImage'
 import { LoadingSpinner } from '@/components/@core/loading'
 import { User } from '@prisma/client'
 import { cn } from '@/lib/utils'
+import { IoImagesOutline } from 'react-icons/io5'
+import imagePlaceholder from '@/public/general/images/male-avatar.svg'
 
 type ProfileProps = {
   breadcrumbLinks?: { title: string; path: string }[]
@@ -89,7 +89,7 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
             <div className="px-12 min-h-32 relative">
               <div className="w-36 group h-36 overflow-hidden absolute -top-10 bg-muted border-muted hover:border-primary/10 transition-all ease-in-out duration-300 z-10 rounded-full border-[0.4rem]">
                 <Image
-                  src={data.image || ''}
+                  src={imagePlaceholder}
                   alt="profile-image"
                   width="0"
                   height="0"
@@ -100,10 +100,8 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
                     uploading ? 'bg-black/50' : 'bg-transparent'
                   } absolute cursor-pointer w-full flex items-center justify-center h-full group-hover:bg-black/50 transition-all ease-in-out duration-300 rounded-full inset-0 border`}
                 >
-                  <CustomIcon
-                    icon="mage:image-upload"
-                    width={40}
-                    height={40}
+                  <IoImagesOutline
+                    size="2rem"
                     className={cn(
                       'opacity-0 transform scale-0 text-white absolute transition-all ease-in-out duration-300 group-hover:scale-100',
                       uploading

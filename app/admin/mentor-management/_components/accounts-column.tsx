@@ -1,7 +1,5 @@
 'use client'
 
-import { CustomIcon } from '@/components/@core/iconify'
-
 import { ColumnDef, Row } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
@@ -11,17 +9,15 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import Link from 'next/link'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 
-export type MentorUsersSubset = {
-  id: string | null
-  image: string | null
-  name: string | null
-  email: string | null
-  role: string | null
-}
+import { IoArchiveOutline } from 'react-icons/io5'
+import { LuArchiveRestore } from 'react-icons/lu'
+import { FiEdit3 } from 'react-icons/fi'
+
+import { UserSubset } from '@/components/@core/ui/table/account-table/types'
 
 export const accountColumns = (actions: {
-  [key: string]: (row: Row<MentorUsersSubset>) => void
-}): ColumnDef<MentorUsersSubset>[] => [
+  [key: string]: (row: Row<UserSubset>) => void
+}): ColumnDef<UserSubset>[] => [
   {
     accessorKey: 'name',
     header: ({ column }) => {
@@ -33,9 +29,11 @@ export const accountColumns = (actions: {
         ?.split(' ')
         .map(n => n[0])
         .join('')
+
       const path = `/admin/mentor-management/${
         row.original.email?.split('@')[0]
       }`
+
       return (
         <div className="flex items-center gap-3">
           <Avatar className="w-8 h-8">
@@ -59,9 +57,9 @@ export const accountColumns = (actions: {
     },
   },
   {
-    accessorKey: 'role',
+    accessorKey: 'expertise',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Role" />
+      return <DataTableColumnHeader column={column} title="Expertise" />
     },
   },
   {
@@ -72,19 +70,25 @@ export const accountColumns = (actions: {
           <TooltipWrapper tooltip="Edit">
             <Button
               variant="ghost"
-              size="icon"
+              size="circle"
               onClick={() => actions.edit(row)}
             >
-              <CustomIcon icon="heroicons:pencil-square" />
+              {!row.original.isArchived && <FiEdit3 size="1.1rem" />}
             </Button>
           </TooltipWrapper>
           <TooltipWrapper tooltip="Archive">
             <Button
               variant="ghost"
-              size="icon"
-              onClick={() => actions.archive(row)}
+              size="circle"
+              onClick={() => actions.openArchiveConfirmation(row)}
             >
-              <CustomIcon icon="heroicons:archive-box" />
+              {!row.original.isArchived ? (
+                <>
+                  <IoArchiveOutline size="1.1rem" />
+                </>
+              ) : (
+                <LuArchiveRestore size="1.1rem" />
+              )}
             </Button>
           </TooltipWrapper>
         </div>

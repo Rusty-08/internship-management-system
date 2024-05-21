@@ -1,10 +1,10 @@
 'use client'
 import { cn } from '@/lib/utils'
-import { Icon, IconProps } from '@iconify/react/dist/iconify.js'
+import { Icon, IconProps, IconifyIcon } from '@iconify/react/dist/iconify.js'
 import { ClassNameValue } from 'tailwind-merge'
 
 type CustomIconProps = {
-  icon: string
+  icon: string | IconifyIcon
   className?: ClassNameValue
 } & IconProps
 

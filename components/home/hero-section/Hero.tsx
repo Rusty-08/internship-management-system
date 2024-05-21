@@ -3,6 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import heroImage from '@/public/home/innovation.svg'
 import { CustomIcon } from '@/components/@core/iconify'
+import { LuArrowUpRightFromCircle } from 'react-icons/lu'
 
 const Hero = () => {
   return (
@@ -23,10 +24,11 @@ const Hero = () => {
           success.
         </p>
         <Button
-          className="rounded-full text-[0.9rem] py-6 px-4 gap-2 mt-2"
+          className="rounded-full text-base py-6 px-4 gap-2 mt-2"
           variant="gradient"
         >
-          <CustomIcon icon="iconamoon:link-external-light" height="1.5rem" />
+          <LuArrowUpRightFromCircle size="1.4rem" />
+          {/* <CustomIcon icon="iconamoon:link-external-light" height="1.5rem" /> */}
           APPLY AS INTERN
         </Button>
       </div>

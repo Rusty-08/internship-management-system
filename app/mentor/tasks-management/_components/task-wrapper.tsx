@@ -7,7 +7,6 @@ import TaskCard from './task-card'
 import NoRecords from '@/components/@core/ui/no-records'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { CustomIcon } from '@/components/@core/iconify'
 import { File, TaskStatus } from '@prisma/client'
 import TaskForm from './task-form'
 

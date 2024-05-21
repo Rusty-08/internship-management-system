@@ -11,13 +11,13 @@ import {
 import { AttendanceProps, attendanceColumns } from './attendance-columns'
 import { DataTablePagination } from '@/components/@core/ui/table/pagination'
 import { Button } from '@/components/ui/button'
-import { CustomIcon } from '@/components/@core/iconify'
 import { FormEvent, useMemo, useState } from 'react'
 import { addAttendance, exportAttendance } from '@/utils/attendance'
 import { useRouter } from 'next/navigation'
 import { AttendanceConfirmation } from './attendance-confirmation'
 import { User } from '@prisma/client'
 import { format, isWithinInterval, parse, startOfMonth } from 'date-fns'
+import { GrDocumentDownload } from "react-icons/gr"
 
 import { DateRangeFilter } from './data-picker'
 import { useToast } from '@/components/ui/use-toast'
@@ -103,7 +103,7 @@ export default function AttendanceTable({
         <DateRangeFilter date={date} setDate={setDate} />
         <div className="flex gap-2">
           <Button variant="outline" onClick={downloadAttendance}>
-            <CustomIcon icon="clarity:export-line" className="mr-2" />
+            <GrDocumentDownload size='1rem' className="mr-2" />
             Export
           </Button>
           {showTimeInBtn && (

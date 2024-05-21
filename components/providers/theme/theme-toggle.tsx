@@ -1,6 +1,11 @@
 'use client'
 
-import { LaptopIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons'
+// import { LaptopIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons'
+
+import { PiSunDuotone } from 'react-icons/pi'
+import { PiMoonDuotone } from 'react-icons/pi'
+import { PiLaptopDuotone } from 'react-icons/pi'
+
 import { useTheme } from 'next-themes'
 
 import { Button } from '@/components/ui/button'
@@ -13,9 +18,9 @@ import {
 import { useEffect, useState } from 'react'
 
 const themes = [
-  { icon: SunIcon, label: 'Light' },
-  { icon: MoonIcon, label: 'Dark' },
-  { icon: LaptopIcon, label: 'System' },
+  { icon: PiSunDuotone, label: 'Light' },
+  { icon: PiMoonDuotone, label: 'Dark' },
+  { icon: PiLaptopDuotone, label: 'System' },
 ]
 
 export function ThemeToggle() {
@@ -33,7 +38,7 @@ export function ThemeToggle() {
           {themes.map(
             ({ icon: Icon, label }) =>
               theme === label.toLowerCase() && (
-                <Icon key={label} className="size-5" />
+                <Icon key={label} size="1.3rem" />
               ),
           )}
         </Button>

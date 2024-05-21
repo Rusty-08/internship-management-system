@@ -1,32 +1,37 @@
+import { RiDashboardFill } from 'react-icons/ri'
+import { IoIosPeople, IoIosArchive } from 'react-icons/io'
+import { PiChalkboardTeacherFill } from 'react-icons/pi'
+import { MdManageAccounts, MdViewList } from 'react-icons/md'
+
 export const adminSidebarLinks = [
   {
     name: 'Dashboard',
     path: '/admin',
-    icon: 'ic:twotone-dashboard',
+    icon: RiDashboardFill,
   },
   {
     name: 'Intern Management',
     path: '/admin/intern-management',
-    icon: 'ph:users-three-duotone',
+    icon: IoIosPeople,
   },
   {
     name: 'Mentor Management',
     path: '/admin/mentor-management',
-    icon: 'solar:users-group-two-rounded-bold-duotone',
+    icon: PiChalkboardTeacherFill,
   },
   {
     name: 'Internship Management',
     path: '/admin/internship-management',
-    icon: 'ic:twotone-task',
+    icon: MdManageAccounts,
   },
   {
     name: 'Reports',
     path: '/admin/reports',
-    icon: 'solar:pen-2-bold-duotone',
+    icon: MdViewList,
   },
   {
     name: 'Archived Records',
     path: '/admin/archived-records',
-    icon: 'solar:inbox-archive-bold-duotone',
+    icon: IoIosArchive,
   },
 ]

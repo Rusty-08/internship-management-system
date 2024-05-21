@@ -1,5 +1,7 @@
 'use client'
+
 import {
+  ColumnDef,
   ColumnFiltersState,
   Row,
   SortingState,
@@ -9,8 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { useState } from 'react'
-import { InternsUsersSubset, accountColumns } from './accounts-columns'
+import { useMemo, useState } from 'react'
 import { FormDialog } from './register-form'
 import { z } from 'zod'
 import { RegistrationSchema } from './registration-schema'
@@ -19,25 +20,43 @@ import { DataTable } from '@/components/@core/ui/table/data-table'
 import { DataTablePagination } from '@/components/@core/ui/table/pagination'
 import { useRouter } from 'next/navigation'
 import { ArchiveConfirmation } from './archive-confirmation'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
-type AccountTableProps = {
-  data: InternsUsersSubset[]
+import { UserSubset } from '@/components/@core/ui/table/account-table/types'
+
+const filters = ['All', 'Intern', 'Mentor']
+
+type AccountsTableProps = {
+  data: UserSubset[]
   isArchivedPage?: boolean
+  user?: 'INTERN' | 'MENTOR'
+  accountColumns: (actions: {
+    [key: string]: (row: Row<UserSubset>) => void
+  }) => ColumnDef<UserSubset, any>[]
 }
 
 export default function AccountsTable({
   data,
   isArchivedPage = false,
-}: AccountTableProps) {
+  user = 'INTERN',
+  accountColumns,
+}: AccountsTableProps) {
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
-  const [formMode, setFormMode] = useState<
-    'edit' | 'create' | 'view' | 'archive'
-  >('create')
+  const [roleFilter, setRoleFilter] = useState('All')
+  const [formMode, setFormMode] = useState<'edit' | 'create'>('create')
   const [sorting, setSorting] = useState<SortingState>([])
   const [rowSelection, setRowSelection] = useState({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [archiveIntern, setArchiveIntern] =
-    useState<Row<InternsUsersSubset> | null>(null)
+  const [archiveIntern, setArchiveIntern] = useState<Row<UserSubset> | null>(
+    null,
+  )
   const [openDialog, setOpenDialog] = useState(false)
   const [loading, setLoading] = useState(false)
   const [editData, setEditData] = useState<z.infer<typeof RegistrationSchema>>({
@@ -45,11 +64,18 @@ export default function AccountsTable({
     name: '',
     email: '',
     mentor: '',
+    expertise: '',
   })
 
-  const router = useRouter()
+  const filteredData = useMemo(
+    () =>
+      roleFilter !== 'All'
+        ? data.filter(d => d.role === roleFilter.toUpperCase())
+        : data,
+    [roleFilter, data],
+  )
 
-  const handleEdit = (row: Row<InternsUsersSubset>) => {
+  const handleEdit = (row: Row<UserSubset>) => {
     setFormMode('edit')
     setIsOpen(true)
     setEditData({
@@ -57,6 +83,7 @@ export default function AccountsTable({
       name: row.original.name || '',
       email: row.original.email || '',
       mentor: row.original.mentorId || '',
+      expertise: row.original.expertise || '',
     })
   }
 
@@ -81,7 +108,7 @@ export default function AccountsTable({
     }
   }
 
-  const openArchiveConfirmation = (row: Row<InternsUsersSubset>) => {
+  const openArchiveConfirmation = (row: Row<UserSubset>) => {
     setArchiveIntern(row)
     setOpenDialog(true)
   }
@@ -92,7 +119,7 @@ export default function AccountsTable({
   }
 
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns: accountColumns(actions),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -119,7 +146,28 @@ export default function AccountsTable({
         isArchivedPage={isArchivedPage}
       />
       <div className="flex items-center justify-between mb-4">
-        <SearchFilter column="name" table={table} search="intern" />
+        <div className="flex w-full justify-between">
+          <SearchFilter column="name" table={table} search="intern" />
+          {isArchivedPage && (
+            <Select
+              onValueChange={value => setRoleFilter(value)}
+              value={roleFilter}
+              defaultValue={filters[0]}
+            >
+              <SelectTrigger className="w-28">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {isArchivedPage &&
+                  filters.map(filter => (
+                    <SelectItem key={filter} value={filter ?? ''}>
+                      {filter}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          )}
+        </div>
         {!isArchivedPage && (
           <FormDialog
             mode={formMode}
@@ -127,6 +175,7 @@ export default function AccountsTable({
             initialValues={editData}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
+            role={user}
           />
         )}
       </div>

@@ -1,6 +1,5 @@
-import { InternsUsersSubset } from '@/app/admin/intern-management/_components/accounts-columns'
-import { MentorUsersSubset } from '@/app/admin/mentor-management/_components/accounts-column'
 import { auth } from '@/auth'
+import { UserSubset } from '@/components/@core/ui/table/account-table/types'
 import prisma from '@/lib/prisma'
 import { User } from '@prisma/client'
 
@@ -71,20 +70,22 @@ export const fetchInternUsers = async () => {
   }
 }
 
-export async function getInternUsers(
+export async function getUsers(
   isArchived: boolean,
-): Promise<InternsUsersSubset[]> {
+  role?: 'INTERN' | 'MENTOR',
+): Promise<UserSubset[]> {
   const users = await prisma.user.findMany({
     where: {
-      role: 'INTERN',
+      role,
       isArchived: isArchived,
     },
-
     select: {
       id: true,
       image: true,
       name: true,
       email: true,
+      role: true,
+      expertise: true,
       internProfile: {
         select: {
           mentor: {
@@ -102,39 +103,43 @@ export async function getInternUsers(
     image: user.image,
     name: user.name,
     email: user.email,
+    role: user.role,
+    expertise: user.expertise || 'none',
     mentor: user.internProfile?.mentor?.name || 'none',
     mentorId: user.internProfile?.mentor?.id || 'none',
     isArchived: isArchived,
   }))
 }
 
-export async function getMentorUsers(): Promise<MentorUsersSubset[]> {
-  const users = await prisma.user.findMany({
-    where: {
-      role: 'MENTOR',
-    },
-    select: {
-      id: true,
-      image: true,
-      name: true,
-      email: true,
-      expertise: true,
-    },
-  })
-  return users.map(user => ({
-    id: user.id,
-    image: user.image,
-    name: user.name,
-    email: user.email,
-    role: user.expertise || 'none',
-  }))
-}
-
-// export async function archiveAccount(id: string) {
-//   await prisma.user.update({
-//     where: { id },
-//     data: {
+// export async function getMentorUsers(): Promise<MentorUsersSubset[]> {
+//   const users = await prisma.user.findMany({
+//     where: {
+//       role: 'MENTOR',
+//     },
+//     select: {
+//       id: true,
+//       image: true,
+//       name: true,
+//       email: true,
+//       expertise: true,
 //       isArchived: true,
 //     },
 //   })
+//   return users.map(user => ({
+//     id: user.id,
+//     image: user.image,
+//     name: user.name,
+//     email: user.email,
+//     role: user.expertise || 'none',
+//     isArchived: user.isArchived,
+//   }))
 // }
+
+export async function archiveAccount(id: string) {
+  await prisma.user.update({
+    where: { id },
+    data: {
+      isArchived: true,
+    },
+  })
+}

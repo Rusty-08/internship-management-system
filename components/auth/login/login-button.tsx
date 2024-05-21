@@ -1,6 +1,6 @@
-import { CustomIcon } from '@/components/@core/iconify'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { AiOutlineLogin } from 'react-icons/ai'
 
 type LoginButtonProps = {
   mode?: 'modal' | 'redirect'
@@ -15,10 +15,11 @@ const LoginButton = ({ mode = 'redirect', ...props }: LoginButtonProps) => {
         className="rounded-full gap-2 px-3 py-3"
         variant="gradient"
       >
-        <CustomIcon icon="uiw:login" />
+        <AiOutlineLogin size="1.4rem" />
         SIGN IN
       </Button>
     </Link>
   )
 }
+
 export default LoginButton

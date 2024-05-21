@@ -1,13 +1,6 @@
 'use client'
 
-import React, {
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useMemo,
-  useState,
-} from 'react'
-import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
+import React, { Dispatch, SetStateAction, useMemo, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -15,25 +8,22 @@ import { DatePickerWithRange } from '@/components/@core/ui/date-range-picker'
 import { useRouter } from 'next/navigation'
 import { DateRange } from 'react-day-picker'
 import { Button } from '@/components/ui/button'
-import { CustomIcon } from '@/components/@core/iconify'
 import { formatISO } from 'date-fns'
 import { createTask } from '@/app/mentor/_actions/create-task'
 import { useMutation } from '@tanstack/react-query'
 import { LoadingSpinner } from '@/components/@core/loading'
+import { IoMdAddCircleOutline } from 'react-icons/io'
 
 import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
 import AddButton from '@/components/@core/ui/add-button'
-
-const links = [{ title: 'Tasks Management', path: '/mentor/tasks-management' }]
 
 type FormPropsTypes = {
   isOpen: boolean
@@ -161,15 +151,8 @@ const TaskForm = ({ isOpen, mode, setIsOpen }: FormPropsTypes) => {
                     Cancel
                   </Button>
                 </DialogClose>
-                <Button disabled={isPending} className="w-40">
-                  {isPending ? (
-                    <LoadingSpinner />
-                  ) : (
-                    <>
-                      <span className="mr-1">Upload Task</span>
-                      <CustomIcon icon="lucide:arrow-right" />
-                    </>
-                  )}
+                <Button disabled={isPending} className="w-32 gap-1">
+                  {isPending ? <LoadingSpinner /> : 'Upload Task'}
                 </Button>
               </div>
             </DialogFooter>

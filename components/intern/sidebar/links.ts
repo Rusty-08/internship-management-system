@@ -1,22 +1,28 @@
+import { RiDashboardFill } from 'react-icons/ri'
+import { IoCalendar } from 'react-icons/io5'
+import { IoMdChatbubbles } from 'react-icons/io'
+import { MdViewList } from 'react-icons/md'
+import { FaCalendarPlus } from "react-icons/fa6"
+
 export const internSidebarLinks = [
   {
     name: 'Dashboard',
     path: '/intern',
-    icon: 'ic:twotone-dashboard',
+    icon: RiDashboardFill,
   },
   {
     name: 'Chat',
     path: '/intern/chat',
-    icon: 'ic:twotone-chat',
+    icon: IoMdChatbubbles,
   },
   {
     name: 'My Attendance',
     path: '/intern/my-attendance',
-    icon: 'ic:twotone-group-add',
+    icon: IoCalendar,
   },
   {
     name: 'Task Management',
     path: '/intern/task-management',
-    icon: 'solar:notes-bold-duotone',
+    icon: MdViewList,
   },
 ]

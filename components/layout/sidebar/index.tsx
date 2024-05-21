@@ -1,7 +1,6 @@
 'use client'
 
 import { Dispatch, MouseEvent, SetStateAction } from 'react'
-import { CustomIcon } from '@/components/@core/iconify'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -10,10 +9,13 @@ import Image from 'next/image'
 import logo from '@/public/home/ims-logo.svg'
 import { useSession } from 'next-auth/react'
 
+import { MdOutlineKeyboardDoubleArrowLeft } from 'react-icons/md'
+import { IconType } from 'react-icons/lib'
+
 type SidebarLinkProps = {
   name: string
   path: string
-  icon: string
+  icon: IconType
 }[]
 
 type SidebarProps = {
@@ -45,7 +47,8 @@ const Sidebar = ({ sideLinks, isMinimized, setIsMinimized }: SidebarProps) => {
         }}
         onMouseEnter={(e: MouseEvent) => e.stopPropagation()}
       >
-        <CustomIcon icon="iconoir:fast-arrow-right" width={17} />
+        <MdOutlineKeyboardDoubleArrowLeft size="1.2rem" />
+        {/* <CustomIcon icon="iconoir:fast-arrow-right" width={17} /> */}
       </Button>
       <div className="flex items-center p-3 pt-4 border-b h-20 border-slate-800">
         <div className="flex items-center gap-2 overflow-hidden">
@@ -65,25 +68,24 @@ const Sidebar = ({ sideLinks, isMinimized, setIsMinimized }: SidebarProps) => {
           </div>
         </div>
       </div>
-      <div className="sidebar flex flex-col overflow-y-auto flex-grow gap-1 py-6">
+      <div className="sidebar flex flex-col overflow-y-auto flex-grow gap-1 py-8">
         {sideLinks.map(item => (
           <Link
             key={item.path}
             href={item.path}
             className={`flex h-[2.8rem] relative justify-start items-center w-full rounded-none transition-all duration-75 hover:bg-primary/10 ${
-              path === item.path ? 'text-white' : 'text-white/50'
+              path === item.path ? 'text-white bg-primary/10' : 'text-white/50'
             } `}
           >
             {path === item.path && (
               <div className="absolute w-1 h-full bg-primary/80 rounded-full left-0 top-0"></div>
             )}
             <div className="flex justify-center flex-shrink-0 w-16">
-              <CustomIcon
+              <item.icon
                 className={`${
                   path === item.path ? 'text-primary' : 'text-white/50'
                 }`}
-                icon={item.icon}
-                width="1.4rem"
+                size="1.2rem"
               />
             </div>
             <span

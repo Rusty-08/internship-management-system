@@ -9,9 +9,8 @@ import {
 } from '@/components/ui/card'
 import { TaskStatus } from '@prisma/client'
 import { format, parseISO } from 'date-fns'
-import { CustomIcon } from '@/components/@core/iconify'
 import { Dispatch, SetStateAction } from 'react'
-import TaskForm from './task-form'
+import { BiEditAlt } from 'react-icons/bi'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 
 export type TaskCardProps = {
@@ -34,7 +33,7 @@ const TaskCard = ({
   const formattedStartDate = format(parseISO(startDate), 'LLL dd')
   const formattedEndDate = format(parseISO(endDate), 'LLL dd, y')
   return (
-    <Card className="bg-transparent">
+    <Card className="group">
       <CardHeader>
         <div className="flex justify-between">
           <span className="text-sm text-muted-foreground">{`${formattedStartDate} - ${formattedEndDate}`}</span>
@@ -50,10 +49,10 @@ const TaskCard = ({
             <Button
               variant="ghost"
               size="circle"
-              className="text-text"
+              className="text-text hidden group-hover:inline-flex"
               onClick={() => setIsOpen(true)}
             >
-              <CustomIcon icon="iconamoon:edit-duotone" className="w-5 h-5" />
+              <BiEditAlt size="1.4rem" />
             </Button>
           </TooltipWrapper>
         </div>

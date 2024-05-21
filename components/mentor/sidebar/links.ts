@@ -1,27 +1,31 @@
+import { RiDashboardFill } from 'react-icons/ri'
+import { IoMdChatbubbles, IoIosPeople } from 'react-icons/io'
+import { MdRateReview, MdViewList } from 'react-icons/md'
+
 export const mentorSidebarLinks = [
   {
     name: 'Dashboard',
     path: '/mentor',
-    icon: 'ic:twotone-dashboard',
+    icon: RiDashboardFill,
   },
   {
     name: 'Chat',
     path: '/mentor/chat',
-    icon: 'ic:twotone-chat',
+    icon: IoMdChatbubbles,
   },
   {
     name: 'Interns Monitoring',
     path: '/mentor/interns-monitoring',
-    icon: 'ion:people',
+    icon: IoIosPeople,
   },
   {
     name: 'Tasks Management',
     path: '/mentor/tasks-management',
-    icon: 'fluent:task-list-ltr-20-filled',
+    icon: MdViewList,
   },
   {
     name: 'Grading',
     path: '/mentor/grading',
-    icon: 'ic:round-grade',
+    icon: MdRateReview,
   },
 ]

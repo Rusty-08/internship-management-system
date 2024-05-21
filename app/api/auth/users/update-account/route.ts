@@ -1,5 +1,6 @@
 import { connectDB } from '@/lib/connect-db'
 import prisma from '@/lib/prisma'
+import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
 export async function PUT(req: Request) {
@@ -50,6 +51,7 @@ export async function PUT(req: Request) {
       { status: 404 },
     )
   } finally {
+    revalidatePath('/admin/archived-records')
     await prisma.$disconnect()
   }
 }

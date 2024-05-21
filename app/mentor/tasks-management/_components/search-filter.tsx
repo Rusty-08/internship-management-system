@@ -4,6 +4,7 @@ import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction, useEffect } from 'react'
 import { ClassNameValue } from 'tailwind-merge'
 import { useDebouncedCallback } from 'use-debounce'
+import { FiSearch } from 'react-icons/fi'
 
 type SearchFilterProps = {
   search: string
@@ -29,7 +30,7 @@ export function SearchFilter({
 
   return (
     <Input
-      icon="heroicons:magnifying-glass"
+      icon={FiSearch}
       placeholder="Search tasks"
       onChange={event => handleSearch(event.target.value)}
       defaultValue={searchParams.get(search || '')?.toString()}

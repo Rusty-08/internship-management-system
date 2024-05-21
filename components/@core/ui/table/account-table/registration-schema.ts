@@ -9,4 +9,5 @@ export const RegistrationSchema = z.object({
     message: 'Email is not valid',
   }),
   mentor: z.string().optional(),
+  expertise: z.string().optional(),
 })

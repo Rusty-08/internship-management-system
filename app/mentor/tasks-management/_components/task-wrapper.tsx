@@ -21,8 +21,8 @@ type TaskProps = {
   title: string
   description: string
   status: TaskStatus
-  startDate: string
-  endDate: string
+  startDate: Date
+  endDate: Date
   files?: FileProps[]
 }
 

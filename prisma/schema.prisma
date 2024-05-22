@@ -59,14 +59,14 @@ model Profile {
 }
 
 model Attendance {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
-  internId   String  @db.ObjectId
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  internId   String    @db.ObjectId
   date       String
-  timeInAM   String?
-  timeOutAM  String?
-  timeInPM   String?
-  timeOutPM  String?
-  totalHours String?
+  timeInAM   DateTime?
+  timeOutAM  DateTime?
+  timeInPM   DateTime?
+  timeOutPM  DateTime?
+  totalHours Float?
 
   intern User @relation(fields: [internId], references: [id], onDelete: Cascade)
 }
@@ -82,8 +82,8 @@ model Task {
   title       String
   description String
   status      TaskStatus
-  startDate   String
-  endDate     String
+  startDate   DateTime
+  endDate     DateTime
   mentorId    String     @unique @db.ObjectId
 
   mentor User   @relation("mentorTask", fields: [mentorId], references: [id], onDelete: Cascade)

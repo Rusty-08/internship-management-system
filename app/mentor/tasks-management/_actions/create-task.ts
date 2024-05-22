@@ -4,8 +4,6 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '@/lib/firebase'
 import prisma from '@/lib/prisma'
 import { getCurrentUser } from '@/utils/users'
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 
 export const createTask = async (formData: FormData) => {
   const user = await getCurrentUser()
@@ -39,18 +37,19 @@ export const createTask = async (formData: FormData) => {
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref)
         console.log('File available at', downloadURL)
 
+        console.log(startDate)
+
         // Create a new task
         const newTask = await prisma.task.create({
           data: {
             title: title as string,
             description: description as string,
             status: 'PENDING',
-            startDate: startDate as string,
-            endDate: endDate as string,
+            startDate: new Date(startDate as string),
+            endDate: new Date(endDate as string),
             mentorId: user?.id || '', // replace with the mentor's user ID
           },
         })
-
         // Create a new file record associated with the task
         const newFile = await prisma.file.create({
           data: {

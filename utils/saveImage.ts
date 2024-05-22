@@ -1,4 +1,3 @@
-import { InternsUsersSubset } from '@/app/admin/intern-management/_components/accounts-columns'
 import { User } from '@prisma/client'
 
 export async function saveImage(

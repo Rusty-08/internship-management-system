@@ -14,6 +14,8 @@ import { User } from '@prisma/client'
 import { cn } from '@/lib/utils'
 import { IoImagesOutline } from 'react-icons/io5'
 import imagePlaceholder from '@/public/general/images/male-avatar.svg'
+import { uploadImage } from '@/lib/action'
+import { useMutation } from '@tanstack/react-query'
 
 type ProfileProps = {
   breadcrumbLinks?: { title: string; path: string }[]
@@ -32,22 +34,24 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
   ) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0]
-      const reader = new FileReader()
-
-      reader.onloadend = async () => {
-        setUploading(true)
-        const base64String = reader.result as string
-        const updatedUser = await saveImage(
-          data?.email ? data.email : '',
-          base64String,
-        )
-        setData(updatedUser)
+      setUploading(true)
+      try {
+        const formData = new FormData()
+        formData.append('image', file)
+        formData.append('email', email)
+        const user = await uploadImage(formData)
+        setData(user)
+      } catch (error) {
+        // Handle upload error
+      } finally {
         setUploading(false)
       }
-
-      reader.readAsDataURL(file)
     }
   }
+
+  const { mutate: uploadUserImage } = useMutation({
+    mutationFn: handleFileChange,
+  })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,13 +91,13 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
               className="w-full max-w-full object-cover max-h-60"
             />
             <div className="px-12 min-h-32 relative">
-              <div className="w-36 group h-36 overflow-hidden absolute -top-10 bg-muted border-muted hover:border-primary/10 transition-all ease-in-out duration-300 z-10 rounded-full border-[0.4rem]">
+              <div className="w-36 group h-36 overflow-hidden absolute -top-10 bg-muted border-muted hover:bo rder-primary/10 transition-all ease-in-out duration-300 z-10 rounded-full border-[0.4rem]">
                 <Image
-                  src={imagePlaceholder}
+                  src={data.image || imagePlaceholder}
                   alt="profile-image"
-                  width="0"
-                  height="0"
-                  className="w-full absolute h-full object-cover"
+                  width={200}
+                  height={200}
+                  className="object-cover"
                 />
                 <div
                   className={`${
@@ -111,7 +115,7 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
                   />
                   <Input
                     type="file"
-                    onChange={handleFileChange}
+                    onChange={uploadUserImage}
                     className="h-[8.2rem] w-full cursor-pointer rounded-full object-cover opacity-0"
                   />
                   {uploading && (

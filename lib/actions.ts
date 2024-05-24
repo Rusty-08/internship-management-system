@@ -4,6 +4,7 @@ import { storage } from './firebase'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import prisma from './prisma'
 import { User } from '@prisma/client'
+import { revalidatePath } from 'next/cache'
 
 export async function uploadImage(formData: FormData): Promise<User | null> {
   const image = formData.get('image') as File
@@ -35,6 +36,7 @@ export async function uploadImage(formData: FormData): Promise<User | null> {
           },
         })
         resolve(updatedUser)
+        revalidatePath('/admin/intern-management')
       },
     )
   })

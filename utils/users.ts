@@ -14,6 +14,12 @@ export async function getServerUserByEmail(email: string) {
   return user
 }
 
+// Server-side function to get the current user by id
+export async function getServerUserById(id: string) {
+  const user = await prisma.user.findUnique({ where: { id } })
+  return user
+}
+
 // Client-side function to get the current user by email
 export async function getUserByEmail(email: string): Promise<User | null> {
   const res = await fetch(`/api/auth/users/user/${email}`, {

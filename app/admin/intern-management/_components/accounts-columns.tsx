@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import Link from 'next/link'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 import { UserSubset } from '@/components/@core/ui/table/account-table/types'
+import defaultAvatar from '@/public/general/images/profile-bg.jpg'
 
 export const accountColumns = (actions: {
   [key: string]: (row: Row<UserSubset>) => void
@@ -29,9 +30,7 @@ export const accountColumns = (actions: {
         ?.split(' ')
         .map(n => n[0])
         .join('')
-      const path = `/admin/intern-management/${
-        row.original.email?.split('@')[0]
-      }`
+      const path = `/admin/intern-management/${row.original.id}`
 
       return (
         <div className="flex items-center gap-3">

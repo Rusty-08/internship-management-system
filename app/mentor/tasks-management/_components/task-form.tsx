@@ -72,6 +72,7 @@ const TaskForm = ({ isOpen, mode, setIsOpen }: FormPropsTypes) => {
                   placeholder="Task Title"
                   required
                   name="title"
+                  disabled={isPending}
                 />
               </div>
               <div className="space-y-1">
@@ -89,11 +90,18 @@ const TaskForm = ({ isOpen, mode, setIsOpen }: FormPropsTypes) => {
                   placeholder="Write descriptions here..."
                   required
                   name="description"
+                  disabled={isPending}
                 />
               </div>
               <div className="space-y-1">
                 <Label htmlFor="file">Attach File</Label>
-                <Input type="file" id="file" name="upload" required />
+                <Input
+                  type="file"
+                  id="file"
+                  name="upload"
+                  required
+                  disabled={isPending}
+                />
               </div>
             </div>
             <DialogFooter>

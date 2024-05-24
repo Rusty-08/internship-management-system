@@ -8,13 +8,12 @@ import { useRouter } from 'next/navigation'
 import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { NotFoundPage } from '@/app/not-found'
 import { Input } from '@/components/ui/input'
-import { saveImage } from '@/utils/saveImage'
 import { LoadingSpinner } from '@/components/@core/loading'
 import { User } from '@prisma/client'
 import { cn } from '@/lib/utils'
 import { IoImagesOutline } from 'react-icons/io5'
 import imagePlaceholder from '@/public/general/images/male-avatar.svg'
-import { uploadImage } from '@/lib/action'
+import { uploadImage } from '@/lib/actions'
 import { useMutation } from '@tanstack/react-query'
 
 type ProfileProps = {
@@ -85,9 +84,9 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
             <Image
               src={profileBg}
               alt="profile-background"
-              width="0"
+              width={0}
               loading="lazy"
-              height="0"
+              height={0}
               className="w-full max-w-full object-cover max-h-60"
             />
             <div className="px-12 min-h-32 relative">
@@ -97,7 +96,8 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
                   alt="profile-image"
                   width={200}
                   height={200}
-                  className="object-cover"
+                  loading="lazy"
+                  className="w-full h-full object-cover"
                 />
                 <div
                   className={`${

@@ -5,24 +5,20 @@ import Profile from '@/components/layout/profile'
 
 import { TabsContent } from '@/components/ui/tabs'
 import { getAttendanceMode, getInternAttendance } from '@/utils/attendance'
-import { getServerUserByEmail } from '@/utils/users'
+import { getServerUserById } from '@/utils/users'
 
 const breadcrumbLinks = [
   { title: 'Intern Management', path: '/admin/intern-management' },
 ]
 
-const UserProfile = async ({
-  params: { profile },
-}: {
-  params: { profile: string }
-}) => {
-  const attendance = await getInternAttendance(`${profile}@gmail.com`)
-  const user = await getServerUserByEmail(`${profile}@gmail.com`)
+const UserProfile = async ({ params: { id } }: { params: { id: string } }) => {
+  const user = await getServerUserById(id)
+  const attendance = await getInternAttendance(user?.email)
 
   const mode = getAttendanceMode(attendance)
 
   return (
-    <Profile email={`${profile}@gmail.com`} breadcrumbLinks={breadcrumbLinks}>
+    <Profile email={user?.email || ''} breadcrumbLinks={breadcrumbLinks}>
       <TabsWrapper triggers={['Overview', 'Attendance']}>
         <TabsContent value="overview">
           <div className="border-t my-4 flex items-center justify-center min-h-[20rem] rounded-sm">

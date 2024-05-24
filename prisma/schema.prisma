@@ -35,7 +35,7 @@ model User {
   password               String
   passwordChangeRequired Boolean      @default(true)
   emailVerified          DateTime?
-  image                  String?      @default("/general/images/male-avatar.svg")
+  image                  String?
   role                   UserRole?    @default(USER)
   expertise              String?
   attendance             Attendance[]

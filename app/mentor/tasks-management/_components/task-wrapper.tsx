@@ -38,6 +38,10 @@ const TaskWrapper = ({ tasks }: TaskWrapperProps) => {
     task.title.toLowerCase().includes(searchTasks.toLowerCase()),
   )
 
+  const sortedTasks = filteredTasks.sort(
+    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
+  )
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between">
@@ -48,9 +52,9 @@ const TaskWrapper = ({ tasks }: TaskWrapperProps) => {
         />
         <TaskForm isOpen={isOpen} setIsOpen={setIsOpen} mode={'add'} />
       </div>
-      {filteredTasks.length ? (
+      {sortedTasks.length ? (
         <div className="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {filteredTasks.map(task => (
+          {sortedTasks.map(task => (
             <TaskCard
               key={task.id}
               title={task.title}

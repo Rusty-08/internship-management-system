@@ -22,6 +22,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import AddButton from '@/components/@core/ui/add-button'
+import { z } from 'zod'
+import { set } from 'date-fns'
 
 type FormPropsTypes = {
   isOpen: boolean
@@ -32,9 +34,10 @@ type FormPropsTypes = {
 const TaskForm = ({ isOpen, mode, setIsOpen }: FormPropsTypes) => {
   const router = useRouter()
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: new Date(),
+    from: undefined,
+    to: undefined,
   })
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   const handleSubmit = async (formData: FormData) => {
     formData.append('startDate', dateRange?.from?.toISOString() || '')
@@ -44,7 +47,16 @@ const TaskForm = ({ isOpen, mode, setIsOpen }: FormPropsTypes) => {
       setIsOpen(false)
       router.refresh()
     } catch (error) {
-      console.error(error)
+      if (error instanceof z.ZodError) {
+        setErrors(
+          error.errors.reduce((prev, curr) => {
+            return { ...prev, [curr.path[0]]: curr.message }
+          }, {}),
+        )
+      } else if (error instanceof Error) {
+        const serverErrors = JSON.parse(error.message)
+        setErrors(serverErrors)
+      }
     }
   }
 
@@ -53,7 +65,16 @@ const TaskForm = ({ isOpen, mode, setIsOpen }: FormPropsTypes) => {
   })
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={open => {
+        if (open) {
+          setDateRange({ from: undefined, to: undefined })
+          setErrors({})
+        }
+        setIsOpen(open)
+      }}
+    >
       <DialogTrigger asChild>
         <AddButton>Create Task</AddButton>
       </DialogTrigger>
@@ -70,10 +91,17 @@ const TaskForm = ({ isOpen, mode, setIsOpen }: FormPropsTypes) => {
                   type="text"
                   id="title"
                   placeholder="Task Title"
-                  required
                   name="title"
-                  disabled={isPending}
                 />
+                {errors.title && (
+                  <p
+                    className="text-red-500 text-sm"
+                    aria-live="polite"
+                    aria-atomic="true"
+                  >
+                    {errors.title}
+                  </p>
+                )}
               </div>
               <div className="space-y-1">
                 <Label htmlFor="date">Task Date Range</Label>
@@ -82,26 +110,45 @@ const TaskForm = ({ isOpen, mode, setIsOpen }: FormPropsTypes) => {
                   setDate={setDateRange}
                   className="w-full"
                 />
+                {errors.startDate || errors.endDate ? (
+                  <p
+                    className="text-red-500 text-sm"
+                    aria-live="polite"
+                    aria-atomic="true"
+                  >
+                    {errors.startDate || errors.endDate}
+                  </p>
+                ) : null}
               </div>
               <div className="space-y-1">
                 <Label htmlFor="descriptions">Descriptions</Label>
                 <Textarea
                   id="descriptions"
                   placeholder="Write descriptions here..."
-                  required
                   name="description"
-                  disabled={isPending}
                 />
+                {errors.description && (
+                  <p
+                    className="text-red-500 text-sm"
+                    aria-live="polite"
+                    aria-atomic="true"
+                  >
+                    {errors.description}
+                  </p>
+                )}
               </div>
               <div className="space-y-1">
                 <Label htmlFor="file">Attach File</Label>
-                <Input
-                  type="file"
-                  id="file"
-                  name="upload"
-                  required
-                  disabled={isPending}
-                />
+                <Input type="file" id="file" name="upload" />
+                {errors.upload && (
+                  <p
+                    className="text-red-500 text-sm"
+                    aria-live="polite"
+                    aria-atomic="true"
+                  >
+                    {errors.upload}
+                  </p>
+                )}
               </div>
             </div>
             <DialogFooter>

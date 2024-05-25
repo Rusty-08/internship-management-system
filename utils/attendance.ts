@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
-import { getCurrentUser, getUserByEmail } from './users'
+import { getCurrentUser } from './users'
 import { AttendanceProps } from '@/app/intern/my-attendance/_components/attendance-columns'
-import { differenceInMinutes, format, parse } from 'date-fns'
+import { differenceInMinutes, format } from 'date-fns'
 import * as XLSX from 'xlsx'
 
 // Get attendance by user email or current user
@@ -29,56 +29,36 @@ export async function getInternAttendance(
 }
 
 export const getTotalHours = (
-  timeOutAM: string,
-  timeInAM: string,
-  timeOutPM: string,
-  timeInPM: string,
+  timeOutAM: Date | null,
+  timeInAM: Date | null,
+  timeOutPM: Date | null,
+  timeInPM: Date | null,
 ) => {
-  const totalMinutesAM = differenceInMinutes(
-    parse(timeOutAM, 'h:mm a', new Date()),
-    parse(timeInAM, 'h:mm a', new Date()),
-  )
+  let totalMinutesAM = 0
+  let totalMinutesPM = 0
 
-  // If there is no time in the afternoon, return the total hours in the morning
-  if (!timeOutPM || !timeInPM) {
-    const hoursAM = Math.floor(totalMinutesAM / 60)
-    const minutesAM = totalMinutesAM % 60
-    return `${hoursAM}:${minutesAM.toString().padStart(2, '0')}`
+  if (timeOutAM && timeInAM) {
+    totalMinutesAM = differenceInMinutes(timeOutAM, timeInAM)
   }
 
-  // If there is no time in the morning, return the total hours in the afternoon
-  if (!timeOutAM || !timeInAM) {
-    const totalMinutesPM = differenceInMinutes(
-      parse(timeOutPM, 'h:mm a', new Date()),
-      parse(timeInPM, 'h:mm a', new Date()),
-    )
-    const hoursPM = Math.floor(totalMinutesPM / 60)
-    const minutesPM = totalMinutesPM % 60
-    return `${hoursPM}:${minutesPM.toString().padStart(2, '0')}`
+  if (timeOutPM && timeInPM) {
+    totalMinutesPM = differenceInMinutes(timeOutPM, timeInPM)
   }
 
-  // If there is time in both the morning and afternoon, return the total hours for both
-  const totalMinutesPM = differenceInMinutes(
-    parse(timeOutPM, 'h:mm a', new Date()),
-    parse(timeInPM, 'h:mm a', new Date()),
-  )
   const totalMinutes = totalMinutesAM + totalMinutesPM
-  const hours = Math.floor(totalMinutes / 60)
-  const minutes = totalMinutes % 60
+  const totalHours = totalMinutes / 60
 
-  return `${hours}:${minutes.toString().padStart(2, '0')}`
+  return totalHours
 }
 
-export const addAttendance = async (email: string) => {
-  const user = await getUserByEmail(email)
-
+export const addAttendance = async (internId: string) => {
   const res = await fetch('/api/attendance', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      internId: user?.id,
+      internId,
     }),
   })
 
@@ -86,25 +66,32 @@ export const addAttendance = async (email: string) => {
 }
 
 export const getAttendanceMode = (attendance: AttendanceProps[]) => {
-  const currentTime = new Date()
-  const currentHour = currentTime.getHours()
+  const currentDate = new Date()
+  const currentHour = currentDate.getHours()
 
+  // Default mode is 'Time In'
   let mode = 'Time In'
 
-  const currentDate = format(new Date(), 'EEE, MMM dd')
+  // If there's no attendance or the last attendance is not from today, return 'Time In'
+  if (
+    !attendance.length ||
+    attendance[attendance.length - 1].date?.getDay() != currentDate?.getDay()
+  ) {
+    return mode
+  }
 
-  if (!attendance.length) return mode
-  if (attendance[attendance.length - 1].date !== currentDate) return mode
+  // If it's morning and there's a time in for the morning, return 'Time out'
+  if (currentHour < 12 && attendance[attendance.length - 1].timeInAM) {
+    mode = 'Time out'
+  }
 
-  if (attendance.length) {
-    if (currentHour < 12 && attendance[attendance.length - 1].timeInAM) {
-      mode = 'Time out'
-    } else if (
-      currentHour >= 12.5 &&
-      attendance[attendance.length - 1].timeInPM
-    ) {
-      mode = 'Time out'
-    }
+  // If it's afternoon and there's a time in for the afternoon, return 'Time out'
+  if (
+    currentHour >= 12 &&
+    attendance[attendance.length - 1].timeInPM &&
+    !attendance[attendance.length - 1].timeOutPM
+  ) {
+    mode = 'Time out'
   }
 
   return mode
@@ -112,8 +99,18 @@ export const getAttendanceMode = (attendance: AttendanceProps[]) => {
 
 // export attendance in excel format
 export const exportAttendance = (data: AttendanceProps[]) => {
-  // Create a new worksheet from the attendance data
-  const worksheet = XLSX.utils.json_to_sheet(data)
+  /* flatten objects */
+  const rows = data.map(row => ({
+    date: row.date ? format(row.date, 'EEE, MMM dd') : '',
+    timeInAM: row.timeInAM ? format(row.timeInAM, 'hh:mm aa') : '',
+    timeOutAM: row.timeOutAM ? format(row.timeOutAM, 'hh:mm aa') : '',
+    timeInPM: row.timeInPM ? format(row.timeInPM, 'hh:mm aa') : '',
+    timeOutPM: row.timeOutPM ? format(row.timeOutPM, 'hh:mm aa') : '',
+    totalHours: row.totalHours?.toFixed(2),
+  }))
+
+  // Create a new worksheet from the rows array
+  const worksheet = XLSX.utils.json_to_sheet(rows)
 
   // Create a new workbook and add the worksheet to it
   const workbook = XLSX.utils.book_new()
@@ -125,16 +122,6 @@ export const exportAttendance = (data: AttendanceProps[]) => {
     [['Date', 'Time In', 'Time Out', 'Time In', 'Time Out', 'Total Hours']],
     { origin: 'A1' },
   )
-
-  /* flatten objects */
-  const rows = data.map(row => ({
-    date: row.date,
-    timeInAM: row.timeInAM,
-    timeOutAM: row.timeOutAM,
-    timeInPM: row.timeInPM,
-    timeOutPM: row.timeOutPM,
-    totalHours: row.totalHours,
-  }))
 
   const columns = Object.keys(rows[0])
 

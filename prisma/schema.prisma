@@ -61,7 +61,7 @@ model Profile {
 model Attendance {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   internId   String    @db.ObjectId
-  date       String
+  date       DateTime?
   timeInAM   DateTime?
   timeOutAM  DateTime?
   timeInPM   DateTime?

@@ -17,6 +17,9 @@ const taskSchema = z.object({
     .instanceof(File)
     .optional()
     .refine(file => {
+      return !file
+    }, 'File is required')
+    .refine(file => {
       return !file || file.size <= max_Upload_Size
     }, 'File size must be less than 5MB')
     .refine(file => {

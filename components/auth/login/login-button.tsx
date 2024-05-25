@@ -12,7 +12,7 @@ const LoginButton = ({ mode = 'redirect', ...props }: LoginButtonProps) => {
     <Link href="/auth/login">
       <Button
         {...props}
-        className="rounded-full gap-2 px-3 py-3"
+        className="rounded-full gap-2 px-3 pe-5 py-3"
         variant="gradient"
       >
         <AiOutlineLogin size="1.4rem" />

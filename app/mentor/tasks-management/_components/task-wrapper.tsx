@@ -1,13 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { tasks } from './dummy-data'
 import { SearchFilter } from './search-filter'
 import TaskCard from './task-card'
 import NoRecords from '@/components/@core/ui/no-records'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { File, TaskStatus } from '@prisma/client'
+import { TaskStatus } from '@prisma/client'
 import TaskForm from './task-form'
 
 type FileProps = {

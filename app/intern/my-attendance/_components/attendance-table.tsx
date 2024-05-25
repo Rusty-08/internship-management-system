@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation'
 import { AttendanceConfirmation } from './attendance-confirmation'
 import { User } from '@prisma/client'
 import { format, isWithinInterval, parse, startOfMonth } from 'date-fns'
-import { GrDocumentDownload } from "react-icons/gr"
+import { GrDocumentDownload } from 'react-icons/gr'
 
 import { DateRangeFilter } from './data-picker'
 import { useToast } from '@/components/ui/use-toast'
@@ -51,10 +51,9 @@ export default function AttendanceTable({
     }
 
     return data.filter(attendance => {
-      const attendanceDate = parse(attendance.date, 'EEE, MMM dd', new Date())
-      return isWithinInterval(attendanceDate, {
-        start: date.from || '',
-        end: date.to || '',
+      return isWithinInterval(attendance.date || new Date(), {
+        start: date.from || new Date(),
+        end: date.to || new Date(),
       })
     })
   }, [data, date])
@@ -69,7 +68,7 @@ export default function AttendanceTable({
   const addCurrentAttendance = async (event: FormEvent) => {
     event.preventDefault()
     setLoading(true)
-    const res = await addAttendance(user?.email || '')
+    await addAttendance(user?.id || '')
     setLoading(false)
     setIsOpen(false)
     router.refresh()
@@ -92,7 +91,7 @@ export default function AttendanceTable({
   const currentAttendance = useMemo(
     () =>
       data.find(
-        attendance => attendance.date === format(new Date(), 'EEE, MMM dd'),
+        attendance => attendance.date?.getDate() === new Date().getDate(),
       ),
     [data],
   )
@@ -103,7 +102,7 @@ export default function AttendanceTable({
         <DateRangeFilter date={date} setDate={setDate} />
         <div className="flex gap-2">
           <Button variant="outline" onClick={downloadAttendance}>
-            <GrDocumentDownload size='1rem' className="mr-2" />
+            <GrDocumentDownload size="1rem" className="mr-2" />
             Export
           </Button>
           {showTimeInBtn && (

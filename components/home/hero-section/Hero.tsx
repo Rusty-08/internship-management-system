@@ -24,11 +24,10 @@ const Hero = () => {
           success.
         </p>
         <Button
-          className="rounded-full text-base py-6 px-4 gap-2 mt-2"
+          className="rounded-full text-base py-6 px-4 pe-6 gap-2 mt-2"
           variant="gradient"
         >
           <LuArrowUpRightFromCircle size="1.4rem" />
-          {/* <CustomIcon icon="iconamoon:link-external-light" height="1.5rem" /> */}
           APPLY AS INTERN
         </Button>
       </div>

@@ -8,17 +8,19 @@ export async function POST(req: Request) {
 
   try {
     const currentDate = new Date()
-    const time = format(currentDate, 'h:mm aa')
     // direct the attendance in PM if it is already 1 PM
     const isAfternoon = currentDate.getHours() >= 13
 
     // Find today's attendance record for the intern
-    const attendance = await prisma.attendance.findFirst({
+    const attendanceRecords = await prisma.attendance.findMany({
       where: {
         internId,
-        date: format(new Date(), 'EEE, MMM dd'),
       },
     })
+
+    const attendance = attendanceRecords.find(
+      att => att.date?.getDate() === currentDate.getDate(),
+    )
 
     // If it's morning and there's no attendance record, create one
     if (!isAfternoon) {
@@ -27,17 +29,22 @@ export async function POST(req: Request) {
         await prisma.attendance.create({
           data: {
             internId,
-            date: format(new Date(), 'EEE, MMM dd'),
-            timeInAM: time,
-            totalHours: '0',
+            date: currentDate,
+            timeInAM: currentDate,
+            totalHours: 0,
           },
         })
       } else if (!attendance.timeOutAM) {
         await prisma.attendance.update({
           where: { id: attendance.id },
           data: {
-            timeOutAM: time,
-            totalHours: getTotalHours(time, attendance.timeInAM, '', ''),
+            timeOutAM: currentDate,
+            totalHours: getTotalHours(
+              currentDate,
+              attendance.timeInAM,
+              null,
+              null,
+            ),
           },
         })
       }
@@ -48,18 +55,18 @@ export async function POST(req: Request) {
       if (!attendance.timeInPM) {
         await prisma.attendance.update({
           where: { id: attendance.id },
-          data: { timeInPM: time },
+          data: { timeInPM: currentDate },
         })
       } else if (!attendance.timeOutPM) {
         await prisma.attendance.update({
           where: { id: attendance.id },
           data: {
-            timeOutPM: time,
+            timeOutPM: currentDate,
             totalHours: getTotalHours(
-              attendance.timeOutAM || '',
-              attendance.timeInAM || '',
-              time,
-              attendance.timeInPM || '',
+              attendance.timeOutAM,
+              attendance.timeInAM,
+              currentDate,
+              attendance.timeInPM,
             ),
           },
         })
@@ -71,9 +78,9 @@ export async function POST(req: Request) {
       await prisma.attendance.create({
         data: {
           internId,
-          date: format(new Date(), 'EEE, MMM dd'),
-          timeInPM: time,
-          totalHours: '0',
+          date: currentDate,
+          timeInPM: currentDate,
+          totalHours: 0,
         },
       })
     }
@@ -89,5 +96,7 @@ export async function POST(req: Request) {
       { message: 'Could not save attendance' },
       { status: 404 },
     )
+  } finally {
+    prisma.$disconnect()
   }
 }

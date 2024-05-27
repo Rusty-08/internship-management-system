@@ -5,7 +5,9 @@ import { SearchFilter } from './search-filter'
 import TaskCard from './task-card'
 import NoRecords from '@/components/@core/ui/no-records'
 import { TaskStatus } from '@prisma/client'
-import TaskForm from './task-form'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { CustomIcon } from '@/components/@core/iconify'
 
 type FileProps = {
   id: string
@@ -29,7 +31,6 @@ type TaskWrapperProps = {
 
 const TaskWrapper = ({ tasks }: TaskWrapperProps) => {
   const [searchTasks, setSearchTasks] = useState('')
-  const [isOpen, setIsOpen] = useState(false)
 
   const filteredTasks = tasks.filter(task =>
     task.title.toLowerCase().includes(searchTasks.toLowerCase()),
@@ -47,7 +48,12 @@ const TaskWrapper = ({ tasks }: TaskWrapperProps) => {
           search={searchTasks}
           setSearch={setSearchTasks}
         />
-        <TaskForm isOpen={isOpen} setIsOpen={setIsOpen} mode={'add'} />
+        <Link href="/mentor/tasks-management/create">
+          <Button>
+            <span className="mr-2">Create Task</span>
+            <CustomIcon icon="lucide:circle-plus" />
+          </Button>
+        </Link>
       </div>
       {sortedTasks.length ? (
         <div className="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -59,7 +65,6 @@ const TaskWrapper = ({ tasks }: TaskWrapperProps) => {
               status={task.status}
               startDate={task.startDate}
               endDate={task.endDate}
-              setIsOpen={setIsOpen}
             />
           ))}
         </div>

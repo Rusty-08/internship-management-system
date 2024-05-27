@@ -1,6 +1,5 @@
 import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
-import TaskCard, { TaskCardProps } from './_components/task-card'
-import TaskWrapper from './_components/task-wrapper'
+import TaskWrapper from '@/app/mentor/tasks-management/_components/task-wrapper'
 import prisma from '@/lib/prisma'
 import { getCurrentUser } from '@/utils/users'
 

@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/card'
 import { TaskStatus } from '@prisma/client'
 import { format } from 'date-fns'
-import { Dispatch, SetStateAction } from 'react'
 import { BiEditAlt } from 'react-icons/bi'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 
@@ -19,7 +18,6 @@ export type TaskCardProps = {
   status: TaskStatus
   startDate: Date
   endDate: Date
-  setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 
 const TaskCard = ({
@@ -28,7 +26,6 @@ const TaskCard = ({
   status,
   startDate,
   endDate,
-  setIsOpen,
 }: TaskCardProps) => {
   const formattedStartDate = format(startDate, 'LLL dd')
   const formattedEndDate = format(endDate, 'LLL dd, y')
@@ -50,7 +47,6 @@ const TaskCard = ({
               variant="ghost"
               size="circle"
               className="text-text hidden group-hover:inline-flex"
-              onClick={() => setIsOpen(true)}
             >
               <BiEditAlt size="1.4rem" />
             </Button>

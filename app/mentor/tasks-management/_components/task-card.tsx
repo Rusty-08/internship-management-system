@@ -29,8 +29,9 @@ const TaskCard = ({
 }: TaskCardProps) => {
   const formattedStartDate = format(startDate, 'LLL dd')
   const formattedEndDate = format(endDate, 'LLL dd, y')
+
   return (
-    <Card className="group">
+    <Card>
       <CardHeader>
         <div className="flex justify-between">
           <span className="text-sm text-muted-foreground">{`${formattedStartDate} - ${formattedEndDate}`}</span>
@@ -43,11 +44,7 @@ const TaskCard = ({
         <div className="flex justify-between gap-2 w-full">
           <Button variant="outline">View Details</Button>
           <TooltipWrapper tooltip="Edit Task">
-            <Button
-              variant="ghost"
-              size="circle"
-              className="text-text hidden group-hover:inline-flex"
-            >
+            <Button variant="ghost" size="circle" className="text-text">
               <BiEditAlt size="1.4rem" />
             </Button>
           </TooltipWrapper>

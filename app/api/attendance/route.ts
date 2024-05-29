@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma'
 import { getTotalHours } from '@/utils/attendance'
 import { format } from 'date-fns'
+import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
@@ -98,5 +99,6 @@ export async function POST(req: Request) {
     )
   } finally {
     prisma.$disconnect()
+    revalidatePath('/intern/my-attendance')
   }
 }

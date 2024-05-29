@@ -141,6 +141,26 @@ export async function getUsers(
 //   }))
 // }
 
+// ask for intern id and return mentor id
+export const getCurrentUserMentorId = async () => {
+  const user = await getCurrentUser()
+  const mentor = await prisma.user.findUnique({
+    where: { id: user?.id },
+    select: {
+      internProfile: {
+        select: {
+          mentor: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
+    },
+  })
+  return mentor?.internProfile?.mentor?.id || ''
+}
+
 export async function archiveAccount(id: string) {
   await prisma.user.update({
     where: { id },

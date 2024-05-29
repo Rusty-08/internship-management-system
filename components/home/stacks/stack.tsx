@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/card'
 import Image from 'next/image'
 
-import { CustomIcon } from '@/components/@core/iconify'
+import { GoArrowUpRight } from 'react-icons/go'
 
 type StackProps = {
   id: string
@@ -32,19 +32,19 @@ const Stack = ({ id, image, title, desc, link }: StackProps) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <CardTitle className="leading-5">{title}</CardTitle>
+          <CardTitle className="leading-7">{title}</CardTitle>
           <CardDescription className="line-clamp-3">{desc}</CardDescription>
         </div>
       </CardContent>
       <CardFooter>
         <a
           href={link}
-          className="text-sm flex items-center gap-2 hover:text-primary"
+          className="text-sm flex items-center gap-1 hover:text-primary"
           target="_blank"
           rel="noopener noreferrer"
         >
           Learn more
-          <CustomIcon width={15} icon="heroicons:arrow-right" />
+          <GoArrowUpRight size="1rem" />
         </a>
       </CardFooter>
     </Card>

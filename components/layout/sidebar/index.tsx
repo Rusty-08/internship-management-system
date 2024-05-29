@@ -48,7 +48,6 @@ const Sidebar = ({ sideLinks, isMinimized, setIsMinimized }: SidebarProps) => {
         onMouseEnter={(e: MouseEvent) => e.stopPropagation()}
       >
         <MdOutlineKeyboardDoubleArrowLeft size="1.2rem" />
-        {/* <CustomIcon icon="iconoir:fast-arrow-right" width={17} /> */}
       </Button>
       <div className="flex items-center p-3 pt-4 border-b h-20 border-slate-800">
         <div className="flex items-center gap-2 overflow-hidden">

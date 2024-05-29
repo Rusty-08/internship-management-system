@@ -24,6 +24,7 @@ const TaskForm = () => {
   const handleSubmit = async (formData: FormData) => {
     formData.append('startDate', dateRange?.from?.toISOString() || '')
     formData.append('endDate', dateRange?.to?.toISOString() || '')
+
     try {
       setErrors({})
       await createNewTask(formData)
@@ -33,7 +34,7 @@ const TaskForm = () => {
           error.errors.reduce((prev, curr) => {
             return { ...prev, [curr.path[0]]: curr.message }
           }, {}),
-        )
+        ) 
       } else if (error instanceof Error) {
         if (error.message.startsWith('Failed to create task')) {
           setErrors({ form: error.message })

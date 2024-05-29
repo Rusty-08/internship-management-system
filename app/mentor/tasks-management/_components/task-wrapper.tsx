@@ -27,9 +27,10 @@ type TaskProps = {
 
 type TaskWrapperProps = {
   tasks: TaskProps[]
+  isInternUser?: boolean
 }
 
-const TaskWrapper = ({ tasks }: TaskWrapperProps) => {
+const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
   const [searchTasks, setSearchTasks] = useState('')
 
   const filteredTasks = tasks.filter(task =>
@@ -48,12 +49,12 @@ const TaskWrapper = ({ tasks }: TaskWrapperProps) => {
           search={searchTasks}
           setSearch={setSearchTasks}
         />
-        <Link href="/mentor/tasks-management/create">
+        {!isInternUser && <Link href="/mentor/tasks-management/create-task">
           <Button>
             <span className="mr-2">Create Task</span>
             <CustomIcon icon="lucide:circle-plus" />
           </Button>
-        </Link>
+        </Link>}
       </div>
       {sortedTasks.length ? (
         <div className="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">

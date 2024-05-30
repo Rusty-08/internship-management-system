@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { DatePickerWithRange } from '@/components/@core/ui/date-range-picker'
 import { DateRange } from 'react-day-picker'
@@ -9,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { CustomIcon } from '@/components/@core/iconify'
 import { z } from 'zod'
 import { LoadingSpinner } from '@/components/@core/loading'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TaskFormSchema } from './task-schema'
 import {
@@ -68,6 +67,7 @@ const TaskForm = () => {
 
       form.reset()
       router.push('/mentor/tasks-management')
+      router.refresh()
     } else {
       throw new Error('File is required')
     }
@@ -90,9 +90,8 @@ const TaskForm = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      disabled={isSubmitting}
                       type="text"
-                      placeholder=""
+                      placeholder="Enter title here..."
                     />
                   </FormControl>
                   {errors.title && (
@@ -110,9 +109,8 @@ const TaskForm = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      disabled={isSubmitting}
                       type="text"
-                      placeholder=""
+                      placeholder="Enter description here..."
                     />
                   </FormControl>
                   {errors.description && (
@@ -121,11 +119,25 @@ const TaskForm = () => {
                 </FormItem>
               )}
             />
-            <Label htmlFor="date">Pick Date</Label>
-            <DatePickerWithRange
-              date={dateRange}
-              setDate={setDateRange}
-              className="w-full"
+            <FormField
+              control={form.control}
+              name="date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Date Picker</FormLabel>
+                  <FormControl>
+                    <DatePickerWithRange
+                      {...field}
+                      date={dateRange}
+                      setDate={setDateRange}
+                      className="w-full"
+                    />
+                  </FormControl>
+                  {errors.date && (
+                    <FormMessage>{errors.date.message}</FormMessage>
+                  )}
+                </FormItem>
+              )}
             />
             <FormField
               control={form.control}

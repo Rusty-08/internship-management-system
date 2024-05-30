@@ -5,31 +5,36 @@ import { redirect } from 'next/navigation'
 import prisma from '@/lib/prisma'
 import { getCurrentUser } from '@/utils/users'
 import { handleFileSave, handleFileUpload } from '@/utils/fileService'
-import { TaskFormSchema } from '@/utils/task-schema'
+import { TaskFormSchema } from '../_components/task-schema'
+import { z } from 'zod'
 
 const CreateTask = TaskFormSchema.omit({ id: true })
 
-export const createNewTask = async (formData: FormData) => {
+export const createNewTask = async (
+  prevState: any,
+  values: z.infer<typeof TaskFormSchema>,
+) => {
   const user = await getCurrentUser()
+  const { title, description, date, upload } = values
 
-  const validateFields = CreateTask.safeParse({
-    title: formData.get('title'),
-    description: formData.get('description'),
-    startDate: new Date(formData.get('startDate') as string),
-    endDate: new Date(formData.get('endDate') as string),
-    upload: formData.get('upload'),
-  })
+  // const validateFields = CreateTask.safeParse({
+  //   title: formData.get('title'),
+  //   description: formData.get('description'),
+  //   startDate: new Date(formData.get('startDate') as string),
+  //   endDate: new Date(formData.get('endDate') as string),
+  //   upload: formData.get('upload'),
+  // })
 
-  if (!validateFields.success) {
-    const errorMessages = validateFields.error.flatten().fieldErrors
-    const serverErrors = Object.keys(errorMessages).reduce((errors, key) => {
-      const errorMessage = errorMessages[key as keyof typeof errorMessages]
-      return errorMessage ? { ...errors, [key]: errorMessage[0] } : errors
-    }, {})
-    throw new Error(JSON.stringify(serverErrors))
-  }
+  // if (!validateFields.success) {
+  //   const errorMessages = validateFields.error.flatten().fieldErrors
+  //   const serverErrors = Object.keys(errorMessages).reduce((errors, key) => {
+  //     const errorMessage = errorMessages[key as keyof typeof errorMessages]
+  //     return errorMessage ? { ...errors, [key]: errorMessage[0] } : errors
+  //   }, {})
+  //   throw new Error(JSON.stringify(serverErrors))
+  // }
 
-  const { title, description, startDate, endDate, upload } = validateFields.data
+  // const { title, description, startDate, endDate, upload } = validateFields.data
 
   const file = upload as File
 
@@ -38,11 +43,11 @@ export const createNewTask = async (formData: FormData) => {
   try {
     const newTask = await prisma.task.create({
       data: {
-        title: title,
-        description: description,
+        title,
+        description,
         status: 'PENDING',
-        startDate: startDate,
-        endDate: endDate,
+        startDate: date.startDate,
+        endDate: date.endDate,
         mentorId: user?.id || '',
       },
     })

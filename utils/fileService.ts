@@ -1,11 +1,10 @@
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '@/lib/firebase'
-import prisma from '@/lib/prisma'
 
 export const handleFileUpload = async (
   file: File,
-  metadata: { contentType: string },
 ) => {
+  const metadata = { contentType: file.type }
   const storageRef = ref(storage, `pdf/${file.name.replace(/\s/g, '_')}`)
   const uploadTask = uploadBytesResumable(storageRef, file, metadata)
 
@@ -27,21 +26,4 @@ export const handleFileUpload = async (
       },
     )
   })
-}
-
-export const handleFileSave = async (
-  file: File,
-  downloadURL: string,
-  userId: string,
-  taskId: string,
-) => {
-  const newFile = await prisma.file.create({
-    data: {
-      name: file.name,
-      url: downloadURL,
-      userId,
-      taskId,
-    },
-  })
-  return newFile
 }

@@ -68,10 +68,23 @@ export default function AttendanceTable({
   const addCurrentAttendance = async (event: FormEvent) => {
     event.preventDefault()
     setLoading(true)
-    await addAttendance(user?.id || '')
+    const res = await addAttendance(user?.id || '')
     setLoading(false)
     setIsOpen(false)
     router.refresh()
+
+    if (res == 201) {
+      toast({
+        title: `${mode} attendance successfully`,
+        description: 'Your attendance has been successfully recorded',
+      })
+    } else {
+      toast({
+        title: 'Could not save attendance',
+        description: 'Unable to save the attendance due to unknown error',
+        variant: 'destructive',
+      })
+    }
   }
 
   const downloadAttendance = () => {
@@ -97,8 +110,8 @@ export default function AttendanceTable({
   )
 
   return (
-    <>
-      <div className="flex justify-between mb-4">
+    <div className="flex flex-col gap-4">
+      <div className="flex justify-between">
         <DateRangeFilter date={date} setDate={setDate} />
         <div className="flex gap-2">
           <Button variant="outline" onClick={downloadAttendance}>
@@ -126,6 +139,6 @@ export default function AttendanceTable({
           <DataTablePagination table={table} />
         </div>
       </div>
-    </>
+    </div>
   )
 }

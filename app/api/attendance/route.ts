@@ -1,6 +1,5 @@
 import prisma from '@/lib/prisma'
 import { getTotalHours } from '@/utils/attendance'
-import { format } from 'date-fns'
 import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
@@ -86,12 +85,12 @@ export async function POST(req: Request) {
       })
     }
 
-    if (attendance && attendance.timeOutPM) {
-      return NextResponse.json(
-        { message: 'Exceed the limit of attempt' },
-        { status: 401 },
-      )
-    }
+    revalidatePath('/intern/my-attendance')
+
+    return NextResponse.json(
+      { message: 'Recorded Successfully' },
+      { status: 201 },
+    )
   } catch {
     return NextResponse.json(
       { message: 'Could not save attendance' },
@@ -99,6 +98,5 @@ export async function POST(req: Request) {
     )
   } finally {
     prisma.$disconnect()
-    revalidatePath('/intern/my-attendance')
   }
 }

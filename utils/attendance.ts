@@ -51,6 +51,22 @@ export const getTotalHours = (
   return totalHours
 }
 
+export const formatHours = (time: number) => {
+  const totalMinutes = time * 60
+  const hours = Math.floor(totalMinutes / 60)
+  const minutes = Math.floor(totalMinutes % 60)
+
+  let timeString = ''
+  if (hours > 0) {
+    timeString += `${hours} hr `
+  }
+  if (minutes > 0) {
+    timeString += `${minutes} mins`
+  }
+
+  return timeString.trim()
+}
+
 export const addAttendance = async (internId: string) => {
   const res = await fetch('/api/attendance', {
     method: 'POST',
@@ -106,7 +122,7 @@ export const exportAttendance = (data: AttendanceProps[]) => {
     timeOutAM: row.timeOutAM ? format(row.timeOutAM, 'hh:mm aa') : '',
     timeInPM: row.timeInPM ? format(row.timeInPM, 'hh:mm aa') : '',
     timeOutPM: row.timeOutPM ? format(row.timeOutPM, 'hh:mm aa') : '',
-    totalHours: row.totalHours?.toFixed(2),
+    totalHours: formatHours(row.totalHours || 0),
   }))
 
   // Create a new worksheet from the rows array

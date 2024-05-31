@@ -35,9 +35,11 @@ const TaskCard = ({
       <CardHeader>
         <div className="flex justify-between">
           <span className="text-sm text-muted-foreground">{`${formattedStartDate} - ${formattedEndDate}`}</span>
-          <Badge variant={status}>{status}</Badge>
+          <Badge variant={status}>
+            {status.charAt(0) + status.slice(1).toLowerCase()}
+          </Badge>
         </div>
-        <CardTitle className="text-xl mb-4">{title}</CardTitle>
+        <CardTitle className="text-lg mb-4">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter>

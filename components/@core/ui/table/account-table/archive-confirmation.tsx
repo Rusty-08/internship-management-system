@@ -13,6 +13,7 @@ import { LoadingSpinner } from '@/components/@core/loading'
 import { IoWarningOutline } from 'react-icons/io5'
 import { IoInformationCircleOutline } from 'react-icons/io5'
 import { UserSubset } from './types'
+import SubmitCancelButton from '@/components/@core/button/submit-cancel'
 
 type ArchiveConfirmationProps = {
   user: UserSubset | undefined
@@ -69,18 +70,13 @@ export function ArchiveConfirmation({
             </Alert>
           </div>
           <DialogFooter>
-            <div className="flex gap-2 justify-end pt-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={setIsOpenHandler}
-              >
-                Cancel
-              </Button>
-              <Button disabled={loading} type="submit" className="w-40">
-                {loading ? <LoadingSpinner /> : 'Save Changes'}
-              </Button>
-            </div>
+            <SubmitCancelButton
+              cancelOnclick={setIsOpenHandler}
+              loading={loading}
+              className="w-40"
+            >
+              Save Changes
+            </SubmitCancelButton>
           </DialogFooter>
         </form>
       </DialogContent>

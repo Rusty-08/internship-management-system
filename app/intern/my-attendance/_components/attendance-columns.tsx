@@ -1,5 +1,6 @@
 'use client'
 
+import { formatHours } from '@/utils/attendance'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 
@@ -59,7 +60,7 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     header: 'Total Hours',
     cell: ({ row }) => {
       const total = row.getValue('totalHours') as number
-      return <span>{total.toFixed(2)}</span>
+      return <span>{formatHours(total)}</span>
     },
   },
 ]

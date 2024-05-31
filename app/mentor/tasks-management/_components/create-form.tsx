@@ -21,6 +21,9 @@ import {
 } from '@/components/ui/form'
 import { handleFileUpload } from '@/utils/fileService'
 import { useRouter } from 'next/navigation'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import SubmitCancelButton from '@/components/@core/button/submit-cancel'
+import { Textarea } from '@/components/ui/textarea'
 
 const TaskForm = () => {
   const router = useRouter()
@@ -71,112 +74,119 @@ const TaskForm = () => {
     } else {
       throw new Error('File is required')
     }
+
+    form.reset()
+    router.push('/mentor/tasks-management')
+    router.refresh()
   }
 
   const { errors, isSubmitting } = form.formState
 
   return (
-    <div className="mt-10 border rounded p-5">
-      <h1 className="text-xl font-bold mb-5">Create New Task</h1>
+    <Card>
+      <CardHeader className="text-xl font-medium">Create New Task</CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmitForm)}>
-          <div className="space-y-4 mb-6">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="text"
-                      placeholder="Enter title here..."
-                    />
-                  </FormControl>
-                  {errors.title && (
-                    <FormMessage>{errors.title.message}</FormMessage>
-                  )}
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="text"
-                      placeholder="Enter description here..."
-                    />
-                  </FormControl>
-                  {errors.description && (
-                    <FormMessage>{errors.description.message}</FormMessage>
-                  )}
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date Picker</FormLabel>
-                  <FormControl>
-                    <DatePickerWithRange
-                      {...field}
-                      date={dateRange}
-                      setDate={setDateRange}
-                      className="w-full"
-                    />
-                  </FormControl>
-                  {errors.date && (
-                    <FormMessage>{errors.date.message}</FormMessage>
-                  )}
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="upload"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Attach Document</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="file"
-                      value={undefined}
-                      onChange={e => {
-                        field.onChange(e.target.files?.[0])
-                      }}
-                    />
-                  </FormControl>
-                  {errors.upload && (
-                    <FormMessage>{errors.upload.message}</FormMessage>
-                  )}
-                </FormItem>
-              )}
-            />
-            <div className="flex justify-end">
-              <Button type="submit" className="w-40" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <LoadingSpinner />
-                ) : (
-                  <>
-                    <span className="mr-1">Upload Task</span>
-                    <CustomIcon icon="lucide:arrow-right" />
-                  </>
+          <CardContent>
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="text"
+                        placeholder="Enter title here..."
+                      />
+                    </FormControl>
+                    {errors.title && (
+                      <FormMessage>{errors.title.message}</FormMessage>
+                    )}
+                  </FormItem>
                 )}
-              </Button>
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      {/* <Input
+                        {...field}
+                        type="text"
+                        placeholder="Enter description here..."
+                      /> */}
+                      <Textarea
+                        {...field}
+                        placeholder="Enter description here..."
+                      />
+                    </FormControl>
+                    {errors.description && (
+                      <FormMessage>{errors.description.message}</FormMessage>
+                    )}
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Date Picker</FormLabel>
+                    <FormControl>
+                      <DatePickerWithRange
+                        {...field}
+                        date={dateRange}
+                        setDate={setDateRange}
+                        className="w-full"
+                      />
+                    </FormControl>
+                    {errors.date && (
+                      <FormMessage>{errors.date.message}</FormMessage>
+                    )}
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="upload"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Attach Document</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="file"
+                        value={undefined}
+                        onChange={e => {
+                          field.onChange(e.target.files?.[0])
+                        }}
+                      />
+                    </FormControl>
+                    {errors.upload && (
+                      <FormMessage>{errors.upload.message}</FormMessage>
+                    )}
+                  </FormItem>
+                )}
+              />
             </div>
-          </div>
+          </CardContent>
+          <CardFooter>
+            <SubmitCancelButton
+              loading={isSubmitting}
+              cancelOnclick={() => router.back()}
+              className="w-36"
+            >
+              Upload Task
+            </SubmitCancelButton>
+          </CardFooter>
         </form>
       </Form>
-    </div>
+    </Card>
   )
 }
 

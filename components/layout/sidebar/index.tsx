@@ -38,7 +38,7 @@ const Sidebar = ({ sideLinks, isMinimized, setIsMinimized }: SidebarProps) => {
       <Button
         size="circle"
         className={cn(
-          'absolute -right-2 h-9 w-9 z-50 shadow-none top-[3.85rem] bg-sidebar text-text hover:text-white transform transition-all duration-300 ease-in-out hover:bg-slate-950',
+          'absolute -right-[1.125rem] h-9 w-9 z-50 shadow-none top-[3.375rem] bg-sidebar text-text hover:text-white transform transition-all duration-300 ease-in-out hover:bg-slate-950',
           isMinimized ? 'rotate-180' : 'rotate-0',
         )}
         onClick={(e: MouseEvent) => {
@@ -49,7 +49,7 @@ const Sidebar = ({ sideLinks, isMinimized, setIsMinimized }: SidebarProps) => {
       >
         <MdOutlineKeyboardDoubleArrowLeft size="1.2rem" />
       </Button>
-      <div className="flex items-center p-3 pt-4 border-b h-20 border-slate-800">
+      <div className="flex items-center p-3 border-b h-[4.5rem] border-slate-800">
         <div className="flex items-center gap-2 overflow-hidden">
           <Image src={logo} alt="logo" width={40} height={40} />
           <div
@@ -67,7 +67,7 @@ const Sidebar = ({ sideLinks, isMinimized, setIsMinimized }: SidebarProps) => {
           </div>
         </div>
       </div>
-      <div className="sidebar flex flex-col overflow-y-auto flex-grow gap-1 py-8">
+      <div className="sidebar flex flex-col overflow-y-auto flex-grow gap-1 py-6">
         {sideLinks.map(item => (
           <Link
             key={item.path}

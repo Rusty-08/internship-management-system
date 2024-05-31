@@ -15,7 +15,7 @@ const Navbar = ({ profilePath }: { profilePath: string }) => {
   const user = session?.user
 
   return (
-    <div className="flex items-center border-l bg-navbar border-slate-800 justify-between px-10 h-20">
+    <div className="flex items-center border-l bg-navbar border-slate-800 justify-between px-10 h-[4.5rem]">
       <p className="text-text font-medium">
         Internship Management System v0.0.1
       </p>

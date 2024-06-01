@@ -16,7 +16,13 @@ import { addAttendance, exportAttendance } from '@/utils/attendance'
 import { useRouter } from 'next/navigation'
 import { AttendanceConfirmation } from './attendance-confirmation'
 import { User } from '@prisma/client'
-import { format, isWithinInterval, parse, startOfMonth } from 'date-fns'
+import {
+  endOfDay,
+  format,
+  isWithinInterval,
+  parse,
+  startOfMonth,
+} from 'date-fns'
 import { GrDocumentDownload } from 'react-icons/gr'
 
 import { DateRangeFilter } from './data-picker'
@@ -53,7 +59,7 @@ export default function AttendanceTable({
     return data.filter(attendance => {
       return isWithinInterval(attendance.date || new Date(), {
         start: date.from || new Date(),
-        end: date.to || new Date(),
+        end: endOfDay(date.to || new Date()),
       })
     })
   }, [data, date])

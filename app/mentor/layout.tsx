@@ -2,9 +2,9 @@
 
 import { ReactNode, useState } from 'react'
 
+import { mentorSidebarLinks } from '@/components/layout/sidebar/links'
 import Sidebar from '@/components/layout/sidebar'
 import Navbar from '@/components/layout/navbar'
-import { mentorSidebarLinks } from '@/components/mentor/sidebar/links'
 import { cn } from '@/lib/utils'
 
 const MentorLayout = ({ children }: { children: ReactNode }) => {

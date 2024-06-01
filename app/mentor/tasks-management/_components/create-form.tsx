@@ -4,10 +4,7 @@ import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { DatePickerWithRange } from '@/components/@core/ui/date-range-picker'
 import { DateRange } from 'react-day-picker'
-import { Button } from '@/components/ui/button'
-import { CustomIcon } from '@/components/@core/iconify'
 import { z } from 'zod'
-import { LoadingSpinner } from '@/components/@core/loading'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TaskFormSchema } from './task-schema'
@@ -19,7 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { handleFileUpload } from '@/utils/fileService'
+import { handleFileUpload } from '@/utils/upload-file'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import SubmitCancelButton from '@/components/@core/button/submit-cancel'
@@ -67,10 +64,6 @@ const TaskForm = () => {
           'Content-Type': 'application/json',
         },
       })
-
-      form.reset()
-      router.push('/mentor/tasks-management')
-      router.refresh()
     } else {
       throw new Error('File is required')
     }
@@ -115,11 +108,6 @@ const TaskForm = () => {
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      {/* <Input
-                        {...field}
-                        type="text"
-                        placeholder="Enter description here..."
-                      /> */}
                       <Textarea
                         {...field}
                         placeholder="Enter description here..."

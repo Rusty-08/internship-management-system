@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/card'
 import { Header } from './header'
 import { BackButton } from './back-button'
+import Image from 'next/image'
 
 type CardWrapperProps = {
   children: React.ReactNode
@@ -24,7 +25,7 @@ export const CardWrapper = ({
   backButtonHref,
 }: CardWrapperProps) => {
   return (
-    <Card className="w-[25rem]">
+    <Card className="px-4 py-1 w-[27rem] max-w-[95vw]">
       <CardHeader>
         <Header label={headerLabel} />
         <CardDescription className="text-center">

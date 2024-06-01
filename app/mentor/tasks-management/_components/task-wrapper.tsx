@@ -8,6 +8,7 @@ import { TaskStatus } from '@prisma/client'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { CustomIcon } from '@/components/@core/iconify'
+import { TaskWrapperProps } from './types'
 
 import {
   Select,
@@ -17,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { TaskWrapperProps } from './types'
+import TaskFilter from './filtering'
 
 const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
   const [searchTasks, setSearchTasks] = useState('')
@@ -45,24 +46,24 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
           search={searchTasks}
           setSearch={setSearchTasks}
         />
-        <div className="flex justify-between gap-4">
+        <div className="flex justify-between gap-2">
           <Select
             defaultValue="default"
             onValueChange={(val: TaskStatus | 'default') =>
               setSelectedStatus(val)
             }
           >
-            <SelectTrigger className="min-w-20">
+            <SelectTrigger>
               <SelectValue
                 placeholder="Select task status"
                 defaultValue={selectedStatus}
               />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent align="end">
               <SelectGroup>
                 <SelectItem value="default">All</SelectItem>
                 <SelectItem value="PENDING">Pending</SelectItem>
-                <SelectItem value="in-IN_PROGRESS">In Progress</SelectItem>
+                <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
                 <SelectItem value="COMPLETED">Completed</SelectItem>
               </SelectGroup>
             </SelectContent>

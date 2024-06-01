@@ -1,9 +1,10 @@
 'use client'
 
 import { ReactNode, useState } from 'react'
+
+import { adminSidebarLinks } from '@/components/layout/sidebar/links'
 import Sidebar from '@/components/layout/sidebar'
 import Navbar from '@/components/layout/navbar'
-import { adminSidebarLinks } from '@/components/admin/sidebar/links'
 import { cn } from '@/lib/utils'
 
 const AdminLayout = ({ children }: { children: ReactNode }) => {

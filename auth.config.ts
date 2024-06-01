@@ -1,8 +1,6 @@
 import { User, UserRole } from '@prisma/client'
 import type { NextAuthConfig } from 'next-auth'
 
-const privateRoutes = ['/admin', '/intern', '/mentor']
-
 export const authConfig = {
   session: {
     strategy: 'jwt',
@@ -13,29 +11,38 @@ export const authConfig = {
     signIn: '/auth/login',
   },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
+    async authorized({ auth, request: { nextUrl } }) {
+      const path = nextUrl.pathname
       const isLoggedIn = !!auth?.user
       const userRole = auth?.user?.role
+      const isFirstLogin = auth?.user?.passwordChangeRequired
+
+      if (isFirstLogin) {
+        if (path.startsWith('/auth/change-password')) return true
+        return Response.redirect(new URL('/auth/change-password', nextUrl))
+      }
 
       if (isLoggedIn) {
         switch (userRole) {
           case 'ADMIN':
-            if (nextUrl.pathname.startsWith('/admin')) return true
+            if (path.startsWith('/admin')) return true
             return Response.redirect(new URL('/admin', nextUrl))
           case 'MENTOR':
-            if (nextUrl.pathname.startsWith('/mentor')) return true
+            if (path.startsWith('/mentor')) return true
             return Response.redirect(new URL('/mentor', nextUrl))
           case 'INTERN':
-            if (nextUrl.pathname.startsWith('/intern')) return true
+            if (path.startsWith('/intern')) return true
             return Response.redirect(new URL('/intern', nextUrl))
           default:
             return false
         }
       }
-      if (
-        nextUrl.pathname !== '/' &&
-        !nextUrl.pathname.startsWith('/auth')
-      ) {
+
+      if (path.startsWith('/auth/change-password') && !isLoggedIn) {
+        return Response.redirect(new URL('/auth/login', nextUrl))
+      }
+
+      if (path !== '/' && !path.startsWith('/auth')) {
         return Response.redirect(new URL('/', nextUrl))
       }
       return true

@@ -13,7 +13,7 @@ import { User } from '@prisma/client'
 import { cn } from '@/lib/utils'
 import { IoImagesOutline } from 'react-icons/io5'
 import imagePlaceholder from '@/public/general/images/male-avatar.svg'
-import { uploadImage } from '@/lib/actions'
+import { uploadImage } from '@/lib/upload-image'
 import { useMutation } from '@tanstack/react-query'
 
 type ProfileProps = {

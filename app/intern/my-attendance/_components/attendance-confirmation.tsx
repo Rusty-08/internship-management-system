@@ -13,6 +13,7 @@ import { format } from 'date-fns'
 import { FormEvent } from 'react'
 import { AttendanceProps } from './attendance-columns'
 import { LoadingSpinner } from '@/components/@core/loading'
+import AddButton from '@/components/@core/ui/add-button'
 
 type AttendanceConfirmationProps = {
   addCurrentAttendance: (e: FormEvent) => void
@@ -36,12 +37,9 @@ export function AttendanceConfirmation({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
       <DialogTrigger asChild>
-        <Button
-          className="w-32"
-          disabled={currentAttendance?.timeOutPM ? true : false}
-        >
+        <AddButton disabled={currentAttendance?.timeOutPM ? true : false}>
           {mode}
-        </Button>
+        </AddButton>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

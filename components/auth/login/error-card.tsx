@@ -12,10 +12,13 @@ type ErrorCardProps = {
 const ErrorCard = ({ children, className }: ErrorCardProps) => {
   return (
     <Card
-      className={twMerge('border-none shadow-none bg-destructive/5', className)}
+      className={twMerge(
+        'border-destructive/50 shadow-none bg-destructive/10',
+        className,
+      )}
     >
-      <CardHeader className="py-2.5">
-        <FormMessage className="flex items-center gap-5">
+      <CardHeader className="py-2.5 px-4">
+        <FormMessage className="flex items-center gap-4">
           <CustomIcon icon="solar:danger-triangle-line-duotone" />
           {children}
         </FormMessage>

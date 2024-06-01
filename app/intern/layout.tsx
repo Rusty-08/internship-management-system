@@ -2,9 +2,9 @@
 
 import { ReactNode, useState } from 'react'
 
+import { internSidebarLinks } from '@/components/layout/sidebar/links'
 import Sidebar from '@/components/layout/sidebar'
 import Navbar from '@/components/layout/navbar'
-import { internSidebarLinks } from '@/components/intern/sidebar/links'
 import { cn } from '@/lib/utils'
 
 const InternLayout = ({ children }: { children: ReactNode }) => {
@@ -25,7 +25,7 @@ const InternLayout = ({ children }: { children: ReactNode }) => {
       >
         <Navbar profilePath="/intern/profile" />
         <div
-          style={{ minHeight: 'calc(100vh - 5rem)' }}
+          style={{ minHeight: 'calc(100vh - 4.5rem)' }}
           className="py-4 px-6 w-full"
         >
           {children}

@@ -48,6 +48,7 @@
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.0",
+    "vaul": "^0.9.1",
     "xlsx": "file:vendor/xlsx-0.20.2.tgz",
     "zod": "^3.22.4"
   },

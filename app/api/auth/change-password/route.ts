@@ -4,6 +4,7 @@ import { connectDB } from '@/lib/connect-db'
 import bcrypt from 'bcryptjs'
 import { getCurrentUser } from '@/utils/users'
 import { User } from '@prisma/client'
+import { signOut } from '@/auth'
 
 export async function POST(req: Request) {
   const currUser = await getCurrentUser()
@@ -25,6 +26,10 @@ export async function POST(req: Request) {
       where: { email },
       data: { password: hashPassword, passwordChangeRequired: false },
     })
+
+    if (updatedUser) {
+      await signOut()
+    }
 
     return NextResponse.json({ user: updatedUser }, { status: 201 })
   } catch (error) {

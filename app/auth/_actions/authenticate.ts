@@ -1,16 +1,17 @@
 'use server'
 
 import { signIn, signOut } from '@/auth'
+import { LoginSchema } from '@/components/auth/login/login-schema'
 import { AuthError } from 'next-auth'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { z } from 'zod'
 
-export async function authenticate(
-  // prevState: string | undefined,
-  formData: FormData,
-) {
+export async function authenticate(values: z.infer<typeof LoginSchema>) {
+  const { email, password } = values
+
   try {
-    await signIn('credentials', formData)
+    await signIn('credentials', { email, password })
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {

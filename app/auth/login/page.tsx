@@ -1,7 +1,6 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { useFormStatus } from 'react-dom'
 import { authenticate } from '../_actions/authenticate'
 import { CardWrapper } from '@/components/auth/login/card-wrapper'
 import {
@@ -10,6 +9,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import ErrorCard from '@/components/auth/login/error-card'
@@ -18,18 +18,15 @@ import { useForm } from 'react-hook-form'
 import { LoginSchema } from '@/components/auth/login/login-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useMutation } from '@tanstack/react-query'
+
 import { RiLockPasswordFill } from 'react-icons/ri'
 import { FaCircleUser } from 'react-icons/fa6'
+import { MdOutlineArrowRight } from 'react-icons/md'
+import { useEffect, useState } from 'react'
+import { cn } from '@/lib/utils'
 
 const LoginForm = () => {
-  const {
-    data: errorMessage,
-    mutate: authenticateLogin,
-    isPending,
-  } = useMutation({
-    mutationFn: async (formData: FormData) => await authenticate(formData),
-  })
+  const [serverError, setServerError] = useState<any>(undefined)
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -39,31 +36,54 @@ const LoginForm = () => {
     },
   })
 
+  const handleLogin = async (values: z.infer<typeof LoginSchema>) => {
+    const { email, password } = values
+    const res = await authenticate({ email, password })
+    if (res) {
+      setServerError(res)
+    }
+  }
+
+  const { errors, isSubmitting } = form.formState
+
+  const email = form.watch('email')
+  const password = form.watch('password')
+
+  useEffect(() => {
+    if (serverError) {
+      setServerError(undefined)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email, password])
+
   return (
     <CardWrapper
-      headerLabel="Internship Portal"
-      subHeaderLabel="Enter your credentials to access your account"
-      backButtonLabel="Go back to home page?"
+      headerLabel="Sign in to IMS"
+      subHeaderLabel="Welcome back! Please sign in to continue"
+      backButtonLabel="Go back"
       backButtonHref="/"
     >
       <Form {...form}>
-        <form action={authenticateLogin}>
+        <form onSubmit={form.handleSubmit(handleLogin)}>
           <div className="space-y-4 mb-6">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Email Address</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      disabled={isPending}
+                      disabled={isSubmitting}
                       type="email"
                       placeholder="sample@gmail.com"
-                      icon={FaCircleUser}
+                      // icon={FaCircleUser}
                     />
                   </FormControl>
+                  {errors.email && (
+                    <FormMessage>{errors.email.message}</FormMessage>
+                  )}
                 </FormItem>
               )}
             />
@@ -76,31 +96,36 @@ const LoginForm = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      disabled={isPending}
+                      disabled={isSubmitting}
                       type="password"
                       placeholder="Password"
-                      icon={RiLockPasswordFill}
+                      // icon={RiLockPasswordFill}
                     />
                   </FormControl>
+                  {errors.password && (
+                    <FormMessage>{errors.password.message}</FormMessage>
+                  )}
                 </FormItem>
               )}
             />
-            {errorMessage && <ErrorCard>{errorMessage}</ErrorCard>}
+            {serverError && <ErrorCard>{serverError}</ErrorCard>}
           </div>
-          <LoginButton />
+          <Button
+            disabled={isSubmitting}
+            className={cn('w-full relative gap-1', serverError && 'mt-3')}
+          >
+            {isSubmitting ? (
+              <LoadingSpinner />
+            ) : (
+              <>
+                Login
+                <MdOutlineArrowRight size="1.2rem" className="absolute ml-16" />
+              </>
+            )}
+          </Button>
         </form>
       </Form>
     </CardWrapper>
-  )
-}
-
-export const LoginButton = () => {
-  const { pending } = useFormStatus()
-
-  return (
-    <Button disabled={pending} className="w-full">
-      {pending ? <LoadingSpinner /> : 'Login'}
-    </Button>
   )
 }
 

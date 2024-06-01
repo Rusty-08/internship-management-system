@@ -1,6 +1,5 @@
 'use client'
 
-import { LoadingSpinner } from '@/components/@core/spinner/circular'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
@@ -20,7 +19,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { CardWrapper } from '@/components/auth/login/card-wrapper'
 import { PasswordSchema } from '@/components/auth/change-password/password-schema'
-import { signOut } from 'next-auth/react'
+import { LoadingSpinner } from '@/components/@core/loading'
+import { signOut } from '@/auth'
 
 const ChangePassword = () => {
   const router = useRouter()
@@ -35,8 +35,9 @@ const ChangePassword = () => {
 
   const onSubmit = async (values: z.infer<typeof PasswordSchema>) => {
     const { password } = values
+
     try {
-      const res = await fetch('/api/auth/change-password', {
+      await fetch('/api/auth/change-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,18 +47,14 @@ const ChangePassword = () => {
         }),
       })
 
-      if (res.ok) {
-        router.push('/auth/login')
-      } else {
-        console.error('Failed to change password')
-      }
+      router.push('/auth/login')
     } catch (error) {
       console.error(error)
     }
   }
 
-  const backToLogin = () => {
-    signOut()
+  const backToLogin = async () => {
+    await signOut()
     router.push('/auth/login')
   }
 
@@ -80,7 +77,7 @@ const ChangePassword = () => {
                     type="password"
                     disabled={isSubmitting}
                     placeholder="Password"
-                    icon="heroicons:lock-closed"
+                    // icon="heroicons:lock-closed"
                   />
                 </FormControl>
                 {errors.password && (

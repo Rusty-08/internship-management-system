@@ -11,13 +11,13 @@ const Hero = () => {
       className="flex justify-between py-10 w-full items-center sm:max-h-[auto] md:max-h-[700px] gap-10 relative"
     >
       <div className="flex text-center md:text-left flex-grow flex-col gap-5 items-center md:items-start">
-        <div className="space-y-2 w-1/2">
+        <div className="space-y-2 w-full lg:w-1/2">
           <p className="text-primary font-medium">OnDemand Innovation</p>
           <h1 className="text-3xl md:text-[3.75rem] font-bold leading-tight">
             A Place to enhance your <span className="text-primary">skills</span>
           </h1>
         </div>
-        <p className="text-text text-xl w-1/2">
+        <p className="text-text lg:text-xl f-full lg:w-1/2">
           Our platform is dedicated to connecting talented individuals with
           dynamic internship opportunities that empower growth, innovation, and
           success.
@@ -30,13 +30,13 @@ const Hero = () => {
           APPLY AS INTERN
         </Button>
       </div>
-      <div className="w-1/2 flex absolute -right-14 mt-16 items items-center justify-center">
+      <div className="w-1/2 hidden lg:flex absolute -right-14 mt-16 items items-center justify-center">
         <Image
           alt="hero"
           src={heroImage}
           width="0"
           height="0"
-          className="hidden lg:block object-cover w-full"
+          className="object-cover w-full"
         />
       </div>
     </div>

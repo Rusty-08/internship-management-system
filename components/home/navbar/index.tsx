@@ -9,6 +9,7 @@ import NavLinks from './links'
 import { useWindowScroll } from 'react-use'
 import { useRef, useState, useEffect, ForwardedRef, RefAttributes } from 'react'
 import { cn } from '@/lib/utils'
+import { MenuSidebar } from './sheet'
 
 const HomeNavbar = () => {
   const { y } = useWindowScroll()
@@ -33,19 +34,22 @@ const HomeNavbar = () => {
     <div
       ref={navbarRef}
       className={cn(
-        'flex items-center h-24 top-0 left-0 w-full bg-background transition-all ease-in-out duration-300 z-[1000]',
-        hideOnScroll ? 'translate-y-0' : '-translate-y-full',
+        'flex items-center h-[5rem] md:h-24 top-0 left-0 w-full bg-background transition-all ease-in-out duration-300 z-50',
         isScrolling ? 'fixed' : 'absolute',
+        hideOnScroll ? 'translate-y-0' : '-translate-y-full',
       )}
     >
-      <div className="container">
-        <div className="flex items-center justify-between px-4 md:px-[3%] w-full">
-          <Link href="/" className="flex items-center gap-2">
-            {/* <Image width={40} height={40} alt="ims logo" src={imsLogo} /> */}
-            <h1 className="font-bold text-3xl tracking-wide bg-gradient-to-r from-primary to-fuchsia-900 bg-clip-text text-transparent">
-              IMS
-            </h1>
-          </Link>
+      <div className="p-0 md:container w-full">
+        <div className="flex items-center justify-between px-4 lg:px-[3%] w-full">
+          <div className="flex items-center gap-4">
+            <MenuSidebar />
+            <Link href="/" className="flex items-center gap-2">
+              {/* <Image width={40} height={40} alt="ims logo" src={imsLogo} /> */}
+              <h1 className="font-bold text-3xl tracking-wide bg-gradient-to-r from-primary to-fuchsia-900 bg-clip-text text-transparent">
+                IMS
+              </h1>
+            </Link>
+          </div>
           <NavLinks />
           <div className="flex items-center gap-x-4">
             <ThemeToggle />

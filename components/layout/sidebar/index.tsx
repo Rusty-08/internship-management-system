@@ -11,6 +11,8 @@ import { useSession } from 'next-auth/react'
 
 import { MdOutlineKeyboardDoubleArrowLeft } from 'react-icons/md'
 import { IconType } from 'react-icons/lib'
+import { MenuSidebar } from '@/components/home/navbar/sheet'
+import { CgMenuRightAlt } from "react-icons/cg"
 
 type SidebarLinkProps = {
   name: string
@@ -20,11 +22,17 @@ type SidebarLinkProps = {
 
 type SidebarProps = {
   sideLinks: SidebarLinkProps
-  isMinimized: boolean
-  setIsMinimized: Dispatch<SetStateAction<boolean>>
+  isMinimized?: boolean
+  setIsMinimized?: Dispatch<SetStateAction<boolean>>
+  setOpen?: Dispatch<SetStateAction<boolean>> // for home sidebar reuse only
 }
 
-const Sidebar = ({ sideLinks, isMinimized, setIsMinimized }: SidebarProps) => {
+const Sidebar = ({
+  sideLinks,
+  isMinimized,
+  setIsMinimized,
+  setOpen,
+}: SidebarProps) => {
   const path = usePathname()
   const { data: session } = useSession()
 
@@ -33,38 +41,62 @@ const Sidebar = ({ sideLinks, isMinimized, setIsMinimized }: SidebarProps) => {
       className={cn(
         'fixed flex flex-col left-0 bg-sidebar shadow top-0 h-screen z-50 pb-4 transition-all group duration-300 ease-in-out',
         isMinimized ? 'w-16 hover:w-[18rem]' : 'w-[18rem]',
+        !setIsMinimized && 'w-[20rem]',
       )}
     >
-      <Button
-        size="circle"
+      {setIsMinimized && (
+        <Button
+          size="circle"
+          className={cn(
+            'absolute -right-[0.9rem] h-9 w-9 z-50 shadow-none top-[3.375rem] bg-sidebar text-text hover:text-white transform transition-all duration-300 ease-in-out hover:bg-slate-950',
+            isMinimized ? 'rotate-180' : 'rotate-0',
+          )}
+          onClick={(e: MouseEvent) => {
+            e.stopPropagation()
+            setIsMinimized(!isMinimized)
+          }}
+          onMouseEnter={(e: MouseEvent) => e.stopPropagation()}
+        >
+          <MdOutlineKeyboardDoubleArrowLeft size="1.2rem" />
+        </Button>
+      )}
+      <div
         className={cn(
-          'absolute -right-[0.9rem] h-9 w-9 z-50 shadow-none top-[3.375rem] bg-sidebar text-text hover:text-white transform transition-all duration-300 ease-in-out hover:bg-slate-950',
-          isMinimized ? 'rotate-180' : 'rotate-0',
+          'flex items-center p-3 px-4 border-b border-slate-800',
+          setIsMinimized ? 'h-[4.5rem]' : 'h-20',
         )}
-        onClick={(e: MouseEvent) => {
-          e.stopPropagation()
-          setIsMinimized(!isMinimized)
-        }}
-        onMouseEnter={(e: MouseEvent) => e.stopPropagation()}
       >
-        <MdOutlineKeyboardDoubleArrowLeft size="1.2rem" />
-      </Button>
-      <div className="flex items-center p-3 border-b h-[4.5rem] border-slate-800">
         <div className="flex items-center gap-2 overflow-hidden">
-          <Image src={logo} alt="logo" width={40} height={40} />
-          <div
-            className={cn(
-              'flex flex-col border-primary/50 group-hover:inline-flex',
-              isMinimized ? 'hidden' : 'visible',
-            )}
-          >
-            <h1 className="font-extrabold text-xl tracking-wider whitespace-nowrap bg-gradient-to-r from-primary to-fuchsia-900 bg-clip-text text-transparent">
-              INTERNSHIP
+          {setOpen ? (
+            <Button
+              variant="ghost"
+              size="circle"
+              onClick={() => setOpen(false)}
+            >
+              <CgMenuRightAlt size="1.5rem" />
+            </Button>
+          ) : (
+            <Image src={logo} alt="logo" width={40} height={40} />
+          )}
+          {setIsMinimized ? (
+            <div
+              className={cn(
+                'flex flex-col border-primary/50 group-hover:inline-flex',
+                isMinimized ? 'hidden' : 'visible',
+              )}
+            >
+              <h1 className="font-extrabold text-xl tracking-wider whitespace-nowrap bg-gradient-to-r from-primary to-fuchsia-900 bg-clip-text text-transparent">
+                INTERNSHIP
+              </h1>
+              <h1 className="font-semibold tracking-wide text-text whitespace-nowrap">
+                MANAGEMENT SYSTEM
+              </h1>
+            </div>
+          ) : (
+            <h1 className="font-bold text-3xl tracking-wide bg-gradient-to-r from-primary to-fuchsia-900 bg-clip-text text-transparent">
+              IMS
             </h1>
-            <h1 className="font-semibold tracking-wide text-text whitespace-nowrap">
-              MANAGEMENT SYSTEM
-            </h1>
-          </div>
+          )}
         </div>
       </div>
       <div className="sidebar flex flex-col overflow-y-auto flex-grow gap-1 py-6">

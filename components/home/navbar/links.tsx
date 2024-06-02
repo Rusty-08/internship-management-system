@@ -10,7 +10,7 @@ const NavLinks = () => {
   const pathname = usePathname()
 
   return (
-    <div className="flex items-center">
+    <div className="items-center hidden lg:flex">
       {links.map(link => (
         <Link
           key={link.name}

@@ -7,7 +7,6 @@ import NoRecords from '@/components/@core/ui/no-records'
 import { TaskStatus } from '@prisma/client'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { CustomIcon } from '@/components/@core/iconify'
 import { TaskWrapperProps } from './types'
 
 import {
@@ -19,6 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import TaskFilter from './filtering'
+import AddButton from '@/components/@core/ui/add-button'
 
 const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
   const [searchTasks, setSearchTasks] = useState('')
@@ -70,10 +70,7 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
           </Select>
           {!isInternUser && (
             <Link href="/mentor/tasks-management/create-task">
-              <Button>
-                <span className="mr-2">Create Task</span>
-                <CustomIcon icon="lucide:circle-plus" />
-              </Button>
+              <AddButton>Create Task</AddButton>
             </Link>
           )}
         </div>

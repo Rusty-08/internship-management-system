@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button'
 import React from 'react'
 import Image from 'next/image'
 import heroImage from '@/public/home/innovation.svg'
-import { CustomIcon } from '@/components/@core/iconify'
 import { LuArrowUpRightFromCircle } from 'react-icons/lu'
 
 const Hero = () => {

@@ -2,9 +2,9 @@
 
 import { Button } from '@/components/ui/button'
 import React, { useState, useEffect } from 'react'
-import { CustomIcon } from '@/components/@core/iconify'
 import { cn } from '@/lib/utils'
 import { Link, animateScroll as scroll } from 'react-scroll'
+import { HiChevronUp } from 'react-icons/hi2'
 
 const ScrollUp = () => {
   const [isVisible, setIsVisible] = useState(false)
@@ -33,7 +33,7 @@ const ScrollUp = () => {
       )}
       size="circle"
     >
-      <CustomIcon icon="carbon:chevron-up" />
+      <HiChevronUp size="1.1rem" />
     </Button>
   )
 }

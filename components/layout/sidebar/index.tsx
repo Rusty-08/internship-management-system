@@ -38,7 +38,7 @@ const Sidebar = ({ sideLinks, isMinimized, setIsMinimized }: SidebarProps) => {
       <Button
         size="circle"
         className={cn(
-          'absolute -right-[1.125rem] h-9 w-9 z-50 shadow-none top-[3.375rem] bg-sidebar text-text hover:text-white transform transition-all duration-300 ease-in-out hover:bg-slate-950',
+          'absolute -right-[0.9rem] h-9 w-9 z-50 shadow-none top-[3.375rem] bg-sidebar text-text hover:text-white transform transition-all duration-300 ease-in-out hover:bg-slate-950',
           isMinimized ? 'rotate-180' : 'rotate-0',
         )}
         onClick={(e: MouseEvent) => {

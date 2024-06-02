@@ -1,7 +1,7 @@
-import { CustomIcon } from '@/components/@core/iconify'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { siteConfig } from '@/configs/site'
 import React from 'react'
+import { PiCopyrightDuotone } from "react-icons/pi"
 
 const Footer = () => {
   return (
@@ -22,7 +22,7 @@ const Footer = () => {
       </div>
       <div className="flex items-center gap-1">
         <p>Copyright</p>
-        <CustomIcon icon="ic:twotone-copyright" />
+        <PiCopyrightDuotone />
         <p>{new Date().getFullYear()} — All Rights Reserved</p>
       </div>
     </div>

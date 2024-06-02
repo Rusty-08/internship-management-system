@@ -7,7 +7,9 @@ const HomeWrapper = ({ children }: { children: ReactNode }) => {
     <main className="flex container min-h-screen flex-col">
       <section className="px-4 md:px-[3%] flex flex-col">
         <HomeNavbar />
-        <div style={{ minHeight: 'calc(100vh - 6rem)' }}>{children}</div>
+        <div style={{ minHeight: 'calc(100vh - 6rem)' }} className="pt-24">
+          {children}
+        </div>
         <Footer />
       </section>
     </main>

@@ -5,12 +5,18 @@ import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { accountColumns } from './_components/accounts-columns'
 
 const InternManagement = async () => {
-  const data = await getUsers(false, 'INTERN')
+  const isArchivePage = false
+  const userRole = 'INTERN'
+  const data = await getUsers(isArchivePage, userRole)
 
   return (
     <div className="py-2 space-y-6">
       <BreadcrumbWrapper current="Intern Management" />
-      <AccountsTable data={data} accountColumns={accountColumns} />
+      <AccountsTable
+        data={data}
+        user={userRole}
+        accountColumns={accountColumns}
+      />
     </div>
   )
 }

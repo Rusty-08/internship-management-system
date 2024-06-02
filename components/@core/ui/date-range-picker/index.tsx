@@ -12,8 +12,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 
-import { CustomIcon } from '@/components/@core/iconify'
 import { ClassNameValue } from 'tailwind-merge'
+import { IoCalendar } from 'react-icons/io5'
 
 type DatePickerProps = {
   date: DateRange | undefined
@@ -39,10 +39,7 @@ export function DatePickerWithRange({
               className,
             )}
           >
-            <CustomIcon
-              className="mr-3 h-4 w-4"
-              icon="solar:calendar-line-duotone"
-            />
+            <IoCalendar size="0.9rem" className="mr-3 text-text" />
             {date?.from ? (
               date.to ? (
                 <>

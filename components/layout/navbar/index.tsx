@@ -1,16 +1,15 @@
 'use client'
 
 import { logout } from '@/app/auth/_actions/authenticate'
-import { CustomIcon } from '@/components/@core/iconify'
-import LoginButton from '@/components/auth/login/login-button'
 import { ProfileAvatar } from '@/components/home/navbar/profile'
 import { ThemeToggle } from '@/components/providers/theme/theme-toggle'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useSession } from 'next-auth/react'
+import { CiLogout } from "react-icons/ci"
+import imagePlaceholder from '@/public/general/images/male-avatar.svg'
 
 const Navbar = ({ profilePath }: { profilePath: string }) => {
-  // const user = await getCurrentUser()
   const { data: session } = useSession()
   const user = session?.user
 
@@ -24,7 +23,7 @@ const Navbar = ({ profilePath }: { profilePath: string }) => {
         <ProfileAvatar
           user={user?.name}
           role={user?.role}
-          image={user?.image || ''}
+          image={user?.image || imagePlaceholder}
           profilePath={profilePath}
         >
           <form action={logout}>
@@ -32,11 +31,12 @@ const Navbar = ({ profilePath }: { profilePath: string }) => {
               <Button
                 type="submit"
                 variant="ghost"
-                className="justify-start px-0 w-full"
+                className="justify-start px-4 gap-4 w-full"
               >
-                <span className="w-12 group-hover:text-primary flex justify-center">
-                  <CustomIcon icon="lets-icons:sign-out-squre-duotone-line" />
-                </span>
+                <CiLogout
+                  size="1.2rem"
+                  className="group-hover:text-primary"
+                />
                 Sign Out
               </Button>
             </DropdownMenuItem>

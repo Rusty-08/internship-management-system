@@ -1,4 +1,4 @@
-import { CustomIcon } from '@/components/@core/iconify'
+import { PiDotsThreeDuotone } from 'react-icons/pi'
 
 type SectionHeaderProps = {
   header: string
@@ -7,14 +7,10 @@ type SectionHeaderProps = {
 
 const SectionHeader = ({ header, subHeader }: SectionHeaderProps) => {
   return (
-    <div className="mb-10 w-full flex text-center flex-col items-center">
-      <CustomIcon
-        icon="pepicons-print:dots-x"
-        className="text-primary"
-        width={40}
-      />
-      <h1 className="text-3xl font-semibold leading-6 mb-4">{header}</h1>
-      <p className="text-text sm:px-0 md:px-[15%] lg:px-[15%]">{subHeader}</p>
+    <div className="mb-14 w-full flex text-center flex-col items-center">
+      <PiDotsThreeDuotone className="text-primary mb-2" size="2rem" />
+      <h1 className="text-3xl font-semibold leading-6 mb-6">{header}</h1>
+      <p className="text-text sm:px-0 md:px-[15%] lg:px-[20%]">{subHeader}</p>
     </div>
   )
 }

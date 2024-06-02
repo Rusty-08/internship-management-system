@@ -4,14 +4,16 @@ import AccountsTable from '../../../components/@core/ui/table/account-table/acco
 import { accountColumns } from './_components/accounts-column'
 
 export default async function MentorManagement() {
-  const data = await getUsers(false, 'MENTOR')
+  const isArchivePage = false
+  const userRole = 'MENTOR'
+  const data = await getUsers(isArchivePage, userRole)
 
   return (
     <div className="py-2 space-y-6">
       <BreadcrumbWrapper current="Mentor Management" />
       <AccountsTable
         data={data}
-        user="MENTOR"
+        user={userRole}
         accountColumns={accountColumns}
       />
     </div>

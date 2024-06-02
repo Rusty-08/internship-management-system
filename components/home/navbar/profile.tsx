@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { ReactNode, useState } from 'react'
 
 import {
   DropdownMenu,
@@ -13,9 +14,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { RiUserSmileFill } from "react-icons/ri"
-
-import { CustomIcon } from '@/components/@core/iconify'
-import { ReactNode, useState } from 'react'
 
 type ProfileProps = {
   image: string | null
@@ -57,7 +55,7 @@ export const ProfileAvatar = ({
               <Avatar>
                 <AvatarImage src={image ? image : undefined} />
                 <AvatarFallback className="text-text">
-                  <CustomIcon icon="lets-icons:user-alt-duotone" />
+                  <RiUserSmileFill size="1.3rem" />
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col">

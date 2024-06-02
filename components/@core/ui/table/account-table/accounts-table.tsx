@@ -35,7 +35,7 @@ const filters = ['All', 'Intern', 'Mentor']
 type AccountsTableProps = {
   data: UserSubset[]
   isArchivedPage?: boolean
-  user?: 'INTERN' | 'MENTOR'
+  user: 'INTERN' | 'MENTOR'
   accountColumns: (actions: {
     [key: string]: (row: Row<UserSubset>) => void
   }) => ColumnDef<UserSubset, any>[]
@@ -44,7 +44,7 @@ type AccountsTableProps = {
 export default function AccountsTable({
   data,
   isArchivedPage = false,
-  user = 'INTERN',
+  user,
   accountColumns,
 }: AccountsTableProps) {
   const router = useRouter()

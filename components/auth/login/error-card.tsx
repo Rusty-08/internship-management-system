@@ -1,8 +1,8 @@
 import { Card, CardHeader } from '@/components/ui/card'
-import { CustomIcon } from '@/components/@core/iconify'
 import { FormMessage } from '@/components/ui/form'
 import { ReactNode } from 'react'
 import { ClassNameValue, twMerge } from 'tailwind-merge'
+import { GoAlert } from 'react-icons/go'
 
 type ErrorCardProps = {
   children: ReactNode
@@ -19,7 +19,7 @@ const ErrorCard = ({ children, className }: ErrorCardProps) => {
     >
       <CardHeader className="py-2.5 px-4">
         <FormMessage className="flex items-center gap-4">
-          <CustomIcon icon="solar:danger-triangle-line-duotone" />
+          <GoAlert />
           {children}
         </FormMessage>
       </CardHeader>

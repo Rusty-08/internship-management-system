@@ -35,8 +35,8 @@ const HomeNavbar = () => {
       ref={navbarRef}
       className={cn(
         'flex items-center h-[5rem] md:h-24 top-0 left-0 w-full bg-background transition-all ease-in-out duration-300 z-50',
-        isScrolling ? 'fixed' : 'absolute',
-        hideOnScroll ? 'translate-y-0' : '-translate-y-full',
+        isScrolling ? 'fixed shadow bg-card' : 'absolute',
+        hideOnScroll ? 'translate-y-0' : '-translate-y-full shadow-none',
       )}
     >
       <div className="p-0 md:container w-full">

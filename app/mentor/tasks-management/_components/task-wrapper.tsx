@@ -38,7 +38,7 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-between">
+      <div className="flex justify-between border-b pb-4">
         <SearchFilter
           className="w-[20rem]"
           search={searchTasks}
@@ -51,7 +51,7 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
               setSelectedStatus(val)
             }
           >
-            <SelectTrigger>
+            <SelectTrigger className='bg-card'>
               <SelectValue
                 placeholder="Select task status"
                 defaultValue={selectedStatus}

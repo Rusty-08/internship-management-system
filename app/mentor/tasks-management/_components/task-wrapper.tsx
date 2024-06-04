@@ -6,7 +6,6 @@ import TaskCard from './task-card'
 import NoRecords from '@/components/@core/ui/no-records'
 import { TaskStatus } from '@prisma/client'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
 import { TaskWrapperProps } from './types'
 
 import {
@@ -17,7 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import TaskFilter from './filtering'
 import AddButton from '@/components/@core/ui/add-button'
 
 const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
@@ -78,14 +76,7 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
       {selectedTasks.length ? (
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {selectedTasks.map(task => (
-            <TaskCard
-              key={task.id}
-              title={task.title}
-              description={task.description}
-              status={task.status}
-              startDate={task.startDate}
-              endDate={task.endDate}
-            />
+            <TaskCard key={task.id} task={task} isIntern={isInternUser} />
           ))}
         </div>
       ) : (

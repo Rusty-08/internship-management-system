@@ -7,29 +7,24 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { TaskStatus } from '@prisma/client'
 import { format } from 'date-fns'
 import { BiEditAlt } from 'react-icons/bi'
 import { TooltipWrapper } from '@/components/ui/tooltip'
+import { TaskDetails } from './task-details'
+import { useState } from 'react'
+import { TaskProps } from './types'
 
 export type TaskCardProps = {
-  title: string
-  description: string
-  status: TaskStatus
-  startDate: Date
-  endDate: Date
+  task: TaskProps
+  isIntern: boolean
 }
 
-const TaskCard = ({
-  title,
-  description,
-  status,
-  startDate,
-  endDate,
-}: TaskCardProps) => {
+const TaskCard = ({ task, isIntern }: TaskCardProps) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const { id, title, description, status, startDate, endDate } = task
+
   const formattedStartDate = format(startDate, 'LLL dd')
   const formattedEndDate = format(endDate, 'LLL dd, y')
-
   return (
     <Card>
       <CardHeader>
@@ -40,16 +35,25 @@ const TaskCard = ({
           </Badge>
         </div>
         <CardTitle className="text-lg mb-4">{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardDescription className="line-clamp-1">
+          {description}
+        </CardDescription>
       </CardHeader>
       <CardFooter>
         <div className="flex justify-between gap-2 w-full">
-          <Button variant="outline">View Details</Button>
-          <TooltipWrapper tooltip="Edit Task">
-            <Button variant="ghost" size="circle" className="text-text">
-              <BiEditAlt size="1.4rem" />
-            </Button>
-          </TooltipWrapper>
+          <TaskDetails
+            key={id}
+            task={task}
+            isOpen={isOpen}
+            setIsOpenHandler={() => setIsOpen(!isOpen)}
+          />
+          {!isIntern && (
+            <TooltipWrapper tooltip="Edit Task">
+              <Button variant="ghost" size="circle" className="text-text">
+                <BiEditAlt size="1.4rem" />
+              </Button>
+            </TooltipWrapper>
+          )}
         </div>
       </CardFooter>
     </Card>

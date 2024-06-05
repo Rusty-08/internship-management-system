@@ -69,12 +69,12 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
   }
 
   return (
-    <div className="space-y-6 pt-2">
+    <div className="pt-2">
       {breadcrumbLinks && (
         <BreadcrumbWrapper links={breadcrumbLinks} current="Profile" />
       )}
       <div
-        className={`layout-loading bg-card flex flex-col justify-center rounded-md overflow-hidden ${
+        className={`layout-loading mt-6 mb-4 bg-card flex flex-col justify-center rounded-md overflow-hidden ${
           loading ? 'h-[23rem]' : 'min-h-40'
         } w-full`}
       >

@@ -40,7 +40,7 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between border-b pb-4">
         <SearchFilter
-          className="w-[20rem]"
+          className="w-[25rem]"
           search={searchTasks}
           setSearch={setSearchTasks}
         />

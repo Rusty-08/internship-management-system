@@ -7,11 +7,9 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import logo from '@/public/home/ims-logo.svg'
-import { useSession } from 'next-auth/react'
 
 import { MdOutlineKeyboardDoubleArrowLeft } from 'react-icons/md'
 import { IconType } from 'react-icons/lib'
-import { MenuSidebar } from '@/components/home/navbar/sheet'
 import { CgMenuRightAlt } from 'react-icons/cg'
 
 type SidebarLinkProps = {
@@ -34,7 +32,6 @@ const Sidebar = ({
   setOpen,
 }: SidebarProps) => {
   const path = usePathname()
-  const { data: session } = useSession()
 
   return (
     <div

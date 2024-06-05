@@ -8,7 +8,7 @@ import Navbar from '@/components/layout/navbar'
 import { cn } from '@/lib/utils'
 
 const MentorLayout = ({ children }: { children: ReactNode }) => {
-  const [isMinimized, setIsMinimized] = useState(true)
+  const [isMinimized, setIsMinimized] = useState(false)
 
   return (
     <main className="min-h-screen flex relative w-full">

@@ -18,6 +18,8 @@ export const getTasks = async (id: string) => {
               id: true,
               name: true,
               url: true,
+              userId: true,
+              taskId: true,
             },
           },
           submissions: {
@@ -26,6 +28,7 @@ export const getTasks = async (id: string) => {
               name: true,
               url: true,
               date: true,
+              taskId: true,
             },
           },
         },

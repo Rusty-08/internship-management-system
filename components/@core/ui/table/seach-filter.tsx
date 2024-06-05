@@ -46,7 +46,7 @@ export function SearchFilter<TData>({
       icon={FiSearch}
       onChange={event => handleSearch(event.target.value)}
       defaultValue={searchParams.get(search || '')?.toString()}
-      className="w-[20rem] bg-card"
+      className="w-[25rem] bg-card"
     />
   )
 }

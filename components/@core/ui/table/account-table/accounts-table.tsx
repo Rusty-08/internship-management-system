@@ -147,7 +147,11 @@ export default function AccountsTable({
       />
       <div className="flex items-center justify-between mb-4">
         <div className="flex w-full justify-between">
-          <SearchFilter column="name" table={table} search="intern" />
+          <SearchFilter
+            column="name"
+            table={table}
+            search={user.toLowerCase()}
+          />
           {isArchivedPage && (
             <Select
               onValueChange={value => setRoleFilter(value)}

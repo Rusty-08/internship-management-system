@@ -25,7 +25,8 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
   const [isOpenDetails, setIsOpenDetails] = useState(false)
   const [isOpenSubmission, setIsOpenSubmission] = useState(false)
   const [isOpenViewSubmission, setIsOpenViewSubmission] = useState(false)
-  const { id, title, description, status, startDate, endDate } = task
+  const { id, title, description, status, startDate, endDate, submissions } =
+    task
 
   const formattedStartDate = format(startDate, 'LLL dd')
   const formattedEndDate = format(endDate, 'LLL dd, y')
@@ -46,14 +47,15 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
       <CardFooter>
         <div className="flex justify-between gap-2 w-full">
           <div className="space-x-2">
-            {isIntern && task.status !== 'COMPLETED' ? (
+            {isIntern && task.status !== 'COMPLETED' && (
               <TaskSubmission
                 key={id + 1}
                 taskId={task.id}
                 isOpen={isOpenSubmission}
                 setIsOpenHandler={() => setIsOpenSubmission(!isOpenSubmission)}
               />
-            ) : (
+            )}
+            {submissions && submissions.length > 0 && (
               <ViewSubmission
                 task={task}
                 isOpen={isOpenViewSubmission}

@@ -1,10 +1,4 @@
-import { TaskStatus } from '@prisma/client'
-
-export type FileProps = {
-  id: string
-  name: string | null
-  url: string | null
-}
+import { File, TaskStatus, Submission } from '@prisma/client'
 
 export type TaskProps = {
   id: string
@@ -13,7 +7,8 @@ export type TaskProps = {
   status: TaskStatus
   startDate: Date
   endDate: Date
-  files?: FileProps[]
+  files?: File[]
+  submissions?: Submission[]
 }
 
 export type TaskWrapperProps = {

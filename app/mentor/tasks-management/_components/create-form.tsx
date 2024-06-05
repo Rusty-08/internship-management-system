@@ -45,7 +45,7 @@ const TaskForm = () => {
   const onSubmitForm = async (values: z.infer<typeof TaskFormSchema>) => {
     if (values.upload) {
       const file = values.upload as File
-      const fileUrl = await handleFileUpload(file)
+      const fileUrl = await handleFileUpload(file, 'tasks')
 
       const data = {
         ...values,

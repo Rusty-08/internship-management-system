@@ -13,6 +13,8 @@ import { TooltipWrapper } from '@/components/ui/tooltip'
 import { TaskDetails } from './task-details'
 import { useState } from 'react'
 import { TaskProps } from './types'
+import { TaskSubmission } from './task-submission'
+import { ViewSubmission } from './view-submission'
 
 export type TaskCardProps = {
   task: TaskProps
@@ -20,7 +22,9 @@ export type TaskCardProps = {
 }
 
 const TaskCard = ({ task, isIntern }: TaskCardProps) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpenDetails, setIsOpenDetails] = useState(false)
+  const [isOpenSubmission, setIsOpenSubmission] = useState(false)
+  const [isOpenViewSubmission, setIsOpenViewSubmission] = useState(false)
   const { id, title, description, status, startDate, endDate } = task
 
   const formattedStartDate = format(startDate, 'LLL dd')
@@ -41,12 +45,30 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
       </CardHeader>
       <CardFooter>
         <div className="flex justify-between gap-2 w-full">
-          <TaskDetails
-            key={id}
-            task={task}
-            isOpen={isOpen}
-            setIsOpenHandler={() => setIsOpen(!isOpen)}
-          />
+          <div className="space-x-2">
+            {isIntern && task.status !== 'COMPLETED' ? (
+              <TaskSubmission
+                key={id + 1}
+                taskId={task.id}
+                isOpen={isOpenSubmission}
+                setIsOpenHandler={() => setIsOpenSubmission(!isOpenSubmission)}
+              />
+            ) : (
+              <ViewSubmission
+                task={task}
+                isOpen={isOpenViewSubmission}
+                setIsOpenHandler={() =>
+                  setIsOpenViewSubmission(!isOpenViewSubmission)
+                }
+              />
+            )}
+            <TaskDetails
+              key={id}
+              task={task}
+              isOpen={isOpenDetails}
+              setIsOpenHandler={() => setIsOpenDetails(!isOpenDetails)}
+            />
+          </div>
           {!isIntern && (
             <TooltipWrapper tooltip="Edit Task">
               <Button variant="ghost" size="circle" className="text-text">

@@ -1,11 +1,9 @@
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '@/lib/firebase'
 
-export const handleFileUpload = async (
-  file: File,
-) => {
+export const handleFileUpload = async (file: File, folder: string) => {
   const metadata = { contentType: file.type }
-  const storageRef = ref(storage, `pdf/${file.name.replace(/\s/g, '_')}`)
+  const storageRef = ref(storage, `${folder}/${file.name.replace(/\s/g, '_')}`)
   const uploadTask = uploadBytesResumable(storageRef, file, metadata)
 
   return new Promise<string>((resolve, reject) => {

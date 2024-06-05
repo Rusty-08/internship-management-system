@@ -20,6 +20,14 @@ export const getTasks = async (id: string) => {
               url: true,
             },
           },
+          submissions: {
+            select: {
+              id: true,
+              name: true,
+              url: true,
+              date: true,
+            },
+          },
         },
       },
     },

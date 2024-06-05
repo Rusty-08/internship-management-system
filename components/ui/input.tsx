@@ -1,7 +1,6 @@
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
-import { Icon } from '@iconify/react/dist/iconify.js'
 import { IconType } from 'react-icons/lib'
 
 export interface InputProps

@@ -1,4 +1,4 @@
-import { ComingSoon } from "@/app/intern/chat/page"
+import { ComingSoon } from '@/components/coming-soon'
 
 const Reports = () => {
   return <ComingSoon pageName="Reports" />

@@ -1,4 +1,4 @@
-import { ComingSoon } from '@/app/intern/chat/page'
+import { ComingSoon } from '@/components/coming-soon'
 import HomeWrapper from '@/components/home/layout/home-layout'
 
 const AboutUs = () => {

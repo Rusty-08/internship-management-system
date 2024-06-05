@@ -1,4 +1,4 @@
-import { ComingSoon } from '@/app/intern/chat/page'
+import { ComingSoon } from '@/components/coming-soon'
 import { TabsWrapper } from '@/components/@core/ui/tabs'
 import Profile from '@/components/layout/profile'
 

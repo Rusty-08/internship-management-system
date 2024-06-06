@@ -25,7 +25,9 @@ export function ViewSubmission({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
       <DialogTrigger asChild>
-        <Button>View Submission</Button>
+        <Button disabled={task.submissions?.length ? false : true}>
+          View Submission
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-full lg:w-[30rem]">
         <DialogHeader>
@@ -36,30 +38,33 @@ export function ViewSubmission({
             <span className="text-sm text-text font-medium w-1/3">
               Date Submitted
             </span>
-            <p className="text-sm">
-              {task.submissions && task.submissions.length > 0
-                ? format(
-                    task.submissions[task.submissions.length - 1].date,
-                    'LLLL dd, y',
-                  )
-                : 'No submissions yet'}
-            </p>
+            {task.submissions?.length && (
+              <p className="text-sm">
+                {format(
+                  task.submissions[task.submissions.length - 1].date,
+                  'LLLL dd, y',
+                )}
+              </p>
+            )}
           </div>
           <div className="flex pt-2">
             <span className="text-sm text-text font-medium w-1/3">
               Attachment/s
             </span>
-            <div className="flex flex-col gap-1">
-              {task.submissions?.map(({ id, name, url }) => (
-                <a
-                  key={id}
-                  href={url || ''}
-                  target="_blank"
-                  className="text-blue-500 text-sm"
-                >
-                  {name}
-                </a>
-              ))}
+            <div className="flex flex-col ps-4 gap-1">
+              <ul className="list-disc">
+                {task.submissions?.map(({ id, name, url }) => (
+                  <li key={id}>
+                    <a
+                      href={url || ''}
+                      target="_blank"
+                      className="text-blue-500 text-sm"
+                    >
+                      {name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

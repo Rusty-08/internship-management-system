@@ -124,7 +124,7 @@ const TaskForm = () => {
                 name="date"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Date Picker</FormLabel>
+                    <FormLabel>Date Duration</FormLabel>
                     <FormControl>
                       <DatePickerWithRange
                         {...field}

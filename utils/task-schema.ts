@@ -24,17 +24,18 @@ export const TaskFormSchema = z.object({
 })
 
 export const SubmissionSchema = z.object({
-  file: z.union([z.undefined(), z.instanceof(File)])
-  .refine(file => {
-    return file !== undefined
-  }, 'File is required')
-  .refine(file => {
-    return file === undefined || file.size > 0
-  }, 'File must not be empty')
-  .refine(file => {
-    return file === undefined || file.size <= max_Upload_Size
-  }, 'File size must be less than 5MB')
-  .refine(file => {
-    return file === undefined || accepted_File_Types.includes(file.type)
-  }, 'File must be a PDF or Word document'),
+  file: z
+    .union([z.undefined(), z.instanceof(File)])
+    .refine(file => {
+      return file !== undefined
+    }, 'File is required')
+    .refine(file => {
+      return file === undefined || file.size > 0
+    }, 'File must not be empty')
+    .refine(file => {
+      return file === undefined || file.size <= max_Upload_Size
+    }, 'File size must be less than 5MB')
+    .refine(file => {
+      return file === undefined || accepted_File_Types.includes(file.type)
+    }, 'File must be a PDF or Word document'),
 })

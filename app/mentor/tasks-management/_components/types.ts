@@ -15,3 +15,5 @@ export type TaskWrapperProps = {
   tasks: TaskProps[]
   isInternUser?: boolean
 }
+
+export type TaskMode = 'view-details' | 'view-submission' | 'submit-output'

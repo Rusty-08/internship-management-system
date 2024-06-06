@@ -51,7 +51,7 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
               setSelectedStatus(val)
             }
           >
-            <SelectTrigger className='bg-card'>
+            <SelectTrigger className="bg-card">
               <SelectValue
                 placeholder="Select task status"
                 defaultValue={selectedStatus}

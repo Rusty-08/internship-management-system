@@ -22,14 +22,18 @@ export type TaskCardProps = {
 }
 
 const TaskCard = ({ task, isIntern }: TaskCardProps) => {
-  const [isOpenDetails, setIsOpenDetails] = useState(false)
-  const [isOpenSubmission, setIsOpenSubmission] = useState(false)
-  const [isOpenViewSubmission, setIsOpenViewSubmission] = useState(false)
-  const { id, title, description, status, startDate, endDate, submissions } =
+  const [dialog, setDialog] = useState({
+    isOpenDetails: false,
+    isOpenSubmission: false,
+    isOpenViewSubmission: false,
+  })
+
+  const { title, description, status, startDate, endDate, submissions } =
     task
 
   const formattedStartDate = format(startDate, 'LLL dd')
   const formattedEndDate = format(endDate, 'LLL dd, y')
+
   return (
     <Card>
       <CardHeader>
@@ -47,37 +51,47 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
       <CardFooter>
         <div className="flex justify-between gap-2 w-full">
           <div className="space-x-2">
-            {isIntern && task.status !== 'COMPLETED' && (
+            {isIntern && status !== 'COMPLETED' && (
               <TaskSubmission
-                key={id + 1}
                 taskId={task.id}
-                isOpen={isOpenSubmission}
-                setIsOpenHandler={() => setIsOpenSubmission(!isOpenSubmission)}
-              />
-            )}
-            {submissions && submissions.length > 0 && (
-              <ViewSubmission
-                task={task}
-                isOpen={isOpenViewSubmission}
+                isOpen={dialog.isOpenSubmission}
                 setIsOpenHandler={() =>
-                  setIsOpenViewSubmission(!isOpenViewSubmission)
+                  setDialog({
+                    ...dialog,
+                    isOpenSubmission: !dialog.isOpenSubmission,
+                  })
                 }
               />
             )}
-            <TaskDetails
-              key={id}
-              task={task}
-              isOpen={isOpenDetails}
-              setIsOpenHandler={() => setIsOpenDetails(!isOpenDetails)}
-            />
+            {submissions ? (
+              <ViewSubmission
+                task={task}
+                isOpen={dialog.isOpenViewSubmission}
+                setIsOpenHandler={() =>
+                  setDialog({
+                    ...dialog,
+                    isOpenViewSubmission: !dialog.isOpenViewSubmission,
+                  })
+                }
+              />
+            ) : null}
           </div>
-          {!isIntern && (
-            <TooltipWrapper tooltip="Edit Task">
-              <Button variant="ghost" size="circle" className="text-text">
-                <BiEditAlt size="1.4rem" />
-              </Button>
-            </TooltipWrapper>
-          )}
+          <div>
+            <TaskDetails
+              task={task}
+              isOpen={dialog.isOpenDetails}
+              setIsOpenHandler={() =>
+                setDialog({ ...dialog, isOpenDetails: !dialog.isOpenDetails })
+              }
+            />
+            {!isIntern && (
+              <TooltipWrapper tooltip="Edit Task">
+                <Button variant="ghost" size="circle" className="text-text">
+                  <BiEditAlt size="1.1rem" />
+                </Button>
+              </TooltipWrapper>
+            )}
+          </div>
         </div>
       </CardFooter>
     </Card>

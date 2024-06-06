@@ -72,8 +72,13 @@ export function TaskSubmission({
 
   const { errors, isSubmitting } = form.formState
 
+  const handleOpenChange = () => {
+    setIsOpenHandler()
+    form.reset()
+  }
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button>Upload Report</Button>
       </DialogTrigger>

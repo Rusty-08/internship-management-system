@@ -3,7 +3,6 @@ import { cn } from '@/lib/utils'
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction, useEffect } from 'react'
 import { ClassNameValue } from 'tailwind-merge'
-import { useDebouncedCallback } from 'use-debounce'
 import { FiSearch } from 'react-icons/fi'
 
 type SearchFilterProps = {
@@ -22,18 +21,29 @@ export function SearchFilter({
   const searchParams = useSearchParams()
   const { replace } = useRouter()
 
-  const handleSearch = useDebouncedCallback((task: string) => {
+  const handleSearch = (task: string) => {
     setSearch(task)
     const params = new URLSearchParams(searchParams)
+    if (task) {
+      params.set('task', task)
+    } else {
+      params.delete('task')
+    }
     replace(`${pathname}?${params.toString()}`)
-  }, 200)
+  }
+
+  useEffect(() => {
+    const query = searchParams.get('task')
+    setSearch(query ?? '')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Input
       icon={FiSearch}
       placeholder="Search tasks"
       onChange={event => handleSearch(event.target.value)}
-      defaultValue={searchParams.get(search || '')?.toString()}
+      defaultValue={searchParams.get('task' || '')?.toString()}
       className={cn('max-w-sm bg-card', className)}
       {...props}
     />

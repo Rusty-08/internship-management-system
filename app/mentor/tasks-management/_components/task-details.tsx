@@ -2,14 +2,14 @@ import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { TaskProps } from './types'
 import { format } from 'date-fns'
+import { TooltipWrapper } from '@/components/ui/tooltip'
+import { CgArrowsExpandLeft } from 'react-icons/cg'
 
 type TaskDetailProps = {
   task: TaskProps
@@ -24,8 +24,12 @@ export function TaskDetails({
 }: TaskDetailProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
-      <DialogTrigger asChild>
-        <Button variant="outline">View details</Button>
+      <DialogTrigger>
+        <TooltipWrapper tooltip="Expand Task">
+          <Button variant="ghost" size="circle" className="text-text">
+            <CgArrowsExpandLeft size="1.1rem" />
+          </Button>
+        </TooltipWrapper>
       </DialogTrigger>
       <DialogContent className="sm:max-w-full lg:w-[30rem]">
         <DialogHeader>
@@ -58,17 +62,20 @@ export function TaskDetails({
             <span className="text-sm text-text font-medium w-1/3">
               Attachment/s
             </span>
-            <div className="flex flex-col gap-1">
-              {task.files?.map(({ id, name, url }) => (
-                <a
-                  key={id}
-                  href={url || ''}
-                  target="_blank"
-                  className="text-blue-500 text-sm"
-                >
-                  {name}
-                </a>
-              ))}
+            <div className="flex flex-col ps-4 gap-1">
+              <ul className="list-disc">
+                {task.files?.map(({ id, name, url }) => (
+                  <li key={id}>
+                    <a
+                      href={url || ''}
+                      target="_blank"
+                      className="text-blue-500 text-sm"
+                    >
+                      {name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

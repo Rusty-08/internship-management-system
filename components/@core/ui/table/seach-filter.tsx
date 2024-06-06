@@ -38,6 +38,7 @@ export function SearchFilter<TData>({
     if (query) {
       table.getColumn(column)?.setFilterValue(query)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

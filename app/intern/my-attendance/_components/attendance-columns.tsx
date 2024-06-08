@@ -49,7 +49,7 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
   },
   {
     accessorKey: 'timeOutPM',
-    header: 'Tim Out',
+    header: 'Time Out',
     cell: ({ row }) => {
       const timeInAM = row.getValue('timeOutPM') as Date
       return <span>{timeInAM ? format(timeInAM, 'hh:mm aa') : ''}</span>
@@ -60,7 +60,7 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     header: 'Total Hours',
     cell: ({ row }) => {
       const total = row.getValue('totalHours') as number
-      return <span>{formatHours(total)}</span>
+      return <span className="text-foreground">{formatHours(total)}</span>
     },
   },
 ]

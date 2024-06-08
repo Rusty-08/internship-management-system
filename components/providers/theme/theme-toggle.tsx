@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useEffect, useState } from 'react'
+import { cn } from '@/lib/utils'
 
 const themes = [
   { icon: PiSunDuotone, label: 'Light' },
@@ -24,6 +25,7 @@ const themes = [
 ]
 
 export function ThemeToggle() {
+  const [isOpen, setIsOpen] = useState(false)
   const { setTheme, theme: initialTheme } = useTheme()
   const [theme, setLocalTheme] = useState<string>()
 
@@ -32,9 +34,13 @@ export function ThemeToggle() {
   }, [initialTheme])
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="circle" className="text-text">
+        <Button
+          variant="ghost"
+          size="circle"
+          className={cn('text-text', isOpen && 'text-primary bg-accent')}
+        >
           {themes.map(
             ({ icon: Icon, label }) =>
               theme === label.toLowerCase() && (

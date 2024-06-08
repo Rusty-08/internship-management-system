@@ -39,6 +39,7 @@ import { fetchMentorUsers } from '@/utils/users'
 import { LoadingSpinner } from '@/components/@core/loading'
 import AddButton from '@/components/@core/ui/add-button'
 import { UserSubset } from './types'
+import SubmitCancelButton from '@/components/@core/button/submit-cancel'
 
 const sampleExpertise = [
   'Frontend Developer',
@@ -71,6 +72,7 @@ export function FormDialog({
   const [mentors, setMentors] = useState<UserSubset[]>([])
   const router = useRouter()
   const [isEmailTaken, setIsEmailTaken] = useState(false)
+
   const form = useForm<z.infer<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
     defaultValues: {
@@ -163,7 +165,10 @@ export function FormDialog({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{mode === 'edit' ? 'Edit' : 'Add'} Account</DialogTitle>
+          <DialogTitle>
+            {mode === 'edit' ? 'Edit' : 'Add'}{' '}
+            {role.charAt(0) + role.slice(1).toLowerCase()} Account
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -225,6 +230,9 @@ export function FormDialog({
                           ))}
                         </SelectContent>
                       </Select>
+                      {errors.mentor && (
+                        <FormMessage>{errors.mentor.message}</FormMessage>
+                      )}
                     </FormItem>
                   )}
                 />
@@ -262,28 +270,15 @@ export function FormDialog({
               )}
             </div>
             <DialogFooter>
-              <div className="flex gap-2">
-                <DialogClose>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => form.reset()}
-                  >
-                    Cancel
-                  </Button>
-                </DialogClose>
-                <Button
-                  disabled={isSubmitting}
-                  className="w-40 text-base"
-                  type="submit"
-                >
-                  {isSubmitting ? (
-                    <LoadingSpinner />
-                  ) : (
-                    `Save ${mode === 'edit' ? 'Changes' : 'Account'}`
-                  )}
-                </Button>
-              </div>
+              <SubmitCancelButton
+                loading={isSubmitting}
+                cancelOnclick={() => {
+                  form.reset()
+                  setIsOpen(!isOpen)
+                }}
+              >
+                {`Save ${mode === 'edit' ? 'Changes' : 'Account'}`}
+              </SubmitCancelButton>
             </DialogFooter>
           </form>
         </Form>

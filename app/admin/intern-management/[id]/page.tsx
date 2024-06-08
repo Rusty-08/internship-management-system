@@ -1,11 +1,15 @@
-import { ComingSoon } from '@/components/coming-soon'
-import AttendanceTable from '@/app/intern/my-attendance/_components/attendance-table'
+import { ComingSoon } from '@/components/@core/ui/coming-soon'
 import { TabsWrapper } from '@/components/@core/ui/tabs'
 import Profile from '@/components/layout/profile'
+import { getAttendanceMode, getInternAttendance } from '@/utils/attendance'
 
 import { TabsContent } from '@/components/ui/tabs'
-import { getAttendanceMode, getInternAttendance } from '@/utils/attendance'
 import { getServerUserById } from '@/utils/users'
+import { lazy } from 'react'
+
+const AttendanceTable = lazy(
+  () => import('@/app/intern/my-attendance/_components/attendance-table'),
+)
 
 const breadcrumbLinks = [
   { title: 'Intern Management', path: '/admin/intern-management' },
@@ -14,7 +18,6 @@ const breadcrumbLinks = [
 const UserProfile = async ({ params: { id } }: { params: { id: string } }) => {
   const user = await getServerUserById(id)
   const attendance = await getInternAttendance(user?.email)
-
   const mode = getAttendanceMode(attendance)
 
   return (

@@ -44,7 +44,7 @@ export function SearchFilter({
       placeholder="Search tasks"
       onChange={event => handleSearch(event.target.value)}
       defaultValue={searchParams.get('task' || '')?.toString()}
-      className={cn('max-w-sm bg-card', className)}
+      className={cn('w-full bg-card', className)}
       {...props}
     />
   )

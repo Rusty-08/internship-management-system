@@ -28,8 +28,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
     isOpenViewSubmission: false,
   })
 
-  const { title, description, status, startDate, endDate, submissions } =
-    task
+  const { title, description, status, startDate, endDate, submissions } = task
 
   const formattedStartDate = format(startDate, 'LLL dd')
   const formattedEndDate = format(endDate, 'LLL dd, y')
@@ -63,7 +62,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
                 }
               />
             )}
-            {submissions ? (
+            {(isIntern && status === 'COMPLETED') || !isIntern ? (
               <ViewSubmission
                 task={task}
                 isOpen={dialog.isOpenViewSubmission}

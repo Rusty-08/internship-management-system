@@ -37,41 +37,35 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
   })
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex justify-between border-b pb-4">
-        <SearchFilter
-          className="w-[25rem]"
-          search={searchTasks}
-          setSearch={setSearchTasks}
-        />
-        <div className="flex justify-between gap-2">
-          <Select
-            defaultValue="default"
-            onValueChange={(val: TaskStatus | 'default') =>
-              setSelectedStatus(val)
-            }
-          >
-            <SelectTrigger className="bg-card">
-              <SelectValue
-                placeholder="Select task status"
-                defaultValue={selectedStatus}
-              />
-            </SelectTrigger>
-            <SelectContent align="end">
-              <SelectGroup>
-                <SelectItem value="default">All</SelectItem>
-                <SelectItem value="PENDING">Pending</SelectItem>
-                <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
-                <SelectItem value="COMPLETED">Completed</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          {!isInternUser && (
-            <Link href="/mentor/tasks-management/create-task">
-              <AddButton>Create Task</AddButton>
-            </Link>
-          )}
-        </div>
+    <div className="flex flex-col gap-6">
+      <div className="w-full flex gap-3">
+        <SearchFilter search={searchTasks} setSearch={setSearchTasks} />
+        <Select
+          defaultValue="default"
+          onValueChange={(val: TaskStatus | 'default') =>
+            setSelectedStatus(val)
+          }
+        >
+          <SelectTrigger className="bg-card w-max">
+            <SelectValue
+              placeholder="Select task status"
+              defaultValue={selectedStatus}
+            />
+          </SelectTrigger>
+          <SelectContent align="end">
+            <SelectGroup>
+              <SelectItem value="default">All</SelectItem>
+              <SelectItem value="PENDING">Pending</SelectItem>
+              <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
+              <SelectItem value="COMPLETED">Completed</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        {!isInternUser && (
+          <Link href="/mentor/tasks-management/create-task">
+            <AddButton>Create Task</AddButton>
+          </Link>
+        )}
       </div>
       {selectedTasks.length ? (
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

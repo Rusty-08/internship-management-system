@@ -29,12 +29,15 @@ export function DataTable<TData, TValue>({
   return (
     <div className="border border-primary/10 rounded-md overflow-hidden">
       <Table>
-        <TableHeader className="bg-muted">
+        <TableHeader className="bg-card">
           {table.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map(header => {
                 return (
-                  <TableHead key={header.id} className="px-6 py-1.5">
+                  <TableHead
+                    key={header.id}
+                    className="px-6 py-1.5 text-xs uppercase tracking-wide"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(

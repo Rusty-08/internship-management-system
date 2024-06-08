@@ -35,7 +35,7 @@ const filters = ['All', 'Intern', 'Mentor']
 type AccountsTableProps = {
   data: UserSubset[]
   isArchivedPage?: boolean
-  user: 'INTERN' | 'MENTOR'
+  user?: 'INTERN' | 'MENTOR'
   accountColumns: (actions: {
     [key: string]: (row: Row<UserSubset>) => void
   }) => ColumnDef<UserSubset, any>[]
@@ -150,7 +150,7 @@ export default function AccountsTable({
           <SearchFilter
             column="name"
             table={table}
-            search={user.toLowerCase()}
+            search={user ? user.toLowerCase() : 'user'}
           />
           {isArchivedPage && (
             <Select
@@ -158,10 +158,10 @@ export default function AccountsTable({
               value={roleFilter}
               defaultValue={filters[0]}
             >
-              <SelectTrigger className="w-28">
+              <SelectTrigger className="w-max">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent align="end">
                 {isArchivedPage &&
                   filters.map(filter => (
                     <SelectItem key={filter} value={filter ?? ''}>
@@ -172,7 +172,7 @@ export default function AccountsTable({
             </Select>
           )}
         </div>
-        {!isArchivedPage && (
+        {!isArchivedPage && user && (
           <FormDialog
             mode={formMode}
             setMode={setFormMode}

@@ -11,7 +11,7 @@ type AddButtonProps = ButtonProps & {
 
 const AddButton = ({ children, className, ...props }: AddButtonProps) => {
   return (
-    <Button {...props} className={cn('gap-2', className)}>
+    <Button {...props} className={cn('gap-1.5', className)}>
       {children}
       <IoMdAddCircleOutline size="1.3rem" />
     </Button>

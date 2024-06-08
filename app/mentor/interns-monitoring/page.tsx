@@ -1,4 +1,4 @@
-import { ComingSoon } from '@/components/coming-soon'
+import { ComingSoon } from '@/components/@core/ui/coming-soon'
 import React from 'react'
 
 const InternsMonitoring = () => {

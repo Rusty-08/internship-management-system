@@ -1,4 +1,4 @@
-import { ComingSoon } from '@/components/coming-soon'
+import { ComingSoon } from '@/components/@core/ui/coming-soon'
 import HomeWrapper from '@/components/home/layout/home-layout'
 
 const PartnersAndClients = () => {

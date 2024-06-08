@@ -1,4 +1,4 @@
-import TaskWrapper from '@/app/mentor/tasks-management/_components/task-wrapper'
+import TaskWrapper from '@/components/@core/tasks/task-wrapper'
 import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { getTasks } from '@/utils/tasks'
 import { getCurrentUser } from '@/utils/users'

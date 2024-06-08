@@ -14,6 +14,7 @@ import { FormEvent } from 'react'
 import { AttendanceProps } from './attendance-columns'
 import { LoadingSpinner } from '@/components/@core/loading'
 import AddButton from '@/components/@core/ui/add-button'
+import SubmitCancelButton from '@/components/@core/button/submit-cancel'
 
 type AttendanceConfirmationProps = {
   addCurrentAttendance: (e: FormEvent) => void
@@ -70,9 +71,13 @@ export function AttendanceConfirmation({
             </div>
           </div>
           <DialogFooter className="pt-6">
-            <Button disabled={loading} type="submit" className="w-full">
-              {loading ? <LoadingSpinner /> : 'Save changes'}
-            </Button>
+            <SubmitCancelButton
+              loading={loading}
+              cancelOnclick={setIsOpenHandler}
+              className='w-32'
+            >
+              {mode}
+            </SubmitCancelButton>
           </DialogFooter>
         </form>
       </DialogContent>

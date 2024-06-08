@@ -6,13 +6,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
 
 import { GoArrowUpRight } from 'react-icons/go'
 
 type StackProps = {
   id: string
-  image: string
+  image: StaticImageData
   title: string
   desc: string
   link: string

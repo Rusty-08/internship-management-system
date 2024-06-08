@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
 import odiLogoBlack from '@/public/general/images/odi-logo-black.svg'
 import odiLogoWhite from '@/public/general/images/odi-logo-white.svg'
 import { useTheme } from 'next-themes'
@@ -8,7 +8,7 @@ type Testimonial = {
   name: string
   text: string
   role: string
-  imgUrl: string
+  imgUrl: StaticImageData
 }
 
 const TestimonialCard = ({ id, name, text, role, imgUrl }: Testimonial) => {

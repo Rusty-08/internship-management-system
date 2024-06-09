@@ -65,6 +65,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
             {(isIntern && status === 'COMPLETED') || !isIntern ? (
               <ViewSubmission
                 task={task}
+                isIntern={isIntern}
                 isOpen={dialog.isOpenViewSubmission}
                 setIsOpenHandler={() =>
                   setDialog({

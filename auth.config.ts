@@ -1,6 +1,8 @@
 import { User, UserRole } from '@prisma/client'
 import type { NextAuthConfig } from 'next-auth'
 
+const privateRoutes = ['/admin', '/mentor', '/intern']
+
 export const authConfig = {
   session: {
     strategy: 'jwt',
@@ -36,15 +38,15 @@ export const authConfig = {
           default:
             return false
         }
+      } else {
+        if (path.startsWith('/auth/change-password')) {
+          return Response.redirect(new URL('/auth/login', nextUrl))
+        }
+        if (privateRoutes.includes(path)) {
+          return Response.redirect(new URL('/unauthorized', nextUrl))
+        }
       }
 
-      if (path.startsWith('/auth/change-password') && !isLoggedIn) {
-        return Response.redirect(new URL('/auth/login', nextUrl))
-      }
-
-      if (path !== '/' && !path.startsWith('/auth')) {
-        return Response.redirect(new URL('/', nextUrl))
-      }
       return true
     },
     async jwt({ token, user }) {

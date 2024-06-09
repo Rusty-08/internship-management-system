@@ -15,12 +15,14 @@ type TaskDetailProps = {
   task: TaskProps
   isOpen: boolean
   setIsOpenHandler: () => void
+  isIntern: boolean
 }
 
 export function ViewSubmission({
   task,
   isOpen,
   setIsOpenHandler,
+  isIntern,
 }: TaskDetailProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
@@ -29,7 +31,7 @@ export function ViewSubmission({
           disabled={task.submissions?.length ? false : true}
           variant="secondary"
         >
-          View Submission
+          {isIntern ? 'Your' : 'View'} Submission
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-full lg:w-[30rem]">
@@ -57,7 +59,10 @@ export function ViewSubmission({
             <div className="flex flex-col ps-4 gap-1">
               <ul className="list-disc">
                 {task.submissions?.map(({ id, name, url }) => (
-                  <li key={id} className="text-blue-500 text-sm hover:underline">
+                  <li
+                    key={id}
+                    className="text-blue-500 text-sm hover:underline"
+                  >
                     <a href={url || ''} target="_blank">
                       {name}
                     </a>

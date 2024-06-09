@@ -22,9 +22,9 @@ export function SearchFilter({
   const { replace } = useRouter()
 
   const handleSearch = (task: string) => {
-    setSearch(task)
     const params = new URLSearchParams(searchParams)
     if (task) {
+      setSearch(task)
       params.set('task', task)
     } else {
       params.delete('task')

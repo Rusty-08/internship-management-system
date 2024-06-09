@@ -74,9 +74,11 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
         <BreadcrumbWrapper links={breadcrumbLinks} current="Profile" />
       )}
       <div
-        className={`layout-loading mt-6 mb-4 bg-card flex flex-col justify-center rounded-md overflow-hidden ${
-          loading ? 'h-[23rem]' : 'min-h-40'
-        } w-full`}
+        className={cn(
+          'layout-loading mb-4 bg-card flex flex-col justify-center rounded-md overflow-hidden w-full',
+          loading ? 'h-[23rem]' : 'min-h-40',
+          breadcrumbLinks && 'mt-6',
+        )}
       >
         {loading && <LoadingSpinner width="6rem" />}
         {data && !loading && (

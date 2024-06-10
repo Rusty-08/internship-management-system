@@ -15,6 +15,7 @@ import { useState } from 'react'
 import { TaskProps } from './types'
 import { TaskSubmission } from './task-submission'
 import { ViewSubmission } from './view-submission'
+import Link from 'next/link'
 
 export type TaskCardProps = {
   task: TaskProps
@@ -86,9 +87,11 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
             />
             {!isIntern && (
               <TooltipWrapper tooltip="Edit Task">
-                <Button variant="ghost" size="circle" className="text-text">
-                  <BiEditAlt size="1.1rem" />
-                </Button>
+                <Link href={`/mentor/tasks-management/${task.id}`}>
+                  <Button variant="ghost" size="circle" className="text-text">
+                    <BiEditAlt size="1.1rem" />
+                  </Button>
+                </Link>
               </TooltipWrapper>
             )}
           </div>

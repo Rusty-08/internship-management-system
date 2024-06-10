@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { DatePickerWithRange } from '@/components/@core/ui/date-range-picker'
 import { DateRange } from 'react-day-picker'
@@ -22,7 +22,11 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import SubmitCancelButton from '@/components/@core/button/submit-cancel'
 import { Textarea } from '@/components/ui/textarea'
 
-const TaskForm = () => {
+type TaskFormProps = {
+  initialState: z.infer<typeof TaskFormSchema> | undefined
+}
+
+const TaskForm = ({ initialState }: TaskFormProps) => {
   const router = useRouter()
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
@@ -57,13 +61,26 @@ const TaskForm = () => {
         fileName: file.name,
       }
 
-      await fetch('/api/tasks/upload', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      if (initialState) {
+        await fetch(`/api/tasks/update/${data.id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            ...data,
+            id: initialState.id,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+      } else {
+        await fetch('/api/tasks/upload', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+      }
     } else {
       throw new Error('File is required')
     }
@@ -74,6 +91,18 @@ const TaskForm = () => {
   }
 
   const { errors, isSubmitting } = form.formState
+
+  useEffect(() => {
+    if (initialState) {
+      form.setValue('title', initialState.title ?? '')
+      form.setValue('description', initialState.description ?? '')
+      form.setValue('upload', initialState.upload ?? undefined)
+      setDateRange({
+        from: initialState.date.startDate,
+        to: initialState.date.endDate,
+      })
+    }
+  }, [initialState, form])
 
   return (
     <Card>

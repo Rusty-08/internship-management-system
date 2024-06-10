@@ -79,18 +79,18 @@ export default function AttendanceTable({
     setIsOpen(false)
     router.refresh()
 
-    if (res == 201) {
-      toast({
-        title: `${mode} attendance successfully`,
-        description: 'Your attendance has been successfully recorded',
-      })
-    } else {
-      toast({
-        title: 'Could not save attendance',
-        description: 'Unable to save the attendance due to unknown error',
-        variant: 'destructive',
-      })
-    }
+    // if (res == 201) {
+    //   toast({
+    //     title: `${mode} attendance successfully`,
+    //     description: 'Your attendance has been successfully recorded',
+    //   })
+    // } else {
+    //   toast({
+    //     title: 'Could not save attendance',
+    //     description: 'Unable to save the attendance due to unknown error',
+    //     variant: 'destructive',
+    //   })
+    // }
   }
 
   const downloadAttendance = () => {

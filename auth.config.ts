@@ -42,12 +42,15 @@ export const authConfig = {
         if (path.startsWith('/auth/change-password')) {
           return Response.redirect(new URL('/auth/login', nextUrl))
         }
-        if (privateRoutes.includes(path)) {
-          return Response.redirect(new URL('/unauthorized', nextUrl))
+        if (
+          path.startsWith('/admin') ||
+          path.startsWith('/mentor') ||
+          path.startsWith('/intern')
+        ) {
+          return Response.redirect(new URL('/', nextUrl))
         }
+        return true
       }
-
-      return true
     },
     async jwt({ token, user }) {
       if (user) {

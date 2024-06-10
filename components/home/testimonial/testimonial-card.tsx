@@ -26,7 +26,7 @@ const TestimonialCard = ({ id, name, text, role, imgUrl }: Testimonial) => {
           alt="ODI Logo"
         />
         <figure className="mt-10 px-4 lg:px-[15%]">
-          <blockquote className="text-center font-semibold leading-8 sm:text-2xl sm:leading-9">
+          <blockquote className="text-center font-semibold leading-8 md:text-2xl md:leading-9">
             <p>{`“${text}”`}</p>
           </blockquote>
           <figcaption className="mt-10 flex gap-2 items-center justify-center">

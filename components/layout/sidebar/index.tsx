@@ -59,7 +59,7 @@ const Sidebar = ({
       )}
       <div
         className={cn(
-          'flex items-center p-3 px-4 border-b border-slate-800',
+          'flex items-center p-3 px-3 border-b border-slate-800',
           setIsMinimized ? 'h-[4.5rem]' : 'h-20',
         )}
       >
@@ -73,7 +73,13 @@ const Sidebar = ({
               <CgMenuRightAlt size="1.5rem" />
             </Button>
           ) : (
-            <Image src={logo} alt="logo" width={40} height={40} />
+            <Image
+              src={logo}
+              alt="logo"
+              width={40}
+              height={40}
+              className="flex-shrink-0"
+            />
           )}
           {setIsMinimized ? (
             <div

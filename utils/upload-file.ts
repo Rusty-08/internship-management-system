@@ -2,6 +2,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '@/lib/firebase'
 
 export const handleFileUpload = async (file: File, folder: string) => {
+  if (!file) return
   const metadata = { contentType: file.type }
   const storageRef = ref(storage, `${folder}/${file.name.replace(/\s/g, '_')}`)
   const uploadTask = uploadBytesResumable(storageRef, file, metadata)

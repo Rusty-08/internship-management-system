@@ -41,8 +41,8 @@ export async function PUT(
           update: {
             where: { id: taskUpdate?.files[0].id },
             data: {
-              name: fileName,
-              url: fileUrl,
+              name: fileName ?? taskUpdate?.files[0].name,
+              url: fileUrl ?? taskUpdate?.files[0].url,
             },
           },
         },
@@ -51,8 +51,6 @@ export async function PUT(
         files: true,
       },
     })
-
-    console.log(title, description, taskDate, fileUrl, fileName, id)
 
     if (updated) {
       return NextResponse.json(

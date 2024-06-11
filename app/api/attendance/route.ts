@@ -32,19 +32,22 @@ export async function POST(req: Request) {
       })
     } else {
       // Update the existing attendance record
-      const updateData = isAfternoon
-        ? { timeInPM: currentDate }
-        : { timeOutAM: currentDate }
-        
+      const updateData = {
+        timeInAM: attendance.timeInAM || (isAfternoon ? null : currentDate),
+        timeOutAM: attendance.timeOutAM || (isAfternoon ? null : currentDate),
+        timeInPM: attendance.timeInPM || (isAfternoon ? currentDate : null),
+        timeOutPM: attendance.timeOutPM || (isAfternoon ? currentDate : null),
+      }
+
       await prisma.attendance.update({
         where: { id: attendance.id },
         data: {
           ...updateData,
           totalHours: getTotalHours(
-            attendance.timeOutAM,
-            attendance.timeInAM,
-            currentDate,
-            attendance.timeInPM,
+            updateData.timeOutAM,
+            updateData.timeInAM,
+            updateData.timeOutAM,
+            updateData.timeInPM,
           ),
         },
       })

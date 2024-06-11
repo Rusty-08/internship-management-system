@@ -97,13 +97,17 @@ export const getAttendanceMode = (attendance: AttendanceProps[]) => {
   }
 
   // If it's morning and there's a time in for the morning, return 'Time out'
-  if (currentHour < 12 && attendance[attendance.length - 1].timeInAM) {
+  if (
+    currentHour < 13 &&
+    attendance[attendance.length - 1].timeInAM &&
+    !attendance[attendance.length - 1].timeInAM
+  ) {
     mode = 'Time out'
   }
 
   // If it's afternoon and there's a time in for the afternoon, return 'Time out'
   if (
-    currentHour >= 12 &&
+    currentHour >= 13 &&
     attendance[attendance.length - 1].timeInPM &&
     !attendance[attendance.length - 1].timeOutPM
   ) {

@@ -7,7 +7,7 @@ import { DateRange } from 'react-day-picker'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { TaskFormSchema } from './task-schema'
+import { TaskFormEditSchema, TaskFormSchema } from './task-schema'
 import {
   Form,
   FormControl,
@@ -34,7 +34,7 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
   })
 
   const form = useForm<z.infer<typeof TaskFormSchema>>({
-    resolver: zodResolver(TaskFormSchema),
+    resolver: zodResolver(!initialState ? TaskFormSchema : TaskFormEditSchema ),
     defaultValues: {
       title: '',
       description: '',
@@ -47,42 +47,36 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
   })
 
   const onSubmitForm = async (values: z.infer<typeof TaskFormSchema>) => {
-    if (values.upload) {
-      const file = values.upload as File
-      const fileUrl = await handleFileUpload(file, 'tasks')
+    const file = values.upload as File
+    const fileUrl = await handleFileUpload(file, 'tasks')
 
-      const data = {
-        ...values,
-        date: {
-          startDate: dateRange?.from?.toISOString() || '',
-          endDate: dateRange?.to?.toISOString() || '',
+    const data = {
+      ...values,
+      id: initialState?.id,
+      date: {
+        startDate: dateRange?.from,
+        endDate: dateRange?.to,
+      },
+      fileUrl: fileUrl ? fileUrl : null,
+      fileName: fileUrl ? file.name : null,
+    }
+
+    if (initialState) {
+      await fetch(`/api/tasks/update/${data.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
         },
-        fileUrl,
-        fileName: file.name,
-      }
-
-      if (initialState) {
-        await fetch(`/api/tasks/update/${data.id}`, {
-          method: 'PUT',
-          body: JSON.stringify({
-            ...data,
-            id: initialState.id,
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-      } else {
-        await fetch('/api/tasks/upload', {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-      }
+      })
     } else {
-      throw new Error('File is required')
+      await fetch('/api/tasks/upload', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
     }
 
     form.reset()

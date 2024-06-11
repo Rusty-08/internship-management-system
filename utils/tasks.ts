@@ -36,3 +36,24 @@ export const getTasks = async (id: string) => {
     },
   })
 }
+
+export const getTaskById = async (id: string) => {
+  if (id === 'create-task') return null
+
+  const taskData = await prisma.task.findUnique({
+    where: { id },
+    include: {
+      files: true,
+    },
+  })
+  return {
+    id: taskData?.id,
+    title: taskData?.title || '',
+    description: taskData?.description || '',
+    date: {
+      startDate: taskData?.startDate || new Date(),
+      endDate: taskData?.endDate || new Date(),
+    },
+    upload: undefined,
+  }
+}

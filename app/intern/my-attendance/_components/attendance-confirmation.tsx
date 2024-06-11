@@ -35,10 +35,18 @@ export function AttendanceConfirmation({
   setIsOpenHandler,
   currentAttendance,
 }: AttendanceConfirmationProps) {
+  const isAfternoon = new Date().getHours() > 12
+
+  const isTriggerDisabled = currentAttendance?.timeOutPM
+    ? true
+    : !isAfternoon && currentAttendance?.timeOutAM
+    ? true
+    : false
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
       <DialogTrigger asChild>
-        <AddButton disabled={currentAttendance?.timeOutPM ? true : false}>
+        <AddButton disabled={isTriggerDisabled}>
           {mode}
         </AddButton>
       </DialogTrigger>
@@ -74,7 +82,7 @@ export function AttendanceConfirmation({
             <SubmitCancelButton
               loading={loading}
               cancelOnclick={setIsOpenHandler}
-              className='w-32'
+              className="w-32"
             >
               {mode}
             </SubmitCancelButton>

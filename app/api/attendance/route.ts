@@ -36,7 +36,9 @@ export async function POST(req: Request) {
         timeInAM: attendance.timeInAM || (isAfternoon ? null : currentDate),
         timeOutAM: attendance.timeOutAM || (isAfternoon ? null : currentDate),
         timeInPM: attendance.timeInPM || (isAfternoon ? currentDate : null),
-        timeOutPM: attendance.timeOutPM || (isAfternoon ? currentDate : null),
+        timeOutPM:
+          attendance.timeOutPM ||
+          (attendance.timeInPM && isAfternoon ? currentDate : null),
       }
 
       await prisma.attendance.update({
@@ -46,7 +48,7 @@ export async function POST(req: Request) {
           totalHours: getTotalHours(
             updateData.timeOutAM,
             updateData.timeInAM,
-            updateData.timeOutAM,
+            updateData.timeOutPM,
             updateData.timeInPM,
           ),
         },

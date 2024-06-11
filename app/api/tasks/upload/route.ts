@@ -2,14 +2,27 @@ import prisma from '@/lib/prisma'
 import { getCurrentUser } from '@/utils/users'
 import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
+import { isBefore, isWithinInterval, parseISO } from 'date-fns'
+import { TaskStatus } from '@prisma/client'
 
 export async function POST(req: Request) {
   const user = await getCurrentUser()
   const { title, description, date, fileUrl, fileName } = await req.json()
 
   const taskDate = {
-    startDate: new Date(date.startDate as string),
-    endDate: new Date(date.endDate as string),
+    startDate: parseISO(date.startDate as string),
+    endDate: parseISO(date.endDate as string),
+  }
+
+  let status = 'PENDING' as TaskStatus
+  const now = new Date()
+
+  if (isBefore(now, taskDate.startDate)) {
+    status = 'PENDING'
+  } else if (
+    isWithinInterval(now, { start: taskDate.startDate, end: taskDate.endDate })
+  ) {
+    status = 'IN_PROGRESS'
   }
 
   try {
@@ -17,7 +30,7 @@ export async function POST(req: Request) {
       data: {
         title,
         description,
-        status: 'PENDING',
+        status,
         startDate: taskDate.startDate,
         endDate: taskDate.endDate,
         mentorId: user?.id || '',

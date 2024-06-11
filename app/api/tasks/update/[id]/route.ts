@@ -1,7 +1,9 @@
 import { connectDB } from '@/lib/connect-db'
 import prisma from '@/lib/prisma'
+import { TaskStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
+import { isBefore, isWithinInterval, parseISO } from 'date-fns'
 
 export async function PUT(
   request: Request,
@@ -10,11 +12,20 @@ export async function PUT(
   const { title, description, date, fileUrl, fileName } = await request.json()
 
   const taskDate = {
-    startDate: new Date(date.startDate as string),
-    endDate: new Date(date.endDate as string),
+    startDate: parseISO(date.startDate as string),
+    endDate: parseISO(date.endDate as string),
   }
 
-  await connectDB()
+  let status = 'PENDING' as TaskStatus
+  const now = new Date()
+
+  if (isBefore(now, taskDate.startDate)) {
+    status = 'PENDING'
+  } else if (
+    isWithinInterval(now, { start: taskDate.startDate, end: taskDate.endDate })
+  ) {
+    status = 'IN_PROGRESS'
+  }
 
   try {
     const taskUpdate = await prisma.task.findUnique({
@@ -35,6 +46,7 @@ export async function PUT(
       data: {
         title,
         description,
+        status,
         startDate: taskDate.startDate,
         endDate: taskDate.endDate,
         files: {

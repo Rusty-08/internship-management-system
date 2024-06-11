@@ -28,12 +28,14 @@ import { handleFileUpload } from '@/utils/upload-file'
 type TaskDetailProps = {
   taskId: string
   isOpen: boolean
+  isPending: boolean
   setIsOpenHandler: () => void
 }
 
 export function TaskSubmission({
   taskId,
   isOpen,
+  isPending,
   setIsOpenHandler,
 }: TaskDetailProps) {
   const router = useRouter()
@@ -80,7 +82,9 @@ export function TaskSubmission({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button>Upload Report</Button>
+        <Button disabled={isPending}>
+          {!isPending ? 'Upload Report' : 'Upload Disabled'}
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-full lg:w-[30rem]">
         <DialogHeader>

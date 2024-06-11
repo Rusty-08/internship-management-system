@@ -34,7 +34,7 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
   })
 
   const form = useForm<z.infer<typeof TaskFormSchema>>({
-    resolver: zodResolver(!initialState ? TaskFormSchema : TaskFormEditSchema ),
+    resolver: zodResolver(!initialState ? TaskFormSchema : TaskFormEditSchema),
     defaultValues: {
       title: '',
       description: '',
@@ -100,7 +100,9 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
 
   return (
     <Card>
-      <CardHeader className="text-xl font-medium">Create New Task</CardHeader>
+      <CardHeader className="text-xl font-medium">
+        {initialState ? 'Update Task' : 'Create Task'}
+      </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmitForm)}>
           <CardContent>
@@ -169,7 +171,9 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
                 name="upload"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Attach Document</FormLabel>
+                    <FormLabel>
+                      Attach Document{initialState && ' (optional)'}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}

@@ -1,6 +1,6 @@
 'use client'
 
-import { addDays, format } from 'date-fns'
+import { format } from 'date-fns'
 import { DateRange } from 'react-day-picker'
 
 import { cn } from '@/lib/utils'
@@ -62,6 +62,9 @@ export function DatePickerWithRange({
             selected={date}
             onSelect={setDate}
             numberOfMonths={2}
+            modifiers={{
+              disabled: [{ before: new Date() }, { dayOfWeek: [0, 6] }],
+            }}
           />
         </PopoverContent>
       </Popover>

@@ -55,6 +55,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
               <TaskSubmission
                 taskId={task.id}
                 isOpen={dialog.isOpenSubmission}
+                isPending={status === 'PENDING'}
                 setIsOpenHandler={() =>
                   setDialog({
                     ...dialog,
@@ -85,15 +86,16 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
                 setDialog({ ...dialog, isOpenDetails: !dialog.isOpenDetails })
               }
             />
-            {!isIntern && (
-              <TooltipWrapper tooltip="Edit Task">
-                <Link href={`/mentor/tasks-management/${task.id}`}>
-                  <Button variant="ghost" size="circle" className="text-text">
-                    <BiEditAlt size="1.1rem" />
-                  </Button>
-                </Link>
-              </TooltipWrapper>
-            )}
+            {!isIntern &&
+              (status === 'PENDING' || status === 'IN_PROGRESS') && (
+                <TooltipWrapper tooltip="Edit Task">
+                  <Link href={`/mentor/tasks-management/${task.id}`}>
+                    <Button variant="ghost" size="circle" className="text-text">
+                      <BiEditAlt size="1.1rem" />
+                    </Button>
+                  </Link>
+                </TooltipWrapper>
+              )}
           </div>
         </div>
       </CardFooter>

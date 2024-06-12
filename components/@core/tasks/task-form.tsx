@@ -198,9 +198,9 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
             <SubmitCancelButton
               loading={isSubmitting}
               cancelOnclick={() => router.back()}
-              className="w-36"
+              className="w-40"
             >
-              Upload Task
+              {initialState ? 'Save Changes' : 'Upload Task'}
             </SubmitCancelButton>
           </CardFooter>
         </form>

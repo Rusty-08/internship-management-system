@@ -47,7 +47,7 @@ const ChangePassword = () => {
         }),
       })
 
-      router.push('/auth/login')
+      router.push('/sign-in')
     } catch (error) {
       console.error(error)
     }
@@ -55,7 +55,7 @@ const ChangePassword = () => {
 
   const backToLogin = async () => {
     await signOut()
-    router.push('/auth/login')
+    router.push('/sign-in')
   }
 
   return (

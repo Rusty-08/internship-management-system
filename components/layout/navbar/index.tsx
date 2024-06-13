@@ -1,13 +1,13 @@
 'use client'
 
-import { logout } from '@/app/auth/_actions/authenticate'
-import { ProfileAvatar } from '@/components/home/navbar/profile'
 import { ThemeToggle } from '@/components/providers/theme/theme-toggle'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useSession } from 'next-auth/react'
-import { CiLogout } from "react-icons/ci"
+import { CiLogout } from 'react-icons/ci'
 import imagePlaceholder from '@/public/general/images/male-avatar.svg'
+import { ProfileAvatar } from '@/components/@core/avatar'
+import { logout } from '@/app/sign-in/_actions/authenticate'
 
 const Navbar = ({ profilePath }: { profilePath: string }) => {
   const { data: session } = useSession()
@@ -33,10 +33,7 @@ const Navbar = ({ profilePath }: { profilePath: string }) => {
                 variant="ghost"
                 className="justify-start px-4 gap-4 w-full"
               >
-                <CiLogout
-                  size="1.2rem"
-                  className="group-hover:text-primary"
-                />
+                <CiLogout size="1.2rem" className="group-hover:text-primary" />
                 Sign Out
               </Button>
             </DropdownMenuItem>

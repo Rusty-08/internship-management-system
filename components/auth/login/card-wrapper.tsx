@@ -21,11 +21,11 @@ export const CardWrapper = ({
   children,
   headerLabel,
   subHeaderLabel,
-  backButtonLabel,
+  backButtonLabel = 'OnDemand Innovation, LLC',
   backButtonHref,
 }: CardWrapperProps) => {
   return (
-    <Card className="px-2 md:px-4 py-1 w-[27rem] max-w-[95vw]">
+    <Card className="px-2 md:px-6 pb-2 pt-8 w-[30rem] max-w-[95vw]">
       <CardHeader>
         <Header label={headerLabel} />
         <CardDescription className="text-center">
@@ -33,7 +33,7 @@ export const CardWrapper = ({
         </CardDescription>
       </CardHeader>
       <CardContent>{children}</CardContent>
-      {backButtonLabel && backButtonHref && (
+      {backButtonHref && (
         <CardFooter>
           <BackButton label={backButtonLabel} href={backButtonHref} />
         </CardFooter>

@@ -26,7 +26,5 @@ export async function authenticate(values: z.infer<typeof LoginSchema>) {
 }
 
 export const logout = async () => {
-  await signOut()
-  revalidatePath('/')
-  redirect('/')
+  await signOut({ redirectTo: '/sign-in' })
 }

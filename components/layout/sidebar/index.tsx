@@ -1,28 +1,19 @@
-'use client'
-
 import { Dispatch, MouseEvent, SetStateAction } from 'react'
-import { usePathname } from 'next/navigation'
-import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import logo from '@/public/home/ims-logo.svg'
 
 import { MdOutlineKeyboardDoubleArrowLeft } from 'react-icons/md'
-import { IconType } from 'react-icons/lib'
-import { CgMenuRightAlt } from 'react-icons/cg'
-
-type SidebarLinkProps = {
-  name: string
-  path: string
-  icon: IconType
-}[]
+import { CgMenuLeftAlt } from 'react-icons/cg'
+import { SidebarLinkProps } from './links'
+import SidebarLinks from './sidebar-link'
 
 type SidebarProps = {
   sideLinks: SidebarLinkProps
   isMinimized?: boolean
   setIsMinimized?: Dispatch<SetStateAction<boolean>>
-  setOpen?: Dispatch<SetStateAction<boolean>> // for home sidebar reuse only
+  setOpen?: Dispatch<SetStateAction<boolean>>
 }
 
 const Sidebar = ({
@@ -31,14 +22,12 @@ const Sidebar = ({
   setIsMinimized,
   setOpen,
 }: SidebarProps) => {
-  const path = usePathname()
-
   return (
     <div
       className={cn(
-        'fixed flex flex-col left-0 bg-sidebar shadow top-0 h-screen z-50 pb-4 transition-all group duration-300 ease-in-out',
+        'fixed hidden lg:flex flex-col left-0 bg-sidebar shadow top-0 h-screen z-50 pb-4 transition-all group duration-300 ease-in-out',
         isMinimized ? 'w-16 hover:w-[18rem]' : 'w-[18rem]',
-        !setIsMinimized && 'w-[20rem]',
+        !setIsMinimized && 'w-[20rem] flex lg:hidden',
       )}
     >
       {setIsMinimized && (
@@ -70,7 +59,7 @@ const Sidebar = ({
               size="circle"
               onClick={() => setOpen(false)}
             >
-              <CgMenuRightAlt size="1.5rem" />
+              <CgMenuLeftAlt size="1.5rem" />
             </Button>
           ) : (
             <Image
@@ -89,11 +78,11 @@ const Sidebar = ({
               )}
             >
               <h1 className="font-extrabold text-xl tracking-wider whitespace-nowrap bg-gradient-to-r from-primary to-fuchsia-900 bg-clip-text text-transparent">
-                INTERNSHIP
+                INTERNSHIP MS
               </h1>
-              <h1 className="font-semibold tracking-wide text-text whitespace-nowrap">
-                MANAGEMENT SYSTEM
-              </h1>
+              <p className="font-medium text-sm tracking-wide text-text whitespace-nowrap">
+                OnDemand Innovation, LLC
+              </p>
             </div>
           ) : (
             <h1 className="font-bold text-3xl tracking-wide bg-gradient-to-r from-primary to-fuchsia-900 bg-clip-text text-transparent">
@@ -102,36 +91,11 @@ const Sidebar = ({
           )}
         </div>
       </div>
-      <div className="sidebar flex flex-col overflow-y-auto flex-grow gap-1 py-6">
-        {sideLinks.map(item => (
-          <Link
-            key={item.path}
-            href={item.path}
-            className={`flex h-[2.8rem] relative justify-start items-center w-full rounded-none transition-all duration-75 hover:bg-primary/10 ${
-              path === item.path ? 'text-white bg-primary/10' : 'text-white/50'
-            } `}
-          >
-            {path === item.path && (
-              <div className="absolute w-1 h-full bg-primary/80 rounded-full left-0 top-0"></div>
-            )}
-            <div className="flex justify-center flex-shrink-0 w-16">
-              <item.icon
-                className={`${
-                  path === item.path ? 'text-primary' : 'text-white/50'
-                }`}
-                size="1.2rem"
-              />
-            </div>
-            <span
-              className={`${
-                isMinimized ? 'hidden' : 'visible'
-              } group-hover:inline-flex whitespace-nowrap`}
-            >
-              {item.name}
-            </span>
-          </Link>
-        ))}
-      </div>
+      <SidebarLinks
+        sideLinks={sideLinks}
+        isMinimized={isMinimized}
+        setOpen={setOpen}
+      />
     </div>
   )
 }

@@ -6,6 +6,13 @@ import { IoCalendar } from 'react-icons/io5'
 import { IoMdChatbubbles } from 'react-icons/io'
 import { FaCalendarPlus } from 'react-icons/fa6'
 import { MdRateReview } from 'react-icons/md'
+import { IconType } from 'react-icons/lib'
+
+export type SidebarLinkProps = {
+  name: string
+  path: string
+  icon: IconType
+}[]
 
 export const adminSidebarLinks = [
   {

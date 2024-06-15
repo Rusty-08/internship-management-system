@@ -2,13 +2,11 @@
 
 import { ReactNode, useState } from 'react'
 
-import {
-  SidebarLinkProps,
-  mentorSidebarLinks,
-} from '@/components/layout/sidebar/links'
+import { SidebarLinkProps } from '@/components/layout/sidebar/links'
 import Sidebar from '@/components/layout/sidebar'
 import Navbar from '@/components/layout/navbar'
 import { cn } from '@/lib/utils'
+import Footer from '@/components/layout/footer'
 
 type SidebarProps = {
   sideLinks: SidebarLinkProps
@@ -34,11 +32,12 @@ const CoreLayout = ({ sideLinks, children, role }: SidebarProps) => {
       >
         <Navbar profilePath={`/${role}/profile`} sideLinks={sideLinks} />
         <div
-          style={{ minHeight: 'calc(100vh - 5rem)' }}
+          style={{ minHeight: 'calc(100vh - 8.5rem)' }}
           className="py-4 px-6 w-full"
         >
           {children}
         </div>
+        <Footer />
       </div>
     </main>
   )

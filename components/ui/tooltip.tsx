@@ -4,6 +4,7 @@ import * as React from 'react'
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 
 import { cn } from '@/lib/utils'
+import { ClassNameValue } from 'tailwind-merge'
 
 const TooltipProvider = TooltipPrimitive.Provider
 
@@ -32,13 +33,20 @@ export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
 type TooltipWrapperProps = {
   children: React.ReactNode
   tooltip: React.ReactNode
+  className?: ClassNameValue
 }
 
-export const TooltipWrapper = ({ children, tooltip }: TooltipWrapperProps) => {
+export const TooltipWrapper = ({
+  children,
+  tooltip,
+  className,
+}: TooltipWrapperProps) => {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger asChild>{children}</TooltipTrigger>
+        <TooltipTrigger asChild className={cn('relative', className)}>
+          {children}
+        </TooltipTrigger>
         <TooltipContent className="bg-foreground" sideOffset={10}>
           {tooltip}
         </TooltipContent>

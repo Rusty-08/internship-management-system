@@ -23,13 +23,15 @@ export function SearchFilter({
 
   const handleSearch = (task: string) => {
     const params = new URLSearchParams(searchParams)
+    setSearch(task)
     if (task) {
-      setSearch(task)
       params.set('task', task)
     } else {
       params.delete('task')
     }
-    replace(`${pathname}?${params.toString()}`)
+    setTimeout(() => {
+      replace(`${pathname}?${params.toString()}`)
+    }, 0)
   }
 
   useEffect(() => {

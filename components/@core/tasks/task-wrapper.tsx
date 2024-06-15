@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { SearchFilter } from './search-filter'
-import TaskCard from './task-card'
 import NoRecords from '@/components/@core/ui/no-records'
 import { TaskStatus } from '@prisma/client'
 import Link from 'next/link'
@@ -17,6 +16,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import AddButton from '@/components/@core/ui/add-button'
+import { Accordion } from '@/components/ui/accordion'
+import TaskCard from './task-card'
 
 const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
   const [searchTasks, setSearchTasks] = useState('')
@@ -24,9 +25,11 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
     'default',
   )
 
-  const filteredTasks = tasks.filter(task =>
-    task.title.toLowerCase().includes(searchTasks.toLowerCase()),
-  )
+  const filteredTasks = searchTasks
+    ? tasks.filter(task =>
+        task.title.toLowerCase().includes(searchTasks.toLowerCase()),
+      )
+    : tasks
 
   const sortedTasks = filteredTasks.sort(
     (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
@@ -68,11 +71,11 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
         )}
       </div>
       {selectedTasks.length ? (
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Accordion type="single" collapsible className="w-full">
           {selectedTasks.map(task => (
             <TaskCard key={task.id} task={task} isIntern={isInternUser} />
           ))}
-        </div>
+        </Accordion>
       ) : (
         <NoRecords
           searchOutput={searchTasks}

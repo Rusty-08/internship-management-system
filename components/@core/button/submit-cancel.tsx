@@ -24,6 +24,7 @@ const SubmitCancelButton = ({
       <Button
         type="button"
         variant="outline"
+        className="hidden md:inline-flex"
         disabled={loading}
         onClick={cancelOnclick}
       >
@@ -40,7 +41,7 @@ const SubmitCancelButton = ({
         ) : (
           <>
             {children}
-            <LuChevronRightCircle size="1.2rem" />
+            <LuChevronRightCircle size="1.2rem" className="flex-shrink-0" />
           </>
         )}
       </Button>

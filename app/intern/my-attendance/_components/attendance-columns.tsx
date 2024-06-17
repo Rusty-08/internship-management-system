@@ -18,7 +18,7 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     accessorKey: 'date',
     header: 'Date',
     cell: ({ row }) => (
-      <p className="text-foreground">
+      <p className="text-foreground text-nowrap">
         {format(row.getValue('date'), 'EEE, MMM dd')}
       </p>
     ),
@@ -28,7 +28,11 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     header: 'Time In',
     cell: ({ row }) => {
       const timeInAM = row.getValue('timeInAM') as Date
-      return <span>{timeInAM ? format(timeInAM, 'hh:mm aa') : ''}</span>
+      return (
+        <span className="text-nowrap">
+          {timeInAM ? format(timeInAM, 'hh:mm aa') : ''}
+        </span>
+      )
     },
   },
   {
@@ -36,7 +40,11 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     header: 'Time Out',
     cell: ({ row }) => {
       const timeInAM = row.getValue('timeOutAM') as Date
-      return <span>{timeInAM ? format(timeInAM, 'hh:mm aa') : ''}</span>
+      return (
+        <span className="text-nowrap">
+          {timeInAM ? format(timeInAM, 'hh:mm aa') : ''}
+        </span>
+      )
     },
   },
   {
@@ -44,7 +52,11 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     header: 'Time In',
     cell: ({ row }) => {
       const timeInAM = row.getValue('timeInPM') as Date
-      return <span>{timeInAM ? format(timeInAM, 'hh:mm aa') : ''}</span>
+      return (
+        <span className="text-nowrap">
+          {timeInAM ? format(timeInAM, 'hh:mm aa') : ''}
+        </span>
+      )
     },
   },
   {
@@ -52,7 +64,11 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     header: 'Time Out',
     cell: ({ row }) => {
       const timeInAM = row.getValue('timeOutPM') as Date
-      return <span>{timeInAM ? format(timeInAM, 'hh:mm aa') : ''}</span>
+      return (
+        <span className="text-nowrap">
+          {timeInAM ? format(timeInAM, 'hh:mm aa') : ''}
+        </span>
+      )
     },
   },
   {
@@ -60,7 +76,11 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     header: 'Total Hours',
     cell: ({ row }) => {
       const total = row.getValue('totalHours') as number
-      return <span className="text-foreground">{formatHours(total)}</span>
+      return (
+        <span className="text-foreground text-nowrap">
+          {formatHours(total)}
+        </span>
+      )
     },
   },
 ]

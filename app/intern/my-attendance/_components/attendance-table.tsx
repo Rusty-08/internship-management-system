@@ -79,18 +79,13 @@ export default function AttendanceTable({
     setIsOpen(false)
     router.refresh()
 
-    // if (res == 201) {
-    //   toast({
-    //     title: `${mode} attendance successfully`,
-    //     description: 'Your attendance has been successfully recorded',
-    //   })
-    // } else {
-    //   toast({
-    //     title: 'Could not save attendance',
-    //     description: 'Unable to save the attendance due to unknown error',
-    //     variant: 'destructive',
-    //   })
-    // }
+    if (res != 201) {
+      toast({
+        title: 'Could not save attendance',
+        description: 'Unable to save the attendance due to unknown error',
+        variant: 'destructive',
+      })
+    }
   }
 
   const downloadAttendance = () => {
@@ -117,8 +112,8 @@ export default function AttendanceTable({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-between">
-        <DateRangeFilter date={date} setDate={setDate} />
+      <div className="flex flex-col lg:flex-row gap-4 lg:justify-between">
+        <DateRangeFilter date={date} setDate={setDate} className="w-full" />
         <div className="flex gap-2">
           <Button variant="outline" onClick={downloadAttendance}>
             <GrDocumentDownload size="1rem" className="mr-2" />
@@ -132,7 +127,7 @@ export default function AttendanceTable({
               user={user}
               loading={loading}
               isOpen={isOpen}
-              setIsOpenHandler={setIsOpenHandler}
+              setIsOpenHandler={setIsOpen}
             />
           )}
         </div>

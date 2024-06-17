@@ -48,22 +48,24 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
   return (
     <AccordionItem value={task.id}>
       <AccordionTrigger>
-        <div className="flex items-center w-[23%] gap-4">
-          <Icon size="1.3rem" className={`text-${statusColor} opacity-50`} />
-          <span className="text-sm font-normal text-muted-foreground">{`${formattedStartDate} - ${formattedEndDate}`}</span>
+        <div>
+          <Icon size="1.3rem" className={`text-${statusColor}`} />
         </div>
-        <p className="flex-grow text-left font-medium text-[0.95rem]">
-          {title}
-        </p>
-        <Badge variant={status}>
+        <div className="flex flex-grow flex-col lg:flex-row gap-1 lg:justify-center lg:gap-4">
+          <span className="text-sm font-normal text-start text-muted-foreground lg:w-1/5">{`${formattedStartDate} - ${formattedEndDate}`}</span>
+          <p className="flex-grow text-left font-medium text-[0.95rem]">
+            {title}
+          </p>
+        </div>
+        <Badge variant={status} className="hidden lg:inline-flex">
           {status.charAt(0) + status.slice(1).toLowerCase()}
         </Badge>
       </AccordionTrigger>
       <AccordionContent>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
-            <div className="flex gap-4">
-              <span className="text-sm text-text font-medium w-[23%] flex-shrink-0">
+            <div className="flex gap-2 lg:gap-4 flex-col lg:flex-row">
+              <span className="text-sm text-text font-medium lg:w-[23%] flex-shrink-0">
                 Description
               </span>
               <p className="text-sm whitespace-pre-line text-justify">
@@ -72,17 +74,17 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
             </div>
             <div
               className={cn(
-                'flex relative gap-4',
+                'flex relative gap-2 lg:gap-4 flex-col lg:flex-row',
                 status === 'COMPLETED' && '-mb-2',
               )}
             >
-              <span className="text-sm text-text font-medium w-[23%] flex-shrink-0">
+              <span className="text-sm text-text font-medium lg:w-[23%] flex-shrink-0">
                 {isIntern ? 'Your Submission' : 'Submission'}
               </span>
               {!submissions?.length && (
                 <p className="text-sm text-start whitespace-pre-line">None</p>
               )}
-              <div className="absolute right-0 bottom-0">
+              <div className="lg:absolute right-0 bottom-0">
                 {!isIntern && status !== 'COMPLETED' && (
                   <>
                     <TooltipWrapper tooltip="Delete Task">
@@ -121,8 +123,8 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
             </div>
             {submissions?.length ? (
               <div className="border-t pt-4 flex flex-col gap-4">
-                <div className="flex gap-4">
-                  <span className="text-sm text-text font-medium w-[23%]">
+                <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
+                  <span className="text-sm text-text font-medium lg:w-[23%]">
                     Date Submitted
                   </span>
                   <p className="text-sm">
@@ -132,8 +134,8 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
                     )}
                   </p>
                 </div>
-                <div className="flex gap-4">
-                  <span className="text-sm text-text font-medium w-[23%]">
+                <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
+                  <span className="text-sm text-text font-medium lg:w-[23%]">
                     Attachment
                   </span>
                   <div className="flex flex-col ps-4 gap-1">

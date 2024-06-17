@@ -82,7 +82,7 @@ export function TaskSubmission({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button disabled={isPending} className='w-max'>Upload Report</Button>
+        <Button disabled={isPending} className='w-full lg:w-max mt-2 lg:mt-0'>Upload Report</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-full lg:w-[30rem]">
         <DialogHeader>

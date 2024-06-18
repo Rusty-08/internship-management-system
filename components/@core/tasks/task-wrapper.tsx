@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { SearchFilter } from './search-filter'
 import NoRecords from '@/components/@core/ui/no-records'
 import { TaskStatus } from '@prisma/client'
@@ -25,11 +25,13 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
     'default',
   )
 
-  const filteredTasks = searchTasks
-    ? tasks.filter(task =>
-        task.title.toLowerCase().includes(searchTasks.toLowerCase()),
-      )
-    : tasks
+  const filteredTasks = useMemo(() => {
+    return searchTasks
+      ? tasks.filter(task =>
+          task.title.toLowerCase().includes(searchTasks.toLowerCase()),
+        )
+      : tasks
+  }, [searchTasks, tasks])
 
   const sortedTasks = filteredTasks.sort(
     (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),

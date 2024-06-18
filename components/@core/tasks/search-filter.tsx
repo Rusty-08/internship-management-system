@@ -29,9 +29,7 @@ export function SearchFilter({
     } else {
       params.delete('task')
     }
-    setTimeout(() => {
-      replace(`${pathname}?${params.toString()}`)
-    }, 0)
+    replace(`${pathname}?${params.toString()}`)
   }
 
   useEffect(() => {

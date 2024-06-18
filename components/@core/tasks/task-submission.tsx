@@ -1,35 +1,21 @@
-import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
 import { SubmissionSchema } from '@/components/@core/tasks/task-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import SubmitCancelButton from '@/components/@core/button/submit-cancel'
+import { Form } from '@/components/ui/form'
 import { useRouter } from 'next/navigation'
 import { handleFileUpload } from '@/utils/upload-file'
+import SubmissionForm from './submission-form'
+import SubmissionDialog from './submission-dialog'
+import { SubmissionDrawer } from './submission-drawer'
+import { Dispatch, SetStateAction } from 'react'
+import useMediaQuery from '@/hooks/useMediaQuery'
 
 type TaskDetailProps = {
   taskId: string
   isOpen: boolean
   isPending: boolean
-  setIsOpenHandler: () => void
+  setIsOpenHandler: Dispatch<SetStateAction<boolean>>
 }
 
 export function TaskSubmission({
@@ -39,6 +25,7 @@ export function TaskSubmission({
   setIsOpenHandler,
 }: TaskDetailProps) {
   const router = useRouter()
+  const isMobile = useMediaQuery('(max-width: 599px)')
 
   const form = useForm<z.infer<typeof SubmissionSchema>>({
     resolver: zodResolver(SubmissionSchema),
@@ -68,70 +55,34 @@ export function TaskSubmission({
     } else {
       throw new Error('Server error')
     }
-    setIsOpenHandler()
+    setIsOpenHandler(false)
     router.refresh()
   }
 
   const { errors, isSubmitting } = form.formState
 
   const handleOpenChange = () => {
-    setIsOpenHandler()
+    setIsOpenHandler(!isOpen)
     form.reset()
   }
 
+  const Submission = isMobile ? SubmissionDrawer : SubmissionDialog
+
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        <Button disabled={isPending} className='w-full lg:w-max mt-2 lg:mt-0'>Upload Report</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-full lg:w-[30rem]">
-        <DialogHeader>
-          <DialogTitle>Task Submission</DialogTitle>
-        </DialogHeader>
-        <DialogDescription>Submit your task report here</DialogDescription>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmitForm)}>
-            <div className="space-y-4 mb-4">
-              <FormField
-                control={form.control}
-                name="file"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Attach Document</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="file"
-                        className="cursor-pointer"
-                        disabled={isSubmitting}
-                        value={undefined}
-                        onChange={e => {
-                          field.onChange(e.target.files?.[0])
-                        }}
-                      />
-                    </FormControl>
-                    {errors.file && (
-                      <FormMessage>{errors.file.message}</FormMessage>
-                    )}
-                  </FormItem>
-                )}
-              />
-            </div>
-            <DialogFooter>
-              <SubmitCancelButton
-                loading={isSubmitting}
-                cancelOnclick={() => {
-                  setIsOpenHandler()
-                  form.reset()
-                }}
-                className="w-36"
-              >
-                Upload Task
-              </SubmitCancelButton>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+    <Submission
+      isPending={isPending}
+      isOpen={isOpen}
+      setIsOpenHandler={setIsOpenHandler}
+    >
+      <Form {...form}>
+        <SubmissionForm
+          form={form}
+          onSubmitForm={onSubmitForm}
+          isSubmitting={isSubmitting}
+          errors={errors}
+          setIsOpenHandler={handleOpenChange}
+        />
+      </Form>
+    </Submission>
   )
 }

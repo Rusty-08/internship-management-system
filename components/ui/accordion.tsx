@@ -52,7 +52,7 @@ const AccordionContent = React.forwardRef<
     className="overflow-hidden text-sm border-t mx-6 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
     {...props}
   >
-    <div className={cn('py-4', className)}>{children}</div>
+    <div className={cn('pt-4 pb-6', className)}>{children}</div>
   </AccordionPrimitive.Content>
 ))
 AccordionContent.displayName = AccordionPrimitive.Content.displayName

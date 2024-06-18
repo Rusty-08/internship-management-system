@@ -63,9 +63,14 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
       </AccordionTrigger>
       <AccordionContent>
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-4">
+          <div
+            className={cn(
+              'flex flex-col gap-4',
+              status !== 'COMPLETED' && 'lg:gap-6',
+            )}
+          >
             <div className="flex gap-2 lg:gap-4 flex-col lg:flex-row">
-              <span className="text-sm text-text font-medium lg:w-[23%] flex-shrink-0">
+              <span className="text-sm text-text font-medium lg:w-1/5 flex-shrink-0">
                 Description
               </span>
               <p className="text-sm whitespace-pre-line text-justify">
@@ -74,17 +79,17 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
             </div>
             <div
               className={cn(
-                'flex relative gap-2 lg:gap-4 flex-col lg:flex-row',
+                'flex relative gap-2 lg:gap-4 flex-col lg:items-center lg:flex-row',
                 status === 'COMPLETED' && '-mb-2',
               )}
             >
-              <span className="text-sm text-text font-medium lg:w-[23%] flex-shrink-0">
+              <span className="text-sm text-text font-medium lg:w-1/5 flex-shrink-0">
                 {isIntern ? 'Your Submission' : 'Submission'}
               </span>
               {!submissions?.length && (
                 <p className="text-sm text-start whitespace-pre-line">None</p>
               )}
-              <div className="lg:absolute right-0 bottom-0">
+              <div className="lg:absolute right-0">
                 {!isIntern && status !== 'COMPLETED' && (
                   <>
                     <TooltipWrapper tooltip="Delete Task">
@@ -114,9 +119,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
                     taskId={task.id}
                     isOpen={isOpenSubmission}
                     isPending={status === 'PENDING'}
-                    setIsOpenHandler={() =>
-                      setIsOpenSubmission(!isOpenSubmission)
-                    }
+                    setIsOpenHandler={setIsOpenSubmission}
                   />
                 )}
               </div>
@@ -124,7 +127,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
             {submissions?.length ? (
               <div className="border-t pt-4 flex flex-col gap-4">
                 <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-                  <span className="text-sm text-text font-medium lg:w-[23%]">
+                  <span className="text-sm text-text font-medium lg:w-1/5">
                     Date Submitted
                   </span>
                   <p className="text-sm">
@@ -135,7 +138,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
                   </p>
                 </div>
                 <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-                  <span className="text-sm text-text font-medium lg:w-[23%]">
+                  <span className="text-sm text-text font-medium lg:w-1/5">
                     Attachment
                   </span>
                   <div className="flex flex-col ps-4 gap-1">

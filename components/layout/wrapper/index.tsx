@@ -15,7 +15,7 @@ type SidebarProps = {
 }
 
 const CoreLayout = ({ sideLinks, children, role }: SidebarProps) => {
-  const [isMinimized, setIsMinimized] = useState(false)
+  const [isMinimized, setIsMinimized] = useState(true)
 
   return (
     <main className="min-h-screen flex relative w-full">
@@ -32,8 +32,8 @@ const CoreLayout = ({ sideLinks, children, role }: SidebarProps) => {
       >
         <Navbar profilePath={`/${role}/profile`} sideLinks={sideLinks} />
         <div
-          style={{ minHeight: 'calc(100vh - 8.5rem)' }}
-          className="py-4 px-6 w-full"
+          style={{ minHeight: 'calc(100vh - 9.5rem)' }}
+          className="py-4 px-4 md:px-6 w-full"
         >
           {children}
         </div>

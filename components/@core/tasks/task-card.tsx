@@ -17,8 +17,9 @@ import Link from 'next/link'
 import { MdDownloading } from 'react-icons/md'
 import { MdTaskAlt } from 'react-icons/md'
 import { MdOutlinePending } from 'react-icons/md'
-import { MdOutlineDeleteOutline } from 'react-icons/md'
 import { cn } from '@/lib/utils'
+import DeleteConfirmation from './delete-confirmation'
+import { useRouter } from 'next/navigation'
 
 export type TaskCardProps = {
   task: TaskProps
@@ -27,8 +28,12 @@ export type TaskCardProps = {
 
 const TaskCard = ({ task, isIntern }: TaskCardProps) => {
   const [isOpenSubmission, setIsOpenSubmission] = useState(false)
+  const [isOpenDelete, setIsOpenDelete] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
-  const { title, description, status, startDate, endDate, submissions } = task
+  const { id, title, description, status, startDate, endDate, submissions } =
+    task
 
   const formattedStartDate = format(startDate, 'LLL dd')
   const formattedEndDate = format(endDate, 'LLL dd, y')
@@ -45,14 +50,27 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
     ? status.split('_').join('-').toLowerCase()
     : status.toLowerCase()
 
+  const deleteTask = async () => {
+    setIsLoading(true)
+    await fetch(`/api/tasks/delete/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    setIsLoading(false)
+    setIsOpenDelete(false)
+    router.refresh()
+  }
+
   return (
     <AccordionItem value={task.id}>
       <AccordionTrigger>
-        <div>
+        <div className="self-start w-[1.3rem]">
           <Icon size="1.3rem" className={`text-${statusColor}`} />
         </div>
         <div className="flex flex-grow flex-col lg:flex-row gap-1 lg:justify-center lg:gap-4">
-          <span className="text-sm font-normal text-start text-muted-foreground lg:w-1/5">{`${formattedStartDate} - ${formattedEndDate}`}</span>
+          <span className="text-sm font-normal text-start text-muted-foreground lg:w-[15rem]">{`${formattedStartDate} - ${formattedEndDate}`}</span>
           <p className="flex-grow text-left font-medium text-[0.95rem]">
             {title}
           </p>
@@ -70,7 +88,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
             )}
           >
             <div className="flex gap-2 lg:gap-4 flex-col lg:flex-row">
-              <span className="text-sm text-text font-medium lg:w-1/5 flex-shrink-0">
+              <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
                 Description
               </span>
               <p className="text-sm whitespace-pre-line text-justify">
@@ -83,7 +101,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
                 status === 'COMPLETED' && '-mb-2',
               )}
             >
-              <span className="text-sm text-text font-medium lg:w-1/5 flex-shrink-0">
+              <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
                 {isIntern ? 'Your Submission' : 'Submission'}
               </span>
               {!submissions?.length && (
@@ -92,15 +110,13 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
               <div className="lg:absolute right-0">
                 {!isIntern && status !== 'COMPLETED' && (
                   <>
-                    <TooltipWrapper tooltip="Delete Task">
-                      <Button
-                        variant="ghost"
-                        size="circle"
-                        className="text-text"
-                      >
-                        <MdOutlineDeleteOutline size="1.1rem" />
-                      </Button>
-                    </TooltipWrapper>
+                    <DeleteConfirmation
+                      taskName={title}
+                      deleteTask={deleteTask}
+                      isOpen={isOpenDelete}
+                      loading={isLoading}
+                      setIsOpenHandler={setIsOpenDelete}
+                    />
                     <TooltipWrapper tooltip="Edit Task">
                       <Link href={`/mentor/tasks-management/${task.id}`}>
                         <Button
@@ -127,7 +143,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
             {submissions?.length ? (
               <div className="border-t pt-4 flex flex-col gap-4">
                 <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-                  <span className="text-sm text-text font-medium lg:w-1/5">
+                  <span className="text-sm text-text font-medium lg:w-[17.3rem]">
                     Date Submitted
                   </span>
                   <p className="text-sm">
@@ -138,7 +154,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
                   </p>
                 </div>
                 <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-                  <span className="text-sm text-text font-medium lg:w-1/5">
+                  <span className="text-sm text-text font-medium lg:w-[17.3rem]">
                     Attachment
                   </span>
                   <div className="flex flex-col ps-4 gap-1">

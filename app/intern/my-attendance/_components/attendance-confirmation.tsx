@@ -26,43 +26,30 @@ export function AttendanceConfirmation({
   currentAttendance,
 }: AttendanceConfirmationProps) {
   const isAfternoon = new Date().getHours() > 12
+  const isMobile = useMediaQuery('(max-width: 599px)')
 
   const isTriggerDisabled = currentAttendance?.timeOutPM
     ? true
     : !isAfternoon && currentAttendance?.timeOutAM
     ? true
     : false
+  
+  const Confirmation = isMobile ? AttendanceDrawer : AttendanceDialog
 
   return (
-    <>
-      <AttendanceDialog
+    <Confirmation
+      mode={mode}
+      isTriggerDisabled={isTriggerDisabled}
+      isOpen={isOpen}
+      setIsOpenHandler={setIsOpenHandler}
+    >
+      <ConfirmationForm
+        addCurrentAttendance={addCurrentAttendance}
         mode={mode}
-        isTriggerDisabled={isTriggerDisabled}
-        isOpen={isOpen}
+        user={user}
+        loading={loading}
         setIsOpenHandler={setIsOpenHandler}
-      >
-        <ConfirmationForm
-          addCurrentAttendance={addCurrentAttendance}
-          mode={mode}
-          user={user}
-          loading={loading}
-          setIsOpenHandler={setIsOpenHandler}
-        />
-      </AttendanceDialog>
-      <AttendanceDrawer
-        mode={mode}
-        isTriggerDisabled={isTriggerDisabled}
-        isOpen={isOpen}
-        setIsOpenHandler={setIsOpenHandler}
-      >
-        <ConfirmationForm
-          addCurrentAttendance={addCurrentAttendance}
-          mode={mode}
-          user={user}
-          loading={loading}
-          setIsOpenHandler={setIsOpenHandler}
-        />
-      </AttendanceDrawer>
-    </>
+      />
+    </Confirmation>
   )
 }

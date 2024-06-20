@@ -1,11 +1,12 @@
-import { RiDashboardFill } from 'react-icons/ri'
-import { IoIosPeople, IoIosArchive } from 'react-icons/io'
-import { PiChalkboardTeacherFill } from 'react-icons/pi'
-import { MdManageAccounts, MdViewList } from 'react-icons/md'
-import { IoCalendar } from 'react-icons/io5'
-import { IoMdChatbubbles } from 'react-icons/io'
-import { FaCalendarPlus } from 'react-icons/fa6'
-import { MdRateReview } from 'react-icons/md'
+import { MdOutlineDashboard } from 'react-icons/md'
+import { MdOutlinePeopleOutline } from 'react-icons/md'
+import { MdOutlineListAlt } from "react-icons/md"
+import { MdOutlineCalendarMonth } from "react-icons/md"
+import { MdOutlineChat } from 'react-icons/md'
+import { MdOutlineRateReview } from "react-icons/md"
+import { MdOutlineManageAccounts } from "react-icons/md"
+import { MdOutlineArchive } from "react-icons/md"
+import { PiChalkboardTeacher } from "react-icons/pi"
 import { IconType } from 'react-icons/lib'
 
 export type SidebarLinkProps = {
@@ -18,32 +19,32 @@ export const adminSidebarLinks = [
   {
     name: 'Dashboard',
     path: '/admin',
-    icon: RiDashboardFill,
+    icon: MdOutlineDashboard,
   },
   {
     name: 'Intern Management',
     path: '/admin/intern-management',
-    icon: IoIosPeople,
+    icon: MdOutlinePeopleOutline,
   },
   {
     name: 'Mentor Management',
     path: '/admin/mentor-management',
-    icon: PiChalkboardTeacherFill,
+    icon: PiChalkboardTeacher,
   },
   {
     name: 'Internship Management',
     path: '/admin/internship-management',
-    icon: MdManageAccounts,
+    icon: MdOutlineManageAccounts,
   },
   {
     name: 'Reports',
     path: '/admin/reports',
-    icon: MdViewList,
+    icon: MdOutlineListAlt,
   },
   {
     name: 'Archived Records',
     path: '/admin/archived-records',
-    icon: IoIosArchive,
+    icon: MdOutlineArchive,
   },
 ]
 
@@ -51,22 +52,22 @@ export const internSidebarLinks = [
   {
     name: 'Dashboard',
     path: '/intern',
-    icon: RiDashboardFill,
+    icon: MdOutlineDashboard,
   },
   {
     name: 'Chat',
     path: '/intern/chat',
-    icon: IoMdChatbubbles,
+    icon: MdOutlineChat,
   },
   {
     name: 'My Attendance',
     path: '/intern/my-attendance',
-    icon: IoCalendar,
+    icon: MdOutlineCalendarMonth,
   },
   {
     name: 'Task Management',
     path: '/intern/task-management',
-    icon: MdViewList,
+    icon: MdOutlineListAlt,
   },
 ]
 
@@ -74,26 +75,26 @@ export const mentorSidebarLinks = [
   {
     name: 'Dashboard',
     path: '/mentor',
-    icon: RiDashboardFill,
+    icon: MdOutlineDashboard,
   },
   {
     name: 'Chat',
     path: '/mentor/chat',
-    icon: IoMdChatbubbles,
+    icon: MdOutlineChat,
   },
   {
     name: 'Interns Monitoring',
     path: '/mentor/interns-monitoring',
-    icon: IoIosPeople,
+    icon: MdOutlinePeopleOutline,
   },
   {
     name: 'Tasks Management',
     path: '/mentor/tasks-management',
-    icon: MdViewList,
+    icon: MdOutlineListAlt,
   },
   {
     name: 'Grading',
     path: '/mentor/grading',
-    icon: MdRateReview,
+    icon: MdOutlineRateReview,
   },
 ]

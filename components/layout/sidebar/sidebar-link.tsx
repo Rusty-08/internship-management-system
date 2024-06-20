@@ -15,7 +15,7 @@ const SidebarLinks = ({ isMinimized, sideLinks, setOpen }: SidebarProps) => {
   const path = usePathname()
 
   return (
-    <div className="sidebar flex flex-col overflow-y-auto flex-grow gap-1 py-6">
+    <div className="sidebar flex flex-col overflow-y-auto flex-grow gap-1 py-4">
       {sideLinks.map(item => (
         <Link
           key={item.path}
@@ -33,7 +33,7 @@ const SidebarLinks = ({ isMinimized, sideLinks, setOpen }: SidebarProps) => {
               className={`${
                 path === item.path ? 'text-primary' : 'text-white/50'
               }`}
-              size="1.2rem"
+              size="1.4rem"
             />
           </div>
           <span

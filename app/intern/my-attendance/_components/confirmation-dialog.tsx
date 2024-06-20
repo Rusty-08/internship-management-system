@@ -26,26 +26,22 @@ export const AttendanceDialog = ({
   isOpen,
   setIsOpenHandler,
 }: AttendanceDrawerProps) => {
-  const isDesktop = useMediaQuery('(min-width: 600px)')
-
-  if (isDesktop) {
-    return (
-      <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
-        <DialogTrigger asChild>
-          <AddButton disabled={isTriggerDisabled} className="w-full lg:w-auto">
-            {mode}
-          </AddButton>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Attendance - {mode}</DialogTitle>
-            <DialogDescription>
-              Please verify the information. Click save when you&apos;re done.
-            </DialogDescription>
-          </DialogHeader>
-          {children}
-        </DialogContent>
-      </Dialog>
-    )
-  }
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
+      <DialogTrigger asChild>
+        <AddButton disabled={isTriggerDisabled} className="w-full lg:w-auto">
+          {mode}
+        </AddButton>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Attendance - {mode}</DialogTitle>
+          <DialogDescription>
+            Please verify the information. Click save when you&apos;re done.
+          </DialogDescription>
+        </DialogHeader>
+        {children}
+      </DialogContent>
+    </Dialog>
+  )
 }

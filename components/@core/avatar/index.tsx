@@ -13,7 +13,7 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
-import { RiUserSmileFill } from "react-icons/ri"
+import { RiUserSmileLine } from 'react-icons/ri'
 
 type ProfileProps = {
   image: string | null
@@ -44,7 +44,7 @@ export const ProfileAvatar = ({
                 : 'text-text border-transparent'
             }`}
           >
-            <RiUserSmileFill size="1.3rem" />
+            <RiUserSmileLine size="1.3rem" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -55,7 +55,7 @@ export const ProfileAvatar = ({
               <Avatar>
                 <AvatarImage src={image ? image : undefined} />
                 <AvatarFallback className="text-text">
-                  <RiUserSmileFill size="1.3rem" />
+                  <RiUserSmileLine size="1.3rem" />
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col">

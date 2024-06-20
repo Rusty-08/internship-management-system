@@ -30,7 +30,7 @@ const Sidebar = ({
         !setIsMinimized && 'w-[20rem] flex lg:hidden',
       )}
     >
-      {setIsMinimized && (
+      {/* {setIsMinimized && (
         <Button
           size="circle"
           className={cn(
@@ -45,10 +45,10 @@ const Sidebar = ({
         >
           <MdOutlineKeyboardDoubleArrowLeft size="1.2rem" />
         </Button>
-      )}
+      )} */}
       <div
         className={cn(
-          'flex items-center p-3 px-3 border-b border-slate-800',
+          'flex items-center p-3 px-3 border-b border-slate-900',
           setIsMinimized ? 'h-[4.5rem]' : 'h-20',
         )}
       >
@@ -77,8 +77,8 @@ const Sidebar = ({
                 isMinimized ? 'hidden' : 'visible',
               )}
             >
-              <h1 className="font-extrabold text-xl tracking-wider whitespace-nowrap bg-gradient-to-r from-primary to-fuchsia-900 bg-clip-text text-transparent">
-                INTERNSHIP MS
+              <h1 className="font-bold text-[1.1rem] tracking-wider whitespace-nowrap bg-gradient-to-r from-primary to-fuchsia-900 bg-clip-text text-transparent">
+                INTERNSHIP PORTAL
               </h1>
               <p className="font-medium text-sm tracking-wide text-text whitespace-nowrap">
                 OnDemand Innovation, LLC

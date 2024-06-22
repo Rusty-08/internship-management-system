@@ -32,8 +32,16 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
-  const { id, title, description, status, startDate, endDate, submissions } =
-    task
+  const {
+    id,
+    title,
+    description,
+    status,
+    startDate,
+    endDate,
+    submissions,
+    files,
+  } = task
 
   const formattedStartDate = format(startDate, 'LLL dd')
   const formattedEndDate = format(endDate, 'LLL dd, y')
@@ -81,12 +89,26 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
       </AccordionTrigger>
       <AccordionContent>
         <div className="flex flex-col gap-4">
-          <div
-            className={cn(
-              'flex flex-col gap-4',
-              status !== 'COMPLETED' && 'lg:gap-6',
-            )}
-          >
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
+              <span className="text-sm text-text font-medium lg:w-[17.3rem]">
+                Attachment
+              </span>
+              <div className="flex flex-col ps-4 gap-1">
+                <ul className="list-disc">
+                  {files?.map(({ id, name, url }) => (
+                    <li
+                      key={id}
+                      className="text-blue-500 text-sm hover:underline"
+                    >
+                      <a href={url || ''} target="_blank">
+                        {name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
             <div className="flex gap-2 lg:gap-4 flex-col lg:flex-row">
               <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
                 Description
@@ -98,7 +120,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
             <div
               className={cn(
                 'flex relative gap-2 lg:gap-4 flex-col lg:items-center lg:flex-row',
-                status === 'COMPLETED' && '-mb-2',
+                status !== 'COMPLETED' && isIntern && 'mt-2',
               )}
             >
               <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
@@ -107,7 +129,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
               {!submissions?.length && (
                 <p className="text-sm text-start whitespace-pre-line">None</p>
               )}
-              <div className="lg:absolute right-0">
+              <div className={cn("right-0", isIntern ? 'lg:absolute' : 'absolute')}>
                 {!isIntern && status !== 'COMPLETED' && (
                   <>
                     <DeleteConfirmation
@@ -130,14 +152,16 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
                     </TooltipWrapper>
                   </>
                 )}
-                {isIntern && status !== 'COMPLETED' && (
-                  <TaskSubmission
-                    taskId={task.id}
-                    isOpen={isOpenSubmission}
-                    isPending={status === 'PENDING'}
-                    setIsOpenHandler={setIsOpenSubmission}
-                  />
-                )}
+                <div className="">
+                  {isIntern && status !== 'COMPLETED' && (
+                    <TaskSubmission
+                      taskId={task.id}
+                      isOpen={isOpenSubmission}
+                      isPending={status === 'PENDING'}
+                      setIsOpenHandler={setIsOpenSubmission}
+                    />
+                  )}
+                </div>
               </div>
             </div>
             {submissions?.length ? (

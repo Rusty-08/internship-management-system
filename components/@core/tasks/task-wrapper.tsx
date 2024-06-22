@@ -6,6 +6,7 @@ import NoRecords from '@/components/@core/ui/no-records'
 import { TaskStatus } from '@prisma/client'
 import Link from 'next/link'
 import { TaskWrapperProps } from './types'
+import { IoAdd } from 'react-icons/io5'
 
 import {
   Select,
@@ -18,6 +19,7 @@ import {
 import AddButton from '@/components/@core/ui/add-button'
 import { Accordion } from '@/components/ui/accordion'
 import TaskCard from './task-card'
+import { Button } from '@/components/ui/button'
 
 const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
   const [searchTasks, setSearchTasks] = useState('')
@@ -67,8 +69,15 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
           </SelectContent>
         </Select>
         {!isInternUser && (
-          <Link href="/mentor/tasks-management/create-task">
-            <AddButton>Create Task</AddButton>
+          <Link href="/mentor/tasks-management/create-task" className='fixed lg:relative bottom-4 lg:bottom-0 right-4 lg:right-0'>
+            <AddButton className="hidden lg:inline-flex">Create Task</AddButton>
+            <Button
+              size="circle"
+              className="inline-flex md:hidden w-16 h-16"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <IoAdd size="1.8rem" />
+            </Button>
           </Link>
         )}
       </div>

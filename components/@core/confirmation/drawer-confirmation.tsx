@@ -8,32 +8,45 @@ import {
 } from '@/components/ui/drawer'
 import { ReactNode, Dispatch, SetStateAction } from 'react'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { ClassNameValue } from 'tailwind-merge'
 
-type SubmissionDrawerProps = {
+type DrawerConfirmationProps = {
+  trigger: ReactNode
+  title: string
+  description: string
   isPending: boolean
   isOpen?: boolean
   setIsOpenHandler: Dispatch<SetStateAction<boolean>>
+  className?: ClassNameValue
   children: ReactNode
 }
 
-export const SubmissionDrawer = ({
+export const DrawerConfirmation = ({
+  trigger,
+  title,
+  description,
   isPending,
   isOpen,
   setIsOpenHandler,
+  className,
   children,
-}: SubmissionDrawerProps) => {
+}: DrawerConfirmationProps) => {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpenHandler}>
       <DrawerTrigger asChild>
-        <Button disabled={isPending} className="w-full lg:w-max mt-2 lg:mt-0">
-          Upload Report
+        <Button
+          disabled={isPending ?? false}
+          className={cn('w-full gap-1.5 mt-2 lg:mt-0', className)}
+        >
+          {trigger}
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-sm py-8 pb-20 px-4">
+        <div className="mx-auto w-full max-w-sm pt-6 pb-20 px-4">
           <DrawerHeader>
-            <DrawerTitle>Task Submission</DrawerTitle>
-            <DrawerDescription>Submit your task report here</DrawerDescription>
+            <DrawerTitle>{title}</DrawerTitle>
+            <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
           {children}
         </div>

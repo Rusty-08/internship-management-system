@@ -9,36 +9,49 @@ import {
 
 import { ReactNode, Dispatch, SetStateAction } from 'react'
 import { Button } from '@/components/ui/button'
+import { ClassNameValue } from 'tailwind-merge'
+import { cn } from '@/lib/utils'
 
-type SubmissionDialogProps = {
-  isPending: boolean
+type DialogConfirmationProps = {
+  trigger: ReactNode
+  title: string
+  description: ReactNode
+  isPending?: boolean
   isOpen?: boolean
   setIsOpenHandler: Dispatch<SetStateAction<boolean>>
+  className?: ClassNameValue
   children: ReactNode
 }
 
-const SubmissionDialog = ({
+const DialogConfirmation = ({
+  trigger,
+  title,
+  description,
   isPending,
   isOpen,
   setIsOpenHandler,
+  className,
   children,
-}: SubmissionDialogProps) => {
+}: DialogConfirmationProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
       <DialogTrigger asChild>
-        <Button disabled={isPending} className="w-full lg:w-max mt-2 lg:mt-0">
-          Upload Report
+        <Button
+          disabled={isPending ?? false}
+          className={cn('w-full gap-1.5 mt-2 lg:mt-0', className)}
+        >
+          {trigger}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-full lg:w-[30rem]">
         <DialogHeader>
-          <DialogTitle>Task Submission</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-        <DialogDescription>Submit your task report here</DialogDescription>
+        <DialogDescription>{description}</DialogDescription>
         {children}
       </DialogContent>
     </Dialog>
   )
 }
 
-export default SubmissionDialog
+export default DialogConfirmation

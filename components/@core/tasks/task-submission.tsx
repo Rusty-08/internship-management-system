@@ -6,10 +6,10 @@ import { Form } from '@/components/ui/form'
 import { useRouter } from 'next/navigation'
 import { handleFileUpload } from '@/utils/upload-file'
 import SubmissionForm from './submission-form'
-import SubmissionDialog from './submission-dialog'
-import { SubmissionDrawer } from './submission-drawer'
 import { Dispatch, SetStateAction } from 'react'
 import useMediaQuery from '@/hooks/useMediaQuery'
+import { DrawerConfirmation } from '../confirmation/drawer-confirmation'
+import DialogConfirmation from '../confirmation/dialog-confirmation'
 
 type TaskDetailProps = {
   taskId: string
@@ -66,23 +66,24 @@ export function TaskSubmission({
     form.reset()
   }
 
-  const Submission = isMobile ? SubmissionDrawer : SubmissionDialog
+  const Submission = isMobile ? DrawerConfirmation : DialogConfirmation
 
   return (
     <Submission
+      trigger="Upload Report"
+      title="Task Submission"
+      description="Submit your task report here"
       isPending={isPending}
       isOpen={isOpen}
       setIsOpenHandler={setIsOpenHandler}
     >
-      <Form {...form}>
-        <SubmissionForm
-          form={form}
-          onSubmitForm={onSubmitForm}
-          isSubmitting={isSubmitting}
-          errors={errors}
-          setIsOpenHandler={handleOpenChange}
-        />
-      </Form>
+      <SubmissionForm
+        form={form}
+        onSubmitForm={onSubmitForm}
+        isSubmitting={isSubmitting}
+        errors={errors}
+        setIsOpenHandler={handleOpenChange}
+      />
     </Submission>
   )
 }

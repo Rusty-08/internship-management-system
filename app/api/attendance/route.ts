@@ -33,8 +33,8 @@ export async function POST(req: Request) {
     } else {
       // Update the existing attendance record
       const updateData = {
-        timeInAM: attendance.timeInAM || (isAfternoon ? null : currentDate),
-        timeOutAM: attendance.timeOutAM || (isAfternoon ? null : currentDate),
+        timeInAM: attendance.timeInAM || (!isAfternoon ? currentDate : null),
+        timeOutAM: attendance.timeOutAM || (!isAfternoon ? currentDate : null),
         timeInPM: attendance.timeInPM || (isAfternoon ? currentDate : null),
         timeOutPM:
           attendance.timeOutPM ||

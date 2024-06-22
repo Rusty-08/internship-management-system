@@ -138,6 +138,7 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
                         {...field}
                         disabled={isSubmitting}
                         placeholder="Enter description here..."
+                        rows={4}
                       />
                     </FormControl>
                     {errors.description && (
@@ -198,7 +199,7 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
             <SubmitCancelButton
               loading={isSubmitting}
               cancelOnclick={() => router.back()}
-              className="w-40"
+              className="w-full lg:w-40"
             >
               {initialState ? 'Save Changes' : 'Upload Task'}
             </SubmitCancelButton>

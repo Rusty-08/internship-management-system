@@ -13,6 +13,7 @@ export type TaskProps = {
 
 export type TaskWrapperProps = {
   tasks: TaskProps[]
+  search?: string
   isInternUser?: boolean
 }
 

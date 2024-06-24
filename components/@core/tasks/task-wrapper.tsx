@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { SearchFilter } from './search-filter'
 import NoRecords from '@/components/@core/ui/no-records'
 import { TaskStatus } from '@prisma/client'
 import Link from 'next/link'
@@ -21,19 +20,23 @@ import { Accordion } from '@/components/ui/accordion'
 import TaskCard from './task-card'
 import { Button } from '@/components/ui/button'
 
-const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
-  const [searchTasks, setSearchTasks] = useState('')
+const TaskWrapper = ({
+  tasks,
+  search,
+  isInternUser = false,
+}: TaskWrapperProps) => {
+  // const [searchTasks, setSearchTasks] = useState('')
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus | 'default'>(
     'default',
   )
 
   const filteredTasks = useMemo(() => {
-    return searchTasks
+    return search
       ? tasks.filter(task =>
-          task.title.toLowerCase().includes(searchTasks.toLowerCase()),
+          task.title.toLowerCase().includes(search.toLowerCase()),
         )
       : tasks
-  }, [searchTasks, tasks])
+  }, [search, tasks])
 
   const sortedTasks = filteredTasks.sort(
     (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
@@ -46,7 +49,6 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="w-full flex gap-3">
-        <SearchFilter search={searchTasks} setSearch={setSearchTasks} />
         <Select
           defaultValue="default"
           onValueChange={(val: TaskStatus | 'default') =>
@@ -69,12 +71,15 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
           </SelectContent>
         </Select>
         {!isInternUser && (
-          <Link href="/mentor/tasks-management/create-task" className='fixed lg:relative bottom-4 lg:bottom-0 right-4 lg:right-0'>
+          <Link
+            href="/mentor/tasks-management/create-task"
+            className="fixed lg:relative bottom-4 lg:bottom-0 right-4 lg:right-0"
+          >
             <AddButton className="hidden lg:inline-flex">Create Task</AddButton>
             <Button
               size="circle"
               className="inline-flex md:hidden w-16 h-16"
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
             >
               <IoAdd size="1.8rem" />
             </Button>
@@ -89,7 +94,7 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
         </Accordion>
       ) : (
         <NoRecords
-          searchOutput={searchTasks}
+          searchOutput={search}
           className="border bg-card rounded-md pb-8"
         />
       )}

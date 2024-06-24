@@ -58,6 +58,8 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
     ? status.split('_').join('-').toLowerCase()
     : status.toLowerCase()
 
+  const statusName = status.charAt(0) + status.slice(1).toLowerCase()
+
   const deleteTask = async () => {
     setIsLoading(true)
     await fetch(`/api/tasks/delete/${id}`, {
@@ -84,7 +86,7 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
           </p>
         </div>
         <Badge variant={status} className="hidden lg:inline-flex">
-          {status.charAt(0) + status.slice(1).toLowerCase()}
+          {statusName === 'In_progress' ? 'In Progress' : statusName}
         </Badge>
       </AccordionTrigger>
       <AccordionContent>
@@ -129,7 +131,9 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
               {!submissions?.length && (
                 <p className="text-sm text-start whitespace-pre-line">None</p>
               )}
-              <div className={cn("right-0", isIntern ? 'lg:absolute' : 'absolute')}>
+              <div
+                className={cn('right-0', isIntern ? 'lg:absolute' : 'absolute')}
+              >
                 {!isIntern && status !== 'COMPLETED' && (
                   <>
                     <DeleteConfirmation

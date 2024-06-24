@@ -6,14 +6,14 @@ import { ClassNameValue } from 'tailwind-merge'
 import { FiSearch } from 'react-icons/fi'
 
 type SearchFilterProps = {
-  search: string
-  setSearch: Dispatch<SetStateAction<string>>
+  // search: string
+  // setSearch: Dispatch<SetStateAction<string>>
   className?: ClassNameValue
 }
 
 export function SearchFilter({
-  search,
-  setSearch,
+  // search,
+  // setSearch,
   className,
   ...props
 }: SearchFilterProps) {
@@ -23,7 +23,7 @@ export function SearchFilter({
 
   const handleSearch = (task: string) => {
     const params = new URLSearchParams(searchParams)
-    setSearch(task)
+    // setSearch(task)
     if (task) {
       params.set('task', task)
     } else {
@@ -32,11 +32,11 @@ export function SearchFilter({
     replace(`${pathname}?${params.toString()}`)
   }
 
-  useEffect(() => {
-    const query = searchParams.get('task')
-    setSearch(query ?? '')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // useEffect(() => {
+  //   const query = searchParams.get('task')
+  //   setSearch(query ?? '')
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   return (
     <Input

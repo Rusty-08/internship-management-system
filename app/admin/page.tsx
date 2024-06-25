@@ -1,12 +1,25 @@
-import React from 'react'
+import { taskStats } from './_components/stat-dummy-data'
+import { TaskStatCard } from './_components/task-stat-card'
 
-const Admin = () => {
+const AdminDashboard = () => {
   return (
-    <div className="h-full flex items-center justify-center flex-col">
-      <h1 className="text-2xl mb-2 font-semibold">This is admin page</h1>
-      <h1 className="text-text">Coming soon...</h1>
+    <div className="flex flex-col gap-6 py-2">
+      <div className="grid h-40 grid-cols-3 gap-6">
+        {taskStats.map(stat => (
+          <TaskStatCard key={stat.name} name={stat.name} />
+        ))}
+      </div>
+      <div className="grid h-[25rem] grid-cols-3 gap-6">
+        {['4', '5'].map((item, idx) => (
+          <TaskStatCard
+            key={item}
+            name={`Placeholder ${item}`}
+            className={idx === 0 && 'col-span-2'}
+          />
+        ))}
+      </div>
     </div>
   )
 }
 
-export default Admin
+export default AdminDashboard

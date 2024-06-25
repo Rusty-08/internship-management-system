@@ -50,7 +50,7 @@ export function AttendanceConfirmation({
       isPending={isTriggerDisabled}
       isOpen={isOpen}
       setIsOpenHandler={setIsOpenHandler}
-      className='lg:w-36'
+      // className='lg:w-36'
     >
       <ConfirmationForm
         addCurrentAttendance={addCurrentAttendance}

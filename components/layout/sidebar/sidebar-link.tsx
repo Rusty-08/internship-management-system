@@ -25,9 +25,9 @@ const SidebarLinks = ({ isMinimized, sideLinks, setOpen }: SidebarProps) => {
           } `}
           onClick={() => (setOpen ? setOpen(false) : null)}
         >
-          {path === item.path && (
+          {/* {path === item.path && (
             <div className="absolute w-1 h-full bg-primary/80 rounded-full left-0 top-0"></div>
-          )}
+          )} */}
           <div className="flex justify-center flex-shrink-0 w-16">
             <item.icon
               className={`${

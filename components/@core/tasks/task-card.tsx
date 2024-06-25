@@ -1,3 +1,5 @@
+'use client'
+
 import {
   AccordionContent,
   AccordionItem,
@@ -20,6 +22,7 @@ import { MdOutlinePending } from 'react-icons/md'
 import { cn } from '@/lib/utils'
 import DeleteConfirmation from './delete-confirmation'
 import { useRouter } from 'next/navigation'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export type TaskCardProps = {
   task: TaskProps

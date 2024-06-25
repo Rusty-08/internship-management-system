@@ -1,32 +1,52 @@
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { IoMdOptions } from 'react-icons/io'
+'use client'
 
-const TaskFilter = () => {
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useDebounce } from 'use-debounce'
+
+const StatusFilter = () => {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const { replace } = useRouter()
+
+  const [handleSearch] = useDebounce((status: string) => {
+    const params = new URLSearchParams(searchParams)
+    if (status) {
+      params.set('status', status)
+      if (status === 'all') {
+        params.delete('status')
+      }
+    } else {
+      params.delete('status')
+    }
+    replace(`${pathname}?${params.toString()}`)
+  }, 200)
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">
-          <IoMdOptions size="1.1rem" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Team</DropdownMenuItem>
-        <DropdownMenuItem>Subscription</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Select defaultValue="all" onValueChange={val => handleSearch(val)}>
+      <SelectTrigger className="bg-card w-max">
+        <SelectValue
+          placeholder="Select task status"
+          defaultValue={searchParams.get('status' || '')?.toString()}
+        />
+      </SelectTrigger>
+      <SelectContent align="end">
+        <SelectGroup>
+          <SelectItem value="all">All</SelectItem>
+          <SelectItem value="pending">Pending</SelectItem>
+          <SelectItem value="in_progress">In Progress</SelectItem>
+          <SelectItem value="completed">Completed</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
   )
 }
 
-export default TaskFilter
+export default StatusFilter

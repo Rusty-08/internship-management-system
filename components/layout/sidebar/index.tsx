@@ -3,11 +3,13 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import logo from '@/public/home/ims-logo.svg'
+import { FaRegLightbulb } from 'react-icons/fa6'
 
 import { MdOutlineKeyboardDoubleArrowLeft } from 'react-icons/md'
 import { CgMenuLeftAlt } from 'react-icons/cg'
 import { SidebarLinkProps } from './links'
 import SidebarLinks from './sidebar-link'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 type SidebarProps = {
   sideLinks: SidebarLinkProps
@@ -46,13 +48,8 @@ const Sidebar = ({
           <MdOutlineKeyboardDoubleArrowLeft size="1.2rem" />
         </Button>
       )} */}
-      <div
-        className={cn(
-          'flex items-center p-3 px-3 border-b border-slate-900',
-          setIsMinimized ? 'h-[4.5rem]' : 'h-20',
-        )}
-      >
-        <div className="flex items-center gap-2 overflow-hidden">
+      <div className="flex items-center p-2 h-20 px-3 border-b border-slate-900">
+        <div className="flex items-center gap-3 overflow-hidden">
           {setOpen ? (
             <Button
               variant="ghost"
@@ -62,13 +59,18 @@ const Sidebar = ({
               <CgMenuLeftAlt size="1.5rem" />
             </Button>
           ) : (
-            <Image
-              src={logo}
-              alt="logo"
-              width={40}
-              height={40}
-              className="flex-shrink-0"
-            />
+            // <Image
+            //   src={logo}
+            //   alt="logo"
+            //   width={40}
+            //   height={40}
+            //   className="flex-shrink-0"
+            // />
+            <Avatar>
+              <AvatarFallback className="bg-primary/10 flex-shrink-0 border border-primary/20 text-primary">
+                <FaRegLightbulb size="1.2rem" />
+              </AvatarFallback>
+            </Avatar>
           )}
           {setIsMinimized ? (
             <div
@@ -77,7 +79,7 @@ const Sidebar = ({
                 isMinimized ? 'hidden' : 'visible',
               )}
             >
-              <h1 className="font-bold text-[1.1rem] tracking-wider whitespace-nowrap bg-gradient-to-r from-primary to-fuchsia-900 bg-clip-text text-transparent">
+              <h1 className="font-bold text-[1.1rem] tracking-wider text-sky-50">
                 INTERNSHIP PORTAL
               </h1>
               <p className="font-medium text-sm tracking-wide text-text whitespace-nowrap">

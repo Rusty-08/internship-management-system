@@ -1,13 +1,12 @@
 'use client'
 
 import NoRecords from '@/components/@core/ui/no-records'
-import { TaskWrapperProps } from './types'
 import { Accordion } from '@/components/ui/accordion'
-import TaskCard from './task-card'
-import { useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
+import TaskCard from './task-card'
+import { TaskWrapperProps } from './types'
 
-const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
+const TaskWrapper = ({ tasks, isMentoshipRole = false }: TaskWrapperProps) => {
   const searchParams = useSearchParams()
   const params = new URLSearchParams(searchParams)
 
@@ -26,9 +25,7 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
 
   const selectedTasks = status
     ? sortedTasks.filter(task => {
-        return status !== 'all'
-          ? task.status.toLowerCase() === status
-          : task
+        return status !== 'all' ? task.status.toLowerCase() === status : task
       })
     : sortedTasks
 
@@ -37,7 +34,7 @@ const TaskWrapper = ({ tasks, isInternUser = false }: TaskWrapperProps) => {
       {selectedTasks.length ? (
         <Accordion type="single" collapsible className="w-full">
           {selectedTasks.map(task => (
-            <TaskCard key={task.id} task={task} isIntern={isInternUser} />
+            <TaskCard key={task.id} task={task} isMentor={isMentoshipRole} />
           ))}
         </Accordion>
       ) : (

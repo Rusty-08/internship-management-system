@@ -8,28 +8,24 @@ import {
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { format } from 'date-fns'
-import { BiEditAlt } from 'react-icons/bi'
 import { TooltipWrapper } from '@/components/ui/tooltip'
-import { useState } from 'react'
-import { TaskProps } from './types'
-import { TaskSubmission } from './task-submission'
-import Link from 'next/link'
-
-import { MdDownloading } from 'react-icons/md'
-import { MdTaskAlt } from 'react-icons/md'
-import { MdOutlinePending } from 'react-icons/md'
 import { cn } from '@/lib/utils'
-import DeleteConfirmation from './delete-confirmation'
+import { format } from 'date-fns'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Skeleton } from '@/components/ui/skeleton'
+import { useState } from 'react'
+import { BiEditAlt } from 'react-icons/bi'
+import { MdDownloading, MdOutlinePending, MdTaskAlt } from 'react-icons/md'
+import DeleteConfirmation from './delete-confirmation'
+import { TaskSubmission } from './task-submission'
+import { TaskProps } from './types'
 
 export type TaskCardProps = {
   task: TaskProps
-  isIntern: boolean
+  isMentor: boolean
 }
 
-const TaskCard = ({ task, isIntern }: TaskCardProps) => {
+const TaskCard = ({ task, isMentor }: TaskCardProps) => {
   const [isOpenSubmission, setIsOpenSubmission] = useState(false)
   const [isOpenDelete, setIsOpenDelete] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -125,50 +121,51 @@ const TaskCard = ({ task, isIntern }: TaskCardProps) => {
             <div
               className={cn(
                 'flex relative gap-2 lg:gap-4 flex-col lg:items-center lg:flex-row',
-                status !== 'COMPLETED' && isIntern && 'mt-2',
+                status !== 'COMPLETED' && isMentor && 'mt-2',
               )}
             >
-              <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
-                {isIntern ? 'Your Submission' : 'Submission'}
-              </span>
-              {!submissions?.length && (
-                <p className="text-sm text-start whitespace-pre-line">None</p>
+              {status !== 'COMPLETED' && (
+                <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
+                  {!isMentor ? 'Your Submission' : 'Submission'}
+                </span>
               )}
-              <div
-                className={cn('right-0', isIntern ? 'lg:absolute' : 'absolute')}
-              >
-                {!isIntern && status !== 'COMPLETED' && (
-                  <>
-                    <DeleteConfirmation
-                      taskName={title}
-                      deleteTask={deleteTask}
-                      isOpen={isOpenDelete}
-                      loading={isLoading}
-                      setIsOpenHandler={setIsOpenDelete}
-                    />
-                    <TooltipWrapper tooltip="Edit Task">
-                      <Link href={`/mentor/tasks-management/${task.id}`}>
-                        <Button
-                          variant="ghost"
-                          size="circle"
-                          className="text-text"
-                        >
-                          <BiEditAlt size="1.1rem" />
-                        </Button>
-                      </Link>
-                    </TooltipWrapper>
-                  </>
-                )}
-                <div className="">
-                  {isIntern && status !== 'COMPLETED' && (
-                    <TaskSubmission
-                      taskId={task.id}
-                      isOpen={isOpenSubmission}
-                      isPending={status === 'PENDING'}
-                      setIsOpenHandler={setIsOpenSubmission}
-                    />
-                  )}
-                </div>
+              {!submissions?.length && (
+                <p className="text-sm text-start whitespace-pre-line">
+                  {status === 'PENDING' ? 'Unavailable' : 'None'}
+                </p>
+              )}
+              <div className={cn('right-0', 'absolute')}>
+                {!isMentor
+                  ? status !== 'COMPLETED' && (
+                      <TaskSubmission
+                        taskId={task.id}
+                        isOpen={isOpenSubmission}
+                        isPending={status === 'PENDING'}
+                        setIsOpenHandler={setIsOpenSubmission}
+                      />
+                    )
+                  : status !== 'COMPLETED' && (
+                      <>
+                        <DeleteConfirmation
+                          taskName={title}
+                          deleteTask={deleteTask}
+                          isOpen={isOpenDelete}
+                          loading={isLoading}
+                          setIsOpenHandler={setIsOpenDelete}
+                        />
+                        <TooltipWrapper tooltip="Edit Task">
+                          <Link href={`/mentor/tasks-management/${task.id}`}>
+                            <Button
+                              variant="ghost"
+                              size="circle"
+                              className="text-text"
+                            >
+                              <BiEditAlt size="1.1rem" />
+                            </Button>
+                          </Link>
+                        </TooltipWrapper>
+                      </>
+                    )}
               </div>
             </div>
             {submissions?.length ? (

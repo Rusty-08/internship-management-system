@@ -62,9 +62,9 @@ export function DatePickerWithRange({
             selected={date}
             onSelect={setDate}
             numberOfMonths={2}
-            modifiers={{
-              disabled: [{ before: new Date() }, { dayOfWeek: [0, 6] }],
-            }}
+            // modifiers={{
+            //   disabled: [{ before: new Date() }, { dayOfWeek: [0, 6] }],
+            // }}
           />
         </PopoverContent>
       </Popover>

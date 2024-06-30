@@ -26,7 +26,7 @@ export const DrawerConfirmation = ({
   trigger,
   title,
   description,
-  isPending,
+  isPending = false,
   isOpen,
   setIsOpenHandler,
   className,
@@ -36,7 +36,7 @@ export const DrawerConfirmation = ({
     <Drawer open={isOpen} onOpenChange={setIsOpenHandler}>
       <DrawerTrigger asChild>
         <Button
-          disabled={isPending ?? false}
+          disabled={isPending}
           className={cn('w-full gap-1.5 mt-2 lg:mt-0', className)}
         >
           {trigger}

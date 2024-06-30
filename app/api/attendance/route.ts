@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma'
 import { getTotalHours } from '@/utils/attendance'
+import { isToday } from 'date-fns'
 import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
@@ -15,9 +16,7 @@ export async function POST(req: Request) {
       where: { internId },
     })
 
-    const attendance = attendanceRecords.find(
-      att => att.date?.getDate() === currentDate.getDate(),
-    )
+    const attendance = attendanceRecords.find(att => isToday(att.date || ''))
 
     if (!attendance) {
       // If the attendance record doesn't exist, create a new one

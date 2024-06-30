@@ -27,7 +27,7 @@ const DialogConfirmation = ({
   trigger,
   title,
   description,
-  isPending,
+  isPending = false,
   isOpen,
   setIsOpenHandler,
   className,
@@ -37,7 +37,7 @@ const DialogConfirmation = ({
     <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
       <DialogTrigger asChild>
         <Button
-          disabled={isPending ?? false}
+          disabled={isPending}
           className={cn('w-full gap-1.5 mt-2 lg:mt-0', className)}
         >
           {trigger}

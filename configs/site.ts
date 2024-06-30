@@ -1,6 +1,8 @@
 import { FaFacebookF } from 'react-icons/fa'
 import { FaInstagram } from 'react-icons/fa'
 import { FaLinkedinIn } from 'react-icons/fa'
+import odiLogoCircleWhite from '@/public/odi-white-logo.svg'
+import odiLogoCircleBlack from '@/public/odi-logo.png'
 
 export type SiteConfig = typeof siteConfig
 
@@ -12,4 +14,6 @@ export const siteConfig = {
     { href: '', icon: FaInstagram },
     { href: '', icon: FaLinkedinIn },
   ],
+  logoCircleWhite: odiLogoCircleWhite,
+  logoCircleBlack: odiLogoCircleBlack,
 }

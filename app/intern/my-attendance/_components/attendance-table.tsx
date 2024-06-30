@@ -19,6 +19,7 @@ import { User } from '@prisma/client'
 import {
   endOfDay,
   format,
+  isToday,
   isWithinInterval,
   parse,
   startOfMonth,
@@ -73,18 +74,19 @@ export default function AttendanceTable({
 
   const addCurrentAttendance = async (event: FormEvent) => {
     event.preventDefault()
-    setLoading(true)
-    const res = await addAttendance(user?.id || '')
-    setLoading(false)
-    setIsOpen(false)
-    router.refresh()
-
-    if (res != 201) {
+    try {
+      setLoading(true)
+      await addAttendance(user?.id || '')
+    } catch {
       toast({
         title: 'Could not save attendance',
         description: 'Unable to save the attendance due to unknown error',
         variant: 'destructive',
       })
+    } finally {
+      setLoading(false)
+      setIsOpen(false)
+      router.refresh()
     }
   }
 
@@ -100,13 +102,8 @@ export default function AttendanceTable({
     }
   }
 
-  const setIsOpenHandler = () => setIsOpen(!isOpen)
-
   const currentAttendance = useMemo(
-    () =>
-      data.find(
-        attendance => attendance.date?.getDate() === new Date().getDate(),
-      ),
+    () => data.find(att => isToday(att.date || '')),
     [data],
   )
 

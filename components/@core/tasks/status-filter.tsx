@@ -9,14 +9,13 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useDebounce } from 'use-debounce'
 
 const StatusFilter = () => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const { replace } = useRouter()
 
-  const [handleSearch] = useDebounce((status: string) => {
+  const handleSearch = (status: string) => {
     const params = new URLSearchParams(searchParams)
     if (status) {
       params.set('status', status)
@@ -27,7 +26,7 @@ const StatusFilter = () => {
       params.delete('status')
     }
     replace(`${pathname}?${params.toString()}`)
-  }, 200)
+  }
 
   return (
     <Select defaultValue="all" onValueChange={val => handleSearch(val)}>

@@ -29,10 +29,12 @@ export function AttendanceConfirmation({
   const isAfternoon = new Date().getHours() > 12
   const isMobile = useMediaQuery('(max-width: 599px)')
 
-  const isTriggerDisabled = currentAttendance?.timeOutPM
-    ? true
-    : !isAfternoon && currentAttendance?.timeOutAM
-    ? true
+  const isTriggerDisabled = currentAttendance
+    ? currentAttendance?.timeOutPM
+      ? true
+      : !isAfternoon && currentAttendance?.timeOutAM
+      ? true
+      : false
     : false
 
   const Submission = isMobile ? DrawerConfirmation : DialogConfirmation
@@ -50,7 +52,6 @@ export function AttendanceConfirmation({
       isPending={isTriggerDisabled}
       isOpen={isOpen}
       setIsOpenHandler={setIsOpenHandler}
-      // className='lg:w-36'
     >
       <ConfirmationForm
         addCurrentAttendance={addCurrentAttendance}

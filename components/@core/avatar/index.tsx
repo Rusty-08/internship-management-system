@@ -63,7 +63,7 @@ export const ProfileAvatar = ({
                   {user ?? 'Anonymous'}
                 </h1>
                 <p className="text-text font-normal">
-                  {role?.toLocaleLowerCase()}
+                  {role?.toLocaleLowerCase() ?? 'Unknown'}
                 </p>
               </div>
             </div>

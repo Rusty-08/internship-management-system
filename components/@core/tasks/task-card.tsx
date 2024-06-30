@@ -90,119 +90,113 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
       </AccordionTrigger>
       <AccordionContent>
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-              <span className="text-sm text-text font-medium lg:w-[17.3rem]">
-                Attachment
-              </span>
-              <div className="flex flex-col ps-4 gap-1">
-                <ul className="list-disc">
-                  {files?.map(({ id, name, url }) => (
-                    <li
-                      key={id}
-                      className="text-blue-500 text-sm hover:underline"
-                    >
-                      <a href={url || ''} target="_blank">
-                        {name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
+            <span className="text-sm text-text font-medium lg:w-[17.3rem]">
+              Attachment
+            </span>
+            <div className="flex flex-col ps-4 gap-1">
+              <ul className="list-disc">
+                {files?.map(({ id, name, url }) => (
+                  <li
+                    key={id}
+                    className="text-blue-500 text-sm hover:underline"
+                  >
+                    <a href={url || ''} target="_blank">
+                      {name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="flex gap-2 lg:gap-4 flex-col lg:flex-row">
-              <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
-                Description
-              </span>
-              <p className="text-sm whitespace-pre-line text-justify">
-                {description}
-              </p>
-            </div>
+          </div>
+          <div className="flex gap-2 lg:gap-4 flex-col lg:flex-row">
+            <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
+              Description
+            </span>
+            <p className="text-sm whitespace-pre-line text-justify">
+              {description}
+            </p>
+          </div>
+          {status !== 'COMPLETED' ? (
             <div
               className={cn(
                 'flex relative gap-2 lg:gap-4 flex-col lg:items-center lg:flex-row',
-                status !== 'COMPLETED' && isMentor && 'mt-2',
+                !isMentor && 'mt-2',
               )}
             >
-              {status !== 'COMPLETED' && (
-                <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
-                  {!isMentor ? 'Your Submission' : 'Submission'}
-                </span>
-              )}
-              {!submissions?.length && (
-                <p className="text-sm text-start whitespace-pre-line">
-                  {status === 'PENDING' ? 'Unavailable' : 'None'}
-                </p>
-              )}
+              <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
+                {!isMentor ? 'Your Submission' : 'Submission'}
+              </span>
+              <p className="text-sm text-start whitespace-pre-line">
+                {status === 'PENDING' ? 'Unavailable' : 'None'}
+              </p>
               <div className={cn('right-0', 'absolute')}>
-                {!isMentor
-                  ? status !== 'COMPLETED' && (
-                      <TaskSubmission
-                        taskId={task.id}
-                        isOpen={isOpenSubmission}
-                        isPending={status === 'PENDING'}
-                        setIsOpenHandler={setIsOpenSubmission}
-                      />
-                    )
-                  : status !== 'COMPLETED' && (
-                      <>
-                        <DeleteConfirmation
-                          taskName={title}
-                          deleteTask={deleteTask}
-                          isOpen={isOpenDelete}
-                          loading={isLoading}
-                          setIsOpenHandler={setIsOpenDelete}
-                        />
-                        <TooltipWrapper tooltip="Edit Task">
-                          <Link href={`/mentor/tasks-management/${task.id}`}>
-                            <Button
-                              variant="ghost"
-                              size="circle"
-                              className="text-text"
-                            >
-                              <BiEditAlt size="1.1rem" />
-                            </Button>
-                          </Link>
-                        </TooltipWrapper>
-                      </>
-                    )}
+                {!isMentor ? (
+                  <TaskSubmission
+                    taskId={task.id}
+                    isOpen={isOpenSubmission}
+                    isPending={status === 'PENDING'}
+                    setIsOpenHandler={setIsOpenSubmission}
+                  />
+                ) : (
+                  <>
+                    <DeleteConfirmation
+                      taskName={title}
+                      deleteTask={deleteTask}
+                      isOpen={isOpenDelete}
+                      loading={isLoading}
+                      setIsOpenHandler={setIsOpenDelete}
+                    />
+                    <TooltipWrapper tooltip="Edit Task">
+                      <Link href={`/mentor/tasks-management/${task.id}`}>
+                        <Button
+                          variant="ghost"
+                          size="circle"
+                          className="text-text"
+                        >
+                          <BiEditAlt size="1.1rem" />
+                        </Button>
+                      </Link>
+                    </TooltipWrapper>
+                  </>
+                )}
               </div>
             </div>
-            {submissions?.length ? (
-              <div className="border-t pt-4 flex flex-col gap-4">
-                <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-                  <span className="text-sm text-text font-medium lg:w-[17.3rem]">
-                    Date Submitted
-                  </span>
-                  <p className="text-sm">
-                    {format(
-                      submissions[submissions.length - 1].date,
-                      'LLLL dd, y',
-                    )}
-                  </p>
-                </div>
-                <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-                  <span className="text-sm text-text font-medium lg:w-[17.3rem]">
-                    Attachment
-                  </span>
-                  <div className="flex flex-col ps-4 gap-1">
-                    <ul className="list-disc">
-                      {submissions?.map(({ id, name, url }) => (
-                        <li
-                          key={id}
-                          className="text-blue-500 text-sm hover:underline"
-                        >
-                          <a href={url || ''} target="_blank">
-                            {name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+          ) : null}
+          {submissions?.length ? (
+            <div className="border-t pt-4 flex flex-col gap-4">
+              <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
+                <span className="text-sm text-text font-medium lg:w-[17.3rem]">
+                  Date Submitted
+                </span>
+                <p className="text-sm">
+                  {format(
+                    submissions[submissions.length - 1].date,
+                    'LLLL dd, y',
+                  )}
+                </p>
+              </div>
+              <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
+                <span className="text-sm text-text font-medium lg:w-[17.3rem]">
+                  Attachment
+                </span>
+                <div className="flex flex-col ps-4 gap-1">
+                  <ul className="list-disc">
+                    {submissions?.map(({ id, name, url }) => (
+                      <li
+                        key={id}
+                        className="text-blue-500 text-sm hover:underline"
+                      >
+                        <a href={url || ''} target="_blank">
+                          {name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-            ) : null}
-          </div>
+            </div>
+          ) : null}
         </div>
       </AccordionContent>
     </AccordionItem>

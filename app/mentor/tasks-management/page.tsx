@@ -14,7 +14,6 @@ import { IoAdd } from 'react-icons/io5'
 const TasksManagement = async () => {
   const user = await getCurrentUser()
   const mentorTasks = await getTasks(user?.id || '')
-  const isMentor = user?.role === 'MENTOR'
 
   return (
     <div className="py-2 space-y-6">
@@ -32,11 +31,9 @@ const TasksManagement = async () => {
           </Button>
         </Link>
       </div>
+      {/* <TaskSkeleton /> */}
       <Suspense fallback={<TaskSkeleton />}>
-        <TaskWrapper
-          tasks={mentorTasks?.tasks || []}
-          isMentoshipRole={isMentor}
-        />
+        <TaskWrapper tasks={mentorTasks?.tasks || []} isMentoshipRole={true} />
       </Suspense>
     </div>
   )

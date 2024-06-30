@@ -10,6 +10,7 @@ import { CgMenuLeftAlt } from 'react-icons/cg'
 import { SidebarLinkProps } from './links'
 import SidebarLinks from './sidebar-link'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { siteConfig } from '@/configs/site'
 
 type SidebarProps = {
   sideLinks: SidebarLinkProps
@@ -59,18 +60,18 @@ const Sidebar = ({
               <CgMenuLeftAlt size="1.5rem" />
             </Button>
           ) : (
-            // <Image
-            //   src={logo}
-            //   alt="logo"
-            //   width={40}
-            //   height={40}
-            //   className="flex-shrink-0"
-            // />
-            <Avatar>
-              <AvatarFallback className="bg-primary/10 flex-shrink-0 border border-primary/20 text-primary">
-                <FaRegLightbulb size="1.2rem" />
-              </AvatarFallback>
-            </Avatar>
+            <Image
+              src={siteConfig.logoCircleWhite}
+              alt="logo"
+              width={39}
+              height={39}
+              className="flex-shrink-0"
+            />
+            // <Avatar>
+            //   <AvatarFallback className="bg-primary/10 flex-shrink-0 border border-primary/20 text-primary">
+            //     <FaRegLightbulb size="1.2rem" />
+            //   </AvatarFallback>
+            // </Avatar>
           )}
           {setIsMinimized ? (
             <div

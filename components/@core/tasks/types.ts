@@ -1,4 +1,4 @@
-import { File, Submission, TaskStatus } from '@prisma/client'
+import { File, Submission, Task, TaskStatus } from '@prisma/client'
 
 export type TaskProps = {
   id: string
@@ -12,10 +12,11 @@ export type TaskProps = {
 }
 
 export type TaskWrapperProps = {
-  tasks: TaskProps[]
+  tasks?: Task[]
   search?: string
   status?: string
   isMentoshipRole?: boolean
+  mentorId?: string
 }
 
 export type TaskMode = 'view-details' | 'view-submission' | 'submit-output'

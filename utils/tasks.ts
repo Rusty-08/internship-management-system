@@ -1,8 +1,8 @@
 import prisma from '@/lib/prisma'
 
-export const getTasks = async (id: string) => {
+export const getTasks = async (id: string, tasks?: string, status?: string) => {
   if (!id) return null
-  return prisma.user.findUnique({
+  const data = await prisma.user.findUnique({
     where: { id },
     include: {
       tasks: {
@@ -13,6 +13,7 @@ export const getTasks = async (id: string) => {
           status: true,
           startDate: true,
           endDate: true,
+          mentorId: true,
           files: {
             select: {
               id: true,
@@ -35,6 +36,22 @@ export const getTasks = async (id: string) => {
       },
     },
   })
+
+  let filteredTasks = data?.tasks
+
+  if (tasks) {
+    filteredTasks = filteredTasks?.filter(task =>
+      task.title.toLowerCase().includes(tasks.toLowerCase()),
+    )
+  }
+
+  if (status) {
+    filteredTasks = filteredTasks?.filter(task =>
+      task.status.toLowerCase().includes(status.toLowerCase()),
+    )
+  }
+
+  return { tasks: filteredTasks }
 }
 
 export const getTaskById = async (id: string) => {

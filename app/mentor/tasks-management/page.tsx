@@ -5,15 +5,20 @@ import TaskWrapper from '@/components/@core/tasks/task-wrapper'
 import AddButton from '@/components/@core/ui/add-button'
 import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
-import { getTasks } from '@/utils/tasks'
-import { getCurrentUser } from '@/utils/users'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { IoAdd } from 'react-icons/io5'
 
-const TasksManagement = async () => {
-  const user = await getCurrentUser()
-  const mentorTasks = await getTasks(user?.id || '')
+const TasksManagement = async ({
+  searchParams,
+}: {
+  searchParams?: {
+    task?: string
+    status?: string
+  }
+}) => {
+  const task = searchParams?.task || ''
+  const status = searchParams?.status || ''
 
   return (
     <div className="py-2 space-y-6">
@@ -31,9 +36,8 @@ const TasksManagement = async () => {
           </Button>
         </Link>
       </div>
-      {/* <TaskSkeleton /> */}
-      <Suspense fallback={<TaskSkeleton />}>
-        <TaskWrapper tasks={mentorTasks?.tasks || []} isMentoshipRole={true} />
+      <Suspense key={task + status} fallback={<TaskSkeleton />}>
+        <TaskWrapper isMentoshipRole={true} search={task} status={status} />
       </Suspense>
     </div>
   )

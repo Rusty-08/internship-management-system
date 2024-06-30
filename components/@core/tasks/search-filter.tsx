@@ -2,9 +2,10 @@
 
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
-import { useSearchParams, usePathname, useRouter } from 'next/navigation'
-import { ClassNameValue } from 'tailwind-merge'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { FiSearch } from 'react-icons/fi'
+import { ClassNameValue } from 'tailwind-merge'
+import { useDebouncedCallback } from 'use-debounce'
 
 type SearchFilterProps = {
   className?: ClassNameValue
@@ -15,15 +16,11 @@ export function SearchFilter({ className, ...props }: SearchFilterProps) {
   const searchParams = useSearchParams()
   const { replace } = useRouter()
 
-  const handleSearch = (task: string) => {
+  const handleSearch = useDebouncedCallback((task: string) => {
     const params = new URLSearchParams(searchParams)
-    if (task) {
-      params.set('task', task)
-    } else {
-      params.delete('task')
-    }
+    task ? params.set('task', task) : params.delete('task')
     replace(`${pathname}?${params.toString()}`)
-  }
+  }, 300)
 
   return (
     <Input

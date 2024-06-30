@@ -1,16 +1,22 @@
-import TaskWrapper from '@/components/@core/tasks/task-wrapper'
-import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
-import { Skeleton } from '@/components/ui/skeleton'
-import { getTasks } from '@/utils/tasks'
-import { getCurrentUserMentorId } from '@/utils/users'
-import { Suspense } from 'react'
 import { SearchFilter } from '@/components/@core/tasks/search-filter'
 import StatusFilter from '@/components/@core/tasks/status-filter'
 import { TaskSkeleton } from '@/components/@core/tasks/task-skeleton'
+import TaskWrapper from '@/components/@core/tasks/task-wrapper'
+import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
+import { getCurrentUserMentorId } from '@/utils/users'
+import { Suspense } from 'react'
 
-const TasksManagement = async () => {
+const TasksManagement = async ({
+  searchParams,
+}: {
+  searchParams?: {
+    task?: string
+    status?: string
+  }
+}) => {
+  const task = searchParams?.task || ''
+  const status = searchParams?.status || ''
   const mentorId = await getCurrentUserMentorId()
-  const internTasks = await getTasks(mentorId || '')
 
   return (
     <div className="py-2 space-y-6">
@@ -20,7 +26,7 @@ const TasksManagement = async () => {
         <StatusFilter />
       </div>
       <Suspense fallback={<TaskSkeleton />}>
-        <TaskWrapper tasks={internTasks?.tasks || []} />
+        <TaskWrapper mentorId={mentorId} search={task} status={status} />
       </Suspense>
     </div>
   )

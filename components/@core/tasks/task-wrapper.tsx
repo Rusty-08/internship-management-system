@@ -1,33 +1,32 @@
-'use client'
-
 import NoRecords from '@/components/@core/ui/no-records'
 import { Accordion } from '@/components/ui/accordion'
-import { useSearchParams } from 'next/navigation'
+import { getTasks } from '@/utils/tasks'
+import { getCurrentUser } from '@/utils/users'
 import TaskCard from './task-card'
 import { TaskWrapperProps } from './types'
 
-const TaskWrapper = ({ tasks, isMentoshipRole = false }: TaskWrapperProps) => {
-  const searchParams = useSearchParams()
-  const params = new URLSearchParams(searchParams)
+const TaskWrapper = async ({
+  search,
+  status,
+  isMentoshipRole = false,
+  mentorId,
+}: TaskWrapperProps) => {
+  const user = await getCurrentUser()
+  const userId = mentorId || user?.id
+  const mentorTasks = await getTasks(userId || '', search, status)
 
-  const search = params.get('task')
-  const status = params.get('status')
-
-  const filteredTasks = search
-    ? tasks.filter(task =>
-        task.title.toLowerCase().includes(search.toLowerCase()),
+  const sortedByDate = mentorTasks?.tasks
+    ? mentorTasks?.tasks.sort(
+        (a, b) =>
+          new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
       )
-    : tasks
-
-  const sortedTasks = filteredTasks.sort(
-    (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
-  )
+    : []
 
   const selectedTasks = status
-    ? sortedTasks.filter(task => {
+    ? sortedByDate.filter(task => {
         return status !== 'all' ? task.status.toLowerCase() === status : task
       })
-    : sortedTasks
+    : sortedByDate
 
   return (
     <div className="flex flex-col gap-6">

@@ -109,23 +109,25 @@ export default function AttendanceTable({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col lg:flex-row gap-4 lg:justify-between">
-        <DateRangeFilter date={date} setDate={setDate} className="w-full" />
+      <div className="flex flex-row gap-2 lg:justify-between">
+        <DateRangeFilter date={date} setDate={setDate} className="flex-grow" />
         <div className="flex gap-2">
           <Button variant="outline" onClick={downloadAttendance}>
             <GrDocumentDownload size="1rem" className="mr-2" />
             Export
           </Button>
           {showTimeInBtn && (
-            <AttendanceConfirmation
-              mode={mode}
-              currentAttendance={currentAttendance}
-              addCurrentAttendance={addCurrentAttendance}
-              user={user}
-              loading={loading}
-              isOpen={isOpen}
-              setIsOpenHandler={setIsOpen}
-            />
+            <div className="fixed right-4 z-50 bottom-4 lg:right-0 lg:bottom-0 lg:relative">
+              <AttendanceConfirmation
+                mode={mode}
+                currentAttendance={currentAttendance}
+                addCurrentAttendance={addCurrentAttendance}
+                user={user}
+                loading={loading}
+                isOpen={isOpen}
+                setIsOpenHandler={setIsOpen}
+              />
+            </div>
           )}
         </div>
       </div>

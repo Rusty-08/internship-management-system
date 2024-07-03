@@ -28,7 +28,7 @@ const Sidebar = ({
   return (
     <div
       className={cn(
-        'fixed hidden lg:flex flex-col left-0 bg-sidebar shadow top-0 h-screen z-50 pb-4 transition-all group duration-300 ease-in-out',
+        'fixed hidden lg:flex flex-col left-0 bg-sidebar shadow top-0 h-screen z-50 pb-4 transition-all group/sidebar duration-300 ease-in-out',
         isMinimized ? 'w-16 hover:w-[18rem]' : 'w-[18rem]',
         !setIsMinimized && 'w-[20rem] flex lg:hidden',
       )}
@@ -76,7 +76,7 @@ const Sidebar = ({
           {setIsMinimized ? (
             <div
               className={cn(
-                'flex flex-col border-primary/50 group-hover:inline-flex',
+                'flex flex-col border-primary/50 group-hover/sidebar:inline-flex',
                 isMinimized ? 'hidden' : 'visible',
               )}
             >

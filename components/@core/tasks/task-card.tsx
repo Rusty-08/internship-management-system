@@ -89,7 +89,7 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
         </Badge>
       </AccordionTrigger>
       <AccordionContent>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 relative">
           <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
             <span className="text-sm text-text font-medium lg:w-[17.3rem]">
               Attachment
@@ -117,94 +117,93 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
               {description}
             </p>
           </div>
-
-          <div
-            className={cn(
-              'flex relative gap-2 lg:gap-4 flex-col lg:items-center lg:flex-row',
-              !isMentor && 'mt-2',
-            )}
-          >
-            {status !== 'COMPLETED' && (
-              <>
-                <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
-                  {!isMentor ? 'Your Submission' : 'Submission'}
+          {status !== 'COMPLETED' && (
+            <div
+              className={cn(
+                'flex relative gap-2 lg:gap-4 flex-col lg:items-center lg:flex-row',
+                // !isMentor && 'mt-2',
+              )}
+            >
+              <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
+                {!isMentor ? 'Your Submission' : 'Submission'}
+              </span>
+              <p className="text-sm text-start whitespace-pre-line">
+                {status === 'PENDING' ? 'Unavailable' : 'None'}
+              </p>
+            </div>
+          )}
+          {submissions?.length ? (
+            <div className="border-t pt-4 flex flex-col gap-4">
+              <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
+                <span className="text-sm text-text font-medium lg:w-[17.3rem]">
+                  Date Submitted
                 </span>
-                <p className="text-sm text-start whitespace-pre-line">
-                  {status === 'PENDING' ? 'Unavailable' : 'None'}
+                <p className="text-sm">
+                  {format(
+                    submissions[submissions.length - 1].date,
+                    'LLLL dd, y',
+                  )}
                 </p>
-              </>
-            )}
-          </div>
-          <div className="relative">
-            {submissions?.length ? (
-              <div className="border-t pt-4 flex flex-col gap-4">
-                <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-                  <span className="text-sm text-text font-medium lg:w-[17.3rem]">
-                    Date Submitted
-                  </span>
-                  <p className="text-sm">
-                    {format(
-                      submissions[submissions.length - 1].date,
-                      'LLLL dd, y',
-                    )}
-                  </p>
-                </div>
-                <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-                  <span className="text-sm text-text font-medium lg:w-[17.3rem]">
-                    Attachment
-                  </span>
-                  <div className="flex flex-col ps-4 gap-1.5">
-                    <ul className="list-decimal">
-                      {submissions?.map(({ id, name, url }) => (
-                        <li
-                          key={id}
-                          className="text-blue-500 text-sm hover:underline"
-                        >
-                          <a href={url || ''} target="_blank">
-                            {name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+              </div>
+              <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
+                <span className="text-sm text-text font-medium lg:w-[17.3rem]">
+                  Attachment
+                </span>
+                <div className="ps-4">
+                  <ul className="list-disc flex flex-col gap-2">
+                    {submissions?.map(({ id, name, url }) => (
+                      <li
+                        key={id}
+                        className="text-blue-500 text-sm hover:underline"
+                      >
+                        <a href={url || ''} target="_blank">
+                          {name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-            ) : null}
-            <div className="absolute right-0 bottom-0">
-              {!isMentor ? (
-                <TaskSubmission
-                  taskId={task.id}
-                  isOpen={isOpenSubmission}
-                  isPending={status === 'PENDING'}
-                  setIsOpenHandler={setIsOpenSubmission}
-                />
-              ) : (
-                <>
-                  {status !== 'COMPLETED' && (
-                    <>
-                      <DeleteConfirmation
-                        taskName={title}
-                        deleteTask={deleteTask}
-                        isOpen={isOpenDelete}
-                        loading={isLoading}
-                        setIsOpenHandler={setIsOpenDelete}
-                      />
-                      <TooltipWrapper tooltip="Edit Task">
-                        <Link href={`/mentor/tasks-management/${task.id}`}>
-                          <Button
-                            variant="ghost"
-                            size="circle"
-                            className="text-text"
-                          >
-                            <BiEditAlt size="1.1rem" />
-                          </Button>
-                        </Link>
-                      </TooltipWrapper>
-                    </>
-                  )}
-                </>
-              )}
             </div>
+          ) : null}
+          <div className={cn(
+            !isMentor && 'relative',
+            "lg:absolute right-0 bottom-0",
+            )}
+          >
+            {!isMentor ? (
+              <TaskSubmission
+                taskId={task.id}
+                isOpen={isOpenSubmission}
+                isPending={status === 'PENDING'}
+                setIsOpenHandler={setIsOpenSubmission}
+              />
+            ) : (
+              <>
+                {status !== 'COMPLETED' && (
+                  <>
+                    <DeleteConfirmation
+                      taskName={title}
+                      deleteTask={deleteTask}
+                      isOpen={isOpenDelete}
+                      loading={isLoading}
+                      setIsOpenHandler={setIsOpenDelete}
+                    />
+                    <TooltipWrapper tooltip="Edit Task">
+                      <Link href={`/mentor/tasks-management/${task.id}`}>
+                        <Button
+                          variant="ghost"
+                          size="circle"
+                          className="text-text"
+                        >
+                          <BiEditAlt size="1.1rem" />
+                        </Button>
+                      </Link>
+                    </TooltipWrapper>
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
       </AccordionContent>

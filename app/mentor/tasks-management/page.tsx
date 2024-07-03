@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { IoAdd } from 'react-icons/io5'
+import { FaPlus } from "react-icons/fa6"
 
 const TasksManagement = async ({
   searchParams,
@@ -31,13 +32,16 @@ const TasksManagement = async ({
           className="fixed lg:relative bottom-4 lg:bottom-0 right-4 lg:right-0"
         >
           <AddButton className="hidden lg:inline-flex">Create Task</AddButton>
-          <Button size="circle" className="inline-flex md:hidden w-16 h-16">
-            <IoAdd size="1.4rem" />
+          <Button
+            className="inline-flex z-50 text-lg font-normal h-12 pe-6 md:hidden gap-3"
+          >
+            <FaPlus size="1.5rem" />
+            New
           </Button>
         </Link>
       </div>
-      <Suspense key={task + status} fallback={<TaskSkeleton />}>
-        <TaskWrapper isMentoshipRole={true} search={task} status={status} />
+      <Suspense fallback={<TaskSkeleton />}>
+        <TaskWrapper isMentoshipRole search={task} status={status} />
       </Suspense>
     </div>
   )

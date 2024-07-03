@@ -19,6 +19,7 @@ type DialogConfirmationProps = {
   isPending?: boolean
   isOpen?: boolean
   setIsOpenHandler: Dispatch<SetStateAction<boolean>>
+  isAddButton?: boolean
   className?: ClassNameValue
   children: ReactNode
 }
@@ -30,6 +31,7 @@ const DialogConfirmation = ({
   isPending = false,
   isOpen,
   setIsOpenHandler,
+  isAddButton,
   className,
   children,
 }: DialogConfirmationProps) => {
@@ -38,7 +40,11 @@ const DialogConfirmation = ({
       <DialogTrigger asChild>
         <Button
           disabled={isPending}
-          className={cn('w-full gap-1.5 mt-2 lg:mt-0', className)}
+          className={cn(
+            'w-full gap-1.5 mt-2 lg:mt-0',
+            isAddButton && 'h-12 md:h-10 gap-3 md:gap-1.5 pe-6 md:pe-5',
+            className,
+          )}
         >
           {trigger}
         </Button>

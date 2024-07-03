@@ -6,6 +6,7 @@ import useMediaQuery from '@/hooks/useMediaQuery'
 import { DrawerConfirmation } from '@/components/@core/confirmation/drawer-confirmation'
 import DialogConfirmation from '@/components/@core/confirmation/dialog-confirmation'
 import { IoMdAddCircleOutline } from 'react-icons/io'
+import { FaPlus } from "react-icons/fa6"
 
 export type AttendanceConfirmationProps = {
   addCurrentAttendance: (e: FormEvent) => void
@@ -43,8 +44,9 @@ export function AttendanceConfirmation({
     <Submission
       trigger={
         <>
+          <FaPlus size="1.5rem" className='inline-flex md:hidden' />
           {mode}
-          <IoMdAddCircleOutline size="1.3rem" />
+          <IoMdAddCircleOutline size="1.3rem" className='hidden md:inline-flex' />
         </>
       }
       title={`Attendance - ${mode}`}
@@ -52,6 +54,7 @@ export function AttendanceConfirmation({
       isPending={isTriggerDisabled}
       isOpen={isOpen}
       setIsOpenHandler={setIsOpenHandler}
+      isAddButton
     >
       <ConfirmationForm
         addCurrentAttendance={addCurrentAttendance}

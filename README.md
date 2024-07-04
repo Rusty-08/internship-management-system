@@ -1,4 +1,4 @@
-## INTERNSHIP MANAGEMENT SYSTEM
+# INTERNSHIP MANAGEMENT SYSTEM
 
 The system is responsible in handling the interns in a particular organization or company, it includes:
 
@@ -10,7 +10,3 @@ The system is responsible in handling the interns in a particular organization o
 
 - TypeScript, React JS, Next JS, Tailwind CSS and Shadcn UI
 - MongoDB, Prisma ORM, Auth JS
-
-```bash
-Status: Ongoing
-```

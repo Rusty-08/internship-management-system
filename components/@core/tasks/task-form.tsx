@@ -21,6 +21,8 @@ import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import SubmitCancelButton from '@/components/@core/button/submit-cancel'
 import { Textarea } from '@/components/ui/textarea'
+import { TooltipWrapper } from '@/components/ui/tooltip'
+import { BsFillInfoCircleFill } from 'react-icons/bs'
 
 type TaskFormProps = {
   initialState: z.infer<typeof TaskFormSchema> | undefined
@@ -172,9 +174,17 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
                 name="upload"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      Attach Document{initialState && ' (optional)'}
-                    </FormLabel>
+                    <TooltipWrapper tooltip="If you add a new file, the previous file will be deleted.">
+                      <FormLabel className="relative">
+                        Attach Document
+                        {initialState && (
+                          <>
+                            <span className="text-text">{` (optional)`}</span>
+                            <BsFillInfoCircleFill className="absolute -right-5 top-0" />
+                          </>
+                        )}
+                      </FormLabel>
+                    </TooltipWrapper>
                     <FormControl>
                       <Input
                         {...field}

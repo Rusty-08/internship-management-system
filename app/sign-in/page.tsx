@@ -75,7 +75,6 @@ const LoginForm = () => {
                         disabled={isSubmitting}
                         type="email"
                         placeholder="sample@gmail.com"
-                        // icon={FaCircleUser}
                       />
                     </FormControl>
                     {errors.email && (
@@ -96,7 +95,6 @@ const LoginForm = () => {
                         disabled={isSubmitting}
                         type="password"
                         placeholder="Password"
-                        // icon={RiLockPasswordFill}
                       />
                     </FormControl>
                     {errors.password && (

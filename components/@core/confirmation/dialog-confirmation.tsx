@@ -42,7 +42,7 @@ const DialogConfirmation = ({
           disabled={isPending}
           className={cn(
             'w-full gap-1.5 mt-2 lg:mt-0',
-            isAddButton && 'h-12 md:h-10 gap-3 md:gap-1.5 pe-6 md:pe-5',
+            isAddButton && 'h-12 z-50 md:h-10 gap-3 md:gap-1.5 pe-6 md:pe-5',
             className,
           )}
         >

@@ -7,8 +7,7 @@ import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { IoAdd } from 'react-icons/io5'
-import { FaPlus } from "react-icons/fa6"
+import { MdAdd } from "react-icons/md"
 
 const TasksManagement = async ({
   searchParams,
@@ -32,10 +31,8 @@ const TasksManagement = async ({
           className="fixed lg:relative bottom-4 lg:bottom-0 right-4 lg:right-0"
         >
           <AddButton className="hidden lg:inline-flex">Create Task</AddButton>
-          <Button
-            className="inline-flex z-50 text-lg font-normal h-12 pe-6 md:hidden gap-3"
-          >
-            <FaPlus size="1.5rem" />
+          <Button className="inline-flex z-50 font-normal h-12 pe-6 md:hidden gap-3">
+            <MdAdd size="1.5rem" />
             New
           </Button>
         </Link>

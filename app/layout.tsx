@@ -8,7 +8,7 @@ import { siteConfig } from '@/configs/site'
 import { cn } from '@/lib/utils'
 import { ThemeProvider } from '@/components/providers/theme/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
-import ScrollUp from '@/components/@core/scroll-up'
+// import ScrollUp from '@/components/@core/scroll-up'
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700', '800'],
@@ -52,7 +52,7 @@ export default function RootLayout({
           <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>
         <Toaster />
-        <ScrollUp />
+        {/* <ScrollUp /> */}
       </body>
     </html>
   )

@@ -1,4 +1,9 @@
 import { TaskStatCard } from '@/components/@core/placeholder/card'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Admin Dashboard',
+}
 
 const AdminDashboard = () => {
   return (

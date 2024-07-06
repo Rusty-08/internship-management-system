@@ -3,8 +3,6 @@
 import { signIn, signOut } from '@/auth'
 import { LoginSchema } from '@/components/auth/login/login-schema'
 import { AuthError } from 'next-auth'
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
 export async function authenticate(values: z.infer<typeof LoginSchema>) {

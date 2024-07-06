@@ -1,16 +1,11 @@
-import { Dispatch, MouseEvent, SetStateAction } from 'react'
 import { Button } from '@/components/ui/button'
+import { siteConfig } from '@/configs/site'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
-import logo from '@/public/home/ims-logo.svg'
-import { FaRegLightbulb } from 'react-icons/fa6'
-
-import { MdOutlineKeyboardDoubleArrowLeft } from 'react-icons/md'
+import { Dispatch, SetStateAction } from 'react'
 import { CgMenuLeftAlt } from 'react-icons/cg'
 import { SidebarLinkProps } from './links'
 import SidebarLinks from './sidebar-link'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { siteConfig } from '@/configs/site'
 
 type SidebarProps = {
   sideLinks: SidebarLinkProps
@@ -33,22 +28,6 @@ const Sidebar = ({
         !setIsMinimized && 'w-[20rem] flex lg:hidden',
       )}
     >
-      {/* {setIsMinimized && (
-        <Button
-          size="circle"
-          className={cn(
-            'absolute -right-[0.7rem] h-9 w-9 z-50 shadow-none top-[3.375rem] bg-sidebar text-text hover:text-white transform transition-all duration-300 ease-in-out hover:bg-slate-950',
-            isMinimized ? 'rotate-180' : 'rotate-0',
-          )}
-          onClick={(e: MouseEvent) => {
-            e.stopPropagation()
-            setIsMinimized(!isMinimized)
-          }}
-          onMouseEnter={(e: MouseEvent) => e.stopPropagation()}
-        >
-          <MdOutlineKeyboardDoubleArrowLeft size="1.2rem" />
-        </Button>
-      )} */}
       <div className="flex items-center p-2 h-20 px-3 border-b border-slate-900">
         <div className="flex items-center gap-3 overflow-hidden">
           {setOpen ? (
@@ -67,11 +46,6 @@ const Sidebar = ({
               height={39}
               className="flex-shrink-0"
             />
-            // <Avatar>
-            //   <AvatarFallback className="bg-primary/10 flex-shrink-0 border border-primary/20 text-primary">
-            //     <FaRegLightbulb size="1.2rem" />
-            //   </AvatarFallback>
-            // </Avatar>
           )}
           {setIsMinimized ? (
             <div

@@ -15,19 +15,19 @@ import { z } from 'zod'
 
 import {
   Form,
-  FormField,
   FormControl,
-  FormLabel,
+  FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { RegistrationSchema } from './registration-schema'
+import SubmitCancelButton from '@/components/@core/button/submit-cancel'
+import { LoadingSpinner } from '@/components/@core/loading'
+import AddButton from '@/components/@core/ui/add-button'
 import ErrorCard from '@/components/auth/login/error-card'
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import {
   Select,
   SelectContent,
@@ -36,11 +36,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { fetchMentorUsers } from '@/utils/users'
-import { LoadingSpinner } from '@/components/@core/loading'
-import AddButton from '@/components/@core/ui/add-button'
-import { UserSubset } from './types'
-import SubmitCancelButton from '@/components/@core/button/submit-cancel'
 import { InternCourse } from '@prisma/client'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { RegistrationSchema } from './registration-schema'
+import { UserSubset } from './types'
 
 const sampleExpertise = [
   'Frontend Developer',
@@ -155,7 +155,9 @@ export function FormDialog({
       form.setValue('mentor', initialValues.mentor ?? '')
       form.setValue('expertise', initialValues.expertise ?? '')
       form.setValue('course', initialValues.course ?? '')
-      form.setValue('totalHours', initialValues.totalHours ?? 0)
+
+      const totalHours = initialValues?.course === 'BSCS' ? 120 : 486
+      form.setValue('totalHours', initialValues.totalHours ?? totalHours)
     }
   }, [initialValues, form])
 
@@ -220,7 +222,11 @@ export function FormDialog({
                       <FormItem>
                         <FormLabel>Course</FormLabel>
                         <Select
-                          onValueChange={field.onChange}
+                          onValueChange={value => {
+                            field.onChange(value)
+                            const totalHours = value === 'BSCS' ? 120 : 486
+                            form.setValue('totalHours', totalHours)
+                          }}
                           defaultValue={field.value}
                         >
                           <FormControl>
@@ -256,12 +262,11 @@ export function FormDialog({
                             onChange={event =>
                               field.onChange(Number(event.target.value))
                             }
+                            disabled
                           />
                         </FormControl>
                         {errors.totalHours && (
-                          <FormMessage>
-                            {errors.totalHours.message}
-                          </FormMessage>
+                          <FormMessage>{errors.totalHours.message}</FormMessage>
                         )}
                       </FormItem>
                     )}
@@ -339,7 +344,7 @@ export function FormDialog({
                   form.reset()
                   setIsOpen(!isOpen)
                 }}
-                className='w-40'
+                className="w-40"
               >
                 {`Save ${mode === 'edit' ? 'Changes' : 'Account'}`}
               </SubmitCancelButton>

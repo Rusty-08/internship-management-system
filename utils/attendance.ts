@@ -1,8 +1,8 @@
-import prisma from '@/lib/prisma'
-import { getCurrentUser } from './users'
 import { AttendanceProps } from '@/app/intern/my-attendance/_components/attendance-columns'
+import prisma from '@/lib/prisma'
 import { differenceInMinutes, format } from 'date-fns'
 import * as XLSX from 'xlsx'
+import { getCurrentUser } from './users'
 
 // Get attendance by user email or current user
 export async function getInternAttendance(
@@ -159,4 +159,10 @@ export const exportAttendance = (data: AttendanceProps[]) => {
 
   // Write the workbook to a file and trigger download
   XLSX.writeFileXLSX(workbook, 'attendance.xlsx')
+}
+
+export const getAttendanceTotalHours = (attendance: AttendanceProps[]) => {
+  return attendance.reduce((acc, curr) => {
+    return acc + (curr.totalHours || 0)
+  }, 0)
 }

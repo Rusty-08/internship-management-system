@@ -92,6 +92,7 @@ export async function getUsers(
       email: true,
       course: true,
       totalHours: true,
+      attendance: true,
       role: true,
       expertise: true,
       internProfile: {
@@ -113,6 +114,7 @@ export async function getUsers(
     email: user.email,
     course: user.course,
     totalHours: user.totalHours,
+    attendance: user.attendance,
     role: user.role,
     expertise: user.expertise || 'none',
     mentor: user.internProfile?.mentor?.name || 'none',
@@ -120,30 +122,6 @@ export async function getUsers(
     isArchived: isArchived,
   }))
 }
-
-// export async function getMentorUsers(): Promise<MentorUsersSubset[]> {
-//   const users = await prisma.user.findMany({
-//     where: {
-//       role: 'MENTOR',
-//     },
-//     select: {
-//       id: true,
-//       image: true,
-//       name: true,
-//       email: true,
-//       expertise: true,
-//       isArchived: true,
-//     },
-//   })
-//   return users.map(user => ({
-//     id: user.id,
-//     image: user.image,
-//     name: user.name,
-//     email: user.email,
-//     role: user.expertise || 'none',
-//     isArchived: user.isArchived,
-//   }))
-// }
 
 // ask for intern id and return mentor id
 export const getCurrentUserMentorId = async () => {

@@ -1,5 +1,16 @@
 'use client'
 
+import { UserSubset } from '@/components/@core/ui/table/account-table/types'
+import { DataTable } from '@/components/@core/ui/table/data-table'
+import { DataTablePagination } from '@/components/@core/ui/table/pagination'
+import { SearchFilter } from '@/components/@core/ui/table/seach-filter'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,24 +22,12 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { useMemo, useState } from 'react'
-import { FormDialog } from './register-form'
-import { z } from 'zod'
-import { RegistrationSchema } from './registration-schema'
-import { SearchFilter } from '@/components/@core/ui/table/seach-filter'
-import { DataTable } from '@/components/@core/ui/table/data-table'
-import { DataTablePagination } from '@/components/@core/ui/table/pagination'
 import { useRouter } from 'next/navigation'
+import { useMemo, useState } from 'react'
+import { z } from 'zod'
 import { ArchiveConfirmation } from './archive-confirmation'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-
-import { UserSubset } from '@/components/@core/ui/table/account-table/types'
+import { FormDialog } from './register-form'
+import { RegistrationSchema } from './registration-schema'
 
 const filters = ['All', 'Intern', 'Mentor']
 
@@ -66,7 +65,7 @@ export default function AccountsTable({
     mentor: '',
     expertise: '',
     course: '',
-    totalHours: 0
+    totalHours: 0,
   })
 
   const filteredData = useMemo(

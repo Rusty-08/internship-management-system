@@ -5,9 +5,14 @@ import TaskWrapper from '@/components/@core/tasks/task-wrapper'
 import AddButton from '@/components/@core/ui/add-button'
 import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
+import { Metadata } from 'next'
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { MdAdd } from "react-icons/md"
+import { MdAdd } from 'react-icons/md'
+
+export const metadata: Metadata = {
+  title: 'Tasks Management',
+}
 
 const TasksManagement = async ({
   searchParams,

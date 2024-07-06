@@ -1,7 +1,12 @@
-import React from 'react'
-import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import TaskForm from '@/components/@core/tasks/task-form'
+import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { getTaskById } from '@/utils/tasks'
+import { Metadata } from 'next'
+import React from 'react'
+
+export const metadata: Metadata = {
+  title: 'Task Form',
+}
 
 const link = [{ title: 'Task Management', path: '/mentor/tasks-management' }]
 

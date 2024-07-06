@@ -1,14 +1,12 @@
-import '@/styles/globals.css'
-import 'react-datepicker/dist/react-datepicker.css'
-import type { Metadata } from 'next'
-import { Poppins } from 'next/font/google'
 import AuthProvider from '@/components/providers/session'
-
-import { siteConfig } from '@/configs/site'
-import { cn } from '@/lib/utils'
 import { ThemeProvider } from '@/components/providers/theme/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
-// import ScrollUp from '@/components/@core/scroll-up'
+import { siteConfig } from '@/configs/site'
+import { cn } from '@/lib/utils'
+import '@/styles/globals.css'
+import type { Metadata } from 'next'
+import { Poppins } from 'next/font/google'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700', '800'],
@@ -17,10 +15,11 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
+    template: '%s | Internship Management System',
+    default: 'Internship Portal',
   },
   description: siteConfig.description,
+  metadataBase: new URL('https://internship-portal-beryl.vercel.app/'),
 }
 
 export const viewport = {
@@ -52,7 +51,6 @@ export default function RootLayout({
           <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>
         <Toaster />
-        {/* <ScrollUp /> */}
       </body>
     </html>
   )

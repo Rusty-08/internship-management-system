@@ -1,7 +1,12 @@
-import { getAttendanceMode, getInternAttendance } from '@/utils/attendance'
-import AttendanceTable from './_components/attendance-table'
-import { getCurrentUser } from '@/utils/users'
 import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
+import { getAttendanceMode, getInternAttendance } from '@/utils/attendance'
+import { getCurrentUser } from '@/utils/users'
+import { Metadata } from 'next'
+import AttendanceTable from './_components/attendance-table'
+
+export const metadata: Metadata = {
+  title: 'My Attendance',
+}
 
 const MyAttendance = async () => {
   const attendance = await getInternAttendance()

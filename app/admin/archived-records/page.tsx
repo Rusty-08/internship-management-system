@@ -1,7 +1,12 @@
-import { getUsers } from '@/utils/users'
-import AccountsTable from '../../../components/@core/ui/table/account-table/accounts-table'
 import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
+import { getUsers } from '@/utils/users'
+import { Metadata } from 'next'
+import AccountsTable from '../../../components/@core/ui/table/account-table/accounts-table'
 import { archiveColumns } from './_components/accounts-columns'
+
+export const metadata: Metadata = {
+  title: 'Archived Records',
+}
 
 const ArchivedRecords = async () => {
   const isArchivedPage = true

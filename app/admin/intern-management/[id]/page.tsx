@@ -1,11 +1,15 @@
 import { ComingSoon } from '@/components/@core/ui/coming-soon'
 import { TabsWrapper } from '@/components/@core/ui/tabs'
 import Profile from '@/components/layout/profile'
-import { getAttendanceMode, getInternAttendance } from '@/utils/attendance'
-
 import { TabsContent } from '@/components/ui/tabs'
+import { getAttendanceMode, getInternAttendance } from '@/utils/attendance'
 import { getServerUserById } from '@/utils/users'
+import { Metadata } from 'next'
 import { lazy } from 'react'
+
+export const metadata: Metadata = {
+  title: 'Intern Profile',
+}
 
 const AttendanceTable = lazy(
   () => import('@/app/intern/my-attendance/_components/attendance-table'),

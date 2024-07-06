@@ -1,19 +1,16 @@
 'use client'
 
-import { ColumnDef, Row } from '@tanstack/react-table'
-
-import { Button } from '@/components/ui/button'
-
-import { IoArchiveOutline } from 'react-icons/io5'
-import { LuArchiveRestore } from 'react-icons/lu'
-import { FiEdit3 } from 'react-icons/fi'
-
+import { UserSubset } from '@/components/@core/ui/table/account-table/types'
 import { DataTableColumnHeader } from '@/components/@core/ui/table/column-header'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 import { TooltipWrapper } from '@/components/ui/tooltip'
-import { UserSubset } from '@/components/@core/ui/table/account-table/types'
-import defaultAvatar from '@/public/general/images/profile-bg.jpg'
+import { getAttendanceTotalHours } from '@/utils/attendance'
+import { ColumnDef, Row } from '@tanstack/react-table'
+import Link from 'next/link'
+import { FiEdit3 } from 'react-icons/fi'
+import { IoArchiveOutline } from 'react-icons/io5'
+import { LuArchiveRestore } from 'react-icons/lu'
 
 export const accountColumns = (actions: {
   [key: string]: (row: Row<UserSubset>) => void
@@ -65,13 +62,11 @@ export const accountColumns = (actions: {
   {
     accessorKey: 'totalHours',
     header: 'Total Hours',
-    // cell: ({ row }) => {
-    //   const totalHours = row.
+    cell: ({ row }) => {
+      const totalHours = getAttendanceTotalHours(row.original.attendance || [])
 
-    //   return (
-    //     <p>``</p>
-    //   )
-    // },
+      return <p>{`${totalHours.toFixed(1)}/${row.original.totalHours}`}</p>
+    },
   },
   {
     id: 'actions',
@@ -90,7 +85,6 @@ export const accountColumns = (actions: {
             </TooltipWrapper>
           )}
           <div>
-            {/* <ArchiveConfirmation row={row} archive={actions.archive(row)} /> */}
             <TooltipWrapper
               tooltip={
                 row.original.isArchived === false ? 'Archive' : 'Restore'

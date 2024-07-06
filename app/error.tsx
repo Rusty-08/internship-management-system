@@ -1,10 +1,10 @@
-'use client' // Error components must be Client Components
+'use client'
 
 import { Button } from '@/components/ui/button'
+import errorImage from '@/public/general/images/error.svg'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import errorImage from '@/public/general/images/error.svg'
 
 export default function Error({
   error,
@@ -16,7 +16,6 @@ export default function Error({
   const router = useRouter()
 
   useEffect(() => {
-    // Log the error to an error reporting service
     console.error(error)
   }, [error])
 

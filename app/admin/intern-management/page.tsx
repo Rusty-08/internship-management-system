@@ -1,8 +1,13 @@
+import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
+import { getUsers } from '@/utils/users'
+import { Metadata } from 'next'
 import React from 'react'
 import AccountsTable from '../../../components/@core/ui/table/account-table/accounts-table'
-import { getUsers } from '@/utils/users'
-import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { accountColumns } from './_components/accounts-columns'
+
+export const metadata: Metadata = {
+  title: 'Intern Management',
+}
 
 const InternManagement = async () => {
   const isArchivePage = false

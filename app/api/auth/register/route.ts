@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs'
 
 export async function POST(req: Request) {
   try {
-    const { name, email, role, expertise, mentor } = await req.json()
+    const { name, email, role, expertise, mentor, course, totalHours } = await req.json()
 
     if (!name || !email) {
       return NextResponse.json({ message: 'Invalid input' }, { status: 400 })
@@ -27,10 +27,12 @@ export async function POST(req: Request) {
     const user = await prisma.user.create({
       data: {
         name: name ?? 'Anonymous',
-        email: email,
+        email,
         password: hashedPassword,
-        role: role ?? 'USER',
+        role,
         expertise: role === 'MENTOR' ? expertise : undefined,
+        course,
+        totalHours,
         isArchived: false,
         internProfile:
           role === 'INTERN' && mentor

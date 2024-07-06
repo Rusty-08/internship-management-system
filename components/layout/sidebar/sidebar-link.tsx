@@ -21,7 +21,7 @@ const SidebarLinks = ({ isMinimized, sideLinks, setOpen }: SidebarProps) => {
         <Link
           key={item.path}
           href={item.path}
-          className={`group/link flex h-[2.8rem] relative justify-start items-center w-full rounded-none transition-all duration-300 ease-in-out hover:bg-primary/10 ${
+          className={`group/link flex h-[2.8rem] relative justify-start items-center w-full rounded-none transition-all duration-300 ease-in-out ${
             path === item.path ? 'text-white bg-primary/10' : 'text-white/50'
           }`}
           onClick={() => (setOpen ? setOpen(false) : null)}

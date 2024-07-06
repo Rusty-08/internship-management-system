@@ -22,32 +22,38 @@ model Session {
 }
 
 enum UserRole {
-  USER
   MENTOR
   INTERN
   ADMIN
 }
 
+enum InternCourse {
+  BSIT
+  BSCS
+  BSIS
+}
+
 model User {
-  id                     String       @id @default(auto()) @map("_id") @db.ObjectId
+  id                     String        @id @default(auto()) @map("_id") @db.ObjectId
   name                   String?
-  email                  String       @unique
+  email                  String        @unique
+  course                 InternCourse?
+  totalHours             Float?        @default(0)
   password               String
-  passwordChangeRequired Boolean      @default(true)
+  passwordChangeRequired Boolean       @default(true)
   emailVerified          DateTime?
   image                  String?
-  role                   UserRole?    @default(USER)
+  role                   UserRole?
   expertise              String?
   attendance             Attendance[]
-  isArchived             Boolean      @default(false)
-
-  accounts Account[]
-  sessions Session[]
-
-  internProfile Profile? @relation("UserToProfile")
-  mentorProfile Profile? @relation("MentorToProfile")
-  files         File[]
-  tasks         Task[]   @relation("mentorTask")
+  isArchived             Boolean       @default(false)
+  accounts               Account[]
+  sessions               Session[]
+  internProfile          Profile?      @relation("UserToProfile")
+  mentorProfile          Profile?      @relation("MentorToProfile")
+  files                  File[]
+  tasks                  Task[]        @relation("mentorTask")
+  createdAt              DateTime      @default(now())
 }
 
 model Profile {

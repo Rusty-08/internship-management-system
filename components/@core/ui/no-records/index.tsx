@@ -27,7 +27,7 @@ const NoRecords = ({ searchOutput, className, ...props }: NoRecordsProps) => {
         className="h-[15rem] w-auto object-cover"
       />
       <h1 className="text-lg text-text text-center w-2/3 font-medium">
-        {!searchOutput || searchOutput == undefined
+        {!searchOutput || searchOutput === undefined
           ? 'No records found'
           : 'No records found for'}
         {searchOutput && searchOutput.length > 0 && (

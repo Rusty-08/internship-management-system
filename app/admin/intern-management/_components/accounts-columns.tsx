@@ -59,6 +59,21 @@ export const accountColumns = (actions: {
     header: 'Mentor',
   },
   {
+    accessorKey: 'course',
+    header: 'Course',
+  },
+  {
+    accessorKey: 'totalHours',
+    header: 'Total Hours',
+    // cell: ({ row }) => {
+    //   const totalHours = row.
+
+    //   return (
+    //     <p>``</p>
+    //   )
+    // },
+  },
+  {
     id: 'actions',
     cell: ({ row }) => {
       return (

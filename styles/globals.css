@@ -134,7 +134,7 @@ body,
 
 /* loader */
 .layout-loading .loading svg {
-  height: 3rem !important;
+  height: 2rem !important;
 }
 
 .loading svg path {

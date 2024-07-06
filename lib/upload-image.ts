@@ -36,7 +36,7 @@ export async function uploadImage(formData: FormData): Promise<User | null> {
           },
         })
         resolve(updatedUser)
-        revalidatePath('/admin/intern-management')
+        revalidatePath('/')
       },
     )
   })

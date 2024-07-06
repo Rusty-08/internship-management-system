@@ -10,4 +10,6 @@ export const RegistrationSchema = z.object({
   }),
   mentor: z.string().optional(),
   expertise: z.string().optional(),
+  course: z.string().optional(),
+  totalHours: z.number().optional(),
 })

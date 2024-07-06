@@ -65,6 +65,8 @@ export default function AccountsTable({
     email: '',
     mentor: '',
     expertise: '',
+    course: '',
+    totalHours: 0
   })
 
   const filteredData = useMemo(
@@ -84,6 +86,8 @@ export default function AccountsTable({
       email: row.original.email || '',
       mentor: row.original.mentorId || '',
       expertise: row.original.expertise || '',
+      course: row.original.course || '',
+      totalHours: row.original.totalHours || 0,
     })
   }
 

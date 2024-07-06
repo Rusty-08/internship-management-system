@@ -44,6 +44,7 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
         // Handle upload error
       } finally {
         setUploading(false)
+        router.refresh()
       }
     }
   }

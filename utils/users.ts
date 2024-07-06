@@ -90,6 +90,8 @@ export async function getUsers(
       image: true,
       name: true,
       email: true,
+      course: true,
+      totalHours: true,
       role: true,
       expertise: true,
       internProfile: {
@@ -109,6 +111,8 @@ export async function getUsers(
     image: user.image,
     name: user.name,
     email: user.email,
+    course: user.course,
+    totalHours: user.totalHours,
     role: user.role,
     expertise: user.expertise || 'none',
     mentor: user.internProfile?.mentor?.name || 'none',

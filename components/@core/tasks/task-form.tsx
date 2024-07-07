@@ -25,7 +25,7 @@ import { TooltipWrapper } from '@/components/ui/tooltip'
 import { BsFillInfoCircleFill } from 'react-icons/bs'
 
 type TaskFormProps = {
-  initialState: z.infer<typeof TaskFormSchema> | undefined
+  initialState: z.infer<typeof TaskFormEditSchema> | undefined
 }
 
 const TaskForm = ({ initialState }: TaskFormProps) => {
@@ -92,7 +92,7 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
     if (initialState) {
       form.setValue('title', initialState.title ?? '')
       form.setValue('description', initialState.description ?? '')
-      form.setValue('upload', initialState.upload ?? undefined)
+      // form.setValue('upload', initialState.upload || '')
       setDateRange({
         from: initialState.date.startDate,
         to: initialState.date.endDate,
@@ -203,6 +203,7 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
                   </FormItem>
                 )}
               />
+              {/* <a href={typeof initialState?.upload === 'string' && initialState?.upload || ''}></a> */}
             </div>
           </CardContent>
           <CardFooter>

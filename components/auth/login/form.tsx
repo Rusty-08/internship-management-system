@@ -107,7 +107,7 @@ const LoginForm = () => {
             </div>
             <Button
               disabled={isSubmitting}
-              className={cn('w-full relative gap-1', serverError && 'mt-3')}
+              className='w-full relative gap-1'
             >
               {isSubmitting ? (
                 <LoadingSpinner />

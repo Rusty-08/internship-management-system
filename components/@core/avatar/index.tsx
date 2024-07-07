@@ -14,6 +14,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { RiUserSmileLine } from 'react-icons/ri'
+import Image from 'next/image'
+import AvatarPlaceholder from '@/public/general/images/male-avatar.svg'
 
 type ProfileProps = {
   image: string | null
@@ -38,13 +40,16 @@ export const ProfileAvatar = ({
         <Avatar>
           <AvatarImage src={image ? image : undefined} />
           <AvatarFallback
-            className={`hover:text-primary border ${
-              isOpen
-                ? 'text-primary border-primary/30'
-                : 'text-text border-transparent'
+            className={`border ${
+              isOpen ? 'border-primary/30' : 'border-transparent'
             }`}
           >
-            <RiUserSmileLine size="1.3rem" />
+            <Image
+              src={AvatarPlaceholder}
+              width={40}
+              height={40}
+              alt={`${user}`}
+            />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -54,8 +59,13 @@ export const ProfileAvatar = ({
             <div className="flex group gap-2 items-center cursor-pointer py-1">
               <Avatar>
                 <AvatarImage src={image ? image : undefined} />
-                <AvatarFallback className="text-text">
-                  <RiUserSmileLine size="1.3rem" />
+                <AvatarFallback>
+                  <Image
+                    src={AvatarPlaceholder}
+                    width={40}
+                    height={40}
+                    alt={`${user}`}
+                  />
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col">

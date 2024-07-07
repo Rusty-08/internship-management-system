@@ -81,7 +81,7 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
           breadcrumbLinks && 'mt-6',
         )}
       >
-        {loading && <LoadingSpinner width="6rem" />}
+        {loading && <LoadingSpinner width="4rem" />}
         {data && !loading && (
           <>
             <Image

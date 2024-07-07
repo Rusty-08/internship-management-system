@@ -8,12 +8,14 @@ import { DataTableColumnHeader } from '@/components/@core/ui/table/column-header
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import Link from 'next/link'
 import { TooltipWrapper } from '@/components/ui/tooltip'
+import AvatarPlaceholder from '@/public/general/images/male-avatar.svg'
 
 import { IoArchiveOutline } from 'react-icons/io5'
 import { LuArchiveRestore } from 'react-icons/lu'
 import { FiEdit3 } from 'react-icons/fi'
 
 import { UserSubset } from '@/components/@core/ui/table/account-table/types'
+import Image from 'next/image'
 
 export const accountColumns = (actions: {
   [key: string]: (row: Row<UserSubset>) => void
@@ -25,20 +27,15 @@ export const accountColumns = (actions: {
     },
     cell: ({ row }) => {
       const name = row.original.name
-      const fallback = name
-        ?.split(' ')
-        .map(n => n[0])
-        .join('')
-
-      const path = `/admin/mentor-management/${
-        row.original.email?.split('@')[0]
-      }`
-
+      const path = `/admin/mentor-management/${row.original.id}`
+      
       return (
         <div className="flex items-center gap-3">
           <Avatar className="w-8 h-8">
             <AvatarImage src={`${row.original.image}`} alt={`${name}`} />
-            <AvatarFallback>{fallback}</AvatarFallback>
+            <AvatarFallback>
+              <Image src={AvatarPlaceholder} width={32} height={32} alt={`${name}`} />
+            </AvatarFallback>
           </Avatar>
           <Link
             href={path}

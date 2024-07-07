@@ -26,15 +26,18 @@ const NoRecords = ({ searchOutput, className, ...props }: NoRecordsProps) => {
         height="0"
         className="h-[15rem] w-auto object-cover"
       />
-      <h1 className="text-lg text-text text-center w-2/3 font-medium">
-        {!searchOutput || searchOutput === undefined
-          ? 'No records found'
-          : 'No records found for'}
-        {searchOutput && searchOutput.length > 0 && (
+      {/* <h1 className="text-lg text-text text-center w-2/3 font-medium">
+        {searchOutput && searchOutput?.length > 0
+          ? 'No records found for'
+          : 'No records found'}
+        {searchOutput && searchOutput?.length > 0 ? (
           <span className="text-secondary-foreground">
             {` "${searchOutput}"`}
           </span>
-        )}
+        ): null}
+      </h1> */}
+      <h1 className="text-text text-base text-center w-2/3 font-medium">
+        No records found
       </h1>
     </div>
   )

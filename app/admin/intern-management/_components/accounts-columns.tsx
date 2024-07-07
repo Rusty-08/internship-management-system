@@ -7,10 +7,12 @@ import { Button } from '@/components/ui/button'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 import { getAttendanceTotalHours } from '@/utils/attendance'
 import { ColumnDef, Row } from '@tanstack/react-table'
+import Image from 'next/image'
 import Link from 'next/link'
 import { FiEdit3 } from 'react-icons/fi'
 import { IoArchiveOutline } from 'react-icons/io5'
 import { LuArchiveRestore } from 'react-icons/lu'
+import AvatarPlaceholder from '@/public/general/images/male-avatar.svg'
 
 export const accountColumns = (actions: {
   [key: string]: (row: Row<UserSubset>) => void
@@ -23,17 +25,15 @@ export const accountColumns = (actions: {
 
     cell: ({ row }) => {
       const name = row.original.name
-      const fallback = name
-        ?.split(' ')
-        .map(n => n[0])
-        .join('')
       const path = `/admin/intern-management/${row.original.id}`
 
       return (
         <div className="flex items-center gap-3">
           <Avatar className="w-8 h-8">
             <AvatarImage src={`${row.original.image}`} alt={`${name}`} />
-            <AvatarFallback>{fallback}</AvatarFallback>
+            <AvatarFallback>
+              <Image src={AvatarPlaceholder} width={32} height={32} alt={`${name}`} />
+            </AvatarFallback>
           </Avatar>
           <Link
             href={path}

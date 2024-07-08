@@ -20,6 +20,8 @@ const breadcrumbLinks = [
 ]
 
 const UserProfile = async ({ params: { id } }: { params: { id: string } }) => {
+  if (!id) return null
+  
   const user = await getServerUserById(id)
   const attendance = await getInternAttendance(user?.email)
   const mode = getAttendanceMode(attendance)

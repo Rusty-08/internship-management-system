@@ -4,10 +4,10 @@ import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
 export async function PUT(req: Request) {
-  try {
-    const { id, name, email, role, expertise, mentor, isArchived } =
-      await req.json()
+  const { id, name, email, role, expertise, mentor, isArchived } =
+    await req.json()
 
+  try {
     if (!id || !name || !email) {
       return NextResponse.json({ message: 'Invalid input' }, { status: 400 })
     }
@@ -51,7 +51,7 @@ export async function PUT(req: Request) {
       { status: 404 },
     )
   } finally {
-    revalidatePath('/admin/archived-records')
+    revalidatePath(`/admin/${role.toLowerCase()}-management`)
     await prisma.$disconnect()
   }
 }

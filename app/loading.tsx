@@ -12,9 +12,9 @@ const Loading = () => {
     <div className="layout-loading flex items-center justify-center gap-2 flex-col w-full h-full">
       <Image
         src={
-          initialTheme === 'dark'
-            ? siteConfig.logoCircleWhite
-            : siteConfig.logoCircleBlack
+          initialTheme === 'light'
+            ? siteConfig.logoCircleBlack
+            : siteConfig.logoCircleWhite
         }
         alt="logo"
         width={80}

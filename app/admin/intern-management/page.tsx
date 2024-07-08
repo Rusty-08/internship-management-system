@@ -1,5 +1,5 @@
 import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
-import { getUsers } from '@/utils/users'
+import { getInternUsers } from '@/utils/users'
 import { Metadata } from 'next'
 import React from 'react'
 import AccountsTable from '../../../components/@core/ui/table/account-table/accounts-table'
@@ -10,9 +10,8 @@ export const metadata: Metadata = {
 }
 
 const InternManagement = async () => {
-  const isArchivePage = false
   const userRole = 'INTERN'
-  const data = await getUsers(isArchivePage, userRole)
+  const data = await getInternUsers()
 
   return (
     <div className="py-2 space-y-6">

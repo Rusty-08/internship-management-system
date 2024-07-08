@@ -16,12 +16,14 @@ export async function getServerUserByEmail(email: string) {
 
 // Server-side function to get the current user by id
 export async function getServerUserById(id: string) {
+  if (!id) return null
   const user = await prisma.user.findUnique({ where: { id } })
   return user
 }
 
 // Client-side function to get the current user by email
 export async function getUserByEmail(email: string): Promise<User | null> {
+  if (!email) return null
   const res = await fetch(`/api/auth/users/user/${email}`, {
     method: 'GET',
     headers: {
@@ -44,6 +46,7 @@ export async function getCurrentUser() {
   return user
 }
 
+// get mentor users in the client-side
 export const fetchMentorUsers = async () => {
   const res = await fetch('/api/auth/users/mentors', {
     method: 'GET',
@@ -60,6 +63,7 @@ export const fetchMentorUsers = async () => {
   }
 }
 
+// get intern users in the client-side
 export const fetchInternUsers = async () => {
   const res = await fetch('/api/auth/users/interns', {
     method: 'GET',
@@ -76,25 +80,14 @@ export const fetchInternUsers = async () => {
   }
 }
 
-export async function getUsers(
-  isArchived: boolean,
-  role?: 'INTERN' | 'MENTOR',
-): Promise<UserSubset[]> {
+// get intern users in the server-side
+export const getInternUsers = async () => {
   const users = await prisma.user.findMany({
     where: {
-      role,
-      isArchived: isArchived,
+      role: 'INTERN',
+      isArchived: false,
     },
-    select: {
-      id: true,
-      image: true,
-      name: true,
-      email: true,
-      course: true,
-      totalHours: true,
-      attendance: true,
-      role: true,
-      expertise: true,
+    include: {
       internProfile: {
         select: {
           mentor: {
@@ -105,22 +98,32 @@ export async function getUsers(
           },
         },
       },
+      attendance: true,
     },
   })
   return users.map(user => ({
-    id: user.id,
-    image: user.image,
-    name: user.name,
-    email: user.email,
-    course: user.course,
-    totalHours: user.totalHours,
-    attendance: user.attendance,
-    role: user.role,
-    expertise: user.expertise || 'none',
+    ...user,
     mentor: user.internProfile?.mentor?.name || 'none',
-    mentorId: user.internProfile?.mentor?.id || 'none',
-    isArchived: isArchived,
   }))
+}
+
+// get mentor users in the server-side
+export const getMentorUsers = async () => {
+  return await prisma.user.findMany({
+    where: {
+      role: 'MENTOR',
+      isArchived: false,
+    },
+  })
+}
+
+// get archived users in the server-side
+export const getArchivedUsers = async () => {
+  return await prisma.user.findMany({
+    where: {
+      isArchived: true,
+    },
+  })
 }
 
 // ask for intern id and return mentor id

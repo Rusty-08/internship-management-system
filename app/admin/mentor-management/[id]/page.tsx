@@ -10,6 +10,8 @@ const breadcrumbLinks = [
 ]
 
 const UserProfile = async ({ params: { id } }: { params: { id: string } }) => {
+  if (!id) return null
+  
   const user = await getServerUserById(id)
 
   return (

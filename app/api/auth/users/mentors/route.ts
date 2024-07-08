@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server'
-import { connectDB } from '@/lib/connect-db'
 import prisma from '@/lib/prisma'
 
 export async function GET() {
   try {
-    await connectDB()
     const users = await prisma.user.findMany({ where: { role: 'MENTOR' } })
 
     if (!users) {

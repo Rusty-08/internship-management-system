@@ -105,9 +105,9 @@ export default function AccountsTable({
     } catch {
       console.error('Could not archive user')
     } finally {
-      router.refresh()
       setLoading(false)
       setOpenDialog(false)
+      router.refresh()
     }
   }
 

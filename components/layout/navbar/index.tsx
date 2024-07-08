@@ -25,8 +25,10 @@ const Navbar = ({ profilePath, sideLinks }: SidebarSheetProps) => {
 
   useEffect(() => {
     const getUser = async () => {
-      const _user = await getUserByEmail(session?.user.email || '')
-      setUser(_user)
+      if (session?.user) {
+        const _user = await getUserByEmail(session.user.email)
+        setUser(_user)
+      }
     }
     getUser()
   }, [session])

@@ -23,7 +23,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useRouter } from 'next/navigation'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { z } from 'zod'
 import { ArchiveConfirmation } from './archive-confirmation'
 import { FormDialog } from './register-form'
@@ -68,13 +68,10 @@ export default function AccountsTable({
     totalHours: 0,
   })
 
-  const filteredData = useMemo(
-    () =>
-      roleFilter !== 'All'
-        ? data.filter(d => d.role === roleFilter.toUpperCase())
-        : data,
-    [roleFilter, data],
-  )
+  const filteredData =
+    roleFilter !== 'All'
+      ? data.filter(d => d.role === roleFilter.toUpperCase())
+      : data
 
   const handleEdit = (row: Row<UserSubset>) => {
     setFormMode('edit')
@@ -102,12 +99,11 @@ export default function AccountsTable({
           isArchived: archiveIntern?.original.isArchived ? false : true,
         }),
       })
-    } catch {
-      console.error('Could not archive user')
-    } finally {
       setLoading(false)
       setOpenDialog(false)
       router.refresh()
+    } catch {
+      console.error('Could not archive user')
     }
   }
 

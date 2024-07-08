@@ -1,4 +1,3 @@
-import { connectDB } from '@/lib/connect-db'
 import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
@@ -11,8 +10,6 @@ export async function PUT(req: Request) {
     if (!id || !name || !email) {
       return NextResponse.json({ message: 'Invalid input' }, { status: 400 })
     }
-
-    await connectDB()
 
     const user = await prisma.user.findUnique({ where: { id } })
 
@@ -43,7 +40,7 @@ export async function PUT(req: Request) {
             : undefined,
       },
     })
-
+    revalidatePath(`/admin/${role.toLowerCase()}-management`)
     return NextResponse.json({ user: updatedUser }, { status: 200 })
   } catch {
     return NextResponse.json(
@@ -51,7 +48,6 @@ export async function PUT(req: Request) {
       { status: 404 },
     )
   } finally {
-    revalidatePath(`/admin/${role.toLowerCase()}-management`)
     await prisma.$disconnect()
   }
 }

@@ -13,4 +13,5 @@ export type UserSubset = {
   mentor?: string | null
   mentorId?: string | null
   isArchived?: boolean | null
+  createdAt?: Date | null
 }

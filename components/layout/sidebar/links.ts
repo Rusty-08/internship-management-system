@@ -4,6 +4,7 @@ import {
   MdOutlineCalendarMonth,
   MdOutlineDashboard,
   MdOutlineListAlt,
+  MdOutlineManageAccounts,
   MdOutlinePeopleOutline,
   MdOutlineRateReview,
 } from 'react-icons/md'
@@ -30,6 +31,11 @@ export const adminSidebarLinks = [
     name: 'Mentor Management',
     path: '/admin/mentor-management',
     icon: PiChalkboardTeacher,
+  },
+  {
+    name: 'Internship Management',
+    path: '/admin/internship-management',
+    icon: MdOutlineManageAccounts,
   },
   {
     name: 'Reports',

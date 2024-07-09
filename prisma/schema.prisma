@@ -38,7 +38,7 @@ model User {
   name                   String?
   email                  String        @unique
   course                 InternCourse?
-  totalHours             Float?        @default(0)
+  totalHours             Float?
   password               String
   passwordChangeRequired Boolean       @default(true)
   emailVerified          DateTime?
@@ -90,7 +90,7 @@ model Task {
   status      TaskStatus
   startDate   DateTime
   endDate     DateTime
-  mentorId    String     @unique @db.ObjectId
+  mentorId    String     @db.ObjectId
 
   mentor      User         @relation("mentorTask", fields: [mentorId], references: [id], onDelete: Cascade)
   files       File[] // A task can have multiple files

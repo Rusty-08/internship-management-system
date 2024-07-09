@@ -65,7 +65,7 @@ export default function AccountsTable({
     mentor: '',
     expertise: '',
     course: '',
-    totalHours: 0,
+    totalHours: undefined,
   })
 
   const filteredData =
@@ -83,7 +83,7 @@ export default function AccountsTable({
       mentor: row.original.mentorId || '',
       expertise: row.original.expertise || '',
       course: row.original.course || '',
-      totalHours: row.original.totalHours || 0,
+      totalHours: row.original.totalHours || undefined,
     })
   }
 

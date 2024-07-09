@@ -104,6 +104,7 @@ export const getInternUsers = async () => {
   return users.map(user => ({
     ...user,
     mentor: user.internProfile?.mentor?.name || 'none',
+    mentorId: user.internProfile?.mentor?.id || '',
   }))
 }
 

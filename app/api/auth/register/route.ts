@@ -1,17 +1,16 @@
+import bcrypt from 'bcryptjs'
+import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 import prisma from '../../../../lib/prisma'
-import { connectDB } from '@/lib/connect-db'
-import bcrypt from 'bcryptjs'
 
 export async function POST(req: Request) {
   try {
-    const { name, email, role, expertise, mentor, course, totalHours } = await req.json()
+    const { name, email, role, expertise, mentor, course, totalHours } =
+      await req.json()
 
     if (!name || !email) {
       return NextResponse.json({ message: 'Invalid input' }, { status: 400 })
     }
-
-    await connectDB()
 
     const taken = await prisma.user.findUnique({ where: { email } })
 
@@ -24,27 +23,42 @@ export async function POST(req: Request) {
 
     const hashedPassword = await bcrypt.hash('@default123', 10)
 
-    const user = await prisma.user.create({
-      data: {
-        name: name ?? 'Anonymous',
-        email,
-        password: hashedPassword,
-        role,
-        expertise: role === 'MENTOR' ? expertise : undefined,
-        course,
-        totalHours,
-        isArchived: false,
-        internProfile:
-          role === 'INTERN' && mentor
+    let user
+
+    if (role === 'INTERN') {
+      user = await prisma.user.create({
+        data: {
+          name,
+          email,
+          password: hashedPassword,
+          role,
+          course,
+          totalHours,
+          isArchived: false,
+          internProfile: mentor
             ? {
                 create: {
                   mentorId: mentor,
                 },
               }
             : undefined,
-      },
-    })
+        },
+      })
+    } else {
+      user = await prisma.user.create({
+        data: {
+          name,
+          email,
+          password: hashedPassword,
+          role,
+          expertise,
+          isArchived: false,
+        },
+      })
+    }
 
+    revalidatePath('/admin/mentor-management')
+    revalidatePath('/admin/intern-management')
     return NextResponse.json({ user }, { status: 201 })
   } catch {
     return NextResponse.json(

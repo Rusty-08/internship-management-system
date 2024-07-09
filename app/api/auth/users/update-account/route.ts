@@ -40,7 +40,8 @@ export async function PUT(req: Request) {
             : undefined,
       },
     })
-    revalidatePath(`/admin/${role.toLowerCase()}-management`)
+    revalidatePath('/admin/mentor-management')
+    revalidatePath('/admin/intern-management')
     return NextResponse.json({ user: updatedUser }, { status: 200 })
   } catch {
     return NextResponse.json(

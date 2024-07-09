@@ -1,18 +1,14 @@
-import { Button } from '@/components/ui/button'
+import SubmitCancelButton from '@/components/@core/button/submit-cancel'
+import AddButton from '@/components/@core/ui/add-button'
+import ErrorCard from '@/components/auth/login/error-card'
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-
-import { Input } from '@/components/ui/input'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-
 import {
   Form,
   FormControl,
@@ -21,13 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-
-import { zodResolver } from '@hookform/resolvers/zod'
-
-import SubmitCancelButton from '@/components/@core/button/submit-cancel'
-import { LoadingSpinner } from '@/components/@core/loading'
-import AddButton from '@/components/@core/ui/add-button'
-import ErrorCard from '@/components/auth/login/error-card'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -36,9 +26,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { fetchMentorUsers } from '@/utils/users'
-import { InternCourse } from '@prisma/client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import { RegistrationSchema } from './registration-schema'
 import { UserSubset } from './types'
 
@@ -82,7 +74,7 @@ export function FormDialog({
       mentor: '',
       expertise: '',
       course: '',
-      totalHours: 0,
+      totalHours: undefined,
     },
   })
 
@@ -104,6 +96,8 @@ export function FormDialog({
             name,
             email,
             role,
+            course,
+            totalHours: Number(totalHours),
             mentor: role === 'INTERN' ? mentor : null,
             expertise: role === 'INTERN' ? null : expertise,
           }),
@@ -257,7 +251,7 @@ export function FormDialog({
                           <Input
                             {...field}
                             type="number"
-                            placeholder="465"
+                            placeholder="e.g. 486"
                             onChange={event =>
                               field.onChange(Number(event.target.value))
                             }
@@ -279,10 +273,17 @@ export function FormDialog({
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
+                          disabled={mentors.length === 0}
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select the mentor" />
+                              <SelectValue
+                                placeholder={
+                                  mentors.length === 0
+                                    ? 'No available mentor'
+                                    : 'Select the mentor'
+                                }
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>

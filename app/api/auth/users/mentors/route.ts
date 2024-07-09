@@ -1,9 +1,11 @@
-import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    const users = await prisma.user.findMany({ where: { role: 'MENTOR' } })
+    const users = await prisma.user.findMany({
+      where: { role: 'MENTOR', isArchived: false },
+    })
 
     if (!users) {
       return NextResponse.json({ message: 'No Users Exists' }, { status: 401 })

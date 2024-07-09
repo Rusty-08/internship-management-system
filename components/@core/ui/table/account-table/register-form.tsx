@@ -125,9 +125,13 @@ export function FormDialog({
         setIsEmailTaken(true)
         return
       }
+
       form.reset()
       setIsOpen(false)
-      router.refresh()
+
+      if (res.status === 200 || res.status === 201) {
+        router.refresh()
+      }
     } catch (error) {
       console.error(error)
     }

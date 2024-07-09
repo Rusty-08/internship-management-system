@@ -52,6 +52,7 @@ type FormDialogProps = {
   mode?: FormActions
   setMode: (mode: FormActions) => void
   role: 'INTERN' | 'MENTOR'
+  mentors: UserSubset[]
 }
 
 export function FormDialog({
@@ -61,8 +62,8 @@ export function FormDialog({
   mode,
   setMode,
   role,
+  mentors,
 }: FormDialogProps) {
-  const [mentors, setMentors] = useState<UserSubset[]>([])
   const router = useRouter()
   const [isEmailTaken, setIsEmailTaken] = useState(false)
 
@@ -131,15 +132,6 @@ export function FormDialog({
       console.error(error)
     }
   }
-
-  useEffect(() => {
-    // for listing mentors in the select dropdown
-    const fetchMentors = async () => {
-      const data = await fetchMentorUsers()
-      setMentors(data)
-    }
-    fetchMentors()
-  }, [])
 
   useEffect(() => {
     if (initialValues) {

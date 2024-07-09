@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { fetchMentorUsers } from '@/utils/users'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -58,6 +59,7 @@ export default function AccountsTable({
   )
   const [openDialog, setOpenDialog] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [mentors, setMentors] = useState<UserSubset[]>([])
   const [editData, setEditData] = useState<z.infer<typeof RegistrationSchema>>({
     id: '',
     name: '',
@@ -134,6 +136,15 @@ export default function AccountsTable({
     },
   })
 
+  useEffect(() => {
+    // for listing mentors in the select dropdown
+    const fetchMentors = async () => {
+      const data = await fetchMentorUsers()
+      setMentors(data)
+    }
+    fetchMentors()
+  }, [])
+
   return (
     <div>
       <ArchiveConfirmation
@@ -179,6 +190,7 @@ export default function AccountsTable({
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             role={user}
+            mentors={mentors}
           />
         )}
       </div>

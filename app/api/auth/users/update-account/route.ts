@@ -40,8 +40,13 @@ export async function PUT(req: Request) {
             : undefined,
       },
     })
-    revalidatePath('/admin/mentor-management')
-    revalidatePath('/admin/intern-management')
+
+    if (role === 'INTERN') {
+      revalidatePath('/admin/intern-management')
+    } else {
+      revalidatePath('/admin/mentor-management')
+    }
+
     return NextResponse.json({ user: updatedUser }, { status: 200 })
   } catch {
     return NextResponse.json(

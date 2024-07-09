@@ -57,8 +57,11 @@ export async function POST(req: Request) {
       })
     }
 
-    revalidatePath('/admin/mentor-management')
-    revalidatePath('/admin/intern-management')
+    if (role === 'INTERN') {
+      revalidatePath('/admin/intern-management')
+    } else {
+      revalidatePath('/admin/mentor-management')
+    }
     return NextResponse.json({ user }, { status: 201 })
   } catch {
     return NextResponse.json(

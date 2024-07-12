@@ -3,7 +3,7 @@ import { TabsWrapper } from '@/components/@core/ui/tabs'
 import Profile from '@/components/layout/profile'
 import { TabsContent } from '@/components/ui/tabs'
 import { getAttendanceMode, getInternAttendance } from '@/utils/attendance'
-import { getServerUserById } from '@/utils/users'
+import { getServerUserById, getUserEmailById } from '@/utils/users'
 import { Metadata } from 'next'
 import { lazy } from 'react'
 
@@ -21,13 +21,12 @@ const breadcrumbLinks = [
 
 const UserProfile = async ({ params: { id } }: { params: { id: string } }) => {
   if (!id) return null
-  
-  const user = await getServerUserById(id)
-  const attendance = await getInternAttendance(user?.email)
-  const mode = getAttendanceMode(attendance)
+
+  const email = await getUserEmailById(id)
+  const attendance = await getInternAttendance(email)
 
   return (
-    <Profile email={user?.email || ''} breadcrumbLinks={breadcrumbLinks}>
+    <Profile email={email || ''} breadcrumbLinks={breadcrumbLinks}>
       <TabsWrapper triggers={['Overview', 'Attendance']}>
         <TabsContent value="overview">
           <div className="border-t my-4 flex items-center justify-center min-h-[20rem] rounded-sm">
@@ -36,12 +35,7 @@ const UserProfile = async ({ params: { id } }: { params: { id: string } }) => {
         </TabsContent>
         <TabsContent value="attendance">
           <div className="min-h-[20rem] my-4 p-4 bg-card rounded-md">
-            <AttendanceTable
-              data={attendance}
-              user={user}
-              mode={mode}
-              showTimeInBtn={false}
-            />
+            <AttendanceTable data={attendance} showTimeInBtn={false} />
           </div>
         </TabsContent>
       </TabsWrapper>

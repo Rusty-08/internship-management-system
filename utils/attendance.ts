@@ -166,3 +166,13 @@ export const getAttendanceTotalHours = (attendance: AttendanceProps[]) => {
     return acc + (curr.totalHours || 0)
   }, 0)
 }
+
+export const getTargetHours = async (id?: string) => {
+  const activeUser = await getCurrentUser()
+
+  const user = await prisma.user.findUnique({
+    where: { id: id ? id : activeUser?.id },
+  })
+
+  return user?.totalHours
+}

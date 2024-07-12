@@ -27,7 +27,7 @@ export function DataTable<TData, TValue>({
   searchOutput,
 }: DataTableProps<TData, TValue>) {
   return (
-    <div className="border border-primary/10 rounded-md overflow-hidden">
+    <div className="border-y overflow-hidden">
       <Table>
         <TableHeader className="bg-card">
           {table.getHeaderGroups().map(headerGroup => (
@@ -36,7 +36,7 @@ export function DataTable<TData, TValue>({
                 return (
                   <TableHead
                     key={header.id}
-                    className="px-6 py-1.5 text-xs uppercase tracking-wide text-nowrap"
+                    className="px-6 py-3 text-xs font-semibold uppercase tracking-wide text-nowrap"
                   >
                     {header.isPlaceholder
                       ? null
@@ -58,7 +58,7 @@ export function DataTable<TData, TValue>({
                 data-state={row.getIsSelected() && 'selected'}
               >
                 {row.getVisibleCells().map(cell => (
-                  <TableCell key={cell.id} className="px-6 py-2 text-text">
+                  <TableCell key={cell.id} className="px-6 py-3 text-text">
                     {(() => {
                       return flexRender(
                         cell.column.columnDef.cell,

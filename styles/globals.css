@@ -59,6 +59,13 @@ body,
     --completed: 120 100% 25%; /* green */
     --pending: 60 100% 30%; /* yellow */
     --in-progress: 240 100% 50%; /* blue */
+
+    /* charts */
+    --chart-1: 221.2 83.2% 53.3%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
   }
 
   .dark {
@@ -87,6 +94,13 @@ body,
     --completed: 120 100% 75%; /* light green */
     --pending: 60 100% 75%; /* light yellow */
     --in-progress: 240 100% 75%; /* light blue */
+
+    /* charts */
+    --chart-1: 217.2 91.2% 59.8%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 }
 
@@ -139,4 +153,8 @@ body,
 
 .loading svg path {
   fill: hsl(var(--foreground)) !important;
+}
+
+.test {
+  color: #3b82f6;
 }

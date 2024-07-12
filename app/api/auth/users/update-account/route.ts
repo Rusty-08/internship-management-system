@@ -41,12 +41,6 @@ export async function PUT(req: Request) {
       },
     })
 
-    if (role === 'INTERN') {
-      revalidatePath('/admin/intern-management')
-    } else {
-      revalidatePath('/admin/mentor-management')
-    }
-
     return NextResponse.json({ user: updatedUser }, { status: 200 })
   } catch {
     return NextResponse.json(
@@ -55,5 +49,11 @@ export async function PUT(req: Request) {
     )
   } finally {
     await prisma.$disconnect()
+
+    if (role === 'INTERN') {
+      revalidatePath('/admin/intern-management')
+    } else {
+      revalidatePath('/admin/mentor-management')
+    }
   }
 }

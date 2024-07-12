@@ -128,10 +128,7 @@ export function FormDialog({
 
       form.reset()
       setIsOpen(false)
-
-      if (res.status === 200 || res.status === 201) {
-        router.refresh()
-      }
+      router.refresh()
     } catch (error) {
       console.error(error)
     }

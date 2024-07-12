@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma'
+import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
@@ -20,5 +21,6 @@ export async function GET() {
     )
   } finally {
     await prisma.$disconnect()
+    revalidatePath('/admin/intern-management')
   }
 }

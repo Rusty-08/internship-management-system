@@ -32,9 +32,10 @@ import { DateRange } from 'react-day-picker'
 
 type AttendanceTableProps = {
   data: AttendanceProps[]
-  user: User | null
-  mode: string
+  user?: User | null
+  mode?: string
   showTimeInBtn?: boolean
+  isInDashboard?: boolean
 }
 
 export default function AttendanceTable({
@@ -42,6 +43,7 @@ export default function AttendanceTable({
   user,
   mode,
   showTimeInBtn = true,
+  isInDashboard = false,
 }: AttendanceTableProps) {
   const router = useRouter()
   const { toast } = useToast()
@@ -67,7 +69,9 @@ export default function AttendanceTable({
 
   const table = useReactTable({
     data: filteredData,
-    columns: attendanceColumns,
+    columns: isInDashboard
+      ? attendanceColumns.slice(0, attendanceColumns.length - 1)
+      : attendanceColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   })
@@ -107,6 +111,10 @@ export default function AttendanceTable({
     [data],
   )
 
+  if (isInDashboard) {
+    return <DataTable columns={attendanceColumns} table={table} />
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-row gap-2 justify-between">
@@ -120,7 +128,7 @@ export default function AttendanceTable({
             <GrDocumentDownload size="1rem" className="mr-0 lg:mr-2" />
             <span className="hidden lg:inline-flex">Export</span>
           </Button>
-          {showTimeInBtn && (
+          {showTimeInBtn && mode && user && (
             <div className="fixed right-4 z-50 bottom-4 lg:right-0 lg:bottom-0 lg:relative">
               <AttendanceConfirmation
                 mode={mode}
@@ -136,8 +144,15 @@ export default function AttendanceTable({
         </div>
       </div>
       <div>
-        <div className="rounded-md border overflow-hidden">
-          <DataTable columns={attendanceColumns} table={table} />
+        <div className="overflow-hidden">
+          <DataTable
+            columns={
+              isInDashboard
+                ? attendanceColumns.slice(0, attendanceColumns.length - 2)
+                : attendanceColumns
+            }
+            table={table}
+          />
         </div>
         <div className="flex items-center justify-between py-3">
           <DataTablePagination table={table} />

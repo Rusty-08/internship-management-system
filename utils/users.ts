@@ -2,10 +2,16 @@ import { auth } from '@/auth'
 import { UserSubset } from '@/components/@core/ui/table/account-table/types'
 import prisma from '@/lib/prisma'
 import { User } from '@prisma/client'
+import { revalidatePath } from 'next/cache'
 
 export async function getCurrentUserEmail() {
   const session = await auth()
   return session?.user.email
+}
+
+export async function getUserEmailById(id: string) {
+  const user = await prisma.user.findUnique({ where: { id } })
+  return user?.email
 }
 
 // Server-side function to get the current user by email
@@ -82,40 +88,52 @@ export const fetchInternUsers = async () => {
 
 // get intern users in the server-side
 export const getInternUsers = async () => {
-  const users = await prisma.user.findMany({
-    where: {
-      role: 'INTERN',
-      isArchived: false,
-    },
-    include: {
-      internProfile: {
-        select: {
-          mentor: {
-            select: {
-              id: true,
-              name: true,
+  try {
+    const users = await prisma.user.findMany({
+      where: {
+        role: 'INTERN',
+        isArchived: false,
+      },
+      include: {
+        internProfile: {
+          select: {
+            mentor: {
+              select: {
+                id: true,
+                name: true,
+              },
             },
           },
         },
+        attendance: true,
       },
-      attendance: true,
-    },
-  })
-  return users.map(user => ({
-    ...user,
-    mentor: user.internProfile?.mentor?.name || 'none',
-    mentorId: user.internProfile?.mentor?.id || '',
-  }))
+    })
+    return users.map(user => ({
+      ...user,
+      mentor: user.internProfile?.mentor?.name || 'none',
+      mentorId: user.internProfile?.mentor?.id || '',
+    }))
+  } catch {
+    console.log("Can't fetch the intern users")
+  } finally {
+    revalidatePath('/admin/intern-management')
+  }
 }
 
 // get mentor users in the server-side
 export const getMentorUsers = async () => {
-  return await prisma.user.findMany({
-    where: {
-      role: 'MENTOR',
-      isArchived: false,
-    },
-  })
+  try {
+    return await prisma.user.findMany({
+      where: {
+        role: 'MENTOR',
+        isArchived: false,
+      },
+    })
+  } catch {
+    console.log("Can't fetch the mentor users")
+  } finally {
+    revalidatePath('/admin/intern-management')
+  }
 }
 
 // get archived users in the server-side

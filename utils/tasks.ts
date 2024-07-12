@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma'
+import { getCurrentUser, getCurrentUserMentorId } from './users'
 
 export const getTasks = async (id: string, tasks?: string, status?: string) => {
   if (!id) return null
@@ -73,4 +74,16 @@ export const getTaskById = async (id: string) => {
     },
     upload: undefined,
   }
+}
+
+export const getCurrentUserTasks = async () => {
+  const mentorId = await getCurrentUserMentorId()
+  const user = await prisma.user.findUnique({
+    where: { id: mentorId },
+    include: {
+      tasks: true,
+    },
+  })
+
+  return user?.tasks
 }

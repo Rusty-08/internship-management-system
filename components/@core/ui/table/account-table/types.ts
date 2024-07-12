@@ -5,8 +5,8 @@ export type UserSubset = {
   image: string | null
   name: string | null
   email: string | null
-  course: string | null
-  totalHours: number | null
+  course?: string | null
+  totalHours?: number | null
   attendance?: AttendanceProps[] | null
   role: string | null
   expertise?: string | null

@@ -16,7 +16,7 @@ import { Dispatch, SetStateAction } from 'react'
 type SubmissionFormProps = {
   form: UseFormReturn<
     {
-      file?: File | undefined
+      file?: File
     },
     any,
     undefined
@@ -24,7 +24,7 @@ type SubmissionFormProps = {
   onSubmitForm: (values: z.infer<typeof SubmissionSchema>) => Promise<void>
   isSubmitting: boolean
   errors: FieldErrors<{
-    file?: File | undefined
+    file?: File
   }>
   setIsOpenHandler: Dispatch<SetStateAction<boolean>>
 }

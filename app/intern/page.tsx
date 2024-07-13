@@ -27,6 +27,8 @@ import AttendanceTable from './my-attendance/_components/attendance-table'
 import { MdDownloading, MdOutlinePending, MdTaskAlt } from 'react-icons/md'
 import { Separator } from '@/components/ui/separator'
 import { TaskStatus } from '@prisma/client'
+import GradientTop from '@/components/@core/gradient/gradient-top'
+import { Fragment } from 'react'
 
 export const metadata: Metadata = {
   title: 'Intern Dashboard',
@@ -35,22 +37,19 @@ export const metadata: Metadata = {
 const InternDashboard = async () => {
   const tasks = await getCurrentUserTasks()
   const attendance = await getInternAttendance()
-  // const targetHours = await getTargetHours()
   const attendaceTotalHours = getAttendanceTotalHours(attendance)
 
   const hours = Math.floor(attendaceTotalHours)
   const minutes = Math.round((attendaceTotalHours - hours) * 60)
 
-  // const ongoingTask = tasks?.find(task => task.status === 'IN_PROGRESS')
-
-  // const formattedStartDate =
-  //   ongoingTask && format(ongoingTask?.startDate, 'LLL dd')
-  // const formattedEndDate =
-  //   ongoingTask && format(ongoingTask?.endDate, 'LLL dd, y')
-
-  // const statusName =
-  //   ongoingTask &&
-  //   ongoingTask?.status.charAt(0) + ongoingTask?.status.slice(1).toLowerCase()
+  const sortedTaskByDate = tasks
+    ? tasks
+        .slice(-3)
+        .sort(
+          (a, b) =>
+            new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
+        )
+    : []
 
   const statusName = (status: TaskStatus) =>
     status.charAt(0) + status.slice(1).toLowerCase()
@@ -132,13 +131,11 @@ const InternDashboard = async () => {
           description="Your recent task records."
           navigate="/intern/task-management"
         >
-          <div className="flex flex-col gap-4">
-            {tasks &&
-              tasks.slice(-3).map((task, idx) => (
-                <div
-                  key={task.id}
-                  className="flex items-center justify-between w-full gap-4 border-b pb-4 last:border-none last:pb-0"
-                >
+          <div className="flex flex-col w-full gap-4">
+            {sortedTaskByDate.map(task => (
+              <div key={task.id} className="flex flex-col w-full">
+                <GradientTop status={task.status} />
+                <div className="flex items-center relative justify-between w-full gap-4 py-3 px-4 lg:px-5 rounded-md border">
                   <div className="flex items-center gap-4">
                     <div className="flex flex-col gap-1">
                       <p className="text-[0.9rem] font-medium">{task.title}</p>
@@ -148,16 +145,14 @@ const InternDashboard = async () => {
                       </p>
                     </div>
                   </div>
-                  <Badge
-                    variant={task.status}
-                    className="hidden lg:inline-flex"
-                  >
+                  <Badge variant={task.status} className="flex-shrink-0">
                     {statusName(task.status) === 'In_progress'
                       ? 'In Progress'
                       : statusName(task.status)}
                   </Badge>
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
         </DetailsCard>
       </div>

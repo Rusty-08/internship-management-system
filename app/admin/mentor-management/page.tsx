@@ -16,7 +16,7 @@ export default async function MentorManagement() {
     <div className="py-2 space-y-6">
       <BreadcrumbWrapper current="Mentor Management" />
       <AccountsTable
-        data={data}
+        data={data || []}
         user={userRole}
         accountColumns={accountColumns}
       />

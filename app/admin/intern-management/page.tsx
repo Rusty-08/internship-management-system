@@ -17,7 +17,7 @@ const InternManagement = async () => {
     <div className="py-2 space-y-6">
       <BreadcrumbWrapper current="Intern Management" />
       <AccountsTable
-        data={data}
+        data={data || []}
         user={userRole}
         accountColumns={accountColumns}
       />

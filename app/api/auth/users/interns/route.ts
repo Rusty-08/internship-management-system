@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { unstable_noStore } from 'next/cache'
+import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
@@ -34,9 +35,12 @@ export async function GET() {
       return NextResponse.json({ message: 'No Users Exists' }, { status: 401 })
     }
 
-    return NextResponse.json(updatedUsers, { status: 201 })
+    const response = NextResponse.json(updatedUsers, { status: 200 })
+    response.headers.set('Cache-Control', 'public, max-age=1200, s-maxage=600') // cache for 20 minutes and 10 minutes on the server
+    return response
   } catch (error) {
     console.log('Error:', error)
+    unstable_noStore() // This prevents caching of the error response
     return NextResponse.json(
       { message: 'Could not verify user' },
       { status: 404 },

@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { getCurrentUser, getCurrentUserMentorId } from './users'
+import { getCurrentUserMentorId } from './users'
 
 export const getTasks = async (id: string, tasks?: string, status?: string) => {
   if (!id) return null

@@ -1,36 +1,28 @@
-'use client'
+import { ReactNode } from 'react'
 
-import { ReactNode, useState } from 'react'
-
-import { SidebarLinkProps } from '@/components/layout/sidebar/links'
+import { adminSidebarLinks, internSidebarLinks, mentorSidebarLinks, SidebarLinkProps } from '@/components/layout/sidebar/links'
 import Sidebar from '@/components/layout/sidebar'
 import Navbar from '@/components/layout/navbar'
-import { cn } from '@/lib/utils'
 import Footer from '@/components/layout/footer'
+import { UserRole } from '@prisma/client'
 
 type SidebarProps = {
-  sideLinks: SidebarLinkProps
   children: ReactNode
-  role: string
+  role: UserRole
 }
 
-const CoreLayout = ({ sideLinks, children, role }: SidebarProps) => {
-  const [isMinimized, setIsMinimized] = useState(true)
+const CoreLayout = ({ children, role }: SidebarProps) => {
+  const lisks = {
+    ADMIN: adminSidebarLinks,
+    MENTOR: mentorSidebarLinks,
+    INTERN: internSidebarLinks,
+  }
 
   return (
     <main className="min-h-screen flex relative w-full">
-      <Sidebar
-        sideLinks={sideLinks}
-        isMinimized={isMinimized}
-        setIsMinimized={setIsMinimized}
-      />
-      <div
-        className={cn(
-          'flex flex-col transition-all duration-300 pl-0 ease-in-out w-full',
-          isMinimized ? 'lg:pl-[4rem]' : 'lg:pl-[18rem]',
-        )}
-      >
-        <Navbar profilePath={`/${role}/profile`} sideLinks={sideLinks} />
+      <Sidebar sideLinks={lisks[role]} />
+      <div className='flex flex-col transition-all duration-300 pl-0 lg:pl-16 ease-in-out w-full'>
+        <Navbar profilePath={`/${role.toLowerCase()}/profile`} sideLinks={lisks[role]} />
         <div
           style={{ minHeight: 'calc(100vh - 9.5rem)' }}
           className="py-4 px-4 md:px-6 w-full"

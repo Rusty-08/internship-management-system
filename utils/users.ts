@@ -138,11 +138,17 @@ export const getMentorUsers = async () => {
 
 // get archived users in the server-side
 export const getArchivedUsers = async () => {
-  return await prisma.user.findMany({
-    where: {
-      isArchived: true,
-    },
-  })
+  try {
+    return await prisma.user.findMany({
+      where: {
+        isArchived: true,
+      },
+    })
+  } catch {
+    console.log("Can't fetch the archived users")
+  } finally {
+    revalidatePath('/admin/archived-records')
+  }
 }
 
 // ask for intern id and return mentor id

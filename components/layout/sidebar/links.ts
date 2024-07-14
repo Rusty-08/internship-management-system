@@ -1,4 +1,3 @@
-import { IconType } from 'react-icons/lib'
 import {
   MdOutlineArchive,
   MdOutlineCalendarMonth,
@@ -10,82 +9,93 @@ import {
 } from 'react-icons/md'
 import { PiChalkboardTeacher } from 'react-icons/pi'
 
+export const ICONS = {
+  MdOutlineDashboard,
+  MdOutlineCalendarMonth,
+  MdOutlineRateReview,
+  MdOutlinePeopleOutline,
+  PiChalkboardTeacher,
+  MdOutlineManageAccounts,
+  MdOutlineListAlt,
+  MdOutlineArchive,
+}
+
 export type SidebarLinkProps = {
   name: string
   path: string
-  icon: IconType
+  icon: keyof typeof ICONS
 }[]
 
-export const adminSidebarLinks = [
+export const adminSidebarLinks: SidebarLinkProps = [
   {
     name: 'Dashboard',
     path: '/admin',
-    icon: MdOutlineDashboard,
+    icon: 'MdOutlineDashboard',
   },
   {
     name: 'Intern Management',
     path: '/admin/intern-management',
-    icon: MdOutlinePeopleOutline,
+    icon: 'MdOutlinePeopleOutline',
   },
   {
     name: 'Mentor Management',
     path: '/admin/mentor-management',
-    icon: PiChalkboardTeacher,
+    icon: 'PiChalkboardTeacher',
   },
   {
     name: 'Internship Management',
     path: '/admin/internship-management',
-    icon: MdOutlineManageAccounts,
+    icon: 'MdOutlineManageAccounts',
   },
   {
     name: 'Reports',
     path: '/admin/reports',
-    icon: MdOutlineListAlt,
+    icon: 'MdOutlineListAlt',
   },
   {
     name: 'Archived Records',
     path: '/admin/archived-records',
-    icon: MdOutlineArchive,
+    icon: 'MdOutlineArchive',
   },
 ]
 
-export const internSidebarLinks = [
+export const internSidebarLinks: SidebarLinkProps = [
   {
     name: 'Dashboard',
     path: '/intern',
-    icon: MdOutlineDashboard,
+    icon: 'MdOutlineDashboard',
   },
   {
     name: 'My Attendance',
     path: '/intern/my-attendance',
-    icon: MdOutlineCalendarMonth,
+    icon: 'MdOutlineCalendarMonth',
   },
   {
     name: 'Task Management',
     path: '/intern/task-management',
-    icon: MdOutlineListAlt,
+    icon: 'MdOutlineListAlt',
   },
 ]
 
-export const mentorSidebarLinks = [
+export const mentorSidebarLinks: SidebarLinkProps = [
   {
     name: 'Dashboard',
     path: '/mentor',
-    icon: MdOutlineDashboard,
+    icon: 'MdOutlineDashboard',
   },
   {
     name: 'Interns Monitoring',
     path: '/mentor/interns-monitoring',
-    icon: MdOutlinePeopleOutline,
+    icon: 'MdOutlinePeopleOutline',
   },
   {
     name: 'Tasks Management',
     path: '/mentor/tasks-management',
-    icon: MdOutlineListAlt,
+    icon: 'MdOutlineListAlt',
   },
   {
     name: 'Grading',
     path: '/mentor/grading',
-    icon: MdOutlineRateReview,
+    icon: 'MdOutlineRateReview',
   },
 ]

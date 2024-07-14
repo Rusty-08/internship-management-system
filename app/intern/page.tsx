@@ -2,7 +2,6 @@ import { StatCard } from '@/components/@core/ui/dashboard/stat-card'
 import {
   getAttendanceTotalHours,
   getInternAttendance,
-  getTargetHours,
 } from '@/utils/attendance'
 import { getCurrentUserTasks } from '@/utils/tasks'
 import { Metadata } from 'next'
@@ -10,25 +9,12 @@ import Image from 'next/image'
 import totalHoursImage from '@/public/dashboard/hours-dashboard.svg'
 import totalDaysImage from '@/public/dashboard/days-dashboard.svg'
 import totalTaskImage from '@/public/dashboard/task-dashboard.svg'
-import recentTasksImage from '@/public/general/images/no-records.svg'
 import { format } from 'date-fns'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { SampleChart } from '@/components/@core/ui/dashboard/sample-chart'
-import { TotalHoursChart } from '@/components/@core/ui/dashboard/total-hours-chart'
 import { DetailsCard } from '@/components/@core/ui/dashboard/details-card'
 import AttendanceTable from './my-attendance/_components/attendance-table'
-import { MdDownloading, MdOutlinePending, MdTaskAlt } from 'react-icons/md'
-import { Separator } from '@/components/ui/separator'
 import { TaskStatus } from '@prisma/client'
 import GradientTop from '@/components/@core/gradient/gradient-top'
-import { Fragment } from 'react'
 
 export const metadata: Metadata = {
   title: 'Intern Dashboard',

@@ -16,6 +16,12 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user
       const userRole = auth?.user?.role
       const isFirstLogin = auth?.user?.passwordChangeRequired
+      const isArchived = auth?.user?.isArchived
+
+      if (isArchived) {
+        return false
+        return Response.redirect(new URL('/sign-in', nextUrl))
+      }
 
       if (isFirstLogin) {
         if (path === '/change-password') return true

@@ -43,7 +43,7 @@ export const accountColumns = (actions: {
           </Avatar>
           <Link
             href={path}
-            className="font-medium hover:text-secondary-foreground"
+            className="font-medium text-foreground hover:text-primary"
           >
             {row.original.name}
           </Link>

@@ -35,7 +35,7 @@ const LoginForm = () => {
 
   const handleLogin = async (values: z.infer<typeof LoginSchema>) => {
     const { email, password } = values
-    const res = await authenticate({ email, password })
+    let res = await authenticate({ email, password })
     if (res) {
       setServerError(res)
     }

@@ -16,7 +16,7 @@ const ArchivedRecords = async () => {
     <div className="py-2 space-y-6">
       <BreadcrumbWrapper current="Archived Records" />
       <AccountsTable
-        data={data}
+        data={data || []}
         isArchivedPage={isArchivedPage}
         accountColumns={archiveColumns}
       />

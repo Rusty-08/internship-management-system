@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { revalidatePath, unstable_noStore } from 'next/cache'
+import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
@@ -12,12 +12,9 @@ export async function GET() {
       return NextResponse.json({ message: 'No Users Exists' }, { status: 401 })
     }
 
-    const response = NextResponse.json(users, { status: 200 })
-    response.headers.set('Cache-Control', 'public, max-age=1200, s-maxage=600') // cache for 20 minutes and 10 minutes on the server
-    return response
+    return NextResponse.json(users, { status: 200 })
   } catch (error) {
     console.log('Error:', error)
-    unstable_noStore()
     return NextResponse.json(
       { message: 'Could not verify user' },
       { status: 404 },

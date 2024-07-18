@@ -5,6 +5,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 
 export type AttendanceProps = {
+  name?: String | null
   date: Date | null
   timeInAM: Date | null
   timeOutAM: Date | null
@@ -14,6 +15,15 @@ export type AttendanceProps = {
 }
 
 export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    cell: ({ row }) => (
+      <p className="text-foreground text-nowrap">
+        {row.getValue('name')}
+      </p>
+    ),
+  },
   {
     accessorKey: 'date',
     header: 'Date',

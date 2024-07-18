@@ -15,6 +15,8 @@ import { DetailsCard } from '@/components/@core/ui/dashboard/details-card'
 import AttendanceTable from './my-attendance/_components/attendance-table'
 import { TaskStatus } from '@prisma/client'
 import GradientTop from '@/components/@core/gradient/gradient-top'
+import { attendanceColumns } from './my-attendance/_components/attendance-columns'
+import { IndividualAttendance } from '../admin/intern-management/_components/individual-attendance'
 
 export const metadata: Metadata = {
   title: 'Intern Dashboard',
@@ -105,15 +107,12 @@ const InternDashboard = async () => {
           noRecords={!attendance}
           navigate="/intern/my-attendance"
         >
-          <AttendanceTable
-            data={attendance.slice(-4)}
-            showTimeInBtn={false}
-            isInDashboard={true}
-          />
+          <IndividualAttendance attendance={attendance} isInInternDashboard />
         </DetailsCard>
         <DetailsCard
           noRecords={!tasks}
           header="Tasks"
+          noRecordMessage='No assigned task found.'
           description="Your recent task records."
           navigate="/intern/task-management"
         >

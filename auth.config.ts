@@ -19,7 +19,7 @@ export const authConfig = {
       const isArchived = auth?.user?.isArchived
 
       if (isArchived) {
-        return false
+        if (path === '/sign-in') return true
         return Response.redirect(new URL('/sign-in', nextUrl))
       }
 

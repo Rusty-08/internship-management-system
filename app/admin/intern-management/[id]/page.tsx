@@ -2,18 +2,15 @@ import { ComingSoon } from '@/components/@core/ui/coming-soon'
 import { TabsWrapper } from '@/components/@core/ui/tabs'
 import Profile from '@/components/layout/profile'
 import { TabsContent } from '@/components/ui/tabs'
-import { getAttendanceMode, getInternAttendance } from '@/utils/attendance'
-import { getServerUserById, getUserEmailById } from '@/utils/users'
+import { getInternAttendance } from '@/utils/attendance'
+import { getUserEmailById } from '@/utils/users'
 import { Metadata } from 'next'
 import { lazy } from 'react'
+import { IndividualAttendance } from '../_components/individual-attendance'
 
 export const metadata: Metadata = {
   title: 'Intern Profile',
 }
-
-const AttendanceTable = lazy(
-  () => import('@/app/intern/my-attendance/_components/attendance-table'),
-)
 
 const breadcrumbLinks = [
   { title: 'Intern Management', path: '/admin/intern-management' },
@@ -34,8 +31,8 @@ const UserProfile = async ({ params: { id } }: { params: { id: string } }) => {
           </div>
         </TabsContent>
         <TabsContent value="attendance">
-          <div className="min-h-[20rem] my-4 p-4 bg-card rounded-md">
-            <AttendanceTable data={attendance} showTimeInBtn={false} />
+          <div className="min-h-[20rem] my-4 p-4 pt-6 bg-card rounded-md">
+            <IndividualAttendance attendance={attendance} />
           </div>
         </TabsContent>
       </TabsWrapper>

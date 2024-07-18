@@ -9,7 +9,7 @@ const Footer = () => {
           <p>2024 - {new Date().getFullYear()}</p>
           <PiCopyrightDuotone />
         </div>
-        <p>ODI - LLC Internship Portal</p>
+        <p>Internship Portal v0.1.0</p>
       </div>
       <Link href="/" className="text-text text-sm hover:text-primary">
         Privacy Policy

@@ -13,12 +13,14 @@ import noRecordsImage from '@/public/general/images/no-records.svg'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { PiArrowUpRightLight } from 'react-icons/pi'
+import NoRecordFound from '../no-records'
 
 type DetailsCardProps = {
   header: string
   description: string
   noRecords: boolean
   navigate: string
+  noRecordMessage?: string
   children: ReactNode
   className?: ClassNameValue
 }
@@ -28,6 +30,7 @@ export const DetailsCard = ({
   description,
   noRecords,
   navigate,
+  noRecordMessage,
   className,
   children,
 }: DetailsCardProps) => {
@@ -50,15 +53,7 @@ export const DetailsCard = ({
       </CardHeader>
       <CardContent className="flex-grow">
         {noRecords ? (
-          <div className="flex flex-col h-full items-center justify-center gap-2 pb-4">
-            <Image
-              src={noRecordsImage}
-              alt="No records"
-              width={220}
-              height={220}
-            />
-            <p className="text-sm text-text">No records found.</p>
-          </div>
+          <NoRecordFound noRecordMessage={noRecordMessage} />
         ) : (
           children
         )}

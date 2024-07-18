@@ -3,12 +3,13 @@
 import { DataTable } from '@/components/@core/ui/table/data-table'
 
 import {
+  ColumnDef,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
 
-import { AttendanceProps, attendanceColumns } from './attendance-columns'
+import { AttendanceProps } from './attendance-columns'
 import { DataTablePagination } from '@/components/@core/ui/table/pagination'
 import { Button } from '@/components/ui/button'
 import { FormEvent, useMemo, useState } from 'react'
@@ -25,7 +26,6 @@ import {
   startOfMonth,
 } from 'date-fns'
 import { GrDocumentDownload } from 'react-icons/gr'
-
 import { DateRangeFilter } from './data-picker'
 import { useToast } from '@/components/ui/use-toast'
 import { DateRange } from 'react-day-picker'
@@ -34,6 +34,7 @@ type AttendanceTableProps = {
   data: AttendanceProps[]
   user?: User | null
   mode?: string
+  attendanceColumns: ColumnDef<AttendanceProps>[]
   showTimeInBtn?: boolean
   isInDashboard?: boolean
 }
@@ -43,6 +44,7 @@ export default function AttendanceTable({
   user,
   mode,
   showTimeInBtn = true,
+  attendanceColumns,
   isInDashboard = false,
 }: AttendanceTableProps) {
   const router = useRouter()
@@ -69,9 +71,7 @@ export default function AttendanceTable({
 
   const table = useReactTable({
     data: filteredData,
-    columns: isInDashboard
-      ? attendanceColumns.slice(0, attendanceColumns.length - 1)
-      : attendanceColumns,
+    columns: attendanceColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   })
@@ -112,7 +112,10 @@ export default function AttendanceTable({
   )
 
   if (isInDashboard) {
-    return <DataTable columns={attendanceColumns} table={table} />
+    return <DataTable 
+      columns={attendanceColumns} 
+      table={table} 
+      noRecordMessage='No attendance records.   ' />
   }
 
   return (
@@ -146,12 +149,9 @@ export default function AttendanceTable({
       <div>
         <div className="overflow-hidden">
           <DataTable
-            columns={
-              isInDashboard
-                ? attendanceColumns.slice(0, attendanceColumns.length - 2)
-                : attendanceColumns
-            }
+            columns={attendanceColumns}
             table={table}
+            noRecordMessage='No attendance records.'
           />
         </div>
         <div className="flex items-center justify-between py-3">

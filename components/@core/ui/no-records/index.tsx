@@ -6,14 +6,15 @@ import NoRecordsImage from '@/public/general/images/no-records.svg'
 
 type NoRecordsProps = {
   searchOutput?: string
+  noRecordMessage?: string
   className?: ClassNameValue
 }
 
-const NoRecords = ({ searchOutput, className, ...props }: NoRecordsProps) => {
+const NoRecords = ({ searchOutput, noRecordMessage, className, ...props }: NoRecordsProps) => {
   return (
     <div
       className={cn(
-        'flex justify-center flex-col items-center pb-4',
+        'flex h-full my-auto justify-center flex-col items-center pb-4',
         className,
       )}
       {...props}
@@ -24,7 +25,7 @@ const NoRecords = ({ searchOutput, className, ...props }: NoRecordsProps) => {
         src={NoRecordsImage}
         width="0"
         height="0"
-        className="h-[15rem] w-auto object-cover"
+        className="h-[12rem] w-auto object-cover"
       />
       {/* <h1 className="text-lg text-text text-center w-2/3 font-medium">
         {searchOutput && searchOutput?.length > 0
@@ -36,8 +37,8 @@ const NoRecords = ({ searchOutput, className, ...props }: NoRecordsProps) => {
           </span>
         ): null}
       </h1> */}
-      <h1 className="text-text text-base text-center w-2/3 font-medium">
-        No records found
+      <h1 className="text-text text-sm text-center w-2/3 font-medium">
+        {noRecordMessage || 'No records found'}
       </h1>
     </div>
   )

@@ -29,25 +29,20 @@ export const accountColumns = (actions: {
       const path = `/admin/intern-management/${row.original.id}`
 
       return (
-        <div className="flex items-center gap-3">
-          <Avatar className="w-8 h-8">
-            <AvatarImage src={`${row.original.image}`} alt={`${name}`} />
-            <AvatarFallback>
-              <Image
-                src={AvatarPlaceholder}
-                width={32}
-                height={32}
-                alt={`${name}`}
-              />
-            </AvatarFallback>
-          </Avatar>
-          <Link
-            href={path}
-            className="font-medium text-foreground hover:text-primary"
-          >
-            {row.original.name}
-          </Link>
-        </div>
+        <Link
+          href={path}
+          className="font-medium text-foreground hover:text-primary transition-all"
+        >
+          <div className="flex items-center gap-3">
+            <Avatar className="w-8 h-8">
+              <AvatarImage src={`${row.original.image}`} alt={`${name}`} />
+              <AvatarFallback>
+                <Image src={AvatarPlaceholder} width={32} height={32} alt={`${name}`} />
+              </AvatarFallback>
+            </Avatar>
+            <span>{row.original.name}</span>
+          </div>
+        </Link>
       )
     },
   },

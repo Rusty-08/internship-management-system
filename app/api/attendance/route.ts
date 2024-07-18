@@ -9,7 +9,7 @@ export async function POST(req: Request) {
 
   try {
     const currentDate = new Date()
-    const isAfternoon = currentDate.getHours() >= 13
+    const isAfternoon = currentDate.getHours() > 12
 
     // Find today's attendance record for the intern
     const attendanceRecords = await prisma.attendance.findMany({

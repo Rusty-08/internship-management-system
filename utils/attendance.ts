@@ -1,6 +1,6 @@
 import { AttendanceProps } from '@/app/intern/my-attendance/_components/attendance-columns'
 import prisma from '@/lib/prisma'
-import { differenceInMinutes, format } from 'date-fns'
+import { differenceInMinutes, format, isToday } from 'date-fns'
 import * as XLSX from 'xlsx'
 import { getCurrentUser } from './users'
 
@@ -90,15 +90,14 @@ export const getAttendanceMode = (attendance: AttendanceProps[]) => {
 
   // If there's no attendance or the last attendance is not from today, return 'Time In'
   if (
-    !attendance.length ||
-    attendance[attendance.length - 1].date?.getDay() != currentDate?.getDay()
+    !attendance.length || !isToday(attendance[attendance.length - 1].date || '')
   ) {
     return mode
   }
 
   // If it's morning and there's a time in for the morning, return 'Time out'
   if (
-    currentHour < 13 &&
+    currentHour < 12 &&
     attendance[attendance.length - 1].timeInAM &&
     !attendance[attendance.length - 1].timeOutAM
   ) {
@@ -107,7 +106,7 @@ export const getAttendanceMode = (attendance: AttendanceProps[]) => {
 
   // If it's afternoon and there's a time in for the afternoon, return 'Time out'
   if (
-    currentHour >= 13 &&
+    currentHour > 12 &&
     attendance[attendance.length - 1].timeInPM &&
     !attendance[attendance.length - 1].timeOutPM
   ) {
@@ -175,4 +174,22 @@ export const getTargetHours = async (id?: string) => {
   })
 
   return user?.totalHours
+}
+
+export const getAllInternAttendance = async () => {
+  const users = await prisma.user.findMany({
+    select: {
+      name: true,
+      attendance: true
+    },
+  })
+
+  return users.map(user => {
+    return user.attendance.map(att => {
+      return {
+        name: user.name,
+        ...att
+      }
+    })
+  }).flatMap(attendance => attendance)
 }

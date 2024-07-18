@@ -19,12 +19,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   table: TableType<TData>
   searchOutput?: string
+  noRecordMessage?: string
 }
 
 export function DataTable<TData, TValue>({
   columns,
   table,
   searchOutput,
+  noRecordMessage
 }: DataTableProps<TData, TValue>) {
   return (
     <div className="border-y overflow-hidden">
@@ -72,7 +74,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length}>
-                <NoRecords searchOutput={searchOutput} />
+                <NoRecords searchOutput={searchOutput} noRecordMessage={noRecordMessage} />
               </TableCell>
             </TableRow>
           )}

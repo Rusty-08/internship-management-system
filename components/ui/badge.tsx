@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import * as React from 'react'
 
 import { cn } from '@/lib/utils'
 
@@ -21,6 +21,8 @@ const badgeVariants = cva(
           'border-transparent bg-in-progress/10 text-in-progress hover:bg-in-progress/20',
         PENDING:
           'border-transparent bg-pending/10 text-pending hover:bg-pending/20',
+        OVERDUE:
+          'border-transparent bg-overdue/10 text-overdue hover:bg-overdue/20',
       },
     },
     defaultVariants: {

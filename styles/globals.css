@@ -59,6 +59,7 @@ body,
     --completed: 120 100% 25%; /* green */
     --pending: 60 100% 30%; /* yellow */
     --in-progress: 240 100% 50%; /* blue */
+    --overdue: 0 84.2% 60.2%; /* red */
 
     /* charts */
     --chart-1: 221.2 83.2% 53.3%;
@@ -94,6 +95,7 @@ body,
     --completed: 120 100% 75%; /* light green */
     --pending: 60 100% 75%; /* light yellow */
     --in-progress: 240 100% 75%; /* light blue */
+    --overdue: 0 62.8% 30.6%; /* red */
 
     /* charts */
     --chart-1: 217.2 91.2% 59.8%;

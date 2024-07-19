@@ -4,6 +4,7 @@ import { getTasks } from '@/utils/tasks'
 import { getCurrentUser } from '@/utils/users'
 import TaskCard from './task-card'
 import { TaskWrapperProps } from './types'
+import { Badge } from '@/components/ui/badge'
 
 const TaskWrapper = async ({
   search,

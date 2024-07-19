@@ -15,7 +15,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { BiEditAlt } from 'react-icons/bi'
-import { MdDownloading, MdOutlinePending, MdTaskAlt } from 'react-icons/md'
+import { MdDownloading, MdOutlinePending, MdTaskAlt, MdOutlineWarningAmber } from 'react-icons/md'
 import DeleteConfirmation from './delete-confirmation'
 import { TaskSubmission } from './task-submission'
 import { TaskProps } from './types'
@@ -49,6 +49,7 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
     COMPLETED: MdTaskAlt,
     PENDING: MdOutlinePending,
     IN_PROGRESS: MdDownloading,
+    OVERDUE: MdOutlineWarningAmber
   }
 
   const Icon = statusIcon[status]

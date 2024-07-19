@@ -68,6 +68,10 @@ const config = {
           DEFAULT: 'hsl(var(--pending))',
           // foreground: 'hsl(var(--pending-foreground))',
         },
+        overdue: {
+          DEFAULT: 'hsl(var(--overdue))',
+          // foreground: 'hsl(var(--pending-foreground))',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

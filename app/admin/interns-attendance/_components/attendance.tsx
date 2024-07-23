@@ -7,7 +7,7 @@ import {
 import AttendanceTable from '@/app/intern/my-attendance/_components/attendance-table'
 import { DayPicker } from '@/components/@core/ui/day-picker'
 import { ColumnDef } from '@tanstack/react-table'
-import { format, isEqual } from 'date-fns'
+import { format } from 'date-fns'
 import React, { useState } from 'react'
 
 type AdminAttendanceProps = {

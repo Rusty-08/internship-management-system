@@ -90,7 +90,8 @@ export const getAttendanceMode = (attendance: AttendanceProps[]) => {
 
   // If there's no attendance or the last attendance is not from today, return 'Time In'
   if (
-    !attendance.length || !isToday(attendance[attendance.length - 1].date || '')
+    !attendance.length ||
+    !isToday(attendance[attendance.length - 1].date || '')
   ) {
     return mode
   }
@@ -180,16 +181,18 @@ export const getAllInternAttendance = async () => {
   const users = await prisma.user.findMany({
     select: {
       name: true,
-      attendance: true
+      attendance: true,
     },
   })
 
-  return users.map(user => {
-    return user.attendance.map(att => {
-      return {
-        name: user.name,
-        ...att
-      }
+  return users
+    .map(user => {
+      return user.attendance.map(att => {
+        return {
+          name: user.name,
+          ...att,
+        }
+      })
     })
-  }).flatMap(attendance => attendance)
+    .flatMap(attendance => attendance)
 }

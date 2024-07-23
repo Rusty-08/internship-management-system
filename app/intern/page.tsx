@@ -1,21 +1,19 @@
+import GradientTop from '@/components/@core/gradient/gradient-top'
+import { DetailsCard } from '@/components/@core/ui/dashboard/details-card'
 import { StatCard } from '@/components/@core/ui/dashboard/stat-card'
+import { Badge } from '@/components/ui/badge'
+import totalDaysImage from '@/public/dashboard/days-dashboard.svg'
+import totalHoursImage from '@/public/dashboard/hours-dashboard.svg'
+import totalTaskImage from '@/public/dashboard/task-dashboard.svg'
 import {
   getAttendanceTotalHours,
   getInternAttendance,
 } from '@/utils/attendance'
 import { getCurrentUserTasks } from '@/utils/tasks'
+import { TaskStatus } from '@prisma/client'
+import { format } from 'date-fns'
 import { Metadata } from 'next'
 import Image from 'next/image'
-import totalHoursImage from '@/public/dashboard/hours-dashboard.svg'
-import totalDaysImage from '@/public/dashboard/days-dashboard.svg'
-import totalTaskImage from '@/public/dashboard/task-dashboard.svg'
-import { format } from 'date-fns'
-import { Badge } from '@/components/ui/badge'
-import { DetailsCard } from '@/components/@core/ui/dashboard/details-card'
-import AttendanceTable from './my-attendance/_components/attendance-table'
-import { TaskStatus } from '@prisma/client'
-import GradientTop from '@/components/@core/gradient/gradient-top'
-import { attendanceColumns } from './my-attendance/_components/attendance-columns'
 import { IndividualAttendance } from '../admin/intern-management/_components/individual-attendance'
 
 export const metadata: Metadata = {
@@ -112,7 +110,7 @@ const InternDashboard = async () => {
         <DetailsCard
           noRecords={!tasks}
           header="Tasks"
-          noRecordMessage='No assigned task found.'
+          noRecordMessage="No assigned task found."
           description="Your recent task records."
           navigate="/intern/task-management"
         >

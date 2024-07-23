@@ -1,19 +1,15 @@
 'use client'
 
-import { ColumnDef, Row } from '@tanstack/react-table'
-
-import { Button } from '@/components/ui/button'
-
-import { LuArchiveRestore } from 'react-icons/lu'
-import { FiEdit3 } from 'react-icons/fi'
-
+import { UserSubset } from '@/components/@core/ui/table/account-table/types'
 import { DataTableColumnHeader } from '@/components/@core/ui/table/column-header'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 import { TooltipWrapper } from '@/components/ui/tooltip'
-import { UserSubset } from '@/components/@core/ui/table/account-table/types'
 import AvatarPlaceholder from '@/public/general/images/male-avatar.svg'
+import { ColumnDef, Row } from '@tanstack/react-table'
 import Image from 'next/image'
+import Link from 'next/link'
+import { LuArchiveRestore } from 'react-icons/lu'
 
 export const archiveColumns = (actions: {
   [key: string]: (row: Row<UserSubset>) => void

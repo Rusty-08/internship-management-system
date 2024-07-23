@@ -1,34 +1,25 @@
 'use client'
 
 import { DataTable } from '@/components/@core/ui/table/data-table'
-
+import { DataTablePagination } from '@/components/@core/ui/table/pagination'
+import { Button } from '@/components/ui/button'
+import { useToast } from '@/components/ui/use-toast'
+import { addAttendance, exportAttendance } from '@/utils/attendance'
+import { User } from '@prisma/client'
 import {
   ColumnDef,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-
-import { AttendanceProps } from './attendance-columns'
-import { DataTablePagination } from '@/components/@core/ui/table/pagination'
-import { Button } from '@/components/ui/button'
-import { FormEvent, useMemo, useState } from 'react'
-import { addAttendance, exportAttendance } from '@/utils/attendance'
+import { endOfDay, isToday, isWithinInterval, startOfMonth } from 'date-fns'
 import { useRouter } from 'next/navigation'
-import { AttendanceConfirmation } from './attendance-confirmation'
-import { User } from '@prisma/client'
-import {
-  endOfDay,
-  format,
-  isToday,
-  isWithinInterval,
-  parse,
-  startOfMonth,
-} from 'date-fns'
-import { GrDocumentDownload } from 'react-icons/gr'
-import { DateRangeFilter } from './data-picker'
-import { useToast } from '@/components/ui/use-toast'
+import { FormEvent, useMemo, useState } from 'react'
 import { DateRange } from 'react-day-picker'
+import { GrDocumentDownload } from 'react-icons/gr'
+import { AttendanceProps } from './attendance-columns'
+import { AttendanceConfirmation } from './attendance-confirmation'
+import { DateRangeFilter } from './data-picker'
 
 type AttendanceTableProps = {
   data: AttendanceProps[]
@@ -112,10 +103,13 @@ export default function AttendanceTable({
   )
 
   if (isInDashboard) {
-    return <DataTable 
-      columns={attendanceColumns} 
-      table={table} 
-      noRecordMessage='No attendance records.   ' />
+    return (
+      <DataTable
+        columns={attendanceColumns}
+        table={table}
+        noRecordMessage="No attendance records.   "
+      />
+    )
   }
 
   return (
@@ -151,7 +145,7 @@ export default function AttendanceTable({
           <DataTable
             columns={attendanceColumns}
             table={table}
-            noRecordMessage='No attendance records.'
+            noRecordMessage="No attendance records."
           />
         </div>
         <div className="flex items-center justify-between py-3">

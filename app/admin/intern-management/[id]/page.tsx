@@ -5,7 +5,6 @@ import { TabsContent } from '@/components/ui/tabs'
 import { getInternAttendance } from '@/utils/attendance'
 import { getUserEmailById } from '@/utils/users'
 import { Metadata } from 'next'
-import { lazy } from 'react'
 import { IndividualAttendance } from '../_components/individual-attendance'
 
 export const metadata: Metadata = {

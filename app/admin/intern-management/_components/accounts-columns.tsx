@@ -37,7 +37,12 @@ export const accountColumns = (actions: {
             <Avatar className="w-8 h-8">
               <AvatarImage src={`${row.original.image}`} alt={`${name}`} />
               <AvatarFallback>
-                <Image src={AvatarPlaceholder} width={32} height={32} alt={`${name}`} />
+                <Image
+                  src={AvatarPlaceholder}
+                  width={32}
+                  height={32}
+                  alt={`${name}`}
+                />
               </AvatarFallback>
             </Avatar>
             <span>{row.original.name}</span>

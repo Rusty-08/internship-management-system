@@ -1,5 +1,4 @@
 import { auth } from '@/auth'
-import { UserSubset } from '@/components/@core/ui/table/account-table/types'
 import prisma from '@/lib/prisma'
 import { User } from '@prisma/client'
 import { revalidatePath } from 'next/cache'

@@ -2,7 +2,6 @@
 
 import { signIn, signOut } from '@/auth'
 import { LoginSchema } from '@/components/auth/login/login-schema'
-import { getUserByEmail } from '@/utils/users'
 import { AuthError } from 'next-auth'
 import { z } from 'zod'
 

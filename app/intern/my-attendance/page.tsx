@@ -1,4 +1,3 @@
-import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { getAttendanceMode, getInternAttendance } from '@/utils/attendance'
 import { getCurrentUser } from '@/utils/users'
 import { Metadata } from 'next'
@@ -13,12 +12,7 @@ const MyAttendance = async () => {
   const user = await getCurrentUser()
   const mode = getAttendanceMode(attendance)
 
-  return (
-    <div className="py-2 space-y-6">
-      <BreadcrumbWrapper current="My Attendance" />
-      <InternAttendance attendance={attendance} user={user} mode={mode} />
-    </div>
-  )
+  return <InternAttendance attendance={attendance} user={user} mode={mode} />
 }
 
 export default MyAttendance

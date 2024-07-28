@@ -42,7 +42,7 @@ export const DrawerConfirmation = ({
           className={cn(
             'w-full gap-1.5 mt-2 lg:mt-0',
             isAddButton &&
-              'h-12 md:h-10 z-50 gap-3 md:gap-1.5 pe-6 md:pe-5',
+              'h-12 md:h-10 z-50 gap-3 md:gap-1.5 px-4',
             className,
           )}
         >

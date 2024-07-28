@@ -11,10 +11,6 @@ export const metadata: Metadata = {
   title: 'Intern Profile',
 }
 
-const breadcrumbLinks = [
-  { title: 'Intern Management', path: '/admin/intern-management' },
-]
-
 const UserProfile = async ({ params: { id } }: { params: { id: string } }) => {
   if (!id) return null
 
@@ -22,7 +18,7 @@ const UserProfile = async ({ params: { id } }: { params: { id: string } }) => {
   const attendance = await getInternAttendance(email)
 
   return (
-    <Profile email={email || ''} breadcrumbLinks={breadcrumbLinks}>
+    <Profile email={email || ''}>
       <TabsWrapper triggers={['Overview', 'Attendance']}>
         <TabsContent value="overview">
           <div className="border-t my-4 flex items-center justify-center min-h-[20rem] rounded-sm">

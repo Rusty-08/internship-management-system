@@ -1,4 +1,3 @@
-import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { getInternUsers } from '@/utils/users'
 import { Metadata } from 'next'
 import React from 'react'
@@ -14,14 +13,11 @@ const InternManagement = async () => {
   const data = await getInternUsers()
 
   return (
-    <div className="py-2 space-y-6">
-      <BreadcrumbWrapper current="Intern Management" />
-      <AccountsTable
-        data={data || []}
-        user={userRole}
-        accountColumns={accountColumns}
-      />
-    </div>
+    <AccountsTable
+      data={data || []}
+      user={userRole}
+      accountColumns={accountColumns}
+    />
   )
 }
 

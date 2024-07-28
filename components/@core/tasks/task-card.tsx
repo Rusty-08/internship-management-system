@@ -19,6 +19,7 @@ import { MdDownloading, MdOutlinePending, MdTaskAlt, MdOutlineWarningAmber } fro
 import DeleteConfirmation from './delete-confirmation'
 import { TaskSubmission } from './task-submission'
 import { TaskProps } from './types'
+import { formatInTimeZone } from 'date-fns-tz'
 
 export type TaskCardProps = {
   task: TaskProps
@@ -42,8 +43,8 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
     files,
   } = task
 
-  const formattedStartDate = format(startDate, 'LLL dd')
-  const formattedEndDate = format(endDate, 'LLL dd, y')
+  const formattedStartDate = formatInTimeZone(startDate, 'Asia/Manila', 'LLL dd')
+  const formattedEndDate = formatInTimeZone(endDate, 'Asia/Manila', 'LLL dd, y')
 
   const statusIcon = {
     COMPLETED: MdTaskAlt,

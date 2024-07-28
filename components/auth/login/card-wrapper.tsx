@@ -25,7 +25,7 @@ export const CardWrapper = ({
   backButtonHref,
 }: CardWrapperProps) => {
   return (
-    <Card className="px-2 md:px-6 pb-2 pt-8 w-[30rem] max-w-[95vw]">
+    <Card className="px-2 md:px-6 pb-2 pt-6 w-[30rem] max-w-[95vw]">
       <CardHeader>
         <Header label={headerLabel} />
         <CardDescription className="text-center">

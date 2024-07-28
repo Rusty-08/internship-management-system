@@ -1,5 +1,4 @@
 import TaskForm from '@/components/@core/tasks/task-form'
-import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { getTaskById } from '@/utils/tasks'
 import { Metadata } from 'next'
 import React from 'react'
@@ -14,11 +13,7 @@ const TaskFormPage = async ({ params: { id } }: { params: { id: string } }) => {
   const data = await getTaskById(id)
 
   return (
-    <div className="py-2 space-y-6">
-      <BreadcrumbWrapper
-        links={link}
-        current={data ? 'Update Task' : 'Create Task'}
-      />
+    <div className="space-y-6">
       <TaskForm initialState={data || undefined} />
     </div>
   )

@@ -30,7 +30,7 @@ const TaskWrapper = async ({
     : sortedByDate
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       {selectedTasks.length ? (
         <Accordion type="single" collapsible className="w-full">
           {selectedTasks.map(task => (

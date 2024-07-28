@@ -4,17 +4,13 @@ import Profile from '@/components/layout/profile'
 import { TabsContent } from '@/components/ui/tabs'
 import { getServerUserById } from '@/utils/users'
 
-const breadcrumbLinks = [
-  { title: 'Mentor Management', path: '/admin/mentor-management' },
-]
-
 const UserProfile = async ({ params: { id } }: { params: { id: string } }) => {
   if (!id) return null
 
   const user = await getServerUserById(id)
 
   return (
-    <Profile email={user?.email || ''} breadcrumbLinks={breadcrumbLinks}>
+    <Profile email={user?.email || ''}>
       <TabsWrapper triggers={['Overview', 'Reports']}>
         <TabsContent value="overview">
           <div className="border-t my-4 flex items-center justify-center min-h-[20rem] rounded-sm">

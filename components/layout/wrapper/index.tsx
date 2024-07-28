@@ -24,8 +24,8 @@ const CoreLayout = ({ children, role }: SidebarProps) => {
       <div className='flex flex-col transition-all duration-300 pl-0 lg:pl-16 ease-in-out w-full'>
         <Navbar profilePath={`/${role.toLowerCase()}/profile`} sideLinks={lisks[role]} />
         <div
-          style={{ minHeight: 'calc(100vh - 9.5rem)' }}
-          className="py-4 px-4 md:px-6 w-full"
+          style={{ minHeight: 'calc(100vh - 9rem)' }}
+          className="px-4 md:px-6 w-full"
         >
           {children}
         </div>

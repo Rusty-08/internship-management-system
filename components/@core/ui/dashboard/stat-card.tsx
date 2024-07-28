@@ -15,7 +15,7 @@ export const StatCard = ({ header, className, children }: StatCardProps) => {
   return (
     <Card className={cn('relative overflow-hidden', className)}>
       <CardHeader>
-        <p className="text-text font-medium text-xs uppercase">{header}</p>
+        <p className="text-text font-semibold text-xs uppercase">{header}</p>
       </CardHeader>
       <CardContent>{children}</CardContent>
       {/* <CardFooter>

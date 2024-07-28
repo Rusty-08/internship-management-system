@@ -2,7 +2,6 @@
 
 import { NotFoundPage } from '@/components/@core/errors/not-found'
 import { LoadingSpinner } from '@/components/@core/loading'
-import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { Input } from '@/components/ui/input'
 import { uploadImage } from '@/lib/upload-image'
 import { cn } from '@/lib/utils'
@@ -17,12 +16,11 @@ import { ReactNode, useEffect, useState } from 'react'
 import { IoImagesOutline } from 'react-icons/io5'
 
 type ProfileProps = {
-  breadcrumbLinks?: { title: string; path: string }[]
   email: string
   children: ReactNode
 }
 
-const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
+const Profile = ({ email, children }: ProfileProps) => {
   const [data, setData] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
@@ -70,15 +68,11 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
   }
 
   return (
-    <div className="pt-2">
-      {breadcrumbLinks && (
-        <BreadcrumbWrapper links={breadcrumbLinks} current="Profile" />
-      )}
+    <>
       <div
         className={cn(
           'layout-loading mb-4 bg-card flex flex-col justify-center rounded-md overflow-hidden w-full',
-          loading ? 'h-[23rem]' : 'min-h-40',
-          breadcrumbLinks && 'mt-6',
+          loading ? 'h-[23rem]' : 'min-h-40'
         )}
       >
         {loading && <LoadingSpinner width="4rem" />}
@@ -142,7 +136,7 @@ const Profile = ({ email, breadcrumbLinks, children }: ProfileProps) => {
         )}
       </div>
       {!loading && <div className="flex flex-col">{children}</div>}
-    </div>
+    </>
   )
 }
 

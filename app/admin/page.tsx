@@ -18,7 +18,7 @@ const AdminDashboard = async () => {
   const currentAttendance = allAttendance.flatMap(attendance => attendance)
 
   return (
-    <div className="flex h-full flex-col gap-6 pt-2">
+    <div className="flex h-full flex-col gap-6">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <StatCard header="Total Hours">
           <div className="flex items-end space-x-2"></div>

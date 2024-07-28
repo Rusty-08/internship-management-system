@@ -43,10 +43,10 @@ export function AttendanceConfirmation({
   return (
     <Submission
       trigger={
-        <>
+        <>  
           <MdAdd size="1.5rem" className='inline-flex md:hidden' />
-          {mode}
           <IoMdAddCircleOutline size="1.3rem" className='hidden md:inline-flex' />
+          <span className='mr-2'>{mode}</span>
         </>
       }
       title={`Attendance - ${mode}`}

@@ -2,7 +2,6 @@ import { SearchFilter } from '@/components/@core/tasks/search-filter'
 import StatusFilter from '@/components/@core/tasks/status-filter'
 import { TaskSkeleton } from '@/components/@core/tasks/task-skeleton'
 import TaskWrapper from '@/components/@core/tasks/task-wrapper'
-import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { getCurrentUserMentorId } from '@/utils/users'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
@@ -24,8 +23,7 @@ const TasksManagement = async ({
   const mentorId = await getCurrentUserMentorId()
 
   return (
-    <div className="py-2 space-y-6">
-      <BreadcrumbWrapper current="Tasks Management" />
+    <div className="space-y-6">
       <div className="w-full flex gap-3">
         <SearchFilter />
         <StatusFilter />

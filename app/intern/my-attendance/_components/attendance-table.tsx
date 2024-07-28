@@ -113,14 +113,14 @@ export default function AttendanceTable({
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <div className="flex flex-row gap-2 justify-between">
         <DateRangeFilter date={date} setDate={setDate} />
         <div className="flex gap-2">
           <Button
             variant="outline"
             onClick={downloadAttendance}
-            className="px-4 lg:px-4"
+            className="px-4"
           >
             <GrDocumentDownload size="1rem" className="mr-0 lg:mr-2" />
             <span className="hidden lg:inline-flex">Export</span>

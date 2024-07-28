@@ -3,7 +3,6 @@ import StatusFilter from '@/components/@core/tasks/status-filter'
 import { TaskSkeleton } from '@/components/@core/tasks/task-skeleton'
 import TaskWrapper from '@/components/@core/tasks/task-wrapper'
 import AddButton from '@/components/@core/ui/add-button'
-import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
 import { Metadata } from 'next'
 import Link from 'next/link'
@@ -26,8 +25,7 @@ const TasksManagement = async ({
   const status = searchParams?.status || ''
 
   return (
-    <div className="py-2 space-y-6">
-      <BreadcrumbWrapper current="Tasks Management" />
+    <div className="space-y-6">
       <div className="w-full flex gap-3">
         <SearchFilter />
         <StatusFilter />

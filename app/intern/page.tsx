@@ -1,4 +1,3 @@
-import GradientTop from '@/components/@core/gradient/gradient-top'
 import { DetailsCard } from '@/components/@core/ui/dashboard/details-card'
 import { StatCard } from '@/components/@core/ui/dashboard/stat-card'
 import { Badge } from '@/components/ui/badge'
@@ -11,7 +10,8 @@ import {
 } from '@/utils/attendance'
 import { getCurrentUserTasks } from '@/utils/tasks'
 import { TaskStatus } from '@prisma/client'
-import { format } from 'date-fns'
+// import { format } from 'date-fns'
+import { formatInTimeZone } from 'date-fns-tz'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import { IndividualAttendance } from '../admin/intern-management/_components/individual-attendance'
@@ -41,7 +41,7 @@ const InternDashboard = async () => {
     status.charAt(0) + status.slice(1).toLowerCase()
 
   return (
-    <div className="flex h-full flex-col gap-6 pt-2">
+    <div className="flex h-full flex-col gap-6">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <StatCard header="Total Hours">
           <div className="flex items-end space-x-2">
@@ -117,14 +117,15 @@ const InternDashboard = async () => {
           <div className="flex flex-col w-full gap-4">
             {sortedTaskByDate.map(task => (
               <div key={task.id} className="flex flex-col w-full">
-                <GradientTop status={task.status} />
                 <div className="flex items-center relative justify-between w-full gap-4 py-3 px-4 lg:px-5 rounded-md border">
                   <div className="flex items-center gap-4">
                     <div className="flex flex-col gap-1">
                       <p className="text-[0.9rem] font-medium">{task.title}</p>
                       <p className="text-text text-sm">
-                        {format(task.startDate, 'LLL dd')} -{' '}
-                        {format(task.endDate, 'LLL dd')}
+                        {/* {format(task.startDate, 'LLL dd')} -{' '}
+                        {format(task.endDate, 'LLL dd')} */}
+                        {formatInTimeZone(task.startDate, 'Asia/Manila', 'LLL dd')} -{' '}
+                        {formatInTimeZone(task.endDate, 'Asia/Manila', 'LLL dd')}
                       </p>
                     </div>
                   </div>

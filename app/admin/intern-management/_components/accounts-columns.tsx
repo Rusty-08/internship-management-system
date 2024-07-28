@@ -26,7 +26,7 @@ export const accountColumns = (actions: {
 
     cell: ({ row }) => {
       const name = row.original.name
-      const path = `/admin/intern-management/${row.original.id}`
+      const path = `/admin/intern-management/${row.original.email.split('@')[0]}`
 
       return (
         <Link

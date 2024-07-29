@@ -51,7 +51,7 @@ export const DetailsCard = ({
         </CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="flex-grow">
+      <CardContent className="flex-grow w-full">
         {noRecords ? (
           <NoRecordFound noRecordMessage={noRecordMessage} />
         ) : (

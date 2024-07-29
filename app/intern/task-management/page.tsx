@@ -23,7 +23,7 @@ const TasksManagement = async ({
   const mentorId = await getCurrentUserMentorId()
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="w-full flex gap-3">
         <SearchFilter />
         <StatusFilter />

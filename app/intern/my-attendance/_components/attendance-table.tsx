@@ -39,6 +39,7 @@ export default function AttendanceTable({
   isInDashboard = false,
 }: AttendanceTableProps) {
   const router = useRouter()
+  const [attendanceData, setAttendanceData] = useState<AttendanceProps[]>(data)
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -49,16 +50,16 @@ export default function AttendanceTable({
 
   const filteredData = useMemo(() => {
     if (!date || !date.from || !date.to) {
-      return data
+      return attendanceData
     }
 
-    return data.filter(attendance => {
+    return attendanceData.filter(attendance => {
       return isWithinInterval(attendance.date || new Date(), {
         start: date.from || new Date(),
         end: endOfDay(date.to || new Date()),
       })
     })
-  }, [data, date])
+  }, [attendanceData, date])
 
   const table = useReactTable({
     data: filteredData,
@@ -67,22 +68,45 @@ export default function AttendanceTable({
     getPaginationRowModel: getPaginationRowModel(),
   })
 
+  const currentAttendance = useMemo(
+    () => attendanceData.find(att => isToday(att.date || '')),
+    [attendanceData],
+  )
+
   const addCurrentAttendance = async (event: FormEvent) => {
     event.preventDefault()
-    try {
-      setLoading(true)
-      await addAttendance(user?.id || '')
-    } catch {
+    setLoading(true)
+
+    const res = await addAttendance(user?.id || '')
+
+    if (res.success) {
+      if (currentAttendance) {
+        setAttendanceData([
+          ...attendanceData.slice(0, attendanceData.length - 1),
+          res.data
+        ])
+      } else {
+        setAttendanceData([
+          ...attendanceData,
+          res.data
+        ])
+      }
+
       toast({
-        title: 'Could not save attendance',
-        description: 'Unable to save the attendance due to unknown error',
+        title: res.success,
+        description: 'The attendance have been successfully added',
+      })
+    } else {
+      toast({
+        title: res.error,
+        description: 'Unable to save the attendance',
         variant: 'destructive',
       })
-    } finally {
-      setLoading(false)
-      setIsOpen(false)
-      router.refresh()
     }
+    
+    setLoading(false)
+    setIsOpen(false)
+    router.refresh()
   }
 
   const downloadAttendance = () => {
@@ -97,11 +121,6 @@ export default function AttendanceTable({
     }
   }
 
-  const currentAttendance = useMemo(
-    () => data.find(att => isToday(att.date || '')),
-    [data],
-  )
-
   if (isInDashboard) {
     return (
       <DataTable
@@ -113,7 +132,7 @@ export default function AttendanceTable({
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <div className="flex flex-row gap-2 justify-between">
         <DateRangeFilter date={date} setDate={setDate} />
         <div className="flex gap-2">

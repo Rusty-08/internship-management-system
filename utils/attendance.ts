@@ -78,7 +78,16 @@ export const addAttendance = async (internId: string) => {
     }),
   })
 
-  return res.status
+  const addedAttendance: AttendanceProps = await res.json()
+
+  if (addedAttendance) {
+    return { 
+      data: addedAttendance,
+      success: 'Success'
+    }
+  } else {
+    return { error: 'Server Error' }  
+  }
 }
 
 export const getAttendanceMode = (attendance: AttendanceProps[]) => {

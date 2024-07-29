@@ -41,8 +41,8 @@ const InternDashboard = async () => {
     status.charAt(0) + status.slice(1).toLowerCase()
 
   return (
-    <div className="flex h-full flex-col gap-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="flex h-full flex-col gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <StatCard header="Total Hours">
           <div className="flex items-end space-x-2">
             {hours >= 1 && (
@@ -97,7 +97,7 @@ const InternDashboard = async () => {
           />
         </StatCard>
       </div>
-      <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-4">
         <DetailsCard
           header="Attendance"
           description="Your recent attendance records."
@@ -108,7 +108,7 @@ const InternDashboard = async () => {
           <IndividualAttendance attendance={attendance} isInInternDashboard />
         </DetailsCard>
         <DetailsCard
-          noRecords={!tasks}
+          noRecords={sortedTaskByDate.length === 0}
           header="Tasks"
           noRecordMessage="No assigned task found."
           description="Your recent task records."

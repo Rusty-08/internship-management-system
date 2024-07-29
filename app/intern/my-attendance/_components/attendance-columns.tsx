@@ -88,7 +88,7 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
       const total = row.getValue('totalHours') as number
       return (
         <span className="text-foreground text-nowrap">
-          {formatHours(total)}
+          {total < 1 ? '0' : formatHours(total)}
         </span>
       )
     },

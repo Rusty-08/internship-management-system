@@ -3,24 +3,27 @@ import { getTotalHours } from '@/utils/attendance'
 import { isToday } from 'date-fns'
 import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
+import { AttendanceProps } from '@/app/intern/my-attendance/_components/attendance-columns';
 
 export async function POST(req: Request) {
   const { internId } = await req.json()
 
   try {
     const currentDate = new Date()
-    const isAfternoon = currentDate.getHours() > 12
+    const isAfternoon = currentDate.getHours() >= 12
 
     // Find today's attendance record for the intern
     const attendanceRecords = await prisma.attendance.findMany({
       where: { internId },
     })
 
+    let currentAttendance;
+
     const attendance = attendanceRecords.find(att => isToday(att.date || ''))
 
     if (!attendance) {
       // If the attendance record doesn't exist, create a new one
-      await prisma.attendance.create({
+      currentAttendance = await prisma.attendance.create({
         data: {
           internId,
           date: currentDate,
@@ -40,7 +43,7 @@ export async function POST(req: Request) {
           (attendance.timeInPM && isAfternoon ? currentDate : null),
       }
 
-      await prisma.attendance.update({
+      currentAttendance = await prisma.attendance.update({
         where: { id: attendance.id },
         data: {
           ...updateData,
@@ -54,10 +57,7 @@ export async function POST(req: Request) {
       })
     }
 
-    revalidatePath('/intern/my-attendance')
-
-    return NextResponse.json(
-      { message: 'Recorded Successfully' },
+    return NextResponse.json(currentAttendance,
       { status: 201 },
     )
   } catch {

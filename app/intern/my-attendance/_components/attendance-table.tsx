@@ -12,7 +12,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { endOfDay, isToday, isWithinInterval, startOfMonth } from 'date-fns'
+import { endOfDay, isToday, isWithinInterval, parseISO, startOfMonth } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useCallback, useMemo, useState } from 'react'
 import { DateRange } from 'react-day-picker'
@@ -20,6 +20,7 @@ import { GrDocumentDownload } from 'react-icons/gr'
 import { AttendanceProps } from './attendance-columns'
 import { AttendanceConfirmation } from './attendance-confirmation'
 import { DateRangeFilter } from './data-picker'
+import { dateInManilaTz } from '@/utils/format-date'
 
 type AttendanceTableProps = {
   data: AttendanceProps[]
@@ -67,7 +68,7 @@ export default function AttendanceTable({
   })
 
   const currentAttendance = useMemo(
-    () => attendanceData.find(att => isToday(att.date || '')),
+    () => attendanceData.find(att => dateInManilaTz(att.date) == dateInManilaTz(new Date())),
     [attendanceData],
   )
 

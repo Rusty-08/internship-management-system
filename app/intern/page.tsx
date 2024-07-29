@@ -101,7 +101,7 @@ const InternDashboard = async () => {
         <DetailsCard
           header="Attendance"
           description="Your recent attendance records."
-          className="col-span-2"
+          className="lg:col-span-2"
           noRecords={!attendance}
           navigate="/intern/my-attendance"
         >

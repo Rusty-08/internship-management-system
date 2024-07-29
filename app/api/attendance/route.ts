@@ -1,15 +1,13 @@
 import prisma from '@/lib/prisma'
 import { getTotalHours } from '@/utils/attendance'
-import { isToday } from 'date-fns'
 import { NextResponse } from 'next/server'
-import { fromZonedTime } from 'date-fns-tz'
+import { dateInManilaTz } from '@/utils/format-date'
 
 export async function POST(req: Request) {
   const { internId } = await req.json()
 
   try {
-
-    const currentDate = fromZonedTime(new Date(), 'Asia/Manila')
+    const currentDate = new Date()
     const isAfternoon = currentDate.getHours() >= 12
 
     // Find today's attendance record for the intern
@@ -19,7 +17,7 @@ export async function POST(req: Request) {
 
     let currentAttendance;
 
-    const attendance = attendanceRecords.find(att => isToday(att.date || ''))
+    const attendance = attendanceRecords.find(att => dateInManilaTz(att.date) == dateInManilaTz(currentDate))
 
     if (!attendance) {
       // If the attendance record doesn't exist, create a new one

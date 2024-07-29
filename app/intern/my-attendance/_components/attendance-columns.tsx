@@ -3,6 +3,7 @@
 import { formatHours } from '@/utils/attendance'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { formatInTimeZone } from 'date-fns-tz'
 
 export type AttendanceProps = {
   name?: String | null
@@ -40,7 +41,7 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
       const timeInAM = row.getValue('timeInAM') as Date
       return (
         <span className="text-nowrap">
-          {timeInAM ? format(timeInAM, 'hh:mm aa') : ''}
+          {timeInAM ? formatInTimeZone(timeInAM, 'Asia/Manila', 'hh:mm aa') : ''}
         </span>
       )
     },
@@ -49,10 +50,10 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     accessorKey: 'timeOutAM',
     header: 'Time Out',
     cell: ({ row }) => {
-      const timeInAM = row.getValue('timeOutAM') as Date
+      const timeOutAM = row.getValue('timeOutAM') as Date
       return (
         <span className="text-nowrap">
-          {timeInAM ? format(timeInAM, 'hh:mm aa') : ''}
+          {timeOutAM ? formatInTimeZone(timeOutAM, 'Asia/Manila', 'hh:mm aa') : ''}
         </span>
       )
     },
@@ -61,10 +62,10 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     accessorKey: 'timeInPM',
     header: 'Time In',
     cell: ({ row }) => {
-      const timeInAM = row.getValue('timeInPM') as Date
+      const timeInPM = row.getValue('timeInPM') as Date
       return (
         <span className="text-nowrap">
-          {timeInAM ? format(timeInAM, 'hh:mm aa') : ''}
+          {timeInPM ? formatInTimeZone(timeInPM, 'Asia/Manila', 'hh:mm aa') : ''}
         </span>
       )
     },
@@ -73,10 +74,10 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     accessorKey: 'timeOutPM',
     header: 'Time Out',
     cell: ({ row }) => {
-      const timeInAM = row.getValue('timeOutPM') as Date
+      const timeOutPM = row.getValue('timeOutPM') as Date
       return (
         <span className="text-nowrap">
-          {timeInAM ? format(timeInAM, 'hh:mm aa') : ''}
+          {timeOutPM ? formatInTimeZone(timeOutPM, 'Asia/Manila', 'hh:mm aa') : ''}
         </span>
       )
     },

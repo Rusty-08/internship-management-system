@@ -4,7 +4,7 @@ import { DataTable } from '@/components/@core/ui/table/data-table'
 import { DataTablePagination } from '@/components/@core/ui/table/pagination'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
-import { addAttendance, exportAttendance } from '@/utils/attendance'
+import { addAttendance, exportAttendance, getAttendanceMode } from '@/utils/attendance'
 import { User } from '@prisma/client'
 import {
   ColumnDef,
@@ -14,7 +14,7 @@ import {
 } from '@tanstack/react-table'
 import { endOfDay, isToday, isWithinInterval, startOfMonth } from 'date-fns'
 import { useRouter } from 'next/navigation'
-import { FormEvent, useMemo, useState } from 'react'
+import { FormEvent, useCallback, useMemo, useState } from 'react'
 import { DateRange } from 'react-day-picker'
 import { GrDocumentDownload } from 'react-icons/gr'
 import { AttendanceProps } from './attendance-columns'
@@ -24,7 +24,6 @@ import { DateRangeFilter } from './data-picker'
 type AttendanceTableProps = {
   data: AttendanceProps[]
   user?: User | null
-  mode?: string
   attendanceColumns: ColumnDef<AttendanceProps>[]
   showTimeInBtn?: boolean
   isInDashboard?: boolean
@@ -33,7 +32,6 @@ type AttendanceTableProps = {
 export default function AttendanceTable({
   data,
   user,
-  mode,
   showTimeInBtn = true,
   attendanceColumns,
   isInDashboard = false,
@@ -72,6 +70,8 @@ export default function AttendanceTable({
     () => attendanceData.find(att => isToday(att.date || '')),
     [attendanceData],
   )
+
+  const mode = useMemo(() => getAttendanceMode(currentAttendance), [currentAttendance])
 
   const addCurrentAttendance = async (event: FormEvent) => {
     event.preventDefault()

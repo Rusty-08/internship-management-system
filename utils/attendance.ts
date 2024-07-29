@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma'
 import { differenceInMinutes, format, isToday } from 'date-fns'
 import * as XLSX from 'xlsx'
 import { getCurrentUser } from './users'
+import { fromZonedTime } from 'date-fns-tz'
 
 // Get attendance by user email or current user
 export async function getInternAttendance(
@@ -90,8 +91,8 @@ export const addAttendance = async (internId: string) => {
   }
 }
 
-export const getAttendanceMode = (attendance: AttendanceProps[]) => {
-  const currentDate = new Date()
+export const getAttendanceMode = (attendance: AttendanceProps | undefined) => {
+  const currentDate = fromZonedTime(new Date(), 'Asia/Manila')
   const currentHour = currentDate.getHours()
 
   // Default mode is 'Time In'
@@ -99,8 +100,8 @@ export const getAttendanceMode = (attendance: AttendanceProps[]) => {
 
   // If there's no attendance or the last attendance is not from today, return 'Time In'
   if (
-    !attendance.length ||
-    !isToday(attendance[attendance.length - 1].date || '')
+    !attendance ||
+    !isToday(attendance.date || '')
   ) {
     return mode
   }
@@ -108,17 +109,17 @@ export const getAttendanceMode = (attendance: AttendanceProps[]) => {
   // If it's morning and there's a time in for the morning, return 'Time out'
   if (
     currentHour < 12 &&
-    attendance[attendance.length - 1].timeInAM &&
-    !attendance[attendance.length - 1].timeOutAM
+    attendance.timeInAM &&
+    !attendance.timeOutAM
   ) {
     mode = 'Time out'
   }
 
   // If it's afternoon and there's a time in for the afternoon, return 'Time out'
   if (
-    currentHour > 12 &&
-    attendance[attendance.length - 1].timeInPM &&
-    !attendance[attendance.length - 1].timeOutPM
+    currentHour >= 12 &&
+    attendance.timeInPM &&
+    !attendance.timeOutPM
   ) {
     mode = 'Time out'
   }

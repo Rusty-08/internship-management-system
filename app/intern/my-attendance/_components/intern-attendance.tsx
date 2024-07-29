@@ -11,21 +11,18 @@ import React from 'react'
 type InternAttendanceProps = {
   attendance: AttendanceProps[]
   user?: User | null
-  mode?: string
   isInDashboard?: boolean
 }
 
 export const InternAttendance = ({
   attendance,
   user,
-  mode,
   isInDashboard,
 }: InternAttendanceProps) => {
   return (
     <AttendanceTable
       data={attendance}
       user={user}
-      mode={mode}
       isInDashboard={isInDashboard}
       attendanceColumns={attendanceColumns.slice(1, attendanceColumns.length)}
     />

@@ -10,9 +10,8 @@ export const metadata: Metadata = {
 const MyAttendance = async () => {
   const attendance = await getInternAttendance()
   const user = await getCurrentUser()
-  const mode = getAttendanceMode(attendance)
 
-  return <InternAttendance attendance={attendance} user={user} mode={mode} />
+  return <InternAttendance attendance={attendance} user={user} />
 }
 
 export default MyAttendance

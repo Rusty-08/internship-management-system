@@ -85,10 +85,12 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     accessorKey: 'totalHours',
     header: 'Total Hours',
     cell: ({ row }) => {
+      const OneMin = .016
       const total = row.getValue('totalHours') as number
+      
       return (
         <span className="text-foreground text-nowrap">
-          {total < 1 ? '0' : formatHours(total)}
+          {total < OneMin ? '0 mins' : formatHours(total)}
         </span>
       )
     },

@@ -1,5 +1,6 @@
 'use client'
 
+import { siteConfig } from '@/configs/site'
 import { formatHours } from '@/utils/attendance'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
@@ -41,7 +42,7 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
       const timeInAM = row.getValue('timeInAM') as Date
       return (
         <span className="text-nowrap">
-          {timeInAM ? formatInTimeZone(timeInAM, 'Asia/Manila', 'hh:mm aa') : ''}
+          {timeInAM ? formatInTimeZone(timeInAM, siteConfig.timeZone, 'hh:mm aa') : ''}
         </span>
       )
     },
@@ -53,7 +54,7 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
       const timeOutAM = row.getValue('timeOutAM') as Date
       return (
         <span className="text-nowrap">
-          {timeOutAM ? formatInTimeZone(timeOutAM, 'Asia/Manila', 'hh:mm aa') : ''}
+          {timeOutAM ? formatInTimeZone(timeOutAM, siteConfig.timeZone, 'hh:mm aa') : ''}
         </span>
       )
     },
@@ -65,7 +66,7 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
       const timeInPM = row.getValue('timeInPM') as Date
       return (
         <span className="text-nowrap">
-          {timeInPM ? formatInTimeZone(timeInPM, 'Asia/Manila', 'hh:mm aa') : ''}
+          {timeInPM ? formatInTimeZone(timeInPM, siteConfig.timeZone, 'hh:mm aa') : ''}
         </span>
       )
     },
@@ -77,7 +78,7 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
       const timeOutPM = row.getValue('timeOutPM') as Date
       return (
         <span className="text-nowrap">
-          {timeOutPM ? formatInTimeZone(timeOutPM, 'Asia/Manila', 'hh:mm aa') : ''}
+          {timeOutPM ? formatInTimeZone(timeOutPM, siteConfig.timeZone, 'hh:mm aa') : ''}
         </span>
       )
     },
@@ -86,12 +87,12 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     accessorKey: 'totalHours',
     header: 'Total Hours',
     cell: ({ row }) => {
-      const OneMin = .016
+      const ThirtySecs = 0.008
       const total = row.getValue('totalHours') as number
       
       return (
         <span className="text-foreground text-nowrap">
-          {total < OneMin ? '0 mins' : formatHours(total)}
+          {formatHours(total)}
         </span>
       )
     },

@@ -6,6 +6,7 @@ import {
 } from '@/app/intern/my-attendance/_components/attendance-columns'
 import AttendanceTable from '@/app/intern/my-attendance/_components/attendance-table'
 import { DayPicker } from '@/components/@core/ui/day-picker'
+import { dateInManilaTz } from '@/utils/format-date'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import React, { useState } from 'react'
@@ -23,11 +24,8 @@ const Attendance = ({
 
   const filteredAttendance = date
     ? currentAttendance.filter(
-        attendance =>
-          attendance.date &&
-          format(attendance.date, 'PPP') === format(date, 'PPP'),
-      )
-    : []
+        attendance => dateInManilaTz(attendance.date) == dateInManilaTz(date)
+    ) : []
 
   const dashboardAttendance = (attendance: ColumnDef<AttendanceProps>[]) => {
     const _attendance = [...attendance]

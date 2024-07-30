@@ -46,7 +46,7 @@ export const getTotalHours = (
     totalMinutesPM = differenceInMinutes(timeOutPM, timeInPM)
   }
 
-  const totalMinutes = totalMinutesAM + totalMinutesPM
+  const totalMinutes = Math.ceil(totalMinutesAM + totalMinutesPM)
   const totalHours = totalMinutes / 60
 
   return totalHours
@@ -55,15 +55,15 @@ export const getTotalHours = (
 export const formatHours = (time: number) => {
   const totalMinutes = time * 60
   const hours = Math.floor(totalMinutes / 60)
-  const minutes = Math.floor(totalMinutes % 60)
+  const minutes = Math.round(totalMinutes % 60)
 
   let timeString = ''
+
   if (hours > 0) {
-    timeString += `${hours} hr `
+    timeString += `${hours} ${hours > 1 ? 'hrs' : 'hr'} `
   }
-  if (minutes > 0) {
-    timeString += `${minutes} mins`
-  }
+    
+  timeString += `${minutes} ${minutes > 1 ? 'mins' : 'min'}`
 
   return timeString.trim()
 }

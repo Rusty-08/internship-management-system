@@ -8,6 +8,7 @@ import { format } from 'date-fns'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Attendance from './interns-attendance/_components/attendance'
+import { formatInTimeZone } from 'date-fns-tz'
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard',
@@ -54,7 +55,7 @@ const AdminDashboard = async () => {
       <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6">
         <DetailsCard
           header="Attendance"
-          description={format(new Date(), 'MMMM dd y - EEEE')}
+          description={formatInTimeZone(new Date(), 'Asia/Manila', 'MMMM dd y - EEEE')}
           noRecordMessage="No attendance records found."
           className="col-span-2"
           noRecords={!currentAttendance}

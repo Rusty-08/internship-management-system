@@ -15,49 +15,37 @@ export async function POST(req: Request) {
       where: { internId },
     })
 
-    let currentAttendance;
+    // last attendance of intern
+    const {
+      id,
+      timeInAM,
+      timeOutAM,
+      timeOutPM,
+      timeInPM
+    } = attendanceRecords[attendanceRecords.length - 1]
 
-    const attendance = attendanceRecords.find(att => dateInManilaTz(att.date) == dateInManilaTz(currentDate))
-
-    if (!attendance) {
-      // If the attendance record doesn't exist, create a new one
-      currentAttendance = await prisma.attendance.create({
-        data: {
-          internId,
-          date: currentDate,
-          timeInAM: isAfternoon ? null : currentDate,
-          timeInPM: isAfternoon ? currentDate : null,
-          totalHours: 0,
-        },
-      })
-    } else {
-      // Update the existing attendance record
-      const updateData = {
-        timeInAM: attendance.timeInAM || (!isAfternoon ? currentDate : null),
-        timeOutAM: attendance.timeOutAM || (!isAfternoon ? currentDate : null),
-        timeInPM: attendance.timeInPM || (isAfternoon ? currentDate : null),
-        timeOutPM:
-          attendance.timeOutPM ||
-          (attendance.timeInPM && isAfternoon ? currentDate : null),
-      }
-
-      currentAttendance = await prisma.attendance.update({
-        where: { id: attendance.id },
-        data: {
-          ...updateData,
-          totalHours: getTotalHours(
-            updateData.timeOutAM,
-            updateData.timeInAM,
-            updateData.timeOutPM,
-            updateData.timeInPM,
-          ),
-        },
-      })
+    const updateData = {
+      timeInAM: timeInAM || (!isAfternoon ? currentDate : null),
+      timeOutAM: timeOutAM || (timeInAM && !isAfternoon ? currentDate : null),
+      timeInPM: timeInPM || (isAfternoon ? currentDate : null),
+      timeOutPM: timeOutPM || (timeInPM && isAfternoon ? currentDate : null),
     }
 
-    return NextResponse.json(currentAttendance,
-      { status: 201 },
-    )
+    // Update the existing attendance record
+    const currentAttendance = await prisma.attendance.update({
+      where: { id },
+      data: {
+        ...updateData,
+        totalHours: getTotalHours(
+          updateData.timeOutAM,
+          updateData.timeInAM,
+          updateData.timeOutPM,
+          updateData.timeInPM,
+        ),
+      },
+    })
+
+    return NextResponse.json(currentAttendance, { status: 201 })
   } catch {
     return NextResponse.json(
       { message: 'Could not save attendance' },

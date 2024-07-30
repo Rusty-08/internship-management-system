@@ -122,8 +122,6 @@ const InternDashboard = async () => {
                     <div className="flex flex-col gap-1">
                       <p className="text-[0.9rem] font-medium">{task.title}</p>
                       <p className="text-text text-sm">
-                        {/* {format(task.startDate, 'LLL dd')} -{' '}
-                        {format(task.endDate, 'LLL dd')} */}
                         {formatInTimeZone(task.startDate, 'Asia/Manila', 'LLL dd')} -{' '}
                         {formatInTimeZone(task.endDate, 'Asia/Manila', 'LLL dd')}
                       </p>

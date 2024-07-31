@@ -61,7 +61,7 @@ export default function AttendanceTable({
   }, [attendanceData, date])
 
   const table = useReactTable({
-    data: filteredData,
+    data: isInDashboard ? data : filteredData,
     columns: attendanceColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

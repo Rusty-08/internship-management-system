@@ -1,8 +1,6 @@
 "use client"
 
-import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
-
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
@@ -13,6 +11,8 @@ import {
 } from "@/components/ui/popover"
 import { ClassNameValue } from "tailwind-merge"
 import { Dispatch, SetStateAction } from "react"
+import { formatInTimeZone } from "date-fns-tz"
+import { siteConfig } from "@/configs/site"
 
 type DatePickerProps = {
   date: Date | undefined
@@ -32,7 +32,7 @@ export function DayPicker({ date, setDate, className }: DatePickerProps) {
           )}
         >
           <CalendarIcon className="mr-3 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? formatInTimeZone(date, siteConfig.timeZone, "PPP") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

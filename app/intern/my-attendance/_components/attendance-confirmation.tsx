@@ -27,7 +27,7 @@ export function AttendanceConfirmation({
   setIsOpenHandler,
   currentAttendance,
 }: AttendanceConfirmationProps) {
-  const isAfternoon = new Date().getHours() > 12
+  const isAfternoon = new Date().getHours() >= 12
   const isMobile = useMediaQuery('(max-width: 599px)')
 
   const isTriggerDisabled = currentAttendance

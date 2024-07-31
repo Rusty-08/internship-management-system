@@ -14,6 +14,8 @@ import {
 
 import { ClassNameValue } from 'tailwind-merge'
 import { IoCalendar } from 'react-icons/io5'
+import { formatInTimeZone } from 'date-fns-tz'
+import { siteConfig } from '@/configs/site'
 
 type DatePickerProps = {
   date: DateRange | undefined
@@ -43,11 +45,11 @@ export function DatePickerWithRange({
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, 'LLL dd, y')} -{' '}
-                  {format(date.to, 'LLL dd, y')}
+                  {formatInTimeZone(date.from, siteConfig.timeZone, 'LLL dd, y')} -{' '}
+                  {formatInTimeZone(date.to, siteConfig.timeZone, 'LLL dd, y')}
                 </>
               ) : (
-                format(date.from, 'LLL dd, y')
+                formatInTimeZone(date.from, siteConfig.timeZone, 'LLL dd, y')
               )
             ) : (
               <span>Pick a date</span>

@@ -1,9 +1,10 @@
 import { AttendanceProps } from '@/app/intern/my-attendance/_components/attendance-columns'
 import prisma from '@/lib/prisma'
 import { differenceInMinutes, format, isToday } from 'date-fns'
+import { fromZonedTime } from 'date-fns-tz'
+import { unstable_noStore as noStore } from 'next/cache'
 import * as XLSX from 'xlsx'
 import { getCurrentUser } from './users'
-import { fromZonedTime } from 'date-fns-tz'
 
 // Get attendance by user email or current user
 export async function getInternAttendance(
@@ -82,12 +83,12 @@ export const addAttendance = async (internId: string) => {
   const addedAttendance: AttendanceProps = await res.json()
 
   if (addedAttendance) {
-    return { 
+    return {
       data: addedAttendance,
-      success: 'Success'
+      success: 'Success',
     }
   } else {
-    return { error: 'Server Error' }  
+    return { error: 'Server Error' }
   }
 }
 
@@ -99,28 +100,17 @@ export const getAttendanceMode = (attendance: AttendanceProps | undefined) => {
   let mode = 'Time In'
 
   // If there's no attendance or the last attendance is not from today, return 'Time In'
-  if (
-    !attendance ||
-    !isToday(attendance.date || '')
-  ) {
+  if (!attendance || !isToday(attendance.date || '')) {
     return mode
   }
 
   // If it's morning and there's a time in for the morning, return 'Time out'
-  if (
-    currentHour < 12 &&
-    attendance.timeInAM &&
-    !attendance.timeOutAM
-  ) {
+  if (currentHour < 12 && attendance.timeInAM && !attendance.timeOutAM) {
     mode = 'Time out'
   }
 
   // If it's afternoon and there's a time in for the afternoon, return 'Time out'
-  if (
-    currentHour >= 12 &&
-    attendance.timeInPM &&
-    !attendance.timeOutPM
-  ) {
+  if (currentHour >= 12 && attendance.timeInPM && !attendance.timeOutPM) {
     mode = 'Time out'
   }
 
@@ -188,6 +178,7 @@ export const getTargetHours = async (id?: string) => {
 }
 
 export const getAllInternAttendance = async () => {
+  noStore()
   const users = await prisma.user.findMany({
     select: {
       name: true,

@@ -16,13 +16,17 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { set } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { MdOutlineArrowRight } from 'react-icons/md'
 import { z } from 'zod'
 
 const LoginForm = () => {
   const [serverError, setServerError] = useState<any>(undefined)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showIcon, setShowIcon] = useState(false)
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -49,8 +53,18 @@ const LoginForm = () => {
     if (serverError) {
       setServerError(undefined)
     }
+    if (password && password.length > 0) {
+      setShowIcon(true)
+    } else {
+      setShowIcon(false)
+      setShowPassword(false)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [email, password])
+  }, [email, password, showPassword, showIcon])
+
+  const togglePassword = () => {
+    setShowPassword(!showPassword)
+  }
 
   return (
     <div className="flex h-full w-full items-center justify-center bg-muted bg-gradient-to-r from-primary/20 to-fuchsia-900/20 backdrop-blur-sm">
@@ -92,8 +106,12 @@ const LoginForm = () => {
                       <Input
                         {...field}
                         disabled={isSubmitting}
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
+                        iconOnClick={togglePassword}
+                        icon={
+                          showIcon ? (showPassword ? FaEye : FaEyeSlash) : null
+                        }
                       />
                     </FormControl>
                     {errors.password && (
@@ -104,10 +122,7 @@ const LoginForm = () => {
               />
               {serverError && <ErrorCard>{serverError}</ErrorCard>}
             </div>
-            <Button
-              disabled={isSubmitting}
-              className='w-full relative gap-1'
-            >
+            <Button disabled={isSubmitting} className="w-full relative gap-1">
               {isSubmitting ? (
                 <LoadingSpinner />
               ) : (

@@ -12,15 +12,17 @@ import { format } from 'date-fns'
 import React, { useState } from 'react'
 
 type AdminAttendanceProps = {
+  currentDate: Date | undefined
   currentAttendance: AttendanceProps[]
   isInDashboard?: boolean
 }
 
 const Attendance = ({
+  currentDate,
   currentAttendance,
   isInDashboard = false,
 }: AdminAttendanceProps) => {
-  const [date, setDate] = useState<Date | undefined>(new Date())
+  const [date, setDate] = useState<Date | undefined>(currentDate)
 
   const filteredAttendance = date
     ? currentAttendance.filter(

@@ -77,6 +77,7 @@ export const addAttendance = async (internId: string) => {
     body: JSON.stringify({
       internId,
     }),
+    cache: 'no-store'
   })
 
   const addedAttendance: AttendanceProps = await res.json()

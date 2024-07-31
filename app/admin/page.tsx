@@ -8,21 +8,33 @@ import { format } from 'date-fns'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Attendance from './interns-attendance/_components/attendance'
-import { formatInTimeZone } from 'date-fns-tz'
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz'
+import { siteConfig } from '@/configs/site'
+import { getInternUsers } from '@/utils/users'
+
+export const revalidate = 3600 // revalidate at most every hour
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard',
 }
 
 const AdminDashboard = async () => {
+  const interns = await getInternUsers()
   const allAttendance = await getAllInternAttendance()
   const currentAttendance = allAttendance.flatMap(attendance => attendance)
 
+  const date = new Date()
+  const currentDate = toZonedTime(date, siteConfig.timeZone)
+  const desc = formatInTimeZone(currentDate, siteConfig.timeZone, 'MMMM dd y - EEEE')
+
   return (
-    <div className="flex h-full flex-col gap-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <StatCard header="Total Hours">
-          <div className="flex items-end space-x-2"></div>
+    <div className="flex h-full flex-col gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <StatCard header="Total Interns">
+          <div className="flex items-end space-x-2">
+            <h1 className="text-4xl font-semibold">{interns?.length}</h1>
+            <span className="text-text font-medium">students</span>
+          </div>
           <Image
             src={totalHoursImage}
             alt="total hours"
@@ -32,7 +44,10 @@ const AdminDashboard = async () => {
           />
         </StatCard>
         <StatCard header="Total Days">
-          <div className="flex items-end space-x-2"></div>
+          <div className="flex items-end space-x-2">
+            <h1 className="text-4xl font-semibold">{interns && allAttendance.length / interns?.length}</h1>
+            <span className="text-text font-medium">days</span>
+          </div>
           <Image
             src={totalDaysImage}
             alt="total days"
@@ -52,16 +67,20 @@ const AdminDashboard = async () => {
           />
         </StatCard>
       </div>
-      <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-4">
         <DetailsCard
           header="Attendance"
-          description={formatInTimeZone(new Date(), 'Asia/Manila', 'MMMM dd y - EEEE')}
+          description={desc}
           noRecordMessage="No attendance records found."
           className="col-span-2"
           noRecords={!currentAttendance}
           navigate="/admin/interns-attendance"
         >
-          <Attendance currentAttendance={currentAttendance} isInDashboard />
+          <Attendance 
+            currentAttendance={currentAttendance}   
+            isInDashboard
+            currentDate={currentDate}
+          />
         </DetailsCard>
         <DetailsCard
           noRecords={true}

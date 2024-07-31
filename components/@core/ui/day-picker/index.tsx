@@ -22,6 +22,9 @@ type DatePickerProps = {
 }
 
 export function DayPicker({ date, setDate, className }: DatePickerProps) {
+  console.log('Selected Date:', date);
+  console.log('Formatted Date:', date ? formatInTimeZone(date, 'Asia/Manila', "PPP") : 'No date selected');
+  
   return (
     <Popover>
       <PopoverTrigger asChild>

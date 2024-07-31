@@ -4,11 +4,10 @@ import totalDaysImage from '@/public/dashboard/days-dashboard.svg'
 import totalHoursImage from '@/public/dashboard/hours-dashboard.svg'
 import totalTaskImage from '@/public/dashboard/task-dashboard.svg'
 import { getAllInternAttendance } from '@/utils/attendance'
-import { format } from 'date-fns'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Attendance from './interns-attendance/_components/attendance'
-import { formatInTimeZone, toZonedTime } from 'date-fns-tz'
+import { formatInTimeZone } from 'date-fns-tz'
 import { siteConfig } from '@/configs/site'
 import { getInternUsers } from '@/utils/users'
 
@@ -22,10 +21,6 @@ const AdminDashboard = async () => {
   const interns = await getInternUsers()
   const allAttendance = await getAllInternAttendance()
   const currentAttendance = allAttendance.flatMap(attendance => attendance)
-
-  const date = new Date()
-  const currentDate = toZonedTime(date, siteConfig.timeZone)
-  const desc = formatInTimeZone(currentDate, siteConfig.timeZone, 'MMMM dd y - EEEE')
 
   return (
     <div className="flex h-full flex-col gap-4">
@@ -70,17 +65,13 @@ const AdminDashboard = async () => {
       <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-4">
         <DetailsCard
           header="Attendance"
-          description={desc}
+          description={formatInTimeZone(new Date(), siteConfig.timeZone, 'MMMM dd y - EEEE')}
           noRecordMessage="No attendance records found."
           className="col-span-2"
           noRecords={!currentAttendance}
           navigate="/admin/interns-attendance"
         >
-          <Attendance 
-            currentAttendance={currentAttendance}   
-            isInDashboard
-            currentDate={currentDate}
-          />
+          <Attendance currentAttendance={currentAttendance} isInDashboard />
         </DetailsCard>
         <DetailsCard
           noRecords={true}

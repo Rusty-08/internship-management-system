@@ -8,21 +8,18 @@ import AttendanceTable from '@/app/intern/my-attendance/_components/attendance-t
 import { DayPicker } from '@/components/@core/ui/day-picker'
 import { dateInManilaTz } from '@/utils/format-date'
 import { ColumnDef } from '@tanstack/react-table'
-import { format } from 'date-fns'
 import React, { useState } from 'react'
 
 type AdminAttendanceProps = {
-  currentDate: Date | undefined
   currentAttendance: AttendanceProps[]
   isInDashboard?: boolean
 }
 
 const Attendance = ({
-  currentDate,
   currentAttendance,
   isInDashboard = false,
 }: AdminAttendanceProps) => {
-  const [date, setDate] = useState<Date | undefined>(currentDate)
+  const [date, setDate] = useState<Date | undefined>(new Date())
 
   const filteredAttendance = date
     ? currentAttendance.filter(

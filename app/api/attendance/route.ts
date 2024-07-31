@@ -1,15 +1,12 @@
 import prisma from '@/lib/prisma'
 import { getTotalHours } from '@/utils/attendance'
 import { NextResponse } from 'next/server'
-import { toZonedTime } from 'date-fns-tz'
-import { siteConfig } from '@/configs/site'
 
 export async function POST(req: Request) {
   const { internId } = await req.json()
 
   try {
-    const date = new Date()
-    const currentDate = toZonedTime(date, siteConfig.timeZone)
+    const currentDate = new Date()
     const isAfternoon = currentDate.getHours() >= 12
 
     // Find today's attendance record for the intern

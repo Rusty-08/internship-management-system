@@ -29,8 +29,8 @@ export default function Error({
         height="0"
         className="w-[20rem] h-auto"
       />
-      <h2 className="text-2xl font-bold">Oops!, Something went wrong!</h2>
-      <div className="space-x-2 my-4">
+      <h2 className="text-xl font-semibold -mt-4">Oops!, Something went wrong!</h2>
+      <div className="space-x-2 my-8">
         <Button onClick={() => router.back()} variant="outline">
           Go Back
         </Button>

@@ -19,6 +19,7 @@ type DrawerConfirmationProps = {
   isOpen?: boolean
   setIsOpenHandler: Dispatch<SetStateAction<boolean>>
   isAddButton?: boolean
+  isSubmitting: boolean
   className?: ClassNameValue
   children: ReactNode
 }
@@ -31,11 +32,18 @@ export const DrawerConfirmation = ({
   isOpen,
   setIsOpenHandler,
   isAddButton,
+  isSubmitting,
   className,
   children,
 }: DrawerConfirmationProps) => {
+  const handleOpenChange = (val: boolean) => {
+    if (!isSubmitting) {
+      setIsOpenHandler(val)
+    }
+  }
+
   return (
-    <Drawer open={isOpen} onOpenChange={setIsOpenHandler}>
+    <Drawer open={isOpen} onOpenChange={handleOpenChange}>
       <DrawerTrigger asChild>
         <Button
           disabled={isPending}

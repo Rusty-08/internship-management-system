@@ -20,6 +20,7 @@ type DialogConfirmationProps = {
   isOpen?: boolean
   setIsOpenHandler: Dispatch<SetStateAction<boolean>>
   isAddButton?: boolean
+  isSubmitting: boolean
   className?: ClassNameValue
   children: ReactNode
 }
@@ -32,11 +33,18 @@ const DialogConfirmation = ({
   isOpen,
   setIsOpenHandler,
   isAddButton,
+  isSubmitting,
   className,
   children,
 }: DialogConfirmationProps) => {
+  const handleOpenChange = (val: boolean) => {
+    if (!isSubmitting) {
+      setIsOpenHandler(val)
+    }
+  }
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
           disabled={isPending}
@@ -52,8 +60,8 @@ const DialogConfirmation = ({
       <DialogContent className="sm:max-w-full lg:w-[30rem]">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <DialogDescription>{description}</DialogDescription>
         {children}
       </DialogContent>
     </Dialog>

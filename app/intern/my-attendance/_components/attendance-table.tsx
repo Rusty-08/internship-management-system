@@ -136,7 +136,7 @@ export default function AttendanceTable({
     <div className="flex flex-col gap-4">
       <div className="flex flex-row gap-2 justify-between">
         <DateRangeFilter date={date} setDate={setDate} />
-        <div className="flex gap-2">
+        <div className="flex gap-4">
           <Button
             variant="outline"
             onClick={downloadAttendance}

@@ -12,8 +12,8 @@ const ConfirmationForm = ({
 }: AttendanceConfirmationProps) => {
   return (
     <form onSubmit={addCurrentAttendance}>
-      <div className="grid gap-4 border grid-cols-2 rounded-md p-3 px-4">
-        <div className="space-y-1">
+      <div className="border rounded-md py-3 px-4">
+        {/* <div className="space-y-1">
           <span className="text-text text-sm">Name</span>
           <p className="text-foreground">{user?.name}</p>
         </div>
@@ -28,7 +28,14 @@ const ConfirmationForm = ({
         <div className="space-y-1">
           <span className="text-text text-sm">Time</span>
           <p className="text-foreground">{format(new Date(), 'h:mm aa')}</p>
-        </div>
+        </div> */}
+        <p className='text-text text-sm'>
+          {`Your are about to `}
+          <span className='text-foreground'>{mode}</span>
+          {' at '}
+          <span className='text-foreground'>{format(new Date(), 'h:mm aa')}</span>
+          {`. Click '${mode}' button to continue.`}
+        </p>
       </div>
       <div className="pt-6">
         <SubmitCancelButton

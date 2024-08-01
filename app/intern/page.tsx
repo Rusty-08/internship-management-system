@@ -116,23 +116,21 @@ const InternDashboard = async () => {
         >
           <div className="flex flex-col w-full gap-4">
             {sortedTaskByDate.map(task => (
-              <div key={task.id} className="flex flex-col w-full">
-                <div className="flex items-center relative justify-between w-full gap-4 py-3 px-4 lg:px-5 rounded-md border">
-                  <div className="flex items-center gap-4">
-                    <div className="flex flex-col gap-1">
-                      <p className="text-[0.9rem] font-medium">{task.title}</p>
-                      <p className="text-text text-sm">
-                        {formatInTimeZone(task.startDate, 'Asia/Manila', 'LLL dd')} -{' '}
-                        {formatInTimeZone(task.endDate, 'Asia/Manila', 'LLL dd')}
-                      </p>
-                    </div>
+              <div key={task.id} className="flex border items-center relative justify-between w-full gap-4 py-3 px-4 lg:px-5 rounded-md">
+                <div className="flex items-center gap-4">
+                  <div className="flex flex-col gap-1">
+                    <p className="text-[0.9rem] font-medium">{task.title}</p>
+                    <p className="text-text text-sm">
+                      {formatInTimeZone(task.startDate, 'Asia/Manila', 'LLL dd')} -{' '}
+                      {formatInTimeZone(task.endDate, 'Asia/Manila', 'LLL dd')}
+                    </p>
                   </div>
-                  <Badge variant={task.status} className="flex-shrink-0">
-                    {statusName(task.status) === 'In_progress'
-                      ? 'In Progress'
-                      : statusName(task.status)}
-                  </Badge>
                 </div>
+                <Badge variant={task.status} className="flex-shrink-0">
+                  {statusName(task.status) === 'In_progress'
+                    ? 'In Progress'
+                    : statusName(task.status)}
+                </Badge>
               </div>
             ))}
           </div>

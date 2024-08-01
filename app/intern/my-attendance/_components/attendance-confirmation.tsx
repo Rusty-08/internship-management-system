@@ -49,12 +49,13 @@ export function AttendanceConfirmation({
           <span className='mr-2'>{mode}</span>
         </>
       }
-      title={`Attendance - ${mode}`}
-      description="Please verify the information. Click save when you're done."
+      title='Confirmation'
+      description="Please verify the date and time."
       isPending={isTriggerDisabled}
       isOpen={isOpen}
       setIsOpenHandler={setIsOpenHandler}
       isAddButton
+      isSubmitting={loading}
     >
       <ConfirmationForm
         addCurrentAttendance={addCurrentAttendance}

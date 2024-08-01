@@ -108,10 +108,10 @@ const LoginForm = () => {
                         disabled={isSubmitting}
                         type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
-                        iconOnClick={togglePassword}
-                        icon={
+                        endIcon={
                           showIcon ? (showPassword ? FaEye : FaEyeSlash) : null
                         }
+                        endIconOnClick={togglePassword}
                       />
                     </FormControl>
                     {errors.password && (

@@ -18,13 +18,14 @@ export function BreadcrumbWrapper() {
   const segments = path.split('/').filter(Boolean)
 
   return (
-    <div className='hidden lg:inline-flex px-4 py-2 rounded-md bg-card shadow'>
+    <div className='hidden h-10 lg:flex items-center gap-4'>
+      <div className="w-1 rounded-full shadow-sm h-full bg-primary/50" />
       <Breadcrumb>
         <BreadcrumbList>
           {segments.map((segment, index) => {
             const href = '/' + segments.slice(0, index + 1).join('/')
             const isLast = index === segments.length - 1
-            const name = 
+            const name =
               segment.split('-')
                 .map(item => item.charAt(0).toUpperCase() + item.slice(1, item.length))
                 .join(' ')
@@ -33,7 +34,7 @@ export function BreadcrumbWrapper() {
               <Fragment key={href}>
                 <BreadcrumbItem>
                   {isLast ? (
-                    <BreadcrumbPage className="text-foreground">
+                    <BreadcrumbPage className="text-foreground font-medium">
                       {index === 0 ? 'Dashboard' : name}
                     </BreadcrumbPage>
                   ) : (

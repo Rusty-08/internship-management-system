@@ -24,10 +24,10 @@ export async function POST(req: Request) {
     } = attendanceRecords[attendanceRecords.length - 1]
 
     const updateData = {
-      timeInAM: timeInAM || (!isAfternoon ? currentDate : null),
-      timeOutAM: timeOutAM || (timeInAM && !isAfternoon ? currentDate : null),
-      timeInPM: timeInPM || (isAfternoon ? currentDate : null),
-      timeOutPM: timeOutPM || (timeInPM && isAfternoon ? currentDate : null),
+      timeInAM: !timeInAM && !isAfternoon ? currentDate : timeInAM,
+      timeOutAM: !timeOutAM && timeInAM && !isAfternoon ? currentDate : timeOutAM,
+      timeInPM: !timeInPM && isAfternoon ? currentDate : timeInPM,
+      timeOutPM: !timeOutPM && timeInPM && isAfternoon ? currentDate : timeOutPM,
     }
 
     // Update the existing attendance record

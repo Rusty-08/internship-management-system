@@ -29,9 +29,9 @@ export function DataTable<TData, TValue>({
   noRecordMessage
 }: DataTableProps<TData, TValue>) {
   return (
-    <div className="border-y overflow-hidden">
+    <div className="border rounded-md bg-card overflow-hidden">
       <Table>
-        <TableHeader className="bg-card">
+        <TableHeader className="bg-accent/50">
           {table.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map(header => {

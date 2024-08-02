@@ -8,6 +8,10 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { SearchFilter } from "./search-filter"
 import StatusFilter from "./status-filter"
 import { TaskProps } from "./types"
+import Link from "next/link"
+import AddButton from '@/components/@core/ui/add-button';
+import { Button } from "@/components/ui/button"
+import { MdAdd } from "react-icons/md"
 
 type TaskWrapperProps = {
   isMentor: boolean
@@ -72,6 +76,18 @@ export const TaskAccordions = ({ tasks, isMentor }: TaskWrapperProps) => {
       <div className="w-full flex gap-3">
         <SearchFilter handleSearch={handleSearch} searchParams={searchParams} />
         <StatusFilter handleSearch={handleStatusFilter} searchParams={searchParams} />
+        {isMentor && (
+          <Link
+            href="/mentor/tasks-management/create-task"
+            className="fixed lg:relative bottom-4 lg:bottom-0 right-4 lg:right-0"
+          >
+            <AddButton className="hidden lg:inline-flex">Create Task</AddButton>
+            <Button className="inline-flex z-50 font-normal h-12 pe-6 md:hidden gap-3">
+              <MdAdd size="1.5rem" />
+              New
+            </Button>
+          </Link>
+        )}
       </div>
       <div className="flex flex-col gap-4">
         {selectedTasks.length ? (

@@ -14,17 +14,13 @@ import { SubmissionSchema } from './task-schema'
 import { Dispatch, SetStateAction } from 'react'
 
 type SubmissionFormProps = {
-  form: UseFormReturn<
-    {
-      file: File
-    },
-    any,
-    undefined
-  >
+  form: UseFormReturn<{
+    file?: File
+  }, any, undefined>
   onSubmitForm: (values: z.infer<typeof SubmissionSchema>) => Promise<void>
   isSubmitting: boolean
   errors: FieldErrors<{
-    file?: File
+    file: File
   }>
   setIsOpenHandler: Dispatch<SetStateAction<boolean>>
 }

@@ -5,46 +5,24 @@ import { getCurrentUser } from '@/utils/users'
 import TaskCard from './task-card'
 import { TaskWrapperProps } from './types'
 import { Badge } from '@/components/ui/badge'
+import { TaskAccordions } from './task-accordions'
 
 const TaskWrapper = async ({
-  search,
-  status,
-  isMentoshipRole = false,
+  isMentor = false,
   mentorId,
 }: TaskWrapperProps) => {
   const user = await getCurrentUser()
   const userId = mentorId || user?.id
-  const mentorTasks = await getTasks(userId || '', search, status)
+  const tasks = await getTasks(userId || '')
 
-  const sortedByDate = mentorTasks?.tasks
-    ? mentorTasks?.tasks.sort(
-        (a, b) =>
-          new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
-      )
+  const sortedTasks = tasks
+    ? tasks.sort(
+      (a, b) =>
+        new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
+    )
     : []
 
-  const selectedTasks = status
-    ? sortedByDate.filter(task => {
-        return status !== 'all' ? task.status.toLowerCase() === status : task
-      })
-    : sortedByDate
-
-  return (
-    <div className="flex flex-col gap-4">
-      {selectedTasks.length ? (
-        <Accordion type="single" collapsible className="w-full">
-          {selectedTasks.map(task => (
-            <TaskCard key={task.id} task={task} isMentor={isMentoshipRole} />
-          ))}
-        </Accordion>
-      ) : (
-        <NoRecords
-          searchOutput={search ?? ''}
-          className="border bg-card rounded-md pb-8"
-        />
-      )}
-    </div>
-  )
+  return <TaskAccordions isMentor={isMentor} tasks={sortedTasks} />
 }
 
 export default TaskWrapper

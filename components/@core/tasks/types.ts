@@ -13,9 +13,7 @@ export type TaskProps = {
 
 export type TaskWrapperProps = {
   tasks?: Task[]
-  search?: string
-  status?: string
-  isMentoshipRole?: boolean
+  isMentor?: boolean
   mentorId?: string
 }
 

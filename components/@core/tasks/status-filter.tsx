@@ -8,26 +8,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { ReadonlyURLSearchParams } from 'next/navigation'
+import { ClassNameValue } from 'tailwind-merge'
 
-const StatusFilter = () => {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const { replace } = useRouter()
+type StatusFilterProps = {
+  handleSearch: (term: string) => void
+  searchParams: ReadonlyURLSearchParams
+  className?: ClassNameValue
+}
 
-  const handleSearch = (status: string) => {
-    const params = new URLSearchParams(searchParams)
-    if (status) {
-      params.set('status', status)
-      if (status === 'all') {
-        params.delete('status')
-      }
-    } else {
-      params.delete('status')
-    }
-    replace(`${pathname}?${params.toString()}`)
-  }
-
+const StatusFilter = ({ handleSearch, searchParams, className }: StatusFilterProps) => {
   return (
     <Select defaultValue="all" onValueChange={val => handleSearch(val)}>
       <SelectTrigger className="bg-card w-max">

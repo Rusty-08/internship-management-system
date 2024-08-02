@@ -10,26 +10,13 @@ export const metadata: Metadata = {
   title: 'My Tasks',
 }
 
-const TasksManagement = async ({
-  searchParams,
-}: {
-  searchParams?: {
-    task?: string
-    status?: string
-  }
-}) => {
-  const task = searchParams?.task || ''
-  const status = searchParams?.status || ''
+const TasksManagement = async () => {
   const mentorId = await getCurrentUserMentorId()
 
   return (
     <div className="space-y-4">
-      <div className="w-full flex gap-3">
-        <SearchFilter />
-        <StatusFilter />
-      </div>
       <Suspense fallback={<TaskSkeleton />}>
-        <TaskWrapper mentorId={mentorId} search={task} status={status} />
+        <TaskWrapper mentorId={mentorId} />
       </Suspense>
     </div>
   )

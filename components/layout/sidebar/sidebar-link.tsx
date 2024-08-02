@@ -18,14 +18,15 @@ const SidebarLinks = ({ sideLinks, setOpen }: SidebarProps) => {
     <div className="sidebar flex flex-col overflow-y-auto flex-grow gap-1 py-4">
       {sideLinks.map(item => {
         const Icon = ICONS[item.icon]
-        
+
         return (
           <Link
             key={item.path}
             href={item.path}
-            className={`group/link flex h-[2.8rem] relative justify-start items-center w-full rounded-none transition-all duration-300 ease-in-out ${
-              path === item.path ? 'text-white bg-primary/10' : 'text-white/50'
-            }`}
+            className={cn(
+              'group/link flex h-[2.8rem] relative justify-start items-center w-full rounded-none transition-all duration-300 ease-in-out',
+              path === item.path ? 'text-white bg-primary/10' : 'text-text'
+            )}
             onClick={() => (setOpen ? setOpen(false) : null)}
           >
             <div className="flex justify-center flex-shrink-0 w-16">
@@ -33,7 +34,7 @@ const SidebarLinks = ({ sideLinks, setOpen }: SidebarProps) => {
                 size="1.4rem"
                 className={cn(
                   'group-hover/link:text-primary transition-all duration-300 ease-in-out',
-                  path === item.path ? 'text-primary' : 'text-white/50',
+                  path === item.path ? 'text-primary' : 'text-text',
                 )}
               />
             </div>

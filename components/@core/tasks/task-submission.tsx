@@ -76,6 +76,7 @@ export function TaskSubmission({
       isPending={isPending}
       isOpen={isOpen}
       setIsOpenHandler={setIsOpenHandler}
+      isSubmitting={isSubmitting}
     >
       <SubmissionForm
         form={form}

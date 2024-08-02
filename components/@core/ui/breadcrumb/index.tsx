@@ -14,12 +14,11 @@ import {
 import { usePathname } from 'next/navigation'
 
 export function BreadcrumbWrapper() {
-  const path = usePathname();
+  const path = usePathname()
   const segments = path.split('/').filter(Boolean)
 
   return (
-    <div className='hidden h-10 lg:flex items-center gap-4'>
-      <div className="w-1 rounded-full shadow-sm h-full bg-primary/50" />
+    <div className='hidden h-10 overflow-hidden bg-card border px-5 rounded-md lg:flex items-center'>
       <Breadcrumb>
         <BreadcrumbList>
           {segments.map((segment, index) => {

@@ -6,12 +6,12 @@ import NoRecords from "../ui/no-records"
 import { useMemo, useState, useEffect } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { SearchFilter } from "./search-filter"
-import StatusFilter from "./status-filter"
 import { TaskProps } from "./types"
 import Link from "next/link"
 import AddButton from '@/components/@core/ui/add-button';
 import { Button } from "@/components/ui/button"
 import { MdAdd } from "react-icons/md"
+import SelectFilter from "../ui/select-filter"
 
 type TaskWrapperProps = {
   isMentor: boolean
@@ -68,14 +68,26 @@ export const TaskAccordions = ({ tasks, isMentor }: TaskWrapperProps) => {
     const statusSearchParam = searchParams.get('status')
 
     if (taskSearchParam) setTaskSearch(taskSearchParam)
-    if (statusSearchParam) setTaskSearch(statusSearchParam)
+    if (statusSearchParam) setTaskStatus(statusSearchParam)
   }, [])
 
   return (
     <>
-      <div className="w-full flex gap-3">
+      <div className="w-full flex gap-2">
         <SearchFilter handleSearch={handleSearch} searchParams={searchParams} />
-        <StatusFilter handleSearch={handleStatusFilter} searchParams={searchParams} />
+        <SelectFilter
+          handleSearch={handleStatusFilter}
+          searchParams={searchParams}
+          searchParamsName="status"
+          items={[
+            { value: 'all', name: 'Status', color: 'all' },
+            { value: 'pending', name: 'Pending', color: 'bg-pending' },
+            { value: 'in_progress', name: 'In Progress', color: 'bg-in-progress' },
+            { value: 'completed', name: 'Completed', color: 'bg-completed' },
+            { value: 'overdue', name: 'Overdue', color: 'bg-overdue' }
+          ]}
+          className='w-40'
+        />
         {isMentor && (
           <Link
             href="/mentor/tasks-management/create-task"
@@ -89,7 +101,7 @@ export const TaskAccordions = ({ tasks, isMentor }: TaskWrapperProps) => {
           </Link>
         )}
       </div>
-      <div className="flex flex-col gap-4">
+      <div>
         {selectedTasks.length ? (
           <Accordion type="single" collapsible className="w-full">
             {selectedTasks.map(task => (

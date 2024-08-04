@@ -30,20 +30,22 @@ export function AttendanceConfirmation({
   const isAfternoon = new Date().getHours() >= 12
   const isMobile = useMediaQuery('(max-width: 599px)')
 
+  const isWeekend = [0, 6].includes(new Date().getDay())
+
   const isTriggerDisabled = currentAttendance
     ? currentAttendance?.timeOutPM
       ? true
       : !isAfternoon && currentAttendance?.timeOutAM
-      ? true
-      : false
-    : false
+        ? true
+        : false
+    : false || isWeekend
 
   const Submission = isMobile ? DrawerConfirmation : DialogConfirmation
 
   return (
     <Submission
       trigger={
-        <>  
+        <>
           <MdAdd size="1.5rem" className='inline-flex md:hidden' />
           <IoMdAddCircleOutline size="1.3rem" className='hidden md:inline-flex' />
           <span className='mr-2'>{mode}</span>

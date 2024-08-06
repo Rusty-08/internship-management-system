@@ -1,5 +1,3 @@
-import { SearchFilter } from '@/components/@core/tasks/search-filter'
-import StatusFilter from '@/components/@core/tasks/status-filter'
 import { TaskSkeleton } from '@/components/@core/tasks/task-skeleton'
 import TaskWrapper from '@/components/@core/tasks/task-wrapper'
 import { getCurrentUserMentorId } from '@/utils/users'

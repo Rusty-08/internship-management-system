@@ -63,13 +63,14 @@ export const formatHours = (time: number) => {
   if (hours > 0) {
     timeString += `${hours} ${hours > 1 ? 'hrs' : 'hr'} `
   }
-    
+
   timeString += `${minutes} ${minutes > 1 ? 'mins' : 'min'}`
 
   return timeString.trim()
 }
 
 export const addAttendance = async (internId: string) => {
+  noStore()
   const res = await fetch('/api/attendance', {
     method: 'POST',
     headers: {

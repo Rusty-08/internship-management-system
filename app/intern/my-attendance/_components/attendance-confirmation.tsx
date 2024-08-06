@@ -7,6 +7,7 @@ import { DrawerConfirmation } from '@/components/@core/confirmation/drawer-confi
 import DialogConfirmation from '@/components/@core/confirmation/dialog-confirmation'
 import { IoMdAddCircleOutline } from 'react-icons/io'
 import { MdAdd } from "react-icons/md"
+import { dateInManilaTz } from '@/utils/format-date'
 
 export type AttendanceConfirmationProps = {
   addCurrentAttendance: (e: FormEvent) => void
@@ -40,6 +41,9 @@ export function AttendanceConfirmation({
         : false
     : false || isWeekend
 
+  // check if the current attendance is today
+  const isAllowedToLogin = dateInManilaTz(currentAttendance?.date || null) === dateInManilaTz(new Date())
+
   const Submission = isMobile ? DrawerConfirmation : DialogConfirmation
 
   return (
@@ -53,7 +57,7 @@ export function AttendanceConfirmation({
       }
       title='Confirmation'
       description="Please verify the date and time."
-      isPending={isTriggerDisabled}
+      isPending={isAllowedToLogin ? isTriggerDisabled : false}
       isOpen={isOpen}
       setIsOpenHandler={setIsOpenHandler}
       isAddButton

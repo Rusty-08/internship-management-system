@@ -3,15 +3,15 @@
 import { Accordion } from "@/components/ui/accordion"
 import TaskCard from "./task-card"
 import NoRecords from "../ui/no-records"
-import { useMemo, useState, useEffect } from "react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useMemo, useState, useCallback } from "react"
 import { SearchFilter } from "./search-filter"
 import { TaskProps } from "./types"
 import Link from "next/link"
 import AddButton from '@/components/@core/ui/add-button';
 import { Button } from "@/components/ui/button"
 import { MdAdd } from "react-icons/md"
-import SelectFilter from "../ui/select-filter"
+import SelectFilter from "./status-filter"
+import { useUpdateParams } from "@/hooks/useUpdateParams"
 
 type TaskWrapperProps = {
   isMentor: boolean
@@ -19,66 +19,37 @@ type TaskWrapperProps = {
 }
 
 export const TaskAccordions = ({ tasks, isMentor }: TaskWrapperProps) => {
-  const [taskSearch, setTaskSearch] = useState('')
-  const [taskStatus, setTaskStatus] = useState('')
-  const searchParams = useSearchParams()
-  const pathname = usePathname()
-  const { replace } = useRouter()
+  const { searchParams, updateParams } = useUpdateParams()
+  const [taskSearch, setTaskSearch] = useState(searchParams.get('task') || '')
+  const [taskStatus, setTaskStatus] = useState(searchParams.get('status') || 'all')
 
-  const handleSearch = (task: string) => {
-    const params = new URLSearchParams(searchParams)
+  const handleSearch = useCallback((task: string) => {
     setTaskSearch(task)
+    updateParams('task', task)
+  }, [updateParams])
 
-    if (task) {
-      params.set('task', task)
-    } else {
-      params.delete('task')
-    }
+  const handleStatusChange = useCallback((value: string) => {
+    setTaskStatus(value)
+    updateParams('status', value)
+  }, [updateParams])
 
-    replace(`${pathname}?${params.toString()}`)
-  }
-
-  const handleStatusFilter = (status: string) => {
-    const params = new URLSearchParams(searchParams)
-    setTaskStatus(status)
-
-    if (status && status !== 'all') {
-      params.set('status', status);
-    } else {
-      params.delete('status');
-    }
-
-    replace(`${pathname}?${params.toString()}`)
-  }
-
-  const filteredTasks = useMemo(() => taskSearch
-    ? tasks.filter(task =>
-      task.title.toLowerCase().includes(taskSearch.toLowerCase())
-    ) : tasks
-    , [taskSearch, tasks])
-
-  const selectedTasks = useMemo(() => taskStatus
-    ? filteredTasks.filter(task =>
-      taskStatus !== 'all' ? task.status.toLowerCase() === taskStatus : task
-    ) : filteredTasks
-    , [filteredTasks, taskStatus])
-
-  useEffect(() => {
-    const taskSearchParam = searchParams.get('task')
-    const statusSearchParam = searchParams.get('status')
-
-    if (taskSearchParam) setTaskSearch(taskSearchParam)
-    if (statusSearchParam) setTaskStatus(statusSearchParam)
-  }, [])
+  const selectedTasks = useMemo(() => {
+    return tasks.filter(task => {
+      const titleMatch =
+        taskSearch ? task.title.toLowerCase().includes(taskSearch.toLowerCase()) : true
+      const statusMatch =
+        taskStatus !== 'all' ? task.status.toLowerCase() === taskStatus : true
+      return titleMatch && statusMatch
+    })
+  }, [taskSearch, taskStatus, tasks])
 
   return (
-    <>
-      <div className="w-full flex gap-2">
-        <SearchFilter handleSearch={handleSearch} searchParams={searchParams} />
+    <div className='space-y-4'>
+      <div className="w-full flex gap-3">
+        <SearchFilter handleSearch={handleSearch} defaultValue={taskSearch} />
         <SelectFilter
-          handleSearch={handleStatusFilter}
-          searchParams={searchParams}
-          searchParamsName="status"
+          defaultValue={taskStatus}
+          handleStatusChange={handleStatusChange}
           items={[
             { value: 'all', name: 'Status', color: 'all' },
             { value: 'pending', name: 'Pending', color: 'bg-pending' },
@@ -115,6 +86,6 @@ export const TaskAccordions = ({ tasks, isMentor }: TaskWrapperProps) => {
           />
         )}
       </div>
-    </>
+    </div>
   )
 }

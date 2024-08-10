@@ -9,14 +9,12 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
-import { ReadonlyURLSearchParams } from 'next/navigation'
 import { ClassNameValue } from 'tailwind-merge'
 
 type SelectFilterProps = {
-  handleSearch: (term: string) => void
-  searchParams?: ReadonlyURLSearchParams
-  searchParamsName?: string
+  defaultValue: string
   className?: ClassNameValue
+  handleStatusChange: (term: string) => void
   items: {
     value: string,
     name: string
@@ -25,10 +23,9 @@ type SelectFilterProps = {
 }
 
 const SelectFilter = ({
-  handleSearch,
-  searchParams,
-  searchParamsName,
+  defaultValue,
   items,
+  handleStatusChange,
   className
 }: SelectFilterProps) => {
   const colorMargin = [
@@ -40,17 +37,14 @@ const SelectFilter = ({
 
   return (
     <Select
-      defaultValue={items[0].value}
-      onValueChange={val => handleSearch(val)}
+      defaultValue={defaultValue}
+      onValueChange={handleStatusChange}
     >
       <SelectTrigger className={cn("bg-card w-max", className)}>
         <SelectValue
-          placeholder="Select task status"
-          defaultValue={
-            searchParams && searchParamsName
-              ? searchParams.get(searchParamsName)?.toString()
-              : items[0].value
-          }
+          placeholder="Task status"
+          defaultValue={defaultValue}
+          className='p'
         />
       </SelectTrigger>
       <SelectContent align="end">

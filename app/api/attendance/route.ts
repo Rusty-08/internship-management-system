@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
 import { getTotalHours } from '@/utils/attendance'
-import { dateInManilaTz } from '@/utils/format-date'
 import { NextResponse } from 'next/server'
+import { format } from 'date-fns';
 
 export async function POST(req: Request) {
   const { internId } = await req.json()
@@ -24,23 +24,16 @@ export async function POST(req: Request) {
       timeOutPM
     } = attendanceRecords[attendanceRecords.length - 1]
 
-    let updateData
-
-    if (isAfternoon) {
-      updateData = {
-        timeInAM,
-        timeOutAM,
-        timeInPM: !timeInPM ? currentDate : timeInPM,
-        timeOutPM: !timeOutPM && timeInPM ? currentDate : timeOutPM,
-      }
-    } else {
-      updateData = {
-        timeInAM: !timeInAM ? currentDate : timeInAM,
-        timeOutAM: !timeOutAM && timeInAM ? currentDate : timeOutAM,
-        timeInPM,
-        timeOutPM
-      }
+    const updateData = {
+      timeInAM: !timeInAM && !isAfternoon ? currentDate : timeInAM,
+      timeOutAM: !timeOutAM && !isAfternoon && timeInAM ? currentDate : timeOutAM,
+      timeInPM: !timeInPM && isAfternoon ? currentDate : timeInPM,
+      timeOutPM: !timeOutPM && isAfternoon && timeInPM ? currentDate : timeOutPM,
     }
+
+    console.log('day: ' + format(currentDate, 'EEE, MMM dd, HH:MM:SS'))
+    console.log('hours: ' + currentDate.getHours())
+    console.log('is-afternoon: ' + isAfternoon)
 
     // Update the existing attendance record
     const currentAttendance = await prisma.attendance.update({

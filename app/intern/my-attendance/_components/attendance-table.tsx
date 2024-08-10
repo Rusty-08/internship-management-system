@@ -67,12 +67,8 @@ export default function AttendanceTable({
     getPaginationRowModel: getPaginationRowModel(),
   })
 
-  const currentAttendance = useMemo(
-    () => attendanceData.find(att => dateInManilaTz(att.date) == dateInManilaTz(new Date())),
-    [attendanceData],
-  )
-
-  const mode = useMemo(() => getAttendanceMode(currentAttendance), [currentAttendance])
+  const currentAttendance = attendanceData[attendanceData.length - 1]
+  const mode = getAttendanceMode(currentAttendance)
 
   const addCurrentAttendance = async (event: FormEvent) => {
     event.preventDefault()
@@ -104,7 +100,7 @@ export default function AttendanceTable({
         variant: 'destructive',
       })
     }
-    
+
     setLoading(false)
     setIsOpen(false)
     router.refresh()
@@ -136,7 +132,7 @@ export default function AttendanceTable({
     <div className="flex flex-col gap-4">
       <div className="flex flex-row gap-2 justify-between">
         <DateRangeFilter date={date} setDate={setDate} />
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <Button
             variant="outline"
             onClick={downloadAttendance}

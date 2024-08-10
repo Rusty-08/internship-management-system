@@ -12,11 +12,9 @@ const TasksManagement = async () => {
   const mentorId = await getCurrentUserMentorId()
 
   return (
-    <div className="space-y-4">
-      <Suspense fallback={<TaskSkeleton />}>
-        <TaskWrapper mentorId={mentorId} />
-      </Suspense>
-    </div>
+    <Suspense fallback={<TaskSkeleton />}>
+      <TaskWrapper mentorId={mentorId} />
+    </Suspense>
   )
 }
 

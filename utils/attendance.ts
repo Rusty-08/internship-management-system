@@ -70,7 +70,6 @@ export const formatHours = (time: number) => {
 }
 
 export const addAttendance = async (internId: string) => {
-  noStore()
   const res = await fetch('/api/attendance', {
     method: 'POST',
     headers: {
@@ -79,7 +78,6 @@ export const addAttendance = async (internId: string) => {
     body: JSON.stringify({
       internId,
     }),
-    cache: 'no-store'
   })
 
   const addedAttendance: AttendanceProps = await res.json()

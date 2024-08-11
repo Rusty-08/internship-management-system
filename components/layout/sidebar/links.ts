@@ -71,8 +71,8 @@ export const internSidebarLinks: SidebarLinkProps = [
     icon: 'MdOutlineCalendarMonth',
   },
   {
-    name: 'Task Management',
-    path: '/intern/task-management',
+    name: 'My Tasks',
+    path: '/intern/my-tasks',
     icon: 'MdOutlineListAlt',
   },
 ]

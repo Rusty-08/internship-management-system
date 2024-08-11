@@ -28,21 +28,17 @@ export function AttendanceConfirmation({
   setIsOpenHandler,
   currentAttendance,
 }: AttendanceConfirmationProps) {
-  const isAfternoon = new Date().getHours() >= 12
   const isMobile = useMediaQuery('(max-width: 599px)')
-
-  const isWeekend = [0, 6].includes(new Date().getDay())
+  const isAfternoon = new Date().getHours() >= 12
 
   const isTriggerDisabled = currentAttendance
     ? currentAttendance?.timeOutPM
       ? true
-      : !isAfternoon && currentAttendance?.timeOutAM
-        ? true
-        : false
-    : false || isWeekend
+      : !isAfternoon && currentAttendance?.timeOutAM ? true : false
+    : true
 
   // check if the current attendance is today
-  const isAllowedToLogin = dateInManilaTz(currentAttendance?.date || null) === dateInManilaTz(new Date())
+  const isAllowedToTimeIn = dateInManilaTz(currentAttendance?.date || null) === dateInManilaTz(new Date())
 
   const Submission = isMobile ? DrawerConfirmation : DialogConfirmation
 
@@ -57,7 +53,7 @@ export function AttendanceConfirmation({
       }
       title='Confirmation'
       description="Please verify the date and time."
-      isPending={isAllowedToLogin ? isTriggerDisabled : false}
+      isPending={isAllowedToTimeIn ? isTriggerDisabled : true}
       isOpen={isOpen}
       setIsOpenHandler={setIsOpenHandler}
       isAddButton

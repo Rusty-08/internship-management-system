@@ -93,7 +93,7 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
       <AccordionContent>
         <div className="flex flex-col gap-4 relative">
           <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-            <span className="text-sm text-text font-medium lg:w-[17.3rem]">
+            <span className="text-sm font-medium lg:w-[17.3rem]">
               Attachment
             </span>
             <div className="flex flex-col ps-4 gap-1">
@@ -112,10 +112,10 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
             </div>
           </div>
           <div className="flex gap-2 lg:gap-4 flex-col lg:flex-row">
-            <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
+            <span className="text-sm font-medium lg:w-[17.3rem] flex-shrink-0">
               Description
             </span>
-            <p className="text-sm whitespace-pre-line text-justify">
+            <p className="text-sm text-muted-foreground whitespace-pre-line text-justify">
               {description}
             </p>
           </div>
@@ -126,10 +126,10 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
                 // !isMentor && 'mt-2',
               )}
             >
-              <span className="text-sm text-text font-medium lg:w-[17.3rem] flex-shrink-0">
+              <span className="text-sm font-medium lg:w-[17.3rem] flex-shrink-0">
                 {!isMentor ? 'Your Submission' : 'Submission'}
               </span>
-              <p className="text-sm text-start whitespace-pre-line">
+              <p className="text-sm text-muted-foreground text-start whitespace-pre-line">
                 {status === 'PENDING' ? 'Unavailable' : 'None'}
               </p>
             </div>
@@ -137,10 +137,10 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
           {submissions?.length ? (
             <div className="border-t pt-4 flex flex-col gap-4">
               <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-                <span className="text-sm text-text font-medium lg:w-[17.3rem]">
+                <span className="text-sm font-medium lg:w-[17.3rem]">
                   Date Submitted
                 </span>
-                <p className="text-sm">
+                <p className="text-sm text-muted-foreground">
                   {format(
                     submissions[submissions.length - 1].date,
                     'LLLL dd, y',
@@ -148,7 +148,7 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
                 </p>
               </div>
               <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-                <span className="text-sm text-text font-medium lg:w-[17.3rem]">
+                <span className="text-sm font-medium lg:w-[17.3rem]">
                   Attachment
                 </span>
                 <div className="ps-4">
@@ -171,7 +171,7 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
           <div className={cn(
             !isMentor && 'relative',
             "lg:absolute right-0 bottom-0",
-            )}
+          )}
           >
             {!isMentor ? (
               <TaskSubmission
@@ -196,7 +196,7 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
                         <Button
                           variant="ghost"
                           size="circle"
-                          className="text-text"
+                          className="text-muted-foreground"
                         >
                           <BiEditAlt size="1.1rem" />
                         </Button>

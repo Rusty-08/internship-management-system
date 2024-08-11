@@ -27,7 +27,7 @@ const config = {
         sidebar: 'hsl(var(--sidebar))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
-        text: colors.slate[500],
+        text: 'hsl(var(--muted-foreground))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',

@@ -20,7 +20,7 @@ const Loading = () => {
         width={80}
         height={80}
       />
-      <div className="h-8 mb-4 flex items-center justify-center">
+      <div className="h-8 mb-8 flex items-center justify-center">
         <LoadingSpinner width="4rem" />
       </div>
     </div>

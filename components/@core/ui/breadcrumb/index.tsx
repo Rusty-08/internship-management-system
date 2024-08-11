@@ -17,13 +17,16 @@ export function BreadcrumbWrapper() {
   const path = usePathname()
   const segments = path.split('/').filter(Boolean)
 
+  // temp remove mentor dashboard: check if the user is mentor
+  const paths = segments[0] === 'mentor' ? segments.slice(1) : segments
+
   return (
     <div className='hidden h-10 overflow-hidden bg-card border px-5 rounded-md lg:flex items-center'>
       <Breadcrumb>
         <BreadcrumbList>
-          {segments.map((segment, index) => {
-            const href = '/' + segments.slice(0, index + 1).join('/')
-            const isLast = index === segments.length - 1
+          {paths.map((segment, index) => {
+            const href = '/' + paths.slice(0, index + 1).join('/')
+            const isLast = index === paths.length - 1
             const name =
               segment.split('-')
                 .map(item => item.charAt(0).toUpperCase() + item.slice(1, item.length))
@@ -34,11 +37,11 @@ export function BreadcrumbWrapper() {
                 <BreadcrumbItem>
                   {isLast ? (
                     <BreadcrumbPage className="text-foreground font-medium">
-                      {index === 0 ? 'Dashboard' : name}
+                      {index === 0 && segments[0] !== 'mentor' ? 'Dashboard' : name}
                     </BreadcrumbPage>
                   ) : (
                     <BreadcrumbLink asChild>
-                      <Link href={href}>{index === 0 ? 'Dashboard' : name}</Link>
+                      <Link href={href}>{index === 0 && segments[0] !== 'mentor' ? 'Dashboard' : name}</Link>
                     </BreadcrumbLink>
                   )}
                 </BreadcrumbItem>

@@ -30,7 +30,7 @@ const DeleteDialog = ({
     <Dialog open={isOpen} onOpenChange={setIsOpenHandler}>
       <DialogTrigger>
         <TooltipWrapper tooltip="Delete Task">
-          <Button variant="ghost" size="circle" className="text-text">
+          <Button variant="ghost" size="circle" className="text-muted-foreground">
             <MdOutlineDeleteOutline size="1.1rem" />
           </Button>
         </TooltipWrapper>

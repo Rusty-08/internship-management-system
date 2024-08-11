@@ -7,8 +7,6 @@ export const metadata: Metadata = {
   title: 'Task Form',
 }
 
-const link = [{ title: 'Task Management', path: '/mentor/tasks-management' }]
-
 const TaskFormPage = async ({ params: { id } }: { params: { id: string } }) => {
   const data = await getTaskById(id)
 

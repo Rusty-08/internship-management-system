@@ -3,6 +3,7 @@ import { FaInstagram } from 'react-icons/fa'
 import { FaLinkedinIn } from 'react-icons/fa'
 import odiLogoCircleWhite from '@/public/odi-white-logo.svg'
 import odiLogoCircleBlack from '@/public/odi-logo.png'
+import logoPlaceholder from '@/public/test-logo.svg'
 
 export type SiteConfig = typeof siteConfig
 
@@ -17,4 +18,5 @@ export const siteConfig = {
   ],
   logoCircleWhite: odiLogoCircleWhite,
   logoCircleBlack: odiLogoCircleBlack,
+  logoPlaceholder
 }

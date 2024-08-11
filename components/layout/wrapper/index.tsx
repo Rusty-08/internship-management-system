@@ -5,13 +5,15 @@ import Sidebar from '@/components/layout/sidebar'
 import Navbar from '@/components/layout/navbar'
 import Footer from '@/components/layout/footer'
 import { UserRole } from '@prisma/client'
+import { cn } from '@/lib/utils'
 
 type SidebarProps = {
   children: ReactNode
   role: UserRole
+  withSidebar?: boolean
 }
 
-const CoreLayout = ({ children, role }: SidebarProps) => {
+const CoreLayout = ({ children, role, withSidebar = true }: SidebarProps) => {
   const lisks = {
     ADMIN: adminSidebarLinks,
     MENTOR: mentorSidebarLinks,
@@ -20,8 +22,12 @@ const CoreLayout = ({ children, role }: SidebarProps) => {
 
   return (
     <main className="min-h-screen flex relative w-full">
-      <Sidebar sideLinks={lisks[role]} />
-      <div className='flex flex-col transition-all duration-300 pl-0 lg:pl-16 ease-in-out w-full'>
+      {withSidebar && <Sidebar sideLinks={lisks[role]} />}
+      <div className={cn(
+        'flex flex-col transition-all duration-300 pl-0 ease-in-out w-full',
+        withSidebar && 'lg:pl-16'
+      )}
+      >
         <Navbar profilePath={`/${role.toLowerCase()}/profile`} sideLinks={lisks[role]} />
         <div
           style={{ minHeight: 'calc(100vh - 9rem)' }}

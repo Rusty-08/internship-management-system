@@ -3,7 +3,7 @@ import CoreLayout from '@/components/layout/wrapper'
 
 const MentorLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <CoreLayout role="MENTOR">
+    <CoreLayout role="MENTOR" withSidebar={false}>
       {children}
     </CoreLayout>
   )

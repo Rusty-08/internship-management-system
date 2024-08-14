@@ -9,6 +9,7 @@ export type TaskProps = {
   endDate: Date
   files?: File[]
   submissions?: Submission[]
+  intern?: string | null
 }
 
 export type TaskWrapperProps = {

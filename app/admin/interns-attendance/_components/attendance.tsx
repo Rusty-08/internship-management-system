@@ -23,7 +23,7 @@ const Attendance = ({
 
   const filteredAttendance = date
     ? currentAttendance.filter(
-        attendance => dateInManilaTz(attendance.date) == dateInManilaTz(date)
+      attendance => dateInManilaTz(attendance.date) == dateInManilaTz(date)
     ) : []
 
   const dashboardAttendance = (attendance: ColumnDef<AttendanceProps>[]) => {
@@ -41,7 +41,7 @@ const Attendance = ({
   return (
     <div className="flex flex-col gap-4">
       {!isInDashboard && (
-        <DayPicker date={date || undefined} setDate={setDate} />
+        <DayPicker date={date || undefined} setDate={setDate} disabled={[{ dayOfWeek: [0, 6] }]} />
       )}
       <AttendanceTable
         data={filteredAttendance}

@@ -48,8 +48,8 @@ export const adminSidebarLinks: SidebarLinkProps = [
     icon: 'MdOutlineCalendarMonth',
   },
   {
-    name: 'Reports',
-    path: '/admin/reports',
+    name: 'Interns Tasks',
+    path: '/admin/interns-tasks',
     icon: 'MdOutlineListAlt',
   },
   {

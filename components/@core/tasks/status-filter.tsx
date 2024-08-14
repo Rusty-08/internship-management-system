@@ -9,6 +9,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
+import { SelectProps } from '@radix-ui/react-select'
+import { FC } from 'react'
 import { ClassNameValue } from 'tailwind-merge'
 
 type SelectFilterProps = {
@@ -20,13 +22,14 @@ type SelectFilterProps = {
     name: string
     color?: string
   }[]
-}
+} & SelectProps
 
 const SelectFilter = ({
   defaultValue,
   items,
   handleStatusChange,
-  className
+  className,
+  ...props
 }: SelectFilterProps) => {
   const colorMargin = [
     '-translate-x-1',
@@ -39,12 +42,12 @@ const SelectFilter = ({
     <Select
       defaultValue={defaultValue}
       onValueChange={handleStatusChange}
+      {...props}
     >
       <SelectTrigger className={cn("bg-card w-max", className)}>
         <SelectValue
           placeholder="Task status"
           defaultValue={defaultValue}
-          className='p'
         />
       </SelectTrigger>
       <SelectContent align="end">

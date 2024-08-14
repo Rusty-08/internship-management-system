@@ -7,5 +7,5 @@ export const dateInManilaTz = (date: Date | null) => {
 
 // Given a date and any time zone, returns a Date with the equivalent UTC time
 export const fromZonedTimeDate = (date: Date | null) => {
-  return date ? fromZonedTime(date, siteConfig.timeZone) : ''
+  return date ? fromZonedTime(date, siteConfig.timeZone) : new Date()
 }

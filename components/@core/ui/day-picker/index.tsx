@@ -3,7 +3,7 @@
 import { Calendar as CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { Calendar, CalendarProps } from "@/components/ui/calendar"
 import {
   Popover,
   PopoverContent,
@@ -18,9 +18,9 @@ type DatePickerProps = {
   date: Date | undefined
   setDate: Dispatch<SetStateAction<Date | undefined>>
   className?: ClassNameValue
-}
+} & CalendarProps
 
-export function DayPicker({ date, setDate, className }: DatePickerProps) {
+export function DayPicker({ date, setDate, className, ...props }: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -41,6 +41,7 @@ export function DayPicker({ date, setDate, className }: DatePickerProps) {
           selected={date}
           onSelect={setDate}
           initialFocus
+          {...props}
         />
       </PopoverContent>
     </Popover>

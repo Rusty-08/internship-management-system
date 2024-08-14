@@ -24,9 +24,10 @@ import { formatInTimeZone } from 'date-fns-tz'
 export type TaskCardProps = {
   task: TaskProps
   isMentor: boolean
+  isInAdmin?: boolean
 }
 
-const TaskCard = ({ task, isMentor }: TaskCardProps) => {
+const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
   const [isOpenSubmission, setIsOpenSubmission] = useState(false)
   const [isOpenDelete, setIsOpenDelete] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -41,10 +42,11 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
     endDate,
     submissions,
     files,
+    intern
   } = task
 
   const formattedStartDate = formatInTimeZone(startDate, 'Asia/Manila', 'LLL dd')
-  const formattedEndDate = formatInTimeZone(endDate, 'Asia/Manila', 'LLL dd, y')
+  const formattedEndDate = formatInTimeZone(endDate, 'Asia/Manila', 'LLL dd')
 
   const statusIcon = {
     COMPLETED: MdTaskAlt,
@@ -77,12 +79,17 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
   return (
     <AccordionItem value={task.id}>
       <AccordionTrigger>
-        <div className="self-start w-[1.3rem]">
-          <Icon size="1.3rem" className={`text-${statusColor}`} />
+        <div className={`w-10 h-10 flex items-center justify-center rounded-full shadow-sm bg-${statusColor}/10`}>
+          <Icon size="1.3rem" className={`text-${statusColor} ${status === 'OVERDUE' && 'mb-0.5'}`} />
         </div>
-        <div className="flex flex-grow flex-col lg:flex-row gap-1 lg:justify-center lg:gap-4">
-          <span className="text-sm font-normal text-start text-muted-foreground lg:w-[15rem]">{`${formattedStartDate} - ${formattedEndDate}`}</span>
-          <p className="flex-grow text-left font-medium text-[0.95rem]">
+        <div className="flex flex-grow flex-col lg:flex-row gap-1 lg:justify-center lg:items-center lg:gap-4">
+          <div className="flex flex-col gap-1 lg:w-[15rem]">
+            {isInAdmin && <p className="flex-grow text-left font-medium text-sm">{intern}</p>}
+            <span className="font-normal text-start text-muted-foreground text-sm">
+              {`${formattedStartDate} - ${formattedEndDate}`}
+            </span>
+          </div>
+          <p className="flex-grow text-left font-medium text-[0.9rem]">
             {title}
           </p>
         </div>
@@ -96,20 +103,18 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
             <span className="text-sm font-medium lg:w-[17.3rem]">
               Attachment
             </span>
-            <div className="flex flex-col ps-4 gap-1">
-              <ul className="list-disc">
-                {files?.map(({ id, name, url }) => (
-                  <li
-                    key={id}
-                    className="text-blue-500 text-sm hover:underline"
-                  >
-                    <a href={url || ''} target="_blank">
-                      {name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {files ? (
+              <a
+                className="text-blue-500 text-sm hover:underline"
+                href={files[0].url || ''}
+                target="_blank"
+              >
+                {files[0].name}
+              </a>
+            ) : (
+              <p className='text-sm text-muted-foreground whitespace-pre-line'>None</p>
+            )
+            }
           </div>
           <div className="flex gap-2 lg:gap-4 flex-col lg:flex-row">
             <span className="text-sm font-medium lg:w-[17.3rem] flex-shrink-0">
@@ -127,7 +132,7 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
               )}
             >
               <span className="text-sm font-medium lg:w-[17.3rem] flex-shrink-0">
-                {!isMentor ? 'Your Submission' : 'Submission'}
+                {!isMentor && !isInAdmin ? 'Your Submission' : 'Submission'}
               </span>
               <p className="text-sm text-muted-foreground text-start whitespace-pre-line">
                 {status === 'PENDING' ? 'Unavailable' : 'None'}
@@ -142,7 +147,7 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
                 </span>
                 <p className="text-sm text-muted-foreground">
                   {format(
-                    submissions[submissions.length - 1].date,
+                    submissions[0].date,
                     'LLLL dd, y',
                   )}
                 </p>
@@ -151,20 +156,13 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
                 <span className="text-sm font-medium lg:w-[17.3rem]">
                   Attachment
                 </span>
-                <div className="ps-4">
-                  <ul className="list-disc flex flex-col gap-2">
-                    {submissions?.map(({ id, name, url }) => (
-                      <li
-                        key={id}
-                        className="text-blue-500 text-sm hover:underline"
-                      >
-                        <a href={url || ''} target="_blank">
-                          {name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <a
+                  className="text-blue-500 text-sm hover:underline"
+                  href={submissions[0].url || ''}
+                  target="_blank"
+                >
+                  {submissions[0].name}
+                </a>
               </div>
             </div>
           ) : null}
@@ -173,7 +171,7 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
             "lg:absolute right-0 bottom-0",
           )}
           >
-            {!isMentor ? (
+            {!isMentor && task.status !== 'COMPLETED' && !isInAdmin ? (
               <TaskSubmission
                 taskId={task.id}
                 isOpen={isOpenSubmission}
@@ -182,7 +180,7 @@ const TaskCard = ({ task, isMentor }: TaskCardProps) => {
               />
             ) : (
               <>
-                {status !== 'COMPLETED' && (
+                {status !== 'COMPLETED' && !isInAdmin && (
                   <>
                     <DeleteConfirmation
                       taskName={title}

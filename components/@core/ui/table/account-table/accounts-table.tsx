@@ -24,13 +24,13 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useRouter } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
 import { z } from 'zod'
 import { ArchiveConfirmation } from './archive-confirmation'
 import { FormDialog } from './register-form'
 import { RegistrationSchema } from './registration-schema'
-
-const filters = ['All', 'Intern', 'Mentor']
+import SelectFilter from '@/components/@core/tasks/status-filter'
+import { useUpdateParams } from '@/hooks/useUpdateParams'
 
 type AccountsTableProps = {
   data: UserSubset[]
@@ -49,14 +49,13 @@ export default function AccountsTable({
 }: AccountsTableProps) {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
-  const [roleFilter, setRoleFilter] = useState('All')
+  const { searchParams, updateParams } = useUpdateParams()
+  const [roleFilter, setRoleFilter] = useState(searchParams.get('role') || 'all')
   const [formMode, setFormMode] = useState<'edit' | 'create'>('create')
   const [sorting, setSorting] = useState<SortingState>([])
   const [rowSelection, setRowSelection] = useState({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [archiveIntern, setArchiveIntern] = useState<Row<UserSubset> | null>(
-    null,
-  )
+  const [archiveIntern, setArchiveIntern] = useState<Row<UserSubset> | null>(null)
   const [openDialog, setOpenDialog] = useState(false)
   const [loading, setLoading] = useState(false)
   const [mentors, setMentors] = useState<UserSubset[]>([])
@@ -70,10 +69,11 @@ export default function AccountsTable({
     totalHours: undefined,
   })
 
-  const filteredData =
-    roleFilter !== 'All'
+  const filteredData = useMemo(() => {
+    return roleFilter !== 'all'
       ? data.filter(d => d.role === roleFilter.toUpperCase())
       : data
+  }, [roleFilter, data])
 
   const handleEdit = (row: Row<UserSubset>) => {
     setFormMode('edit')
@@ -163,23 +163,20 @@ export default function AccountsTable({
             search={user ? user.toLowerCase() : 'user'}
           />
           {isArchivedPage && (
-            <Select
-              onValueChange={value => setRoleFilter(value)}
+            <SelectFilter
+              defaultValue='all'
               value={roleFilter}
-              defaultValue={filters[0]}
-            >
-              <SelectTrigger className="w-max">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent align="end">
-                {isArchivedPage &&
-                  filters.map(filter => (
-                    <SelectItem key={filter} value={filter ?? ''}>
-                      {filter}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
+              handleStatusChange={role => {
+                setRoleFilter(role)
+                updateParams('role', role)
+              }}
+              items={[
+                { value: 'all', name: 'Role', color: 'all' },
+                { value: 'intern', name: 'Interns', color: 'bg-completed' },
+                { value: 'mentor', name: 'Mentors', color: 'bg-primary' },
+              ]}
+              className='w-32'
+            />
           )}
         </div>
         {!isArchivedPage && user && (

@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/table'
 
 import NoRecords from '../no-records'
+import { cn } from '@/lib/utils'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -31,7 +32,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className="border rounded-md bg-card overflow-hidden">
       <Table>
-        <TableHeader className="bg-accent/50">
+        <TableHeader className="bg-muted">
           {table.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map(header => {
@@ -43,9 +44,9 @@ export function DataTable<TData, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                   </TableHead>
                 )
               })}
@@ -54,10 +55,11 @@ export function DataTable<TData, TValue>({
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map(row => (
+            table.getRowModel().rows.map((row, idx) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
+                className={cn('bg-transparent', idx % 2 !== 0 && 'bg-muted/50')}
               >
                 {row.getVisibleCells().map(cell => (
                   <TableCell key={cell.id} className="px-6 py-2.5 text-text">

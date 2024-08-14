@@ -9,18 +9,19 @@ const Loading = () => {
   const { theme: initialTheme } = useTheme()
 
   return (
-    <div className="layout-loading flex items-center justify-center gap-2 flex-col w-full h-full">
+    <div className="layout-loading flex items-center justify-center gap-4 flex-col w-full h-full">
       <Image
-        src={
-          initialTheme === 'light'
-            ? siteConfig.logoCircleBlack
-            : siteConfig.logoCircleWhite
-        }
+        // src={
+        //   initialTheme === 'light'
+        //     ? siteConfig.logoCircleBlack
+        //     : siteConfig.logoCircleWhite
+        // }
+        src={siteConfig.logoPlaceholder}
         alt="logo"
-        width={80}
-        height={80}
+        width={60}
+        height={60}
       />
-      <div className="h-8 mb-8 flex items-center justify-center">
+      <div className="h-8 mb-4 flex items-center justify-center">
         <LoadingSpinner width="4rem" />
       </div>
     </div>

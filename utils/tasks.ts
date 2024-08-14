@@ -1,5 +1,33 @@
 import prisma from '@/lib/prisma'
-import { getCurrentUserMentorId } from './users'
+import { getCurrentUserMentorId, getInternUsers, getServerUserById } from './users'
+
+const task = {
+  id: true,
+  title: true,
+  description: true,
+  status: true,
+  startDate: true,
+  endDate: true,
+  mentorId: true,
+  files: {
+    select: {
+      id: true,
+      name: true,
+      url: true,
+      userId: true,
+      taskId: true,
+    },
+  },
+  submissions: {
+    select: {
+      id: true,
+      name: true,
+      url: true,
+      date: true,
+      taskId: true,
+    },
+  },
+}
 
 export const getTasks = async (id: string) => {
   if (!id) return null
@@ -7,35 +35,9 @@ export const getTasks = async (id: string) => {
     where: { id },
     include: {
       tasks: {
-        select: {
-          id: true,
-          title: true,
-          description: true,
-          status: true,
-          startDate: true,
-          endDate: true,
-          mentorId: true,
-          files: {
-            select: {
-              id: true,
-              name: true,
-              url: true,
-              userId: true,
-              taskId: true,
-            },
-          },
-          submissions: {
-            select: {
-              id: true,
-              name: true,
-              url: true,
-              date: true,
-              taskId: true,
-            },
-          },
-        },
+        select: task,
       },
-    },
+    }
   })
 
   return data?.tasks || []
@@ -72,4 +74,27 @@ export const getCurrentUserTasks = async () => {
   })
 
   return user?.tasks
+}
+
+export const getAllInternsTasks = async () => {
+  const mentors = await prisma.user.findMany({
+    where: { role: 'MENTOR' },
+    include: {
+      tasks: {
+        select: task,
+      },
+      internProfile: true
+    },
+  })
+
+  const allInterns = await getInternUsers()
+
+  const flattedTasks = mentors.map(mentor => {
+    return {
+      ...mentor,
+      intern: allInterns?.find(intern => intern.mentorId === mentor.id)?.name
+    }
+  })
+
+  return flattedTasks
 }

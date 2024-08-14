@@ -35,7 +35,7 @@ body,
   :root {
     --sidebar: 222.2 47.4% 7.2%;
     --navbar: 0 0% 100%;
-    --background: 210, 40%, 96%;
+    --background: 224, 48%, 95%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -51,7 +51,7 @@ body,
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
+    --border: 214.3 31.8% 88.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.75rem;
@@ -115,40 +115,12 @@ body,
   }
 }
 
-/* React Datepicker */
-
-.react-datepicker {
-  border-color: hsl(var(--border));
-  width: 100% !important;
-}
-
-.react-datepicker__view-calendar-icon input {
-  padding: 0.38rem 0.5rem 0.38rem 3rem !important;
-}
-
-.react-datepicker__month .react-datepicker__month-text,
-.react-datepicker__month .react-datepicker__quarter-text {
-  width: 6rem !important;
-  padding: 0.3rem 1rem;
-}
-
-.react-datepicker__day--keyboard-selected,
-.react-datepicker__month-text--keyboard-selected,
-.react-datepicker__quarter-text--keyboard-selected,
-.react-datepicker__year-text--keyboard-selected {
-  color: white !important;
-  background-color: hsl(var(--primary)) !important;
-}
-
-.react-datepicker__triangle {
-  display: none !important;
-}
+/* loader */
 
 .loading svg {
   height: 1.3rem !important;
 }
 
-/* loader */
 .layout-loading .loading svg {
   height: 2rem !important;
 }
@@ -158,5 +130,5 @@ body,
 }
 
 .test {
-  color: #2563eb;
+  color: hsl(224, 48%, 95%);
 }

@@ -15,6 +15,8 @@ const badgeVariants = cva(
         destructive:
           'border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80',
         outline: 'text-foreground',
+        PRIMARY:
+          'border-transparent bg-primary/10 text-primary hover:bg-primary/20',
         COMPLETED:
           'border-transparent bg-completed/10 text-completed hover:bg-completed/20',
         IN_PROGRESS:

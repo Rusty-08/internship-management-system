@@ -14,11 +14,12 @@ import SelectFilter from "./status-filter"
 import { useUpdateParams } from "@/hooks/useUpdateParams"
 
 type TaskWrapperProps = {
-  isMentor: boolean
+  isMentor?: boolean
   tasks: TaskProps[]
+  isInAdmin?: boolean
 }
 
-export const TaskAccordions = ({ tasks, isMentor }: TaskWrapperProps) => {
+export const TaskAccordions = ({ tasks, isMentor = false, isInAdmin = false }: TaskWrapperProps) => {
   const { searchParams, updateParams } = useUpdateParams()
   const [taskSearch, setTaskSearch] = useState(searchParams.get('task') || '')
   const [taskStatus, setTaskStatus] = useState(searchParams.get('status') || 'all')
@@ -37,16 +38,23 @@ export const TaskAccordions = ({ tasks, isMentor }: TaskWrapperProps) => {
     return tasks.filter(task => {
       const titleMatch =
         taskSearch ? task.title.toLowerCase().includes(taskSearch.toLowerCase()) : true
+      const internMatch =
+        taskSearch ? task.intern?.toLowerCase().includes(taskSearch.toLowerCase()) : true
       const statusMatch =
         taskStatus !== 'all' ? task.status.toLowerCase() === taskStatus : true
-      return titleMatch && statusMatch
+
+      return isInAdmin ? internMatch && statusMatch : titleMatch && statusMatch
     })
-  }, [taskSearch, taskStatus, tasks])
+  }, [isInAdmin, taskSearch, taskStatus, tasks])
 
   return (
     <div className='space-y-4'>
       <div className="w-full flex gap-3">
-        <SearchFilter handleSearch={handleSearch} defaultValue={taskSearch} />
+        <SearchFilter 
+          handleSearch={handleSearch} 
+          defaultValue={taskSearch}
+          isInAdmin={isInAdmin}
+        />
         <SelectFilter
           defaultValue={taskStatus}
           handleStatusChange={handleStatusChange}
@@ -76,7 +84,12 @@ export const TaskAccordions = ({ tasks, isMentor }: TaskWrapperProps) => {
         {selectedTasks.length ? (
           <Accordion type="single" collapsible className="w-full">
             {selectedTasks.map(task => (
-              <TaskCard key={task.id} task={task} isMentor={isMentor} />
+              <TaskCard
+                key={task.id}
+                task={task}
+                isMentor={isMentor}
+                isInAdmin={isInAdmin}
+              />
             ))}
           </Accordion>
         ) : (

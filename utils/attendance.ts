@@ -76,7 +76,7 @@ export const addAttendance = async (internId: string) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      internId,
+      internId
     }),
   })
 

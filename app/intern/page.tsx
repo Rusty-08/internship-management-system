@@ -97,7 +97,7 @@ const InternDashboard = async () => {
           />
         </StatCard>
       </div>
-      <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <DetailsCard
           header="Attendance"
           description="Your recent attendance records."

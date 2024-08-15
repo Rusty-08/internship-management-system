@@ -92,7 +92,9 @@ export const getAllInternsTasks = async () => {
   const flattedTasks = mentors.map(mentor => {
     return {
       ...mentor,
-      intern: allInterns?.find(intern => intern.mentorId === mentor.id)?.name
+      intern: allInterns?.find(intern => intern.mentorId === mentor.id)?.name,
+      internImage: allInterns?.find(intern => intern.mentorId === mentor.id)?.image,
+      internId: allInterns?.find(intern => intern.mentorId === mentor.id)?.id
     }
   })
 

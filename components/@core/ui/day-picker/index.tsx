@@ -13,14 +13,16 @@ import { ClassNameValue } from "tailwind-merge"
 import { Dispatch, SetStateAction } from "react"
 import { formatInTimeZone } from "date-fns-tz"
 import { siteConfig } from "@/configs/site"
+import { Matcher } from "react-day-picker"
 
 type DatePickerProps = {
   date: Date | undefined
   setDate: Dispatch<SetStateAction<Date | undefined>>
+  disabled?: Matcher | Matcher[] | undefined
   className?: ClassNameValue
-} & CalendarProps
+}
 
-export function DayPicker({ date, setDate, className, ...props }: DatePickerProps) {
+export function DayPicker({ date, setDate, disabled, className }: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -28,7 +30,8 @@ export function DayPicker({ date, setDate, className, ...props }: DatePickerProp
           variant={"outline"}
           className={cn(
             "w-[260px] px-4 justify-start text-left font-normal",
-            !date && "text-muted-foreground"
+            !date && "text-muted-foreground",
+            className
           )}
         >
           <CalendarIcon className="mr-3 h-4 w-4" />
@@ -41,7 +44,7 @@ export function DayPicker({ date, setDate, className, ...props }: DatePickerProp
           selected={date}
           onSelect={setDate}
           initialFocus
-          {...props}
+          disabled={disabled}
         />
       </PopoverContent>
     </Popover>

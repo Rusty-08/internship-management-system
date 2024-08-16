@@ -1,6 +1,6 @@
 import { AttendanceProps } from '@/app/intern/my-attendance/_components/attendance-columns'
 import prisma from '@/lib/prisma'
-import { differenceInMinutes, format, isToday } from 'date-fns'
+import { compareDesc, differenceInMinutes, format, isToday } from 'date-fns'
 import { fromZonedTime } from 'date-fns-tz'
 import { unstable_noStore as noStore } from 'next/cache'
 import * as XLSX from 'xlsx'

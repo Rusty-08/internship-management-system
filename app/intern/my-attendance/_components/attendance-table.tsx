@@ -67,43 +67,44 @@ export default function AttendanceTable({
     getPaginationRowModel: getPaginationRowModel(),
   })
 
-  const currentAttendance = attendanceData[attendanceData.length - 1]
+  const currentAttendance = attendanceData[0]
   const mode = getAttendanceMode(currentAttendance)
 
   const addCurrentAttendance = async (event: FormEvent) => {
     event.preventDefault()
     setLoading(true)
 
-    const res = await addAttendance(user?.id || '')
+    try {
+      const res = await addAttendance(user?.id || '')
 
-    if (res.success) {
-      if (currentAttendance) {
+      if (res.success) {
         setAttendanceData([
-          ...attendanceData.slice(0, attendanceData.length - 1),
-          res.data
+          res.data,
+          ...attendanceData.slice(1, attendanceData.length)
         ])
+
+        toast({
+          title: 'Success',
+          description: 'The attendance has been successfully added',
+        })
       } else {
-        setAttendanceData([
-          ...attendanceData,
-          res.data
-        ])
+        toast({
+          title: 'Error',
+          description: res.error || 'Unable to save the attendance',
+          variant: 'destructive',
+        })
       }
-
+    } catch (error) {
       toast({
-        title: res.success,
-        description: 'The attendance have been successfully added',
-      })
-    } else {
-      toast({
-        title: res.error,
-        description: 'Unable to save the attendance',
+        title: 'Error',
+        description: 'An unexpected error occurred',
         variant: 'destructive',
       })
+    } finally {
+      setLoading(false)
+      setIsOpen(false)
+      router.refresh()
     }
-
-    setLoading(false)
-    setIsOpen(false)
-    router.refresh()
   }
 
   const downloadAttendance = () => {

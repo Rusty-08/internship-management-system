@@ -2,12 +2,15 @@ import prisma from '@/lib/prisma'
 import { getTotalHours } from '@/utils/attendance'
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(req: Request) {
   const { internId } = await req.json()
 
   try {
     const currentDate = new Date()
-    const isAfternoon = currentDate.getHours() >= 12
+    const currentHour = currentDate.getHours()
+    const isAfternoon = currentHour >= 12
 
     // Find today's attendance record for the intern
     const attendanceRecords = await prisma.attendance.findMany({
@@ -24,10 +27,10 @@ export async function POST(req: Request) {
     } = attendanceRecords[attendanceRecords.length - 1]
 
     const updateData = {
-      timeInAM: !timeInAM && !isAfternoon ? currentDate : timeInAM || null,
-      timeOutAM: !timeOutAM && !isAfternoon && timeInAM ? currentDate : timeOutAM || null,
-      timeInPM: !timeInPM && isAfternoon ? currentDate : timeInPM || null,
-      timeOutPM: !timeOutPM && isAfternoon && timeInPM ? currentDate : timeOutPM || null,
+      timeInAM: (!timeInAM && !isAfternoon) ? currentDate : timeInAM || null,
+      timeOutAM: (!timeOutAM && !isAfternoon && timeInAM) ? currentDate : timeOutAM || null,
+      timeInPM: (!timeInPM && isAfternoon) ? currentDate : timeInPM || null,
+      timeOutPM: (!timeOutPM && isAfternoon && timeInPM) ? currentDate : timeOutPM || null,
     }
 
     // Update the existing attendance record

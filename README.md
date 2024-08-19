@@ -8,8 +8,8 @@ The system is responsible in handling the interns in a particular organization o
 
 ### TECH USED
 
-- **Frontend:** TypeScript, React JS, Next JS, Tailwind CSS, Shadcn UI
-- **Backend:** MongoDB, Prisma ORM, Auth JS
+- **Frontend:** TypeScript, React.js, Next.js, Tailwind CSS, Shadcn UI
+- **Backend:** MongoDB, Prisma ORM, Firebase, NextAuth.js
 
 ### Getting Started
 

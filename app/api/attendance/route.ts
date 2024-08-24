@@ -3,13 +3,15 @@ import { getTotalHours } from '@/utils/attendance'
 import { NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
+// export const preferredRegion = ['hnd1', 'sin1']; // Tokyo, Japan and Singapore
 
 export async function POST(req: Request) {
   const { internId } = await req.json()
 
   try {
     const currentDate = new Date()
-    const currentHour = currentDate.getHours()
+    // Adjust for your local time zone (e.g., UTC+8 for the Philippines)
+    const currentHour = currentDate.getUTCHours() + 8
     const isAfternoon = currentHour >= 12
 
     // Find today's attendance record for the intern

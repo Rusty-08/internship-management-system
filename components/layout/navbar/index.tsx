@@ -5,10 +5,12 @@ import { ProfileAvatar } from '@/components/@core/avatar'
 import { logout } from '@/app/sign-in/_actions/authenticate'
 import { SidebarSheet } from '../sidebar/sidebar-sheet'
 import { SidebarLinkProps } from '../sidebar/links'
-import { auth } from '@/auth'
-import { getServerUserByEmail } from '@/utils/users'
+import { getCurrentUser, getServerUserByEmail } from '@/utils/users'
 import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
 import { TbArrowRightFromArc } from "react-icons/tb"
+import { RiArrowLeftLine } from "react-icons/ri"
+import Link from 'next/link'
+import MentorBackButton from './mentor-back-btn'
 
 type SidebarSheetProps = {
   profilePath: string
@@ -16,8 +18,7 @@ type SidebarSheetProps = {
 }
 
 const Navbar = async ({ profilePath, sideLinks }: SidebarSheetProps) => {
-  const session = await auth()
-  const user = await getServerUserByEmail(session?.user.email || '')
+  const user = await getCurrentUser()
 
   return (
     <div className="flex items-center justify-between px-4 lg:px-6 h-[5rem]">
@@ -28,7 +29,12 @@ const Navbar = async ({ profilePath, sideLinks }: SidebarSheetProps) => {
           {user?.name ? user?.name?.split(' ')[0] : 'Anonymous'}
         </span>
       </p> */}
-      <BreadcrumbWrapper />
+      <div className="flex items-center gap-3">
+        {user?.role === 'MENTOR' && (
+          <MentorBackButton />
+        )}
+        <BreadcrumbWrapper />
+      </div>
       <SidebarSheet sideLinks={sideLinks} />
       <div className="flex items-center gap-x-4">
         <ThemeToggle />
@@ -43,7 +49,7 @@ const Navbar = async ({ profilePath, sideLinks }: SidebarSheetProps) => {
               <Button
                 type="submit"
                 variant="ghost"
-                className="justify-start text-text px-3 gap-3 w-full"
+                className="justify-start h-9 text-text px-3 gap-3 w-full"
               >
                 <TbArrowRightFromArc
                   size="1.1rem"

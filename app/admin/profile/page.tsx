@@ -1,15 +1,23 @@
-import Profile from '@/components/layout/profile'
-import { getCurrentUserEmail } from '@/utils/users'
 import { Metadata } from 'next'
+import { Suspense } from 'react'
+import ProfileSkeleton from '@/components/layout/profile/profile-skeleton'
+import UserProfile from '@/components/layout/profile'
+import { ComingSoon } from '@/components/@core/ui/coming-soon'
 
 export const metadata: Metadata = {
   title: 'Admin Profile',
 }
 
-const AdminProfile = async () => {
-  const currentUserEmail = await getCurrentUserEmail()
-
-  return <Profile email={currentUserEmail || ''}>...</Profile>
+const AdminProfile = () => {
+  return (
+    <Suspense fallback={<ProfileSkeleton />}>
+      <UserProfile role='ADMIN'>
+        <div className="w-full py-20 rounded-md bg-card">
+          <ComingSoon pageName="Admin Profile" />
+        </div>
+      </UserProfile>
+    </Suspense>
+  )
 }
 
 export default AdminProfile

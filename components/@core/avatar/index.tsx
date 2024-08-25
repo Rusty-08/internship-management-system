@@ -56,7 +56,7 @@ export const ProfileAvatar = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-52" align="end">
         <DropdownMenuLabel>
-          <div className="flex gap-2 items-center py-1">
+          <div className="flex gap-2 items-center">
             <Avatar>
               <AvatarImage src={image ? image : undefined} />
               <AvatarFallback>
@@ -69,23 +69,27 @@ export const ProfileAvatar = ({
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <h1 className="line-clamp-1">
+              <p className="line-clamp-1 font-medium">
                 {user ?? 'Anonymous'}
-              </h1>
-              <p className="text-text font-normal">
-                {role?.toLocaleLowerCase() ?? 'Unknown'}
               </p>
+              <span className="text-text text-sm font-normal">
+                {role?.toLocaleLowerCase() ?? 'Unknown'}
+              </span>
             </div>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div className="p-1">
           <DropdownMenuItem className="group p-0 hover:text-primary cursor-pointer">
-            <Link onClick={() => setIsOpen(false)} href={profilePath}>
+            <Link
+              onClick={() => setIsOpen(false)}
+              href={profilePath}
+              className='w-full'
+            >
               <Button
                 type="submit"
                 variant="ghost"
-                className="justify-start text-text px-3 gap-3 w-full"
+                className="justify-start h-9 text-text px-3 gap-3 w-full"
               >
                 <RiUser4Line
                   size="1.1rem"

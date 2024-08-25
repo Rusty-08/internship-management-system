@@ -9,11 +9,9 @@ export const metadata: Metadata = {
 
 const TasksManagement = async () => {
   return (
-    <div className="space-y-4">
-      <Suspense fallback={<TaskSkeleton />}>
-        <TaskWrapper isMentor />
-      </Suspense>
-    </div>
+    <Suspense fallback={<TaskSkeleton />}>
+      <TaskWrapper isMentor />
+    </Suspense>
   )
 }
 

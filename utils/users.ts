@@ -21,8 +21,18 @@ export async function getServerUserByEmail(email: string) {
 
 // Server-side function to get the current user by id
 export async function getServerUserById(id: string) {
-  if (!id) return null
-  const user = await prisma.user.findUnique({ where: { id } })
+  if (!id) {
+    const user = await getCurrentUser()
+    return user
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id },
+    include: {
+      attendance: true
+    }
+  })
+
   return user
 }
 
@@ -47,7 +57,14 @@ export async function getUserByEmail(email: string): Promise<User | null> {
 // Server-side function to get the current user
 export async function getCurrentUser() {
   const email = await getCurrentUserEmail()
-  const user = await prisma.user.findUnique({ where: { email } })
+  
+  const user = await prisma.user.findUnique({ 
+    where: { email },
+    include: {
+      attendance: true
+    }
+  })
+
   return user
 }
 

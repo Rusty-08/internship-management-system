@@ -100,7 +100,7 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
       <AccordionContent>
         <div className="flex flex-col gap-4 relative">
           <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-            <span className="text-sm font-medium lg:w-[17.3rem]">
+            <span className="text-sm font-medium lg:w-[18.5rem]">
               Attachment
             </span>
             {files ? (
@@ -117,7 +117,7 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
             }
           </div>
           <div className="flex gap-2 lg:gap-4 flex-col lg:flex-row">
-            <span className="text-sm font-medium lg:w-[17.3rem] flex-shrink-0">
+            <span className="text-sm font-medium lg:w-[18.5rem] flex-shrink-0">
               Description
             </span>
             <p className="text-sm text-muted-foreground whitespace-pre-line text-justify">
@@ -131,7 +131,7 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
                 // !isMentor && 'mt-2',
               )}
             >
-              <span className="text-sm font-medium lg:w-[17.3rem] flex-shrink-0">
+              <span className="text-sm font-medium lg:w-[18.5rem] flex-shrink-0">
                 {!isMentor && !isInAdmin ? 'Your Submission' : 'Submission'}
               </span>
               <p className="text-sm text-muted-foreground text-start whitespace-pre-line">
@@ -142,7 +142,7 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
           {submissions?.length ? (
             <div className="border-t pt-4 flex flex-col gap-4">
               <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-                <span className="text-sm font-medium lg:w-[17.3rem]">
+                <span className="text-sm font-medium lg:w-[18.5rem]">
                   Date Submitted
                 </span>
                 <p className="text-sm text-muted-foreground">
@@ -153,7 +153,7 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
                 </p>
               </div>
               <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
-                <span className="text-sm font-medium lg:w-[17.3rem]">
+                <span className="text-sm font-medium lg:w-[18.5rem]">
                   Attachment
                 </span>
                 <a

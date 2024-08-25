@@ -36,6 +36,7 @@ const SelectFilter = ({
     '-translate-x-2',
     '-translate-x-3',
     '-translate-x-4',
+    '-translate-x-5',
   ]
 
   return (

@@ -34,7 +34,7 @@ export const authConfig = {
             if (path.startsWith('/admin')) return true
             return Response.redirect(new URL('/admin', nextUrl))
           case 'MENTOR':
-            if (path.startsWith('/mentor/tasks-management') && path !== '/mentor') return true
+            if (path.startsWith('/mentor') && path !== '/mentor') return true
             return Response.redirect(new URL('/mentor/tasks-management', nextUrl))
           case 'INTERN':
             if (path.startsWith('/intern')) return true

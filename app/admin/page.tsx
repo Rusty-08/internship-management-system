@@ -19,6 +19,7 @@ import AvatarPlaceholder from '@/public/general/images/male-avatar.svg'
 import { Fragment } from 'react'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
+import { dateInManilaTz } from '@/utils/format-date'
 
 export const revalidate = 3600 // revalidate at most every hour
 
@@ -28,12 +29,13 @@ export const metadata: Metadata = {
 
 const AdminDashboard = async () => {
   const interns = await getInternUsers()
-  const allAttendance = await getAllInternAttendance()
   const allUsers = await getAllInternsTasks()
+
+  const allInternsAttendance = interns?.flatMap(intern => intern.attendance)
   const allInterns = allUsers.filter(user => user.intern)
   const tasks = allUsers.flatMap(user => user.tasks)
 
-  const currentAttendance = allAttendance.flatMap(attendance => attendance)
+  const currentAttendance = allInternsAttendance?.filter(attendance => dateInManilaTz(attendance.date) == dateInManilaTz(new Date()))
 
   const haveOngoingTask = (tasks: TaskProps[]) => tasks.filter(task => task.status === 'IN_PROGRESS')
 
@@ -55,7 +57,7 @@ const AdminDashboard = async () => {
         </StatCard>
         <StatCard header="Total Days">
           <div className="flex items-end space-x-2">
-            <h1 className="text-4xl font-semibold">{interns && allAttendance.length / interns?.length}</h1>
+            <h1 className="text-4xl font-semibold">{interns && allInternsAttendance && allInternsAttendance.length / interns?.length}</h1>
             <span className="text-text font-medium">days</span>
           </div>
           <Image
@@ -89,7 +91,7 @@ const AdminDashboard = async () => {
           noRecords={!currentAttendance}
           navigate="/admin/interns-attendance"
         >
-          <Attendance currentAttendance={currentAttendance} isInDashboard />
+          <Attendance currentAttendance={allInternsAttendance || []} isInDashboard />
         </DetailsCard>
         <DetailsCard
           noRecords={!allUsers}
@@ -102,8 +104,9 @@ const AdminDashboard = async () => {
               <Fragment key={user.id}>
                 <Link href={`/admin/intern-management/${user.internId}`}>
                   <div className={cn(
-                    "flex group items-center px-4 hover:bg-muted/50 transition-all py-1.5 justify-between gap-4",
-                    idx % 2 === 0 && 'bg-muted/50'
+                    "flex group items-center px-4 hover:bg-muted/50 transition-all justify-between gap-4",
+                    idx % 2 === 0 && 'bg-muted/50',
+                    currentAttendance && currentAttendance.length > 0 ? 'py-1.5' : 'py-2.5'
                   )}>
                     <div className="flex items-center gap-2">
                       <Avatar className="w-7 h-7">

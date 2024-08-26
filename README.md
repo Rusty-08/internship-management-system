@@ -44,6 +44,11 @@ Follow these instructions to set up and run the project on your local machine.
    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
    NEXT_PUBLIC_FIREBASE_SENDER_ID=your_firebase_sender_id
    NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_firebase_measurement_id
+
+   /* Optional */
+   /* For Email Notifications */
+   SENDER_EMAIL=the_email_sender_for_the_interns
+   SENDGRID_API_KEY=your_sendgrid_api_key_or_other_library_of_your_choice
    ```
 
 3. **Install dependencies:**

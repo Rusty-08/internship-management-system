@@ -72,7 +72,7 @@ const Profile = ({ user, children }: ProfileProps) => {
           className="w-full max-w-full object-cover max-h-60"
         />
         <div className="px-12 min-h-32 relative">
-          <div className="w-36 group h-36 overflow-hidden absolute -top-10 bg-muted border-muted hover:bo rder-primary/10 transition-all ease-in-out duration-300 z-10 rounded-full border-[0.4rem]">
+          <div className="w-36 group h-36 overflow-hidden absolute -top-10 bg-muted border-muted hover:border-primary/10 transition-all ease-in-out duration-300 z-10 rounded-full border-[0.4rem]">
             <Image
               src={data.image || imagePlaceholder}
               alt="profile-image"

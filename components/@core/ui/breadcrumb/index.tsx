@@ -21,7 +21,7 @@ export function BreadcrumbWrapper() {
   const paths = segments[0] === 'mentor' ? segments.slice(1) : segments
 
   return (
-    <div className='hidden h-10 overflow-hidden bg-card border px-5 rounded-md lg:flex items-center'>
+    <div className='h-10 overflow-hidden bg-card border px-5 rounded-md lg:flex items-center'>
       <Breadcrumb>
         <BreadcrumbList>
           {paths.map((segment, index) => {

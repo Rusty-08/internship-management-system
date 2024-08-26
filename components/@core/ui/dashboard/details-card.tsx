@@ -42,7 +42,7 @@ export const DetailsCard = ({
             {header}
             <Link
               href={navigate}
-              className="text-text font-normal hover:text-primary flex items-center gap-2 text-sm"
+              className="text-text hidden lg:flex font-normal hover:text-primary items-center gap-2 text-sm"
             >
               View all
               <PiArrowUpRightLight />
@@ -51,12 +51,17 @@ export const DetailsCard = ({
         </CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="flex-grow w-full">
+      <CardContent className="flex-grow flex flex-col gap-4 w-full">
         {noRecords ? (
           <NoRecordFound noRecordMessage={noRecordMessage} />
         ) : (
           children
         )}
+        <Link href={navigate}>
+          <Button className='flex gap-2 md:hidden w-full'>
+            View More
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   )

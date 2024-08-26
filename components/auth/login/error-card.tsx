@@ -13,13 +13,13 @@ const ErrorCard = ({ children, className }: ErrorCardProps) => {
   return (
     <Card
       className={twMerge(
-        'border-destructive/50 shadow-none bg-destructive/10',
+        'border border-destructive/30 shadow-none bg-destructive/10',
         className,
       )}
     >
       <CardHeader className="py-2.5 px-4">
         <FormMessage className="flex items-center gap-4">
-          <GoAlert />
+          <GoAlert size='1rem' className='mb-0.5' />
           {children}
         </FormMessage>
       </CardHeader>

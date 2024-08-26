@@ -30,11 +30,11 @@ const InternDashboard = async () => {
 
   const sortedTaskByDate = tasks
     ? tasks
-        .slice(-3)
-        .sort(
-          (a, b) =>
-            new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
-        )
+      .slice(-3)
+      .sort(
+        (a, b) =>
+          new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
+      )
     : []
 
   const statusName = (status: TaskStatus) =>
@@ -43,58 +43,31 @@ const InternDashboard = async () => {
   return (
     <div className="flex h-full flex-col gap-4">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <StatCard header="Total Hours">
-          <div className="flex items-end space-x-2">
-            {hours >= 1 && (
-              <>
-                <h1 className="text-4xl font-semibold">{hours}</h1>
-                <span className="text-text font-medium">hrs</span>
-              </>
-            )}
-            <h1 className="text-4xl font-semibold">{minutes}</h1>
-            <span className="text-text font-medium">mins</span>
-          </div>
-          <Image
-            src={totalHoursImage}
-            alt="total hours"
-            width={150}
-            height={150}
-            className="absolute dark:invert -top-3 right-0"
-          />
+        <StatCard header="Total Hours" image={totalHoursImage}>
+          {hours >= 1 && (
+            <>
+              <h1 className="text-4xl font-semibold">{hours}</h1>
+              <span className="text-text font-medium">hrs</span>
+            </>
+          )}
+          <h1 className="text-4xl font-semibold">{minutes}</h1>
+          <span className="text-text font-medium">mins</span>
         </StatCard>
-        <StatCard header="Total Days">
-          <div className="flex items-end space-x-2">
-            <h1 className="text-4xl font-semibold">
-              {attendance ? attendance.length : 0}
-            </h1>
-            <span className="text-text font-medium">
-              {attendance.length > 1 ? 'days' : 'day'}
-            </span>
-          </div>
-          <Image
-            src={totalDaysImage}
-            alt="total days"
-            width={150}
-            height={150}
-            className="absolute dark:invert -top-3 right-0"
-          />
+        <StatCard header="Total Days" image={totalDaysImage}>
+          <h1 className="text-4xl font-semibold">
+            {attendance ? attendance.length : 0}
+          </h1>
+          <span className="text-text font-medium">
+            {attendance.length > 1 ? 'days' : 'day'}
+          </span>
         </StatCard>
-        <StatCard header="Total Tasks">
-          <div className="flex items-end space-x-3">
-            <h1 className="text-4xl font-semibold">
-              {tasks ? tasks.length : 0}
-            </h1>
-            <span className="text-text font-medium">
-              {tasks && tasks.length > 1 ? 'tasks' : 'task'}
-            </span>
-          </div>
-          <Image
-            src={totalTaskImage}
-            alt="total days"
-            width={150}
-            height={150}
-            className="absolute dark:invert -top-3 right-0"
-          />
+        <StatCard header="Total Tasks" image={totalTaskImage}>
+          <h1 className="text-4xl font-semibold">
+            {tasks ? tasks.length : 0}
+          </h1>
+          <span className="text-text font-medium">
+            {tasks && tasks.length > 1 ? 'tasks' : 'task'}
+          </span>
         </StatCard>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

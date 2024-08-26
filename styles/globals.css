@@ -70,11 +70,11 @@ body,
   }
 
   .dark {
-    --sidebar: 222.2 47.4% 8%;
-    --navbar: 222.2 47.4% 8%;
+    --sidebar: 222.2 47.4% 10%;
+    --navbar: 222.2 47.4% 10%;
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-    --card: 222.2 47.4% 8%;
+    --card: 222.2 47.4% 10%;
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
@@ -86,16 +86,16 @@ body,
     --muted-foreground: 215 20.2% 65.1%;
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 62.8% 35%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 12.5%;
-    --input: 217.2 32.6% 12.5%;
+    --border: 217.2 32.6% 15%;
+    --input: 217.2 32.6% 15%;
     --ring: 224.3 76.3% 48%;
 
     --completed: 120 100% 75%; /* light green */
     --pending: 60 100% 75%; /* light yellow */
     --in-progress: 240 100% 75%; /* light blue */
-    --overdue: 0 62.8% 50.6%; /* red */
+    --overdue: 0 62.8% 35%; /* red */
 
     /* charts */
     --chart-1: 217.2 91.2% 59.8%;

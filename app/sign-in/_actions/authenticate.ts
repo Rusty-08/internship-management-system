@@ -14,7 +14,7 @@ export async function authenticate(values: z.infer<typeof LoginSchema>) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
-          return 'Invalid credentials.'
+          return 'Invalid Credentials.'
         default:
           return 'An error occurred. Please try again.'
       }

@@ -89,7 +89,7 @@ export const ProfileAvatar = ({
               <Button
                 type="submit"
                 variant="ghost"
-                className="justify-start h-9 text-text px-3 gap-3 w-full"
+                className="justify-start text-text px-3 gap-3 w-full"
               >
                 <RiUser4Line
                   size="1.1rem"

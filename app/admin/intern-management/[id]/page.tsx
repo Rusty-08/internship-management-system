@@ -12,6 +12,7 @@ const InternProfile = async ({ params: { id } }: { params: { id: string } }) => 
     <Suspense fallback={<ProfileSkeleton />}>
       <UserProfile userId={id} />
     </Suspense>
+    // <ProfileSkeleton />
   )
 }
 

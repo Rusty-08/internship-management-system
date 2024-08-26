@@ -27,7 +27,7 @@ export async function getServerUserById(id: string) {
   }
 
   const user = await prisma.user.findUnique({
-    where: { id },
+    where: { id, isArchived: false },
     include: {
       attendance: true
     }
@@ -57,9 +57,9 @@ export async function getUserByEmail(email: string): Promise<User | null> {
 // Server-side function to get the current user
 export async function getCurrentUser() {
   const email = await getCurrentUserEmail()
-  
-  const user = await prisma.user.findUnique({ 
-    where: { email },
+
+  const user = await prisma.user.findUnique({
+    where: { email, isArchived: false },
     include: {
       attendance: true
     }

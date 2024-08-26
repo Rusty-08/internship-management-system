@@ -29,57 +29,30 @@ export const metadata: Metadata = {
 
 const AdminDashboard = async () => {
   const interns = await getInternUsers()
+  const allInternsAttendance = await getAllInternAttendance()
   const allUsers = await getAllInternsTasks()
 
-  const allInternsAttendance = interns?.flatMap(intern => intern.attendance)
   const allInterns = allUsers.filter(user => user.intern)
   const tasks = allUsers.flatMap(user => user.tasks)
 
-  const currentAttendance = allInternsAttendance?.filter(attendance => dateInManilaTz(attendance.date) == dateInManilaTz(new Date()))
+  const currentAttendance = allInternsAttendance.filter(attendance => dateInManilaTz(attendance.date) == dateInManilaTz(new Date()))
 
   const haveOngoingTask = (tasks: TaskProps[]) => tasks.filter(task => task.status === 'IN_PROGRESS')
 
   return (
     <div className="flex h-full flex-col gap-4">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <StatCard header="Total Interns">
-          <div className="flex items-end space-x-2">
-            <h1 className="text-4xl font-semibold">{interns?.length}</h1>
-            <span className="text-text font-medium">students</span>
-          </div>
-          <Image
-            src={totalHoursImage}
-            alt="total hours"
-            width={150}
-            height={150}
-            className="absolute dark:invert -top-3 right-0"
-          />
+        <StatCard header="Total Interns" image={totalHoursImage}>
+          <h1 className="text-4xl font-semibold">{interns?.length}</h1>
+          <span className="text-text font-medium">students</span>
         </StatCard>
-        <StatCard header="Total Days">
-          <div className="flex items-end space-x-2">
-            <h1 className="text-4xl font-semibold">{interns && allInternsAttendance && allInternsAttendance.length / interns?.length}</h1>
-            <span className="text-text font-medium">days</span>
-          </div>
-          <Image
-            src={totalDaysImage}
-            alt="total days"
-            width={150}
-            height={150}
-            className="absolute dark:invert -top-3 right-0"
-          />
+        <StatCard header="Total Days" image={totalDaysImage}>
+          <h1 className="text-4xl font-semibold">{interns && interns[0].attendance.length}</h1>
+          <span className="text-text font-medium">days</span>
         </StatCard>
-        <StatCard header="Total Tasks">
-          <div className="flex items-end space-x-2">
-            <h1 className="text-4xl font-semibold">{tasks.length}</h1>
-            <span className="text-text font-medium">tasks</span>
-          </div>
-          <Image
-            src={totalTaskImage}
-            alt="total days"
-            width={150}
-            height={150}
-            className="absolute dark:invert -top-3 right-0"
-          />
+        <StatCard header="Total Tasks" image={totalTaskImage}>
+          <h1 className="text-4xl font-semibold">{tasks.length}</h1>
+          <span className="text-text font-medium">tasks</span>
         </StatCard>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

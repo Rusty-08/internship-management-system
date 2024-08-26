@@ -122,15 +122,15 @@ const LoginForm = () => {
               />
               {serverError && <ErrorCard>{serverError}</ErrorCard>}
             </div>
-            <Button disabled={isSubmitting} className="w-full relative gap-1">
+            <Button disabled={isSubmitting} className="w-full mt-4 group relative gap-1">
               {isSubmitting ? (
                 <LoadingSpinner />
               ) : (
                 <>
-                  Login
+                  Sign In
                   <MdOutlineArrowRight
                     size="1.2rem"
-                    className="absolute ml-16"
+                    className="absolute group-hover:ml-[5rem] ml-[4.5rem] transition-all ease-in-out duration-300"
                   />
                 </>
               )}

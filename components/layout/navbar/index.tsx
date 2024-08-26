@@ -29,7 +29,7 @@ const Navbar = async ({ profilePath, sideLinks }: SidebarSheetProps) => {
           {user?.name ? user?.name?.split(' ')[0] : 'Anonymous'}
         </span>
       </p> */}
-      <div className="flex items-center gap-3">
+      <div className="hidden lg:flex items-center gap-3">
         {user?.role === 'MENTOR' && (
           <MentorBackButton />
         )}
@@ -49,7 +49,7 @@ const Navbar = async ({ profilePath, sideLinks }: SidebarSheetProps) => {
               <Button
                 type="submit"
                 variant="ghost"
-                className="justify-start h-9 text-text px-3 gap-3 w-full"
+                className="justify-start text-text px-3 gap-3 w-full"
               >
                 <TbArrowRightFromArc
                   size="1.1rem"

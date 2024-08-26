@@ -28,7 +28,7 @@ const CoreLayout = ({ children, role, withSidebar = true }: SidebarProps) => {
         withSidebar && 'lg:pl-16'
       )}
       >
-        <Navbar profilePath={`/${role.toLowerCase()}/profile`} sideLinks={lisks[role]} />
+        <Navbar profilePath={`/${role.toLowerCase()}/my-profile`} sideLinks={lisks[role]} />
         <div
           style={{ minHeight: 'calc(100vh - 9rem)' }}
           className="px-4 md:px-6 w-full"

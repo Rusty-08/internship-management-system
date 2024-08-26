@@ -129,12 +129,11 @@ export const exportAttendance = (data: AttendanceProps[]) => {
     totalHours: formatHours(row.totalHours || 0),
   }))
 
+  // Calculate the total of all totalHours
+  const totalHoursSum = data.reduce((sum, row) => sum + (row.totalHours ?? 0), 0)
+
   // Create a new worksheet from the rows array
   const worksheet = XLSX.utils.json_to_sheet(rows)
-
-  // Create a new workbook and add the worksheet to it
-  const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1')
 
   // Add headers to the worksheet
   XLSX.utils.sheet_add_aoa(
@@ -142,6 +141,17 @@ export const exportAttendance = (data: AttendanceProps[]) => {
     [['Date', 'Time In', 'Time Out', 'Time In', 'Time Out', 'Total Hours']],
     { origin: 'A1' },
   )
+
+  // Add the total row at the end
+  XLSX.utils.sheet_add_aoa(
+    worksheet,
+    [['', '', '', '', 'Total', formatHours(totalHoursSum)]],
+    { origin: -1 },
+  )
+
+  // Create a new workbook and add the worksheet to it
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1')
 
   const columns = Object.keys(rows[0])
 
@@ -180,6 +190,9 @@ export const getTargetHours = async (id?: string) => {
 export const getAllInternAttendance = async () => {
   noStore()
   const users = await prisma.user.findMany({
+    where: {
+      isArchived: false
+    },
     select: {
       name: true,
       attendance: true,

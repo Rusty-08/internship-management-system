@@ -12,7 +12,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { endOfDay, isToday, isWithinInterval, parseISO, startOfMonth } from 'date-fns'
+import { compareAsc, endOfDay, isToday, isWithinInterval, parseISO, startOfMonth } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useCallback, useMemo, useState } from 'react'
 import { DateRange } from 'react-day-picker'
@@ -108,14 +108,18 @@ export default function AttendanceTable({
   }
 
   const downloadAttendance = () => {
-    if (!filteredData.length) {
+    const downloadedAttendance = filteredData.sort((a, b) => compareAsc(
+      new Date(a.date || ''), new Date(b.date || ''))
+    )
+
+    if (!downloadedAttendance.length) {
       toast({
         title: 'Unable to export attendance',
         description: 'The attendance list is empty.',
         variant: 'destructive',
       })
     } else {
-      exportAttendance(filteredData)
+      exportAttendance(downloadedAttendance)
     }
   }
 

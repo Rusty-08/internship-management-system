@@ -102,7 +102,7 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
 
   return (
     <Card>
-      <CardHeader className="text-xl font-medium">
+      <CardHeader className="text-xl font-semibold">
         {initialState ? 'Update Task' : 'Create Task'}
       </CardHeader>
       <Form {...form}>

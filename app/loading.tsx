@@ -9,7 +9,7 @@ const Loading = () => {
   const { theme: initialTheme } = useTheme()
 
   return (
-    <div className="layout-loading flex items-center justify-center gap-4 flex-col w-full h-full">
+    <div className="layout-loading flex items-center justify-center gap-4 flex-col w-full h-full bg-muted bg-gradient-to-r from-primary/20 to-fuchsia-900/20 backdrop-blur-sm">
       <Image
         // src={
         //   initialTheme === 'light'

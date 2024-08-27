@@ -89,10 +89,10 @@ const InternDashboard = async () => {
         >
           <div className="flex flex-col w-full gap-4">
             {sortedTaskByDate.map(task => (
-              <div key={task.id} className="flex border items-center relative justify-between w-full gap-4 py-3 px-4 lg:px-5 rounded-md">
-                <div className="flex items-center gap-4">
-                  <div className="flex flex-col gap-1">
-                    <p className="text-[0.9rem] font-medium">{task.title}</p>
+              <div key={task.id} className="flex max-w-full border items-center relative justify-between w-full gap-2 py-3 px-4 lg:px-5 rounded-md">
+                <div className="flex items-center truncate flex-grow gap-4">
+                  <div className="flex flex-col gap-1 w-full">
+                    <p className="text-[0.9rem] font-medium truncate">{task.title}</p>
                     <p className="text-text text-sm">
                       {formatInTimeZone(task.startDate, 'Asia/Manila', 'LLL dd')} -{' '}
                       {formatInTimeZone(task.endDate, 'Asia/Manila', 'LLL dd')}

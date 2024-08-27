@@ -9,7 +9,7 @@ import { RiArrowLeftLine } from 'react-icons/ri'
 function MentorBackButton() {
   const pathname = usePathname()
 
-  if (pathname === '/mentor/profile') {
+  if (pathname === '/mentor/my-profile') {
     return (
       <Link href='/mentor/tasks-management'>
         <Button variant='outline' size='circle'>

@@ -1,22 +1,18 @@
-import { getAttendanceMode, getInternAttendance } from '@/utils/attendance'
-import { getCurrentUser } from '@/utils/users'
 import { Metadata } from 'next'
-import { InternAttendance } from './_components/intern-attendance'
-import { compareDesc } from 'date-fns'
+import { Suspense } from 'react'
+import { Attendance } from './_components/attendance'
+import { AttendanceSkeleton } from './_components/attendance-skeleton'
 
 export const metadata: Metadata = {
   title: 'My Attendance',
 }
 
 const MyAttendance = async () => {
-  const attendance = await getInternAttendance()
-  const user = await getCurrentUser()
-
-  const descAttendance = attendance.sort((a, b) => compareDesc(
-    new Date(a.date || ''), new Date(b.date || ''))
+  return (
+    <Suspense fallback={<AttendanceSkeleton isIntern rows={10} cols={6} />}>
+      <Attendance />
+    </Suspense>
   )
-
-  return <InternAttendance attendance={descAttendance} user={user} />
 }
 
 export default MyAttendance

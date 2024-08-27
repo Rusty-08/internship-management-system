@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const TasksManagement = async () => {
   return (
-    <Suspense fallback={<TaskSkeleton />}>
+    <Suspense fallback={<TaskSkeleton isMentor />}>
       <TaskWrapper isMentor />
     </Suspense>
   )

@@ -9,7 +9,7 @@ The system is responsible in handling the interns in a particular organization o
 ### TECH USED
 
 - **Frontend:** TypeScript, React.js, Next.js, Tailwind CSS, Shadcn UI
-- **Backend:** MongoDB, Prisma ORM, Firebase, NextAuth.js
+- **Backend:** MongoDB, Prisma ORM, Firebase, Auth.js
 
 ### Getting Started
 
@@ -25,8 +25,7 @@ Follow these instructions to set up and run the project on your local machine.
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
+   git clone https://github.com/Rusty-08/ims.git
    ```
 
 2. **Set up environment variables:**

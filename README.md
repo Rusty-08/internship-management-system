@@ -70,4 +70,4 @@ Follow these instructions to set up and run the project on your local machine.
 
 ### Additional Information
 
-For more details on how to configure and use the system, refer to the documentation or contact the project maintainers.
+The system has a lot of room for improvement since it was built during the learning process, so feel free to provide suggestions for enhancing it. Thank you!

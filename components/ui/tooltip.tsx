@@ -42,7 +42,7 @@ export const TooltipWrapper = ({
   className,
 }: TooltipWrapperProps) => {
   return (
-    <TooltipProvider delayDuration={300}>
+    <TooltipProvider delayDuration={50}>
       <Tooltip>
         <TooltipTrigger asChild className={cn('relative', className)}>
           {children}

@@ -79,7 +79,7 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
   return (
     <AccordionItem value={task.id}>
       <AccordionTrigger className='py-4'>
-        <div className={`w-10 h-10 flex items-center justify-center rounded-full shadow-sm bg-${statusColor}/10`}>
+        <div className={`w-10 h-10 flex flex-shrink-0 items-center justify-center rounded-full shadow-sm bg-${statusColor}/10`}>
           <Icon size="1.3rem" className={`text-${statusColor} ${status === 'OVERDUE' && 'mb-0.5'}`} />
         </div>
         <div className="flex flex-grow flex-col lg:flex-row gap-1 lg:justify-center lg:items-center lg:gap-4">

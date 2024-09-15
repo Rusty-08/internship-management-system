@@ -50,8 +50,8 @@ export const TaskAccordions = ({ tasks, isMentor = false, isInAdmin = false }: T
   return (
     <div className='space-y-4'>
       <div className="w-full flex gap-3">
-        <SearchFilter 
-          handleSearch={handleSearch} 
+        <SearchFilter
+          handleSearch={handleSearch}
           defaultValue={taskSearch}
           isInAdmin={isInAdmin}
         />
@@ -70,12 +70,12 @@ export const TaskAccordions = ({ tasks, isMentor = false, isInAdmin = false }: T
         {isMentor && (
           <Link
             href="/mentor/tasks-management/create-task"
-            className="fixed lg:relative bottom-4 lg:bottom-0 right-4 lg:right-0"
+            className="fixed right-0 w-full px-4 py-6 bg-background lg:p-0 lg:w-auto z-50 bottom-0 lg:right-0 lg:bottom-0 lg:relative"
           >
             <AddButton className="hidden lg:inline-flex">Create Task</AddButton>
-            <Button className="inline-flex z-50 font-normal h-12 pe-6 md:hidden gap-3">
+            <Button className="inline-flex w-full lg:w-auto z-50 font-normal h-12 pe-6 md:hidden gap-2">
               <MdAdd size="1.5rem" />
-              New
+              Create Task
             </Button>
           </Link>
         )}

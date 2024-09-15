@@ -29,47 +29,45 @@ export function DatePickerWithRange({
   className,
 }: DatePickerProps) {
   return (
-    <div>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            id="date"
-            variant={'outline'}
-            className={cn(
-              'h-10 justify-start text-left font-normal',
-              !date && 'text-muted-foreground',
-              className,
-            )}
-          >
-            <IoCalendar size="0.9rem" className="mr-3 text-text" />
-            {date?.from ? (
-              date.to ? (
-                <>
-                  {formatInTimeZone(date.from, siteConfig.timeZone, 'LLL dd, y')} -{' '}
-                  {formatInTimeZone(date.to, siteConfig.timeZone, 'LLL dd, y')}
-                </>
-              ) : (
-                formatInTimeZone(date.from, siteConfig.timeZone, 'LLL dd, y')
-              )
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          id="date"
+          variant={'outline'}
+          className={cn(
+            'h-10 justify-start text-left max-w-full font-normal overflow-hidden text-ellipsis',
+            !date && 'text-muted-foreground',
+            className,
+          )}
+        >
+          <IoCalendar size="0.9rem" className="mr-3 text-text flex-shrink-0" />
+          {date?.from ? (
+            date.to ? (
+              <>
+                {formatInTimeZone(date.from, siteConfig.timeZone, 'LLL dd, y')} -{' '}
+                {formatInTimeZone(date.to, siteConfig.timeZone, 'LLL dd, y')}
+              </>
             ) : (
-              <span>Pick a date</span>
-            )}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            initialFocus
-            mode="range"
-            defaultMonth={date?.from}
-            selected={date}
-            onSelect={setDate}
-            numberOfMonths={2}
-            // modifiers={{
-            //   disabled: [{ before: new Date() }, { dayOfWeek: [0, 6] }],
-            // }}
-          />
-        </PopoverContent>
-      </Popover>
-    </div>
+              formatInTimeZone(date.from, siteConfig.timeZone, 'LLL dd, y')
+            )
+          ) : (
+            <span>Pick a date</span>
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          initialFocus
+          mode="range"
+          defaultMonth={date?.from}
+          selected={date}
+          onSelect={setDate}
+          numberOfMonths={2}
+        // modifiers={{
+        //   disabled: [{ before: new Date() }, { dayOfWeek: [0, 6] }],
+        // }}
+        />
+      </PopoverContent>
+    </Popover>
   )
 }

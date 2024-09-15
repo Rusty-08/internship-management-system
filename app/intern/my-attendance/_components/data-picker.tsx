@@ -26,7 +26,7 @@ export function DateRangeFilter({
     <DatePickerWithRange
       date={date}
       setDate={handleDateChange}
-      className={cn('lg:w-[300px]', className)}
+      className={cn('w-min lg:w-[300px]', className)}
     />
   )
 }

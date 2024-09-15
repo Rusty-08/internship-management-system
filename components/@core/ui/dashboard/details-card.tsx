@@ -58,7 +58,7 @@ export const DetailsCard = ({
           children
         )}
         <Link href={navigate}>
-          <Button className='flex gap-2 md:hidden w-full'>
+          <Button className='flex gap-2 md:hidden w-full' variant='secondary'>
             View More
           </Button>
         </Link>

@@ -5,7 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { useState } from 'react'
 import Sidebar from '@/components/layout/sidebar'
 import { SidebarLinkProps } from './links'
-import { CgMenuLeftAlt } from 'react-icons/cg'
+import { RiMenu3Fill } from "react-icons/ri"
 
 type SidebarSheetProps = {
   sideLinks: SidebarLinkProps
@@ -18,7 +18,7 @@ export function SidebarSheet({ sideLinks }: SidebarSheetProps) {
     <Sheet open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
       <SheetTrigger asChild className="flex lg:hidden">
         <Button variant="ghost" size="circle">
-          <CgMenuLeftAlt size="1.5rem" />
+          <RiMenu3Fill size="1.5rem" />
         </Button>
       </SheetTrigger>
       <SheetContent side='left'>

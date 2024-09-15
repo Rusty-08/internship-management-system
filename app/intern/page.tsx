@@ -15,6 +15,7 @@ import { formatInTimeZone } from 'date-fns-tz'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import { IndividualAttendance } from '../admin/intern-management/_components/individual-attendance'
+import Loading from '../loading'
 
 export const metadata: Metadata = {
   title: 'Intern Dashboard',

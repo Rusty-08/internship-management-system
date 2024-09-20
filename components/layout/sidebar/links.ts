@@ -43,6 +43,11 @@ export const adminSidebarLinks: SidebarLinkProps = [
     icon: 'PiChalkboardTeacher',
   },
   {
+    name: 'Internship Management',
+    path: '/admin/internship-management',
+    icon: 'MdOutlineManageAccounts',
+  },
+  {
     name: 'Interns Attendance',
     path: '/admin/interns-attendance',
     icon: 'MdOutlineCalendarMonth',

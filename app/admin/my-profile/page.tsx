@@ -5,7 +5,7 @@ import UserProfile from '@/components/layout/profile'
 import { ComingSoon } from '@/components/@core/ui/coming-soon'
 
 export const metadata: Metadata = {
-  title: 'Admin Profile',
+  title: 'Profile',
 }
 
 const AdminProfile = () => {

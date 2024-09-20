@@ -146,7 +146,7 @@ export default function AccountsTable({
   }, [])
 
   return (
-    <div>
+    <div className='flex flex-col gap-4'>
       <ArchiveConfirmation
         isOpen={openDialog}
         user={archiveIntern?.original}
@@ -155,7 +155,7 @@ export default function AccountsTable({
         loading={loading}
         isArchivedPage={isArchivedPage}
       />
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between">
         <div className="flex w-full justify-between">
           <SearchFilter
             column="name"
@@ -198,7 +198,7 @@ export default function AccountsTable({
           searchOutput={`${columnFilters[0]?.value}`}
         />
       </div>
-      <div className="flex items-center justify-between py-3">
+      <div className="flex items-center justify-between">
         <DataTablePagination table={table} />
       </div>
     </div>

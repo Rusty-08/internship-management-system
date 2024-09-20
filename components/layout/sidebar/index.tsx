@@ -22,7 +22,7 @@ const Sidebar = ({
         !setOpen && 'hidden'
       )}
     >
-      <div className="flex items-center p-2 h-20 px-3 border-b">
+      <div className="flex items-center p-2 h-20 px-3 border-b border-slate-800">
         <div className="flex items-center ps-0.5 gap-3 overflow-hidden">
           <Image
             src={siteConfig.logoPlaceholder}

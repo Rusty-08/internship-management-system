@@ -52,8 +52,20 @@ model User {
   internProfile          Profile?      @relation("UserToProfile")
   mentorProfile          Profile?      @relation("MentorToProfile")
   files                  File[]
+  batchId                String?       @db.ObjectId
   tasks                  Task[]        @relation("mentorTask")
+  batch                  Batch?        @relation(fields: [batchId], references: [id], onDelete: Cascade)
   createdAt              DateTime      @default(now())
+}
+
+model Batch {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  isActive  Boolean  @default(false)
+  interns   User[]
+  createdAt DateTime @default(now())
 }
 
 model Profile {

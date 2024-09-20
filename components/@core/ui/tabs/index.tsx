@@ -10,7 +10,7 @@ export function TabsWrapper({ triggers, children }: TabsWrapperProps) {
   return (
     <Tabs defaultValue={triggers[0].toLowerCase()}>
       <TabsList
-        className="grid w-[20rem]"
+        className="grid w-full lg:w-[20rem]"
         style={{
           gridTemplateColumns: `repeat(${triggers.length}, minmax(0, 1fr))`,
         }}

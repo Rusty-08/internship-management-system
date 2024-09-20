@@ -39,7 +39,7 @@ export function DataTable<TData, TValue>({
                 return (
                   <TableHead
                     key={header.id}
-                    className="px-6 py-2 text-xs text-foreground font-semibold uppercase tracking-wide text-nowrap"
+                    className="px-6 py-1 text-xs text-foreground font-semibold uppercase tracking-wide text-nowrap"
                   >
                     {header.isPlaceholder
                       ? null

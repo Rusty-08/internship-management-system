@@ -1,13 +1,8 @@
-'use client'
-
-import { LoadingSpinner } from '@/components/@core/loading'
 import { siteConfig } from '@/configs/site'
-import { useTheme } from 'next-themes'
 import Image from 'next/image'
+import { LoadingSpinner } from '@/components/@core/loading'
 
 const Loading = () => {
-  const { theme: initialTheme } = useTheme()
-
   return (
     <div className="layout-loading flex items-center justify-center gap-4 flex-col w-full h-full">
       <div className="flex items-center flex-col justify-center overflow-hidden">

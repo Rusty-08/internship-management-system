@@ -71,8 +71,8 @@ const Profile = ({ user, children }: ProfileProps) => {
           height={0}
           className="w-full max-w-full object-cover max-h-60"
         />
-        <div className="px-12 min-h-32 relative">
-          <div className="w-36 group h-36 overflow-hidden absolute -top-10 bg-muted border-muted hover:border-primary/10 transition-all ease-in-out duration-300 z-10 rounded-full border-[0.4rem]">
+        <div className="px-4 lg:px-12 min-h-20 lg:min-h-32 relative">
+          <div className="w-20 lg:w-36 group h-20 lg:h-36 overflow-hidden absolute -top-4 lg:-top-10 bg-muted border-card hover:border-primary/10 transition-all ease-in-out duration-300 z-10 rounded-full border-[0.2rem] lg:border-[0.4rem]">
             <Image
               src={data.image || imagePlaceholder}
               alt="profile-image"
@@ -109,11 +109,11 @@ const Profile = ({ user, children }: ProfileProps) => {
               )}
             </div>
           </div>
-          <div className="px-4 py-3 flex flex-col gap-2 absolute left-48">
-            <h1 className="text-2xl font-bold tracking-wide">
+          <div className="px-4 py-2 lg:py-3 w-3/4 lg:w-auto flex flex-col gap-0 lg:gap-2 absolute left-[5.5rem] lg:left-48">
+            <h1 className="text-lg lg:text-2xl font-semibold lg:font-bold tracking-wide">
               {data.name}
             </h1>
-            <p className="text-text text-sm">{data.email}</p>
+            <p className="text-text text-xs lg:text-sm truncate">{data.email}</p>
           </div>
         </div>
       </div>

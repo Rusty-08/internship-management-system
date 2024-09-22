@@ -15,6 +15,7 @@ import { IoArchiveOutline } from 'react-icons/io5'
 import { LuArchiveRestore } from 'react-icons/lu'
 import { BatchBaseSchema } from './batch-schema'
 import { Batch } from '@prisma/client'
+import { Badge } from '@/components/ui/badge'
 
 export const batchColumns = (actions: {
   [key: string]: (row: Row<Batch>) => void
@@ -55,6 +56,18 @@ export const batchColumns = (actions: {
         const formattedDate = format(`${row.original.createdAt}`, 'MM/dd/yyyy')
 
         return <p>{formattedDate}</p>
+      },
+    },
+    {
+      accessorKey: 'isActive',
+      header: 'Status',
+      cell: ({ row }) => {
+        const isActive = row.original.isActive
+        const variant = isActive ? 'default' : 'secondary'
+
+        return (
+          <Badge variant={variant}>{isActive ? 'Active' : 'Inactive'}</Badge>
+        )
       },
     },
     {

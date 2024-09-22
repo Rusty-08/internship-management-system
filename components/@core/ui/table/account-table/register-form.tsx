@@ -156,7 +156,7 @@ export function FormDialog({
             form.reset()
           }}
         >
-          Add Account
+          Add New Account
         </AddButton>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

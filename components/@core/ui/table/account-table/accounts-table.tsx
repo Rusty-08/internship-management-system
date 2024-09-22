@@ -54,7 +54,10 @@ export default function AccountsTable({
   const [formMode, setFormMode] = useState<'edit' | 'create'>('create')
   const [sorting, setSorting] = useState<SortingState>([])
   const [rowSelection, setRowSelection] = useState({})
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([{
+    id: 'name',
+    value: searchParams.get(user ? user.toLowerCase() : 'user') ?? ''
+  }])
   const [archiveIntern, setArchiveIntern] = useState<Row<UserSubset> | null>(null)
   const [openDialog, setOpenDialog] = useState(false)
   const [loading, setLoading] = useState(false)

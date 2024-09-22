@@ -4,7 +4,10 @@ export const getBatchById = async (id: string) => {
   if (id === 'create-batch') return null
 
   const batch = await prisma.batch.findUnique({
-    where: { id }
+    where: { id },
+    include: {
+      interns: true
+    }
   })
 
   return batch

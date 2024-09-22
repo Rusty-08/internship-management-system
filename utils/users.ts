@@ -111,24 +111,23 @@ export const getInternUsers = async () => {
         isArchived: false,
       },
       include: {
-        internProfile: {
-          select: {
-            mentor: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-          },
-        },
         attendance: true,
       },
     })
-    return users.map(user => ({
-      ...user,
-      mentor: user.internProfile?.mentor?.name || 'none',
-      mentorId: user.internProfile?.mentor?.id || '',
-    }))
+
+    const usersWithMentors = await Promise.all(
+      users.map(async user => {
+        const mentor = await getServerUserById(`${user.mentorId}`);
+
+        return {
+          ...user,
+          mentor: mentor ? mentor.name : null,
+          mentorId: user.mentorId,
+        }
+      })
+    )
+
+    return usersWithMentors
   } catch {
     console.log("Can't fetch the intern users")
   } finally {

@@ -7,10 +7,17 @@ import sgMail from '@/components/email/send-grid'
 import { NEWUSER_TEMPLATE } from '@/components/email/new-user-temp'
 
 export async function POST(req: Request) {
-  try {
-    const { name, email, role, expertise, mentor, course, totalHours } =
-      await req.json()
+  const {
+    name,
+    email,
+    role,
+    expertise,
+    mentor,
+    course,
+    totalHours
+  } = await req.json()
 
+  try {
     if (!name || !email) {
       return NextResponse.json({ message: 'Invalid input' }, { status: 400 })
     }

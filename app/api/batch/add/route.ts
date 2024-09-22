@@ -1,18 +1,45 @@
 import prisma from '@/lib/prisma'
+import { User } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
+import bcrypt from 'bcryptjs'
+import generator from 'generate-password'
+import { z } from 'zod'
+import { BatchWithUsers } from '@/app/admin/internship-management/_components/batch-schema'
 
 export async function POST(req: Request) {
-  const { name, startDate, endDate } = await req.json()
+  const { name, startDate, endDate, interns } = await req.json() as z.infer<typeof BatchWithUsers>
 
   try {
     const batch = await prisma.batch.create({
       data: {
         name,
         startDate,
-        endDate
+        endDate,
       },
     })
+
+    if (interns) {
+      const password = generator.generate({
+        length: 10,
+        numbers: true
+      })
+
+      const hashedPassword = await bcrypt.hash(password, 10)
+
+      const newUsers = interns.map(user => {
+        return {
+          ...user,
+          batchId: batch.id,
+          password: hashedPassword,
+          role: 'INTERN',
+        } as User
+      })
+
+      await prisma.user.createMany({
+        data: newUsers,
+      })
+    }
 
     if (batch) {
       return NextResponse.json(

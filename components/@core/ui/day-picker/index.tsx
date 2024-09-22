@@ -2,7 +2,7 @@
 
 import { Calendar as CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button, ButtonProps } from "@/components/ui/button"
 import { Calendar, CalendarProps } from "@/components/ui/calendar"
 import {
   Popover,
@@ -19,10 +19,11 @@ type DatePickerProps = {
   date: Date | undefined
   setDate: Dispatch<SetStateAction<Date | undefined>>
   disabled?: Matcher | Matcher[] | undefined
+  disableBtn?: boolean
   className?: ClassNameValue
-}
+} & ButtonProps
 
-export function DayPicker({ date, setDate, disabled, className }: DatePickerProps) {
+export function DayPicker({ date, setDate, disabled, disableBtn, className, ...props }: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -33,6 +34,7 @@ export function DayPicker({ date, setDate, disabled, className }: DatePickerProp
             !date && "text-muted-foreground",
             className
           )}
+          disabled={disableBtn}
         >
           <CalendarIcon className="mr-3 h-4 w-4" />
           {date ? formatInTimeZone(date, siteConfig.timeZone, "PPP") : <span>Pick a date</span>}

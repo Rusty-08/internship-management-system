@@ -35,7 +35,7 @@ enum InternCourse {
 
 model User {
   id                     String        @id @default(auto()) @map("_id") @db.ObjectId
-  name                   String?
+  name                   String
   email                  String        @unique
   course                 InternCourse?
   totalHours             Float?
@@ -49,6 +49,7 @@ model User {
   isArchived             Boolean       @default(false)
   accounts               Account[]
   sessions               Session[]
+  mentorId               String?       @db.ObjectId
   internProfile          Profile?      @relation("UserToProfile")
   mentorProfile          Profile?      @relation("MentorToProfile")
   files                  File[]

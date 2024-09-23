@@ -21,9 +21,9 @@ type DatePickerProps = {
   disabled?: Matcher | Matcher[] | undefined
   disableBtn?: boolean
   className?: ClassNameValue
-} & ButtonProps
+}
 
-export function DayPicker({ date, setDate, disabled, disableBtn, className, ...props }: DatePickerProps) {
+export function DayPicker({ date, setDate, disabled, disableBtn, className }: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>

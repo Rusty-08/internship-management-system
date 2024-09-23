@@ -3,7 +3,7 @@ import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
 export async function PUT(req: Request) {
-  const { id, name, email, role, expertise, mentor, isArchived } =
+  const { id, name, email, role, expertise, mentor, batch, isArchived } =
     await req.json()
 
   try {
@@ -25,19 +25,8 @@ export async function PUT(req: Request) {
         role: role ?? user.role,
         expertise: role === 'MENTOR' ? expertise : user.expertise,
         isArchived: isArchived || false,
-        internProfile:
-          role === 'INTERN' && mentor
-            ? {
-                upsert: {
-                  create: {
-                    mentorId: mentor,
-                  },
-                  update: {
-                    mentorId: mentor,
-                  },
-                },
-              }
-            : undefined,
+        mentorId: role === 'INTERN' ? mentor : user.mentorId,
+        batchId: batch,
       },
     })
 

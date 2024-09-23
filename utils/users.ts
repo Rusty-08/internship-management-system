@@ -8,6 +8,16 @@ export async function getCurrentUserEmail() {
   return session?.user.email
 }
 
+export async function getUserById(id: string) {
+  if (id === 'create-user') return null
+
+  const user = await prisma.user.findUnique({
+    where: { id, isArchived: false },
+  })
+
+  return user
+}
+
 export async function getUserEmailById(id: string) {
   const user = await prisma.user.findUnique({ where: { id } })
   return user?.email
@@ -122,7 +132,6 @@ export const getInternUsers = async () => {
         return {
           ...user,
           mentor: mentor ? mentor.name : null,
-          mentorId: user.mentorId,
         }
       })
     )
@@ -130,8 +139,6 @@ export const getInternUsers = async () => {
     return usersWithMentors
   } catch {
     console.log("Can't fetch the intern users")
-  } finally {
-    revalidatePath('/admin/intern-management')
   }
 }
 

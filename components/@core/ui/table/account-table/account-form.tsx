@@ -1,14 +1,7 @@
+'use client'
+
 import SubmitCancelButton from '@/components/@core/button/submit-cancel'
-import AddButton from '@/components/@core/ui/add-button'
 import ErrorCard from '@/components/auth/login/error-card'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -33,6 +26,10 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { RegistrationSchema } from './registration-schema'
 import { UserSubset } from './types'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Batch, User } from '@prisma/client'
+import { getAllBatch } from '@/utils/batch'
+import { cn } from '@/lib/utils'
 
 const sampleExpertise = [
   'Frontend Developer',
@@ -43,44 +40,39 @@ const sampleExpertise = [
   'Data Scientist',
 ]
 
-type FormActions = 'edit' | 'create'
-
 type FormDialogProps = {
-  initialValues?: z.infer<typeof RegistrationSchema>
-  mode?: FormActions
+  initialValues: User | null
   role: 'INTERN' | 'MENTOR'
-  mentors: UserSubset[]
 }
 
-// *TODO: Add form to create intern user together with the batch creation
-// *TODO: Create a schema for both batch and intern users
-// *TODO: Allow to add multiple users per batch
-
-export function FormDialog({
+export function UserForm({
   initialValues,
-  mode,
   role,
-  mentors,
 }: FormDialogProps) {
   const router = useRouter()
   const [isEmailTaken, setIsEmailTaken] = useState(false)
+  const [mentors, setMentors] = useState<UserSubset[]>([])
+  const [batches, setBatches] = useState<Batch[]>([])
 
   const form = useForm<z.infer<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
     defaultValues: {
-      name: '',
-      email: '',
-      mentor: '',
-      expertise: '',
-      course: '',
+      name: initialValues?.name ?? '',
+      email: initialValues?.email ?? '',
+      mentorId: initialValues?.mentorId ?? '',
+      expertise: initialValues?.expertise ?? '',
+      course: initialValues?.course ?? '',
       totalHours: undefined,
+      batch: initialValues?.batchId ?? ''
     },
   })
 
   const { isSubmitting, errors } = form.formState
 
   const onSubmit = async (values: z.infer<typeof RegistrationSchema>) => {
-    const { name, email, mentor, expertise, course, totalHours } = values
+    const { name, email, mentorId, expertise, course, totalHours, batch } = values
+
+    setIsEmailTaken(false)
 
     try {
       let res
@@ -97,8 +89,9 @@ export function FormDialog({
             role,
             course,
             totalHours: Number(totalHours),
-            mentor: role === 'INTERN' ? mentor : null,
+            mentor: role === 'INTERN' ? mentorId : null,
             expertise: role === 'INTERN' ? null : expertise,
+            batch
           }),
         })
       } else {
@@ -111,10 +104,11 @@ export function FormDialog({
             name,
             email,
             role,
-            mentor,
+            mentor: mentorId,
             expertise,
             course,
             totalHours: Number(totalHours),
+            batch
           }),
         })
       }
@@ -125,7 +119,7 @@ export function FormDialog({
       }
 
       form.reset()
-      router.back()
+      router.push(`/admin/${role.toLowerCase()}-management`)
     } catch (error) {
       console.error(error)
     }
@@ -133,192 +127,262 @@ export function FormDialog({
 
   useEffect(() => {
     if (initialValues) {
-      form.setValue('name', initialValues.name ?? '')
-      form.setValue('email', initialValues.email ?? '')
-      form.setValue('mentor', initialValues.mentor ?? '')
-      form.setValue('expertise', initialValues.expertise ?? '')
-      form.setValue('course', initialValues.course ?? '')
+      // form.setValue('name', initialValues.name ?? '')
+      // form.setValue('email', initialValues.email ?? '')
+      // form.setValue('mentorId', initialValues.mentorId ?? '')
+      // form.setValue('expertise', initialValues.expertise ?? '')
+      // form.setValue('course', initialValues.course ?? '')
 
       const totalHours = initialValues?.course === 'BSCS' ? 120 : 486
       form.setValue('totalHours', initialValues.totalHours ?? totalHours)
     }
-  }, [initialValues, form])
+
+    const fetchMentors = async () => {
+      const data = await fetchMentorUsers()
+      setMentors(data)
+    }
+
+    const fetchAllBatch = async () => {
+      const _batches = await getAllBatch()
+      setBatches(_batches)
+    }
+
+    fetchAllBatch()
+    fetchMentors()
+  }, [form, initialValues])
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="space-y-4">
-          <div className="grid grid-col-2 gap-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="text" placeholder="John Doe" />
-                  </FormControl>
-                  {errors.name && (
-                    <FormMessage>{errors.name.message}</FormMessage>
-                  )}
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="sample@gmail.com" />
-                  </FormControl>
-                  {errors.email && (
-                    <FormMessage>{errors.email.message}</FormMessage>
-                  )}
-                </FormItem>
-              )}
-            />
-          </div>
-          {role === 'INTERN' && (
-            <div className="grid grid-col-3 gap-4">
-              <FormField
-                control={form.control}
-                name="course"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Course</FormLabel>
-                    <Select
-                      onValueChange={value => {
-                        field.onChange(value)
-                        const totalHours = value === 'BSCS' ? 120 : 486
-                        form.setValue('totalHours', totalHours)
-                      }}
-                      defaultValue={field.value}
-                    >
+    <Card>
+      <CardHeader className="text-xl font-semibold">
+        {initialValues ? 'Edit' : 'Add'}{' '}
+        {role.charAt(0) + role.slice(1).toLowerCase()} Account
+      </CardHeader>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardContent>
+            <div className="space-y-4">
+              <div className={cn('grid gap-4', role === 'INTERN' && 'grid-cols-2')}>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select the course" />
-                        </SelectTrigger>
+                        <Input {...field} disabled={isSubmitting} placeholder="John Doe" />
                       </FormControl>
-                      <SelectContent>
-                        {['BSIT', 'BSCS', 'BSIS'].map(course => (
-                          <SelectItem key={course} value={course ?? ''}>
-                            {course}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {errors.course && (
-                      <FormMessage>{errors.course.message}</FormMessage>
-                    )}
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="totalHours"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Total Hours</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="number"
-                        placeholder="e.g. 486"
-                        onChange={event =>
-                          field.onChange(Number(event.target.value))
-                        }
-                        disabled
-                      />
-                    </FormControl>
-                    {errors.totalHours && (
-                      <FormMessage>{errors.totalHours.message}</FormMessage>
-                    )}
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="mentor"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Mentor</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      disabled={mentors.length === 0}
-                    >
+                      {errors.name && (
+                        <FormMessage>{errors.name.message}</FormMessage>
+                      )}
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            placeholder={
-                              mentors.length === 0
-                                ? 'No available mentor'
-                                : 'Select the mentor'
-                            }
-                          />
-                        </SelectTrigger>
+                        <Input {...field} disabled={isSubmitting} placeholder="sample@gmail.com" />
                       </FormControl>
-                      <SelectContent>
-                        {mentors.map(mentor => (
-                          <SelectItem
-                            key={mentor.email}
-                            value={mentor.id ?? ''}
+                      {errors.email && (
+                        <FormMessage>{errors.email.message}</FormMessage>
+                      )}
+                    </FormItem>
+                  )}
+                />
+              </div>
+              {role === 'INTERN' && (
+                <>
+                  <div className='grid grid-cols-2 gap-4'>
+                    <FormField
+                      control={form.control}
+                      name="course"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Course</FormLabel>
+                          <Select
+                            onValueChange={value => {
+                              field.onChange(value)
+                              const totalHours = value === 'BSCS' ? 120 : 486
+                              form.setValue('totalHours', totalHours)
+                            }}
+                            disabled={isSubmitting}
+                            defaultValue={field.value}
                           >
-                            {mentor.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {errors.mentor && (
-                      <FormMessage>{errors.mentor.message}</FormMessage>
-                    )}
-                  </FormItem>
-                )}
-              />
-            </div>
-          )}
-          {role === 'MENTOR' && (
-            <FormField
-              control={form.control}
-              name="expertise"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Role</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select the expertise" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {sampleExpertise.map(expertise => (
-                        <SelectItem key={expertise} value={expertise}>
-                          {expertise}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormItem>
+                            <FormControl>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select the course" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {['BSIT', 'BSCS', 'BSIS'].map(course => (
+                                <SelectItem key={course} value={course ?? ''}>
+                                  {course}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          {errors.course && (
+                            <FormMessage>{errors.course.message}</FormMessage>
+                          )}
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="totalHours"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Total Hours</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              type="number"
+                              placeholder="e.g. 486"
+                              onChange={event =>
+                                field.onChange(Number(event.target.value))
+                              }
+                              disabled
+                            />
+                          </FormControl>
+                          {errors.totalHours && (
+                            <FormMessage>{errors.totalHours.message}</FormMessage>
+                          )}
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className='grid grid-cols-2 gap-4'>
+                    <FormField
+                      control={form.control}
+                      name="mentorId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Mentor</FormLabel>
+                          <Select
+                            defaultValue={field.value}
+                            onValueChange={field.onChange}
+                            disabled={isSubmitting}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue
+                                  placeholder={
+                                    mentors.length === 0
+                                      ? 'No available mentor'
+                                      : 'Select the mentor'
+                                  }
+                                />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {mentors.map(mentor => (
+                                <SelectItem
+                                  key={mentor.email}
+                                  value={mentor.id ?? ''}
+                                >
+                                  {mentor.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          {errors.mentorId && (
+                            <FormMessage>{errors.mentorId.message}</FormMessage>
+                          )}
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="batch"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Batch</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            disabled={batches.length === 0}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue
+                                  placeholder={
+                                    batches.length === 0
+                                      ? 'No available batch'
+                                      : 'Select the batch name'
+                                  }
+                                />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {batches.map(batch => (
+                                <SelectItem
+                                  key={batch.id}
+                                  value={batch.id ?? ''}
+                                >
+                                  {batch.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          {errors.batch && (
+                            <FormMessage>{errors.batch.message}</FormMessage>
+                          )}
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </>
               )}
-            />
-          )}
-          {isEmailTaken && (
-            <ErrorCard>The Email is already taken</ErrorCard>
-          )}
-        </div>
-        <SubmitCancelButton
-          loading={isSubmitting}
-          cancelOnclick={() => router.back()}
-          className="w-40"
-        >
-          {`Save ${mode === 'edit' ? 'Changes' : 'Account'}`}
-        </SubmitCancelButton>
-      </form>
-    </Form>
+              {role === 'MENTOR' && (
+                <FormField
+                  control={form.control}
+                  name="expertise"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Role</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select the role" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {sampleExpertise.map(expertise => (
+                            <SelectItem key={expertise} value={expertise}>
+                              {expertise}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              )}
+              {isEmailTaken && (
+                <ErrorCard>The Email is already taken</ErrorCard>
+              )}
+            </div>
+          </CardContent>
+          <CardFooter>
+            <SubmitCancelButton
+              loading={isSubmitting}
+              cancelOnclick={() => {
+                form.reset()
+                router.back()
+              }}
+              className="w-44"
+            >
+              {`Save ${initialValues ? 'Changes' : 'Account'}`}
+            </SubmitCancelButton>
+          </CardFooter>
+        </form>
+      </Form>
+    </Card>
   )
 }

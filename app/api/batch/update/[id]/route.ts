@@ -11,8 +11,6 @@ export async function PUT(
 ) {
   const { name, startDate, endDate, interns } = await request.json() as z.infer<typeof BatchWithUsers>
 
-  console.log(interns)
-
   try {
     const batchUpdate = await prisma.batch.findUnique({
       where: { id },
@@ -27,7 +25,7 @@ export async function PUT(
       data: {
         name,
         startDate,
-        endDate
+        endDate,
       }
     })
 

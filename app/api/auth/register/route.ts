@@ -14,6 +14,7 @@ export async function POST(req: Request) {
     expertise,
     mentor,
     course,
+    batch,
     totalHours
   } = await req.json()
 
@@ -47,16 +48,11 @@ export async function POST(req: Request) {
           email,
           password: hashedPassword,
           role,
+          batchId: batch,
           course,
           totalHours,
           isArchived: false,
-          internProfile: mentor
-            ? {
-              create: {
-                mentorId: mentor,
-              },
-            }
-            : undefined,
+          mentorId: mentor
         },
       })
     } else {
@@ -66,30 +62,32 @@ export async function POST(req: Request) {
           email,
           password: hashedPassword,
           role,
+          batchId: batch,
           expertise,
           isArchived: false,
         },
       })
     }
 
-    const msg = {
-      to: email,
-      from: `${process.env.SENDER_EMAIL}`,
-      subject: 'IMS Account Registration',
-      html: NEWUSER_TEMPLATE(password),
-    }
+    // const msg = {
+    //   to: email,
+    //   from: `${process.env.SENDER_EMAIL}`,
+    //   subject: 'IMS Account Registration',
+    //   html: NEWUSER_TEMPLATE(password),
+    // }
 
-    sgMail.send(msg).then(() => {
-      console.log('Email sent')
-    }).catch((error) => {
-      console.error(error)
-    })
+    // sgMail.send(msg).then(() => {
+    //   console.log('Email sent')
+    // }).catch((error) => {
+    //   console.error(error)
+    // })
 
     if (role === 'INTERN') {
       revalidatePath('/admin/intern-management')
     } else {
       revalidatePath('/admin/mentor-management')
     }
+
     return NextResponse.json({ user }, { status: 201 })
   } catch {
     return NextResponse.json(

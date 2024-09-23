@@ -1,19 +1,13 @@
-import { Metadata } from 'next'
-import { Suspense } from 'react'
-import ProfileSkeleton from '@/components/layout/profile/profile-skeleton'
-import UserProfile from '@/components/layout/profile'
+import { UserForm } from '@/components/@core/ui/table/account-table/account-form'
+import { getUserById } from '@/utils/users'
+import React from 'react'
 
-export const metadata: Metadata = {
-  title: 'Intern Profile',
-}
+const InternUser = async ({ params: { id } }: { params: { id: string } }) => {
+  const intern = await getUserById(id)
 
-const InternProfile = async ({ params: { id } }: { params: { id: string } }) => {
   return (
-    <Suspense fallback={<ProfileSkeleton />}>
-      <UserProfile userId={id} />
-    </Suspense>
-    // <ProfileSkeleton />
+    <UserForm role='INTERN' initialValues={intern} />
   )
 }
 
-export default InternProfile
+export default InternUser

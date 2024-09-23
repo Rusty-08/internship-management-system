@@ -24,7 +24,7 @@ export const accountColumns = (actions: {
       },
       cell: ({ row }) => {
         const name = row.original.name
-        const path = `/admin/mentor-management/${row.original.id}`
+        const path = `/admin/mentor-management/profile/${row.original.id}`
 
         return (
           <Link
@@ -76,13 +76,11 @@ export const accountColumns = (actions: {
         return (
           <div className="flex justify-end gap-1">
             <TooltipWrapper tooltip="Edit">
-              <Button
-                variant="ghost"
-                size="circle"
-                onClick={() => actions.edit(row)}
-              >
-                {!row.original.isArchived && <FiEdit3 size="1.1rem" />}
-              </Button>
+              <Link href={`/admin/mentor-management/${row.original.id}`}>
+                <Button variant="ghost" size="circle">
+                  {row.original.isArchived === false && <FiEdit3 size="1.1rem" />}
+                </Button>
+              </Link>
             </TooltipWrapper>
             <TooltipWrapper tooltip="Archive">
               <Button

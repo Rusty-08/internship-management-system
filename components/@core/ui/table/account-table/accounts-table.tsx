@@ -5,14 +5,6 @@ import { DataTable } from '@/components/@core/ui/table/data-table'
 import { DataTablePagination } from '@/components/@core/ui/table/pagination'
 import { SearchFilter } from '@/components/@core/ui/table/seach-filter'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { fetchMentorUsers } from '@/utils/users'
-import {
   ColumnDef,
   ColumnFiltersState,
   Row,
@@ -24,13 +16,12 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useRouter } from 'next/navigation'
-import { useEffect, useMemo, useState, useCallback } from 'react'
-import { z } from 'zod'
+import { useMemo, useState } from 'react'
 import { ArchiveConfirmation } from './archive-confirmation'
-import { FormDialog } from './register-form'
-import { RegistrationSchema } from './registration-schema'
 import SelectFilter from '@/components/@core/tasks/status-filter'
 import { useUpdateParams } from '@/hooks/useUpdateParams'
+import AddButton from '../../add-button'
+import Link from 'next/link'
 
 type AccountsTableProps = {
   data: UserSubset[]
@@ -48,10 +39,8 @@ export default function AccountsTable({
   accountColumns,
 }: AccountsTableProps) {
   const router = useRouter()
-  const [isOpen, setIsOpen] = useState(false)
   const { searchParams, updateParams } = useUpdateParams()
   const [roleFilter, setRoleFilter] = useState(searchParams.get('role') || 'all')
-  const [formMode, setFormMode] = useState<'edit' | 'create'>('create')
   const [sorting, setSorting] = useState<SortingState>([])
   const [rowSelection, setRowSelection] = useState({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([{
@@ -61,36 +50,12 @@ export default function AccountsTable({
   const [archiveIntern, setArchiveIntern] = useState<Row<UserSubset> | null>(null)
   const [openDialog, setOpenDialog] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [mentors, setMentors] = useState<UserSubset[]>([])
-  const [editData, setEditData] = useState<z.infer<typeof RegistrationSchema>>({
-    id: '',
-    name: '',
-    email: '',
-    mentor: '',
-    expertise: '',
-    course: '',
-    totalHours: undefined,
-  })
 
   const filteredData = useMemo(() => {
     return roleFilter !== 'all'
       ? data.filter(d => d.role === roleFilter.toUpperCase())
       : data
   }, [roleFilter, data])
-
-  const handleEdit = (row: Row<UserSubset>) => {
-    setFormMode('edit')
-    setIsOpen(true)
-    setEditData({
-      id: row.original.id || '',
-      name: row.original.name || '',
-      email: row.original.email || '',
-      mentor: row.original.mentorId || '',
-      expertise: row.original.expertise || '',
-      course: row.original.course || '',
-      totalHours: row.original.totalHours || undefined,
-    })
-  }
 
   const handleArchive = async () => {
     setLoading(true)
@@ -118,7 +83,6 @@ export default function AccountsTable({
   }
 
   const actions = {
-    edit: handleEdit,
     openArchiveConfirmation,
   }
 
@@ -138,15 +102,6 @@ export default function AccountsTable({
       columnFilters,
     },
   })
-
-  useEffect(() => {
-    // for listing mentors in the select dropdown
-    const fetchMentors = async () => {
-      const data = await fetchMentorUsers()
-      setMentors(data)
-    }
-    fetchMentors()
-  }, [])
 
   return (
     <div className='flex flex-col gap-4'>
@@ -183,15 +138,11 @@ export default function AccountsTable({
           )}
         </div>
         {!isArchivedPage && user && (
-          <FormDialog
-            mode={formMode}
-            setMode={setFormMode}
-            initialValues={editData}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            role={user}
-            mentors={mentors}
-          />
+          <Link href={`/admin/${user.toLowerCase()}-management/create-user`}>
+            <AddButton>
+              Add New Account
+            </AddButton>
+          </Link>
         )}
       </div>
       <div className="rounded-md border overflow-hidden ">

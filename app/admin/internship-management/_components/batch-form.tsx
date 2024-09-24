@@ -196,7 +196,7 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
                                   <Input {...field} disabled={isSubmitting} placeholder="Enter the user's name here" />
                                 </FormControl>
                                 {errors.interns && errors.interns[index]?.name && (
-                                  <FormMessage>{errors.interns[index].name.message}</FormMessage>
+                                  <FormMessage>{errors.interns[index]?.name?.message}</FormMessage>
                                 )}
                               </FormItem>
                             )}
@@ -211,7 +211,7 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
                                   <Input {...field} placeholder="sample@gmail.com" disabled={isSubmitting} />
                                 </FormControl>
                                 {errors.interns && errors.interns[index]?.email && (
-                                  <FormMessage>{errors.interns[index].email.message}</FormMessage>
+                                  <FormMessage>{errors.interns[index]?.email?.message}</FormMessage>
                                 )}
                               </FormItem>
                             )}
@@ -245,7 +245,7 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
                                   </SelectContent>
                                 </Select>
                                 {errors.interns && errors.interns[index]?.course && (
-                                  <FormMessage>{errors.interns[index].course.message}</FormMessage>
+                                  <FormMessage>{errors.interns[index]?.course?.message}</FormMessage>
                                 )}
                               </FormItem>
                             )}
@@ -271,7 +271,7 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
                                   />
                                 </FormControl>
                                 {errors.interns && errors.interns[index]?.totalHours && (
-                                  <FormMessage>{errors.interns[index].totalHours.message}</FormMessage>
+                                  <FormMessage>{errors.interns[index]?.totalHours?.message}</FormMessage>
                                 )}
                               </FormItem>
                             )}
@@ -310,7 +310,7 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
                                   </SelectContent>
                                 </Select>
                                 {errors.interns && errors.interns[index]?.mentorId && (
-                                  <FormMessage>{errors.interns[index].mentorId.message}</FormMessage>
+                                  <FormMessage>{errors.interns[index]?.mentorId?.message}</FormMessage>
                                 )}
                               </FormItem>
                             )}

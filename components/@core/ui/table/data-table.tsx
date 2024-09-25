@@ -59,10 +59,10 @@ export function DataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
-                className={cn('bg-transparent max-h-8', idx % 2 !== 0 && 'bg-muted/50')}
+                className={cn('bg-transparent', idx % 2 !== 0 && 'bg-muted/50')}
               >
                 {row.getVisibleCells().map(cell => (
-                  <TableCell key={cell.id} className="px-6 py-2.5 text-text">
+                  <TableCell key={cell.id} className="px-6 py-2 text-text">
                     {(() => {
                       return flexRender(
                         cell.column.columnDef.cell,

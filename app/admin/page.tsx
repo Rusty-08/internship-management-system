@@ -75,7 +75,7 @@ const AdminDashboard = async () => {
           <div className="flex flex-col w-full border shadow-sm rounded-md overflow-hidden">
             {allInterns.map((user, idx) => (
               <Fragment key={user.id}>
-                <Link href={`/admin/intern-management/${user.internId}`}>
+                <Link href={`/admin/intern-management/profile/${user.internId}`}>
                   <div className={cn(
                     "flex group items-center px-4 hover:bg-muted/50 transition-all justify-between gap-4",
                     idx % 2 === 0 && 'bg-muted/50',

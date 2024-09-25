@@ -28,6 +28,7 @@ import { fetchMentorUsers } from '@/utils/users'
 import AddButton from '@/components/@core/ui/add-button'
 import { Separator } from '@/components/ui/separator'
 import { Batch, User } from '@prisma/client'
+import { cn } from '@/lib/utils'
 
 type BatchFormProps = {
   initialState: Batch & { interns: User[] } | null
@@ -35,17 +36,17 @@ type BatchFormProps = {
 
 const BatchForm = ({ initialState }: BatchFormProps) => {
   const router = useRouter()
-  const [startDate, setStartDate] = useState<Date | undefined>(new Date())
-  const [endDate, setEndDate] = useState<Date | undefined>(new Date())
+  const [startDate, setStartDate] = useState<Date | undefined>(initialState?.startDate || new Date())
+  const [endDate, setEndDate] = useState<Date | undefined>(initialState?.endDate || new Date())
   const [mentors, setMentors] = useState<UserSubset[]>([])
 
   const form = useForm<z.infer<typeof BatchWithUsers>>({
     resolver: zodResolver(BatchWithUsers),
     defaultValues: {
-      name: '',
+      name: initialState?.name || '',
       startDate,
       endDate,
-      interns: [internProps]
+      interns: initialState?.interns || [internProps]
     },
   })
 
@@ -88,15 +89,6 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
   const { errors, isSubmitting } = form.formState
 
   useEffect(() => {
-    if (initialState) {
-      form.setValue('name', initialState.name ?? '')
-      setStartDate(initialState.startDate)
-      setEndDate(initialState.endDate)
-      form.setValue('interns', initialState.interns)
-    }
-  }, [initialState, form])
-
-  useEffect(() => {
     // for listing mentors in the select dropdown
     const fetchMentors = async () => {
       const data = await fetchMentorUsers()
@@ -106,15 +98,15 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
   }, [])
 
   return (
-    <Card>
-      <CardHeader className="text-xl font-semibold">
+    <Card className='bg-transparent'>
+      <CardHeader className="text-xl pt-0 px-0 font-semibold">
         {initialState ? 'Update Batch' : 'Create Batch'}
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmitForm)}>
-          <CardContent>
+          <CardContent className='px-0'>
             <div className="space-y-4">
-              <div className="flex border p-6 pt-5 rounded-md flex-col gap-4">
+              <div className="flex border bg-card p-6 pt-5 rounded-md flex-col gap-4">
                 <p className='font-medium'>Batch Details</p>
                 <div className="grid grid-cols-3 gap-4">
                   <FormField
@@ -179,7 +171,7 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
                   />
                 </div>
               </div>
-              <div className="flex border p-6 pt-5 rounded-md flex-col gap-4">
+              <div className="flex border bg-card p-6 pt-5 rounded-md flex-col gap-4">
                 <p className='font-medium'>Intern Accounts</p>
                 <div className="flex flex-col gap-4">
                   {fields.map((field, index) => (
@@ -263,7 +255,7 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
                                     {...field}
                                     value={field.value ?? ''}
                                     type="number"
-                                    placeholder="e.g. 486"
+                                    placeholder="486"
                                     onChange={event =>
                                       field.onChange(Number(event.target.value))
                                     }
@@ -315,10 +307,14 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
                               </FormItem>
                             )}
                           />
-                          <div className="flex space-x-4">
+                          <div className={cn(
+                            "grid gap-4",
+                            fields.length > 1 && index === fields.length - 1 && !initialState
+                            && 'grid-cols-2'
+                          )}>
                             {fields.length > 1 && !initialState && (
                               <Button
-                                variant='destructive'
+                                variant='outline-destructive'
                                 type='button'
                                 className='flex-grow'
                                 onClick={() => remove(index)}
@@ -327,8 +323,8 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
                               </Button>
                             )}
                             {index === fields.length - 1 && !initialState && (
-                              <AddButton type="button" onClick={() => append(internProps)} className='flex-grow'>
-                                Add Another User
+                              <AddButton variant='outline-default' type="button" onClick={() => append(internProps)} className='flex-grow'>
+                                Add Another
                               </AddButton>
                             )}
                           </div>

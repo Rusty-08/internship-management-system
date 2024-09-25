@@ -43,7 +43,7 @@ export function SearchFilter<TData>({
 
   return (
     <Input
-      placeholder="Search by name"
+      placeholder="Search user by name"
       icon={FiSearch}
       onChange={event => handleSearch(event.target.value)}
       defaultValue={searchParams.get(search || '')?.toString()}

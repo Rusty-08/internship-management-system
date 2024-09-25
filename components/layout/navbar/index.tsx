@@ -49,16 +49,13 @@ const Navbar = async ({ profilePath, sideLinks }: SidebarSheetProps) => {
           profilePath={profilePath}
         >
           <form action={logout}>
-            <DropdownMenuItem className="group p-0 hover:text-primary cursor-pointer">
+            <DropdownMenuItem className="p-0 cursor-pointer">
               <Button
                 type="submit"
                 variant="ghost"
-                className="justify-start text-text px-3 gap-3 w-full"
+                className="justify-start text-text hover:text-destructive px-3 gap-3 w-full"
               >
-                <TbArrowRightFromArc
-                  size="1.1rem"
-                  className="group-hover:text-primary"
-                />
+                <TbArrowRightFromArc size="1rem" />
                 Sign Out
               </Button>
             </DropdownMenuItem>

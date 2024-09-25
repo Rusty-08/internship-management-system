@@ -15,7 +15,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Internship Management System',
+    template: '%s | Internship Portal',
     default: 'Internship Portal',
   },
   description: siteConfig.description,

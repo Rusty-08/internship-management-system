@@ -75,10 +75,16 @@ export const accountColumns = (actions: {
       },
     },
     {
+      accessorKey: 'batch',
+      header: 'Batch',
+    },
+    {
       accessorKey: 'createdAt',
-      header: 'Created At',
+      header: ({ column }) => {
+        return <DataTableColumnHeader column={column} title='Created At' />
+      },
       cell: ({ row }) => {
-        const formattedDate = format(`${row.original.createdAt}`, 'MM/dd/yyyy')
+        const formattedDate = format(`${row.original.createdAt}`, 'MMM dd, yyyy')
 
         return <p>{formattedDate}</p>
       },
@@ -92,7 +98,7 @@ export const accountColumns = (actions: {
               <TooltipWrapper tooltip="Edit">
                 <Link href={`/admin/intern-management/${row.original.id}`}>
                   <Button variant="ghost" size="circle">
-                    {row.original.isArchived === false && <FiEdit3 size="1.1rem" />}
+                    {row.original.isArchived === false && <FiEdit3 className='text-primary' size="1.1rem" />}
                   </Button>
                 </Link>
               </TooltipWrapper>
@@ -108,13 +114,7 @@ export const accountColumns = (actions: {
                   size="circle"
                   onClick={() => actions.openArchiveConfirmation(row)}
                 >
-                  {row.original.isArchived === false ? (
-                    <>
-                      <IoArchiveOutline size="1.1rem" />
-                    </>
-                  ) : (
-                    <LuArchiveRestore size="1.1rem" />
-                  )}
+                  <IoArchiveOutline size="1.1rem" className='text-destructive' />
                 </Button>
               </TooltipWrapper>
             </div>

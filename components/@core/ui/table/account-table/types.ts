@@ -10,6 +10,7 @@ export type UserSubset = {
   attendance?: AttendanceProps[] | null
   role: string | null
   expertise?: string | null
+  batch?: string | null
   mentor?: string | null
   mentorId?: string | null
   isArchived?: boolean | null

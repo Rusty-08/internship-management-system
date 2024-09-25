@@ -3,7 +3,7 @@ import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
 export async function PUT(req: Request) {
-  const { id, name, email, role, expertise, mentor, batch, isArchived } =
+  const { id, name, email, role, course, totalHours, expertise, mentor, batch, isArchived } =
     await req.json()
 
   try {
@@ -17,20 +17,35 @@ export async function PUT(req: Request) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 })
     }
 
-    const updatedUser = await prisma.user.update({
-      where: { id },
-      data: {
-        name: name ?? user.name,
-        email: email ?? user.email,
-        role: role ?? user.role,
-        expertise: role === 'MENTOR' ? expertise : user.expertise,
+    let data;
+
+    if (role === 'INTERN') {
+      data = {
+        name,
+        email,
+        course,
         isArchived: isArchived || false,
-        mentorId: role === 'INTERN' ? mentor : user.mentorId,
-        batchId: batch,
-      },
+        mentorId: mentor === 'None' ? null : mentor,
+        batchId: batch ?? user.batchId,
+        totalHours
+      }
+    } else {
+      data = {
+        name,
+        email,
+        isArchived: isArchived || false,
+        expertise,
+      }
+    }
+
+    await prisma.user.update({
+      where: { id }, data,
     })
 
-    return NextResponse.json({ user: updatedUser }, { status: 200 })
+    return NextResponse.json(
+      { message: 'Successfully updated the account' },
+      { status: 201 },
+    )
   } catch {
     return NextResponse.json(
       { message: 'Could not update user' },
@@ -38,11 +53,6 @@ export async function PUT(req: Request) {
     )
   } finally {
     await prisma.$disconnect()
-
-    if (role === 'INTERN') {
-      revalidatePath('/admin/intern-management')
-    } else {
-      revalidatePath('/admin/mentor-management')
-    }
+    revalidatePath(`/admin/${role.toLowerCase()}-management`)
   }
 }

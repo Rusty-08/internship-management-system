@@ -2,6 +2,7 @@ import { auth } from '@/auth'
 import prisma from '@/lib/prisma'
 import { User } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
+import { getBatchById } from './batch'
 
 export async function getCurrentUserEmail() {
   const session = await auth()
@@ -30,14 +31,14 @@ export async function getServerUserByEmail(email: string) {
 }
 
 // Server-side function to get the current user by id
-export async function getServerUserById(id: string) {
+export async function getServerUserById(id: string, isArchived?: boolean) {
   if (!id) {
     const user = await getCurrentUser()
     return user
   }
 
   const user = await prisma.user.findUnique({
-    where: { id, isArchived: false },
+    where: { id, isArchived },
     include: {
       attendance: true
     }
@@ -113,7 +114,7 @@ export const fetchInternUsers = async () => {
 }
 
 // get intern users in the server-side
-export const getInternUsers = async () => {
+export const getInternUsers = async (withNoMentors?: boolean) => {
   try {
     const users = await prisma.user.findMany({
       where: {
@@ -125,13 +126,28 @@ export const getInternUsers = async () => {
       },
     })
 
+    if (withNoMentors) {
+      return users
+    }
+
     const usersWithMentors = await Promise.all(
       users.map(async user => {
-        const mentor = await getServerUserById(`${user.mentorId}`);
+        const batch = await getBatchById(user.batchId || '')
+
+        if (user.mentorId) {
+          const mentor = await getServerUserById(user.mentorId)
+
+          return {
+            ...user,
+            mentor: mentor?.name,
+            batch: batch?.name
+          }
+        }
 
         return {
           ...user,
-          mentor: mentor ? mentor.name : null,
+          mentor: null,
+          batch: batch?.name
         }
       })
     )
@@ -145,16 +161,32 @@ export const getInternUsers = async () => {
 // get mentor users in the server-side
 export const getMentorUsers = async () => {
   try {
-    return await prisma.user.findMany({
+    const mentors = await prisma.user.findMany({
       where: {
         role: 'MENTOR',
         isArchived: false,
       },
     })
+
+    const mentorsWithIntern = await Promise.all(
+      mentors.map(async mentor => {
+        const intern = await prisma.user.findFirst({
+          where: {
+            isArchived: false,
+            mentorId: mentor.id
+          }
+        })
+
+        return {
+          ...mentor,
+          assignedIntern: intern?.name,
+        }
+      })
+    )
+
+    return mentorsWithIntern
   } catch {
     console.log("Can't fetch the mentor users")
-  } finally {
-    revalidatePath('/admin/intern-management')
   }
 }
 

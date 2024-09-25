@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
 export const getBatchById = async (id: string) => {
-  if (id === 'create-batch') return null
+  if (id === 'create-batch' || !id) return null
 
   const batch = await prisma.batch.findUnique({
     where: { id },
@@ -26,4 +26,9 @@ export const getAllBatch = async () => {
   const batches = res.json()
 
   return batches
+}
+
+// server call
+export const getAllBatchInServer = async () => {
+  return await prisma.batch.findMany()
 }

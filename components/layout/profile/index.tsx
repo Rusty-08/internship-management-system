@@ -13,16 +13,16 @@ export const metadata: Metadata = {
 
 type UserProfileProps = {
   userId?: string
-  role?: string
+  isArchived?: boolean
   children?: ReactNode
 }
 
-const UserProfile = async ({ userId, role = 'INTERN', children }: UserProfileProps) => {
-  const user = await getServerUserById(userId || '')
+const UserProfile = async ({ userId, isArchived = false, children }: UserProfileProps) => {
+  const user = await getServerUserById(userId || '', isArchived)
 
   return (
-    <Profile user={user}>
-      {role === 'INTERN' ? (
+    <Profile user={user} isArchived={isArchived}>
+      {user?.role === 'INTERN' ? (
         <TabsWrapper triggers={['Overview', 'Attendance']}>
           <TabsContent value="overview">
             <div className="border-t my-4 flex items-center justify-center min-h-[20rem] rounded-sm">

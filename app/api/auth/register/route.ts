@@ -5,6 +5,7 @@ import prisma from '../../../../lib/prisma'
 import generator from 'generate-password'
 import sgMail from '@/components/email/send-grid'
 import { NEWUSER_TEMPLATE } from '@/components/email/new-user-temp'
+import { redirect } from 'next/navigation'
 
 export async function POST(req: Request) {
   const {
@@ -52,7 +53,7 @@ export async function POST(req: Request) {
           course,
           totalHours,
           isArchived: false,
-          mentorId: mentor
+          mentorId: mentor || null
         },
       })
     } else {
@@ -82,13 +83,10 @@ export async function POST(req: Request) {
     //   console.error(error)
     // })
 
-    if (role === 'INTERN') {
-      revalidatePath('/admin/intern-management')
-    } else {
-      revalidatePath('/admin/mentor-management')
-    }
-
-    return NextResponse.json({ user }, { status: 201 })
+    return NextResponse.json(
+      { message: 'Successfully created the account' },
+      { status: 201 },
+    )
   } catch {
     return NextResponse.json(
       { message: 'Could not create user' },
@@ -96,5 +94,6 @@ export async function POST(req: Request) {
     )
   } finally {
     await prisma.$disconnect()
+    revalidatePath(`/admin/${role.toLowerCase()}-management`)
   }
 }

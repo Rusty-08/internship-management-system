@@ -92,7 +92,7 @@ export const ProfileAvatar = ({
                 className="justify-start text-text px-3 gap-3 w-full"
               >
                 <RiUser4Line
-                  size="1.1rem"
+                  size="1rem"
                   className="group-hover:text-primary"
                 />
                 My Profile

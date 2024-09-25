@@ -18,7 +18,7 @@ export function BreadcrumbWrapper() {
   const segments = path.split('/').filter(Boolean)
 
   // temp remove mentor dashboard: check if the user is mentor
-  const paths = segments[0] === 'mentor' ? segments.slice(1) : segments
+  const paths = segments[0] === 'mentor' ? segments.slice(1) : segments.filter(segment => segment !== 'profile')
 
   return (
     <div className='h-10 overflow-hidden bg-card border px-5 rounded-md lg:flex items-center'>

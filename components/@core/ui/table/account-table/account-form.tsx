@@ -18,41 +18,38 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { fetchMentorUsers } from '@/utils/users'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { RegistrationSchema } from './registration-schema'
 import { UserSubset } from './types'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Batch, User } from '@prisma/client'
-import { getAllBatch } from '@/utils/batch'
-import { cn } from '@/lib/utils'
-
-const sampleExpertise = [
-  'Frontend Developer',
-  'Backend Developer',
-  'Fullstack Developer',
-  'Mobile Developer',
-  'UI/UX Designer',
-  'Data Scientist',
-]
+import { HiMiniInformationCircle } from "react-icons/hi2"
+import { RequiredLabel } from '@/components/ui/required-label'
+import { TooltipWrapper } from '@/components/ui/tooltip'
+import { Button } from '@/components/ui/button'
+import { siteConfig } from '@/configs/site'
 
 type FormDialogProps = {
   initialValues: User | null
   role: 'INTERN' | 'MENTOR'
+  batches?: Batch[]
+  mentors?: UserSubset[]
+  interns?: UserSubset[]
 }
 
 export function UserForm({
   initialValues,
   role,
+  batches,
+  mentors,
+  interns
 }: FormDialogProps) {
   const router = useRouter()
   const [isEmailTaken, setIsEmailTaken] = useState(false)
-  const [mentors, setMentors] = useState<UserSubset[]>([])
-  const [batches, setBatches] = useState<Batch[]>([])
 
   const form = useForm<z.infer<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
@@ -62,8 +59,9 @@ export function UserForm({
       mentorId: initialValues?.mentorId ?? '',
       expertise: initialValues?.expertise ?? '',
       course: initialValues?.course ?? '',
-      totalHours: undefined,
-      batch: initialValues?.batchId ?? ''
+      totalHours: initialValues?.course ? initialValues?.course === 'BSCS' ? 120 : 486 : undefined,
+      batch: initialValues?.batchId ?? '',
+      assignedIntern: interns?.find(intern => initialValues?.id === intern.mentorId)?.id || ''
     },
   })
 
@@ -89,8 +87,8 @@ export function UserForm({
             role,
             course,
             totalHours: Number(totalHours),
-            mentor: role === 'INTERN' ? mentorId : null,
-            expertise: role === 'INTERN' ? null : expertise,
+            mentor: role === 'INTERN' ? mentorId : 'None',
+            expertise,
             batch
           }),
         })
@@ -119,37 +117,12 @@ export function UserForm({
       }
 
       form.reset()
+      router.refresh()
       router.push(`/admin/${role.toLowerCase()}-management`)
     } catch (error) {
       console.error(error)
     }
   }
-
-  useEffect(() => {
-    if (initialValues) {
-      // form.setValue('name', initialValues.name ?? '')
-      // form.setValue('email', initialValues.email ?? '')
-      // form.setValue('mentorId', initialValues.mentorId ?? '')
-      // form.setValue('expertise', initialValues.expertise ?? '')
-      // form.setValue('course', initialValues.course ?? '')
-
-      const totalHours = initialValues?.course === 'BSCS' ? 120 : 486
-      form.setValue('totalHours', initialValues.totalHours ?? totalHours)
-    }
-
-    const fetchMentors = async () => {
-      const data = await fetchMentorUsers()
-      setMentors(data)
-    }
-
-    const fetchAllBatch = async () => {
-      const _batches = await getAllBatch()
-      setBatches(_batches)
-    }
-
-    fetchAllBatch()
-    fetchMentors()
-  }, [form, initialValues])
 
   return (
     <Card>
@@ -161,13 +134,13 @@ export function UserForm({
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent>
             <div className="space-y-4">
-              <div className={cn('grid gap-4', role === 'INTERN' && 'grid-cols-2')}>
+              <div className='grid gap-4 grid-cols-2'>
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <RequiredLabel>Name</RequiredLabel>
                       <FormControl>
                         <Input {...field} disabled={isSubmitting} placeholder="John Doe" />
                       </FormControl>
@@ -182,9 +155,18 @@ export function UserForm({
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <RequiredLabel>Email</RequiredLabel>
                       <FormControl>
-                        <Input {...field} disabled={isSubmitting} placeholder="sample@gmail.com" />
+                        <div className="relative">
+                          <Input {...field} disabled={isSubmitting} placeholder="sample@gmail.com" />
+                          {!initialValues && (
+                            <TooltipWrapper tooltip='Please use a valid and active email. This email will be used to receive the default password.' className="absolute right-1 -top-7">
+                              <Button className='h-max w-max p-0' variant='ghost' size='icon'>
+                                <HiMiniInformationCircle size='1.2rem' />
+                              </Button>
+                            </TooltipWrapper>
+                          )}
+                        </div>
                       </FormControl>
                       {errors.email && (
                         <FormMessage>{errors.email.message}</FormMessage>
@@ -240,7 +222,7 @@ export function UserForm({
                             <Input
                               {...field}
                               type="number"
-                              placeholder="e.g. 486"
+                              placeholder="486"
                               onChange={event =>
                                 field.onChange(Number(event.target.value))
                               }
@@ -270,7 +252,7 @@ export function UserForm({
                               <SelectTrigger>
                                 <SelectValue
                                   placeholder={
-                                    mentors.length === 0
+                                    mentors?.length === 0
                                       ? 'No available mentor'
                                       : 'Select the mentor'
                                   }
@@ -278,14 +260,28 @@ export function UserForm({
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {mentors.map(mentor => (
-                                <SelectItem
-                                  key={mentor.email}
-                                  value={mentor.id ?? ''}
-                                >
-                                  {mentor.name}
-                                </SelectItem>
-                              ))}
+                              {mentors && ['None', ...mentors]?.map(mentor => {
+                                if (typeof mentor !== 'string') {
+                                  return (
+                                    <SelectItem
+                                      key={mentor.email}
+                                      value={mentor.id ?? ''}
+                                    >
+                                      {mentor.name}
+                                    </SelectItem>
+                                  )
+                                } else {
+                                  return (
+                                    <SelectItem
+                                      key={mentor}
+                                      value={mentor}
+                                      className='text-destructive'
+                                    >
+                                      Remove Mentor
+                                    </SelectItem>
+                                  )
+                                }
+                              })}
                             </SelectContent>
                           </Select>
                           {errors.mentorId && (
@@ -303,13 +299,13 @@ export function UserForm({
                           <Select
                             onValueChange={field.onChange}
                             defaultValue={field.value}
-                            disabled={batches.length === 0}
+                            disabled={isSubmitting}
                           >
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue
                                   placeholder={
-                                    batches.length === 0
+                                    batches?.length === 0
                                       ? 'No available batch'
                                       : 'Select the batch name'
                                   }
@@ -317,7 +313,7 @@ export function UserForm({
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {batches.map(batch => (
+                              {batches?.map(batch => (
                                 <SelectItem
                                   key={batch.id}
                                   value={batch.id ?? ''}
@@ -337,32 +333,62 @@ export function UserForm({
                 </>
               )}
               {role === 'MENTOR' && (
-                <FormField
-                  control={form.control}
-                  name="expertise"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Role</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select the role" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {sampleExpertise.map(expertise => (
-                            <SelectItem key={expertise} value={expertise}>
-                              {expertise}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormItem>
-                  )}
-                />
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="expertise"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Role</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          disabled={isSubmitting}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select the role" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {siteConfig.mentorsExpertise.map(expertise => (
+                              <SelectItem key={expertise} value={expertise}>
+                                {expertise}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="assignedIntern"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Assigned Intern</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          disabled
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="No handled intern yet" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {interns?.map(intern => (
+                              <SelectItem key={intern.id} value={intern.id ?? ''}>
+                                {intern.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormItem>
+                    )}
+                  />
+                </div>
               )}
               {isEmailTaken && (
                 <ErrorCard>The Email is already taken</ErrorCard>

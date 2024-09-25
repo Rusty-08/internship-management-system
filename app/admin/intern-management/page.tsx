@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Intern Management',
 }
 
-const InternManagement = async () => {
+const InternManagement = () => {
   return (
     <Suspense fallback={<TableSkeleton rows={8} cols={7} haveSearch haveButton />}>
       <InternTable />

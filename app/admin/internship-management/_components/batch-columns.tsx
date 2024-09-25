@@ -35,7 +35,7 @@ export const batchColumns = (actions: {
         return <DataTableColumnHeader column={column} title="Start Date" />
       },
       cell: ({ row }) => {
-        const formattedDate = format(`${row.original.startDate}`, 'MM/dd/yyyy')
+        const formattedDate = format(`${row.original.startDate}`, 'MMM dd, yyyy')
 
         return <p>{formattedDate}</p>
       },
@@ -44,16 +44,18 @@ export const batchColumns = (actions: {
       accessorKey: 'endDate',
       header: 'End Date',
       cell: ({ row }) => {
-        const formattedDate = format(`${row.original.endDate}`, 'MM/dd/yyyy')
+        const formattedDate = format(`${row.original.endDate}`, 'MMM dd, yyyy')
 
         return <p>{formattedDate}</p>
       },
     },
     {
       accessorKey: 'createdAt',
-      header: 'Created At',
+      header: ({ column }) => {
+        return <DataTableColumnHeader column={column} title='Created At' />
+      },
       cell: ({ row }) => {
-        const formattedDate = format(`${row.original.createdAt}`, 'MM/dd/yyyy')
+        const formattedDate = format(`${row.original.createdAt}`, 'MMM dd, yyyy')
 
         return <p>{formattedDate}</p>
       },

@@ -13,4 +13,17 @@ export const RegistrationSchema = z.object({
   course: z.string().optional(),
   totalHours: z.number().optional(),
   batch: z.string().optional(),
+  assignedIntern: z.string().optional(),
+})
+
+
+export const InternRegistrationSchema = RegistrationSchema.extend({
+  mentorId: z.string().optional(),
+  course: z.string().optional(),
+  totalHours: z.number().optional(),
+  batch: z.string().optional(),
+})
+
+export const MentorRegistrationSchema = RegistrationSchema.extend({
+  expertise: z.string().optional(),
 })

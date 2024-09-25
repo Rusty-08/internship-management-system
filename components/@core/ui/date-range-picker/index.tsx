@@ -16,6 +16,7 @@ import { ClassNameValue } from 'tailwind-merge'
 import { IoCalendar } from 'react-icons/io5'
 import { formatInTimeZone } from 'date-fns-tz'
 import { siteConfig } from '@/configs/site'
+import { CalendarIcon } from '@radix-ui/react-icons'
 
 type DatePickerProps = {
   date: DateRange | undefined
@@ -35,12 +36,12 @@ export function DatePickerWithRange({
           id="date"
           variant={'outline'}
           className={cn(
-            'h-10 justify-start text-left max-w-full font-normal overflow-hidden text-ellipsis',
+            'h-10 justify-start text-left px-4 max-w-full font-normal overflow-hidden text-ellipsis',
             !date && 'text-muted-foreground',
             className,
           )}
         >
-          <IoCalendar size="0.9rem" className="mr-3 text-text flex-shrink-0" />
+          <CalendarIcon className="mr-3 h-4 w-4 mb-0.5" />
           {date?.from ? (
             date.to ? (
               <>

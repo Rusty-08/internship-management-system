@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const MentorProfile = async () => {
   return (
     <Suspense fallback={<ProfileSkeleton />}>
-      <UserProfile role='MENTOR'>
+      <UserProfile>
         <div className="w-full py-20 rounded-md bg-card">
           <ComingSoon pageName="Profile" />
         </div>

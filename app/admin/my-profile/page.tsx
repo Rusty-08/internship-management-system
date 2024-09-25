@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const AdminProfile = () => {
   return (
     <Suspense fallback={<ProfileSkeleton />}>
-      <UserProfile role='ADMIN'>
+      <UserProfile>
         <div className="w-full py-20 rounded-md bg-card">
           <ComingSoon pageName="Admin Profile" />
         </div>

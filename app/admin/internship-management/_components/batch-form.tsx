@@ -29,6 +29,9 @@ import AddButton from '@/components/@core/ui/add-button'
 import { Separator } from '@/components/ui/separator'
 import { Batch, User } from '@prisma/client'
 import { cn } from '@/lib/utils'
+import { TooltipWrapper } from '@/components/ui/tooltip'
+import { HiOutlineInformationCircle } from 'react-icons/hi2'
+import { IoIosCloseCircleOutline } from 'react-icons/io'
 
 type BatchFormProps = {
   initialState: Batch & { interns: User[] } | null
@@ -98,13 +101,13 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
   }, [])
 
   return (
-    <Card className='bg-transparent'>
-      <CardHeader className="text-xl pt-0 px-0 font-semibold">
+    <Card>
+      <CardHeader className="text-xl font-semibold">
         {initialState ? 'Update Batch' : 'Create Batch'}
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmitForm)}>
-          <CardContent className='px-0'>
+          <CardContent>
             <div className="space-y-4">
               <div className="flex border bg-card p-6 pt-5 rounded-md flex-col gap-4">
                 <p className='font-medium'>Batch Details</p>
@@ -200,7 +203,16 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
                               <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                  <Input {...field} placeholder="sample@gmail.com" disabled={isSubmitting} />
+                                  <div className="relative">
+                                    <Input {...field} disabled={isSubmitting} placeholder="sample@example.com" />
+                                    {!initialState && (
+                                      <TooltipWrapper tooltip='Please use a valid and active email. This email will be used to receive the default password.' className="absolute right-1 -top-7">
+                                        <Button className='h-max w-max p-0' variant='ghost' size='icon'>
+                                          <HiOutlineInformationCircle size='1.2rem' />
+                                        </Button>
+                                      </TooltipWrapper>
+                                    )}
+                                  </div>
                                 </FormControl>
                                 {errors.interns && errors.interns[index]?.email && (
                                   <FormMessage>{errors.interns[index]?.email?.message}</FormMessage>
@@ -255,7 +267,7 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
                                     {...field}
                                     value={field.value ?? ''}
                                     type="number"
-                                    placeholder="486"
+                                    placeholder="Select the course to get the total hours"
                                     onChange={event =>
                                       field.onChange(Number(event.target.value))
                                     }
@@ -276,19 +288,32 @@ const BatchForm = ({ initialState }: BatchFormProps) => {
                                 <FormLabel>Mentor</FormLabel>
                                 <Select
                                   onValueChange={field.onChange}
-                                  defaultValue={field.value ?? ''}
+                                  value={field.value ?? ''}
                                   disabled={mentors.length === 0 || isSubmitting}
                                 >
                                   <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue
-                                        placeholder={
-                                          mentors.length === 0
-                                            ? 'No available mentor'
-                                            : 'Select the mentor'
-                                        }
-                                      />
-                                    </SelectTrigger>
+                                    <div className="relative">
+                                      <SelectTrigger className='w-full'>
+                                        <SelectValue
+                                          placeholder={
+                                            mentors?.length === 0
+                                              ? 'No available mentor'
+                                              : 'Select the mentor'
+                                          }
+                                        />
+                                      </SelectTrigger>
+                                      <TooltipWrapper tooltip='Remove mentor'>
+                                        <Button
+                                          onClick={() => form.setValue(`interns.${index}.mentorId`, '')}
+                                          type='button'
+                                          size='circle'
+                                          className='absolute right-10 text-muted-foreground top-2.5 h-fit w-fit leading-none p-0'
+                                          variant='ghost'
+                                        >
+                                          <IoIosCloseCircleOutline size='1.1rem' />
+                                        </Button>
+                                      </TooltipWrapper>
+                                    </div>
                                   </FormControl>
                                   <SelectContent>
                                     {mentors.map(mentor => (

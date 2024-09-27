@@ -25,7 +25,7 @@ export async function PUT(req: Request) {
         email,
         course,
         isArchived: isArchived || false,
-        mentorId: mentor === 'None' ? null : mentor,
+        mentorId: mentor || null,
         batchId: batch ?? user.batchId,
         totalHours
       }
@@ -42,6 +42,12 @@ export async function PUT(req: Request) {
       where: { id }, data,
     })
 
+    if (role === 'INTERN') {
+      revalidatePath('/admin/intern-management')
+    } else {
+      revalidatePath('/admin/mentor-management')
+    }
+
     return NextResponse.json(
       { message: 'Successfully updated the account' },
       { status: 201 },
@@ -51,8 +57,5 @@ export async function PUT(req: Request) {
       { message: 'Could not update user' },
       { status: 404 },
     )
-  } finally {
-    await prisma.$disconnect()
-    revalidatePath(`/admin/${role.toLowerCase()}-management`)
   }
 }

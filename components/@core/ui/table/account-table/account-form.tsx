@@ -20,21 +20,25 @@ import {
 } from '@/components/ui/select'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { RegistrationSchema } from './registration-schema'
 import { UserSubset } from './types'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Batch, User } from '@prisma/client'
-import { HiMiniInformationCircle } from "react-icons/hi2"
+import { HiOutlineInformationCircle } from "react-icons/hi2"
 import { RequiredLabel } from '@/components/ui/required-label'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
 import { siteConfig } from '@/configs/site'
+import { getAllBatch } from '@/utils/batch'
+import { getClientUserById } from '@/utils/users'
+import { Skeleton } from '@/components/ui/skeleton'
+import { IoIosCloseCircleOutline } from "react-icons/io"
 
 type FormDialogProps = {
-  initialValues: User | null
+  userId: string
   role: 'INTERN' | 'MENTOR'
   batches?: Batch[]
   mentors?: UserSubset[]
@@ -42,7 +46,7 @@ type FormDialogProps = {
 }
 
 export function UserForm({
-  initialValues,
+  userId,
   role,
   batches,
   mentors,
@@ -50,19 +54,12 @@ export function UserForm({
 }: FormDialogProps) {
   const router = useRouter()
   const [isEmailTaken, setIsEmailTaken] = useState(false)
+  const [initialState, setInitialState] = useState<User | null>(null)
+  const [isFetching, setIsFetching] = useState(false)
+  const [mentorsWithoutIntern, setMentorsWithoutIntern] = useState<UserSubset[] | null>()
 
   const form = useForm<z.infer<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
-    defaultValues: {
-      name: initialValues?.name ?? '',
-      email: initialValues?.email ?? '',
-      mentorId: initialValues?.mentorId ?? '',
-      expertise: initialValues?.expertise ?? '',
-      course: initialValues?.course ?? '',
-      totalHours: initialValues?.course ? initialValues?.course === 'BSCS' ? 120 : 486 : undefined,
-      batch: initialValues?.batchId ?? '',
-      assignedIntern: interns?.find(intern => initialValues?.id === intern.mentorId)?.id || ''
-    },
   })
 
   const { isSubmitting, errors } = form.formState
@@ -74,20 +71,23 @@ export function UserForm({
 
     try {
       let res
-      if (initialValues) {
+
+      console.log(mentorId)
+
+      if (userId !== 'create-user') {
         res = await fetch('/api/auth/users/update-account', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            id: initialValues?.id,
+            id: initialState?.id,
             name,
             email,
             role,
             course,
             totalHours: Number(totalHours),
-            mentor: role === 'INTERN' ? mentorId : 'None',
+            mentor: mentorId,
             expertise,
             batch
           }),
@@ -117,17 +117,54 @@ export function UserForm({
       }
 
       form.reset()
-      router.refresh()
       router.push(`/admin/${role.toLowerCase()}-management`)
     } catch (error) {
       console.error(error)
     }
   }
 
+  useEffect(() => {
+    if (userId !== 'create-user') {
+      const fetchedUser = async () => {
+        setIsFetching(true)
+        const user = await getClientUserById(userId)
+
+        form.setValue('name', user?.name || '')
+        form.setValue('email', user?.email || '')
+        form.setValue('course', user?.course || '')
+        form.setValue('mentorId', user?.mentorId || '')
+        form.setValue('expertise', user?.expertise || '')
+        form.setValue('batch', user?.batchId || '')
+
+        const assignedIntern = interns?.find(intern => user?.id === intern.mentorId)?.id || ''
+        const totalHours = user?.course ? user?.course === 'BSCS' ? 120 : 486 : undefined
+        const _mentors = mentors?.filter(mentor => !mentor.assignedIntern || user?.mentorId === mentor.id)
+
+        form.setValue('assignedIntern', assignedIntern)
+        form.setValue('totalHours', totalHours)
+
+        setInitialState(user)
+        setIsFetching(false)
+        setMentorsWithoutIntern(_mentors)
+
+        console.log('refetched')
+      }
+
+      fetchedUser()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  if (isFetching) {
+    return (
+      <Skeleton className='rounded-lg h-[20rem] w-full' />
+    )
+  }
+
   return (
     <Card>
       <CardHeader className="text-xl font-semibold">
-        {initialValues ? 'Edit' : 'Add'}{' '}
+        {initialState ? 'Edit' : 'Add'}{' '}
         {role.charAt(0) + role.slice(1).toLowerCase()} Account
       </CardHeader>
       <Form {...form}>
@@ -158,11 +195,11 @@ export function UserForm({
                       <RequiredLabel>Email</RequiredLabel>
                       <FormControl>
                         <div className="relative">
-                          <Input {...field} disabled={isSubmitting} placeholder="sample@gmail.com" />
-                          {!initialValues && (
+                          <Input {...field} disabled={isSubmitting} placeholder="sample@example.com" />
+                          {!initialState && (
                             <TooltipWrapper tooltip='Please use a valid and active email. This email will be used to receive the default password.' className="absolute right-1 -top-7">
                               <Button className='h-max w-max p-0' variant='ghost' size='icon'>
-                                <HiMiniInformationCircle size='1.2rem' />
+                                <HiOutlineInformationCircle size='1.2rem' />
                               </Button>
                             </TooltipWrapper>
                           )}
@@ -222,7 +259,7 @@ export function UserForm({
                             <Input
                               {...field}
                               type="number"
-                              placeholder="486"
+                              placeholder="Select the course to get the total hours"
                               onChange={event =>
                                 field.onChange(Number(event.target.value))
                               }
@@ -244,44 +281,43 @@ export function UserForm({
                         <FormItem>
                           <FormLabel>Mentor</FormLabel>
                           <Select
-                            defaultValue={field.value}
                             onValueChange={field.onChange}
                             disabled={isSubmitting}
+                            value={field.value}
                           >
                             <FormControl>
-                              <SelectTrigger>
-                                <SelectValue
-                                  placeholder={
-                                    mentors?.length === 0
-                                      ? 'No available mentor'
-                                      : 'Select the mentor'
-                                  }
-                                />
-                              </SelectTrigger>
+                              <div className="relative">
+                                <SelectTrigger className='w-full'>
+                                  <SelectValue
+                                    placeholder={
+                                      mentors?.length === 0
+                                        ? 'No available mentor'
+                                        : 'Select the mentor'
+                                    }
+                                  />
+                                </SelectTrigger>
+                                <TooltipWrapper tooltip='Remove mentor'>
+                                  <Button
+                                    onClick={() => form.setValue('mentorId', '')}
+                                    type='button'
+                                    size='circle'
+                                    className='absolute right-10 text-muted-foreground top-2.5 h-fit w-fit leading-none p-0'
+                                    variant='ghost'
+                                  >
+                                    <IoIosCloseCircleOutline size='1.1rem' />
+                                  </Button>
+                                </TooltipWrapper>
+                              </div>
                             </FormControl>
                             <SelectContent>
-                              {mentors && ['None', ...mentors]?.map(mentor => {
-                                if (typeof mentor !== 'string') {
-                                  return (
-                                    <SelectItem
-                                      key={mentor.email}
-                                      value={mentor.id ?? ''}
-                                    >
-                                      {mentor.name}
-                                    </SelectItem>
-                                  )
-                                } else {
-                                  return (
-                                    <SelectItem
-                                      key={mentor}
-                                      value={mentor}
-                                      className='text-destructive'
-                                    >
-                                      Remove Mentor
-                                    </SelectItem>
-                                  )
-                                }
-                              })}
+                              {mentorsWithoutIntern?.map(mentor => (
+                                <SelectItem
+                                  key={mentor.email}
+                                  value={mentor.id ?? ''}
+                                >
+                                  {mentor.name}
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                           {errors.mentorId && (
@@ -404,7 +440,7 @@ export function UserForm({
               }}
               className="w-44"
             >
-              {`Save ${initialValues ? 'Changes' : 'Account'}`}
+              {`Save ${initialState ? 'Changes' : 'Account'}`}
             </SubmitCancelButton>
           </CardFooter>
         </form>

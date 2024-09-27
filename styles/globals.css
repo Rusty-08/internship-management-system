@@ -115,6 +115,10 @@ body,
   }
 }
 
+::placeholder {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
 /* loader */
 
 .loading svg {

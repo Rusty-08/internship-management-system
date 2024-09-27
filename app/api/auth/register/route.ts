@@ -70,18 +70,18 @@ export async function POST(req: Request) {
       })
     }
 
-    // const msg = {
-    //   to: email,
-    //   from: `${process.env.SENDER_EMAIL}`,
-    //   subject: 'IMS Account Registration',
-    //   html: NEWUSER_TEMPLATE(password),
-    // }
+    const msg = {
+      to: email,
+      from: `${process.env.SENDER_EMAIL}`,
+      subject: 'IMS Account Registration',
+      html: NEWUSER_TEMPLATE(password),
+    }
 
-    // sgMail.send(msg).then(() => {
-    //   console.log('Email sent')
-    // }).catch((error) => {
-    //   console.error(error)
-    // })
+    sgMail.send(msg).then(() => {
+      console.log('Email sent')
+    }).catch((error) => {
+      console.error(error)
+    })
 
     return NextResponse.json(
       { message: 'Successfully created the account' },

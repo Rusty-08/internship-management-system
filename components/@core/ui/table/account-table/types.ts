@@ -13,6 +13,7 @@ export type UserSubset = {
   batch?: string | null
   mentor?: string | null
   mentorId?: string | null
+  assignedIntern?: string | null
   isArchived?: boolean | null
   createdAt?: Date | null
 }

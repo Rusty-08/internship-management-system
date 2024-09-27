@@ -1,7 +1,7 @@
 import { auth } from '@/auth'
 import prisma from '@/lib/prisma'
 import { User } from '@prisma/client'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, unstable_noStore as noStore } from 'next/cache'
 import { getBatchById } from './batch'
 
 export async function getCurrentUserEmail() {
@@ -17,6 +17,24 @@ export async function getUserById(id: string) {
   })
 
   return user
+}
+
+export async function getClientUserById(id: string): Promise<User | null> {
+  if (id === 'create-user') return null
+
+  const res = await fetch(`/api/users/user/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (res.ok) {
+    const data = await res.json()
+    return data
+  } else {
+    return null
+  }
 }
 
 export async function getUserEmailById(id: string) {

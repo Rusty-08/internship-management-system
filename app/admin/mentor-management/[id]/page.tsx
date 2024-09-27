@@ -4,16 +4,15 @@ import React from 'react'
 
 const MentorUser = async ({ params: { id } }: { params: { id: string } }) => {
   const WITHOUT_MENTORS = true
-  const mentor = await getUserById(id)
   const interns = await getInternUsers(WITHOUT_MENTORS)
 
-  const assignedIntern = interns?.find(intern => intern.mentorId === mentor?.id)
+  const assignedIntern = interns?.find(intern => intern.mentorId === id)
   // const internsWithoutMentor = interns?.filter(intern => !intern.mentorId) || undefined
 
   return (
     <UserForm
       role='MENTOR'
-      initialValues={mentor}
+      userId={id}
       interns={assignedIntern ? [assignedIntern] : []}
     // interns={
     //   internsWithoutMentor && assignedIntern

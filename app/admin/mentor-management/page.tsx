@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function MentorManagement() {
   return (
-    <Suspense fallback={<TableSkeleton rows={8} cols={5} haveSearch haveButton />}>
+    <Suspense fallback={<TableSkeleton rows={8} cols={6} haveSearch haveButton />}>
       <MentorTable />
     </Suspense>
   )

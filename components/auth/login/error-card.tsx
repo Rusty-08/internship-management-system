@@ -18,7 +18,7 @@ const ErrorCard = ({ children, className }: ErrorCardProps) => {
       )}
     >
       <CardHeader className="py-2.5 px-4">
-        <FormMessage className="flex items-center gap-4">
+        <FormMessage className="flex items-center gap-3">
           <GoAlert size='1rem' className='mb-0.5' />
           {children}
         </FormMessage>

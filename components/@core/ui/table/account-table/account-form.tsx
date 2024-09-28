@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/select'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { RegistrationSchema } from './registration-schema'
@@ -32,10 +32,10 @@ import { RequiredLabel } from '@/components/ui/required-label'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
 import { siteConfig } from '@/configs/site'
-import { getAllBatch } from '@/utils/batch'
 import { getClientUserById } from '@/utils/users'
 import { Skeleton } from '@/components/ui/skeleton'
 import { IoIosCloseCircleOutline } from "react-icons/io"
+import { registerUser, updatenUser } from '@/app/admin/intern-management/_actions/actions'
 
 type FormDialogProps = {
   userId: string
@@ -53,7 +53,7 @@ export function UserForm({
   interns
 }: FormDialogProps) {
   const router = useRouter()
-  const [isEmailTaken, setIsEmailTaken] = useState(false)
+  const [formMessage, setFormMessage] = useState('')
   const [initialState, setInitialState] = useState<User | null>(null)
   const [isFetching, setIsFetching] = useState(false)
   const [mentorsWithoutIntern, setMentorsWithoutIntern] = useState<UserSubset[] | null>()
@@ -65,61 +65,30 @@ export function UserForm({
   const { isSubmitting, errors } = form.formState
 
   const onSubmit = async (values: z.infer<typeof RegistrationSchema>) => {
-    const { name, email, mentorId, expertise, course, totalHours, batch } = values
+    setFormMessage('')
 
-    setIsEmailTaken(false)
+    let response
 
-    try {
-      let res
+    if (userId !== 'create-user') {
+      response = await updatenUser({
+        ...values,
+        id: initialState?.id,
+        role
+      })
+    } else {
+      response = await registerUser({
+        ...values,
+        batchId: values.batch,
+        role
+      })
+    }
 
-      console.log(mentorId)
-
-      if (userId !== 'create-user') {
-        res = await fetch('/api/auth/users/update-account', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            id: initialState?.id,
-            name,
-            email,
-            role,
-            course,
-            totalHours: Number(totalHours),
-            mentor: mentorId,
-            expertise,
-            batch
-          }),
-        })
+    if (response) {
+      if (response.status === 'success') {
+        router.push(`/admin/${role.toLowerCase()}-management`)
       } else {
-        res = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            role,
-            mentor: mentorId,
-            expertise,
-            course,
-            totalHours: Number(totalHours),
-            batch
-          }),
-        })
+        setFormMessage(response.message)
       }
-
-      if (res.status === 400) {
-        setIsEmailTaken(true)
-        return
-      }
-
-      form.reset()
-      router.push(`/admin/${role.toLowerCase()}-management`)
-    } catch (error) {
-      console.error(error)
     }
   }
 
@@ -131,7 +100,7 @@ export function UserForm({
 
         form.setValue('name', user?.name || '')
         form.setValue('email', user?.email || '')
-        form.setValue('course', user?.course || '')
+        form.setValue('course', user?.course || undefined)
         form.setValue('mentorId', user?.mentorId || '')
         form.setValue('expertise', user?.expertise || '')
         form.setValue('batch', user?.batchId || '')
@@ -146,8 +115,6 @@ export function UserForm({
         setInitialState(user)
         setIsFetching(false)
         setMentorsWithoutIntern(_mentors)
-
-        console.log('refetched')
       }
 
       fetchedUser()
@@ -195,7 +162,17 @@ export function UserForm({
                       <RequiredLabel>Email</RequiredLabel>
                       <FormControl>
                         <div className="relative">
-                          <Input {...field} disabled={isSubmitting} placeholder="sample@example.com" />
+                          <Input
+                            {...field}
+                            onChange={e => {
+                              if (formMessage) {
+                                setFormMessage('')
+                              }
+                              field.onChange(e.target.value)
+                            }}
+                            disabled={isSubmitting}
+                            placeholder="sample@example.com"
+                          />
                           {!initialState && (
                             <TooltipWrapper tooltip='Please use a valid and active email. This email will be used to receive the default password.' className="absolute right-1 -top-7">
                               <Button className='h-max w-max p-0' variant='ghost' size='icon'>
@@ -290,7 +267,7 @@ export function UserForm({
                                 <SelectTrigger className='w-full'>
                                   <SelectValue
                                     placeholder={
-                                      mentors?.length === 0
+                                      mentorsWithoutIntern?.length === 0
                                         ? 'No available mentor'
                                         : 'Select the mentor'
                                     }
@@ -426,8 +403,8 @@ export function UserForm({
                   />
                 </div>
               )}
-              {isEmailTaken && (
-                <ErrorCard>The Email is already taken</ErrorCard>
+              {formMessage && (
+                <ErrorCard>{formMessage}</ErrorCard>
               )}
             </div>
           </CardContent>

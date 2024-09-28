@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const InternManagement = () => {
   return (
-    <Suspense fallback={<TableSkeleton rows={8} cols={7} haveSearch haveButton />}>
+    <Suspense fallback={<TableSkeleton rows={8} cols={8} haveSearch haveButton />}>
       <InternTable />
     </Suspense>
   )

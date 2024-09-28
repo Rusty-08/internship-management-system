@@ -1,3 +1,5 @@
+import prisma from '@/lib/prisma'
+import { UserRole } from '@prisma/client'
 import { z } from 'zod'
 
 export const RegistrationSchema = z.object({
@@ -8,9 +10,12 @@ export const RegistrationSchema = z.object({
   email: z.string().email({
     message: 'Email is not valid',
   }),
+  role: z.enum(['INTERN', 'MENTOR', 'ADMIN']).optional().nullish(),
+  batchId: z.string().optional(),
+  isArchived: z.boolean().optional(),
   mentorId: z.string().optional(),
   expertise: z.string().optional(),
-  course: z.string().optional(),
+  course: z.enum(['BSIT', 'BSCS', 'BSIS']).optional(),
   totalHours: z.number().optional(),
   batch: z.string().optional(),
   assignedIntern: z.string().optional(),

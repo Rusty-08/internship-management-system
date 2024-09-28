@@ -9,9 +9,6 @@ const InternUser = async ({ params: { id } }: { params: { id: string } }) => {
     getMentorUsers()
   ])
 
-  // get the mentors that don't have assigned interns yet and also the assigned intern for the selected intern
-  // const mentorsWithoutIntern = mentors?.filter(mentor => !mentor.assignedIntern || intern?.mentorId === mentor.id)
-
   return (
     <UserForm
       role='INTERN'

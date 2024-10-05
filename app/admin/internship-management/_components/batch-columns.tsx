@@ -61,14 +61,14 @@ export const batchColumns = (actions: {
       },
     },
     {
-      accessorKey: 'isActive',
+      accessorKey: 'status',
       header: 'Status',
       cell: ({ row }) => {
-        const isActive = row.original.isActive
-        const variant = isActive ? 'default' : 'secondary'
+        const status = row.original.status
+        const statusContent = status.charAt(0).toUpperCase() + status.slice(1, status.length).toLowerCase()
 
         return (
-          <Badge variant={variant}>{isActive ? 'Active' : 'Inactive'}</Badge>
+          <Badge variant={status === 'ONGOING' ? 'IN_PROGRESS' : status}>{statusContent}</Badge>
         )
       },
     },

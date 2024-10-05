@@ -6,16 +6,20 @@ import bcrypt from 'bcryptjs'
 import generator from 'generate-password'
 import { z } from 'zod'
 import { BatchWithUsers } from '@/app/admin/internship-management/_components/batch-schema'
+import { calculateBatchStatus } from '@/app/admin/internship-management/_actions/actions'
 
 export async function POST(req: Request) {
-  const { name, startDate, endDate, interns } = await req.json() as z.infer<typeof BatchWithUsers>
+  const { batchName, startDate, endDate, interns } = await req.json() as z.infer<typeof BatchWithUsers>
+
+  const status = await calculateBatchStatus(startDate, endDate)
 
   try {
     const batch = await prisma.batch.create({
       data: {
-        name,
+        name: batchName,
         startDate,
         endDate,
+        status
       },
     })
 

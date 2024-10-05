@@ -3,7 +3,11 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    const batches = await prisma.batch.findMany()
+    const batches = await prisma.batch.findMany({
+      include: {
+        interns: true
+      }
+    })
 
     if (!batches) {
       return NextResponse.json({ message: 'No Batches Exists' }, { status: 401 })

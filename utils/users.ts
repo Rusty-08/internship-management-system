@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma'
 import { User } from '@prisma/client'
 import { revalidatePath, unstable_noStore as noStore } from 'next/cache'
 import { getBatchById } from './batch'
+import { UserSubset } from '@/components/@core/ui/table/account-table/types'
 
 export async function getCurrentUserEmail() {
   const session = await auth()
@@ -98,7 +99,7 @@ export async function getCurrentUser() {
 }
 
 // get mentor users in the client-side
-export const fetchMentorUsers = async () => {
+export const fetchMentorUsers = async (): Promise<UserSubset[] | null> => {
   const res = await fetch('/api/auth/users/mentors', {
     method: 'GET',
     headers: {
@@ -107,15 +108,19 @@ export const fetchMentorUsers = async () => {
   })
 
   if (res.ok) {
-    const data = await res.json()
-    return data
+    const data = await res.json() as UserSubset[]
+
+    const interns = await fetchInternUsers()
+    const internsWithMentors = interns?.flatMap(intern => intern.mentorId)
+
+    return data.filter(mentor => !internsWithMentors?.includes(mentor.id))
   } else {
     return null
   }
 }
 
 // get intern users in the client-side
-export const fetchInternUsers = async () => {
+export const fetchInternUsers = async (): Promise<User[] | null> => {
   const res = await fetch('/api/auth/users/interns', {
     method: 'GET',
     headers: {

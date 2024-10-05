@@ -29,7 +29,7 @@ export const StatCard = ({ header, image, className, children }: StatCardProps) 
           alt="total days"
           width={150}
           height={150}
-          className="absolute w-12 h-12 top-2 right-3 md:h-[9.3rem] md:w-[9.3rem] dark:invert md:-top-3 md:right-0"
+          className="absolute w-12 h-12 top-2 right-3 md:h-[9rem] md:w-auto dark:invert md:-top-3 md:right-0"
         />
       </CardContent>
       {/* <CardFooter>

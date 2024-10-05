@@ -9,7 +9,7 @@ export async function PUT(
   request: Request,
   { params: { id } }: { params: { id: string } },
 ) {
-  const { name, startDate, endDate, interns } = await request.json() as z.infer<typeof BatchWithUsers>
+  const { batchName, startDate, endDate, interns } = await request.json() as z.infer<typeof BatchWithUsers>
 
   try {
     const batchUpdate = await prisma.batch.findUnique({
@@ -23,7 +23,7 @@ export async function PUT(
     const updated = await prisma.batch.update({
       where: { id },
       data: {
-        name,
+        name: batchName,
         startDate,
         endDate,
       }

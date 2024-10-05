@@ -1,9 +1,9 @@
 import { Button, ButtonProps } from '@/components/ui/button'
 import { LoadingSpinner } from '@/components/@core/loading'
 import { ReactNode } from 'react'
-import { LuChevronRightCircle } from 'react-icons/lu'
 import { ClassNameValue } from 'tailwind-merge'
 import { cn } from '@/lib/utils'
+import { LuChevronRight } from "react-icons/lu"
 
 type SubmitCancelButtonProps = ButtonProps & {
   cancelOnclick: () => void
@@ -41,7 +41,7 @@ const SubmitCancelButton = ({
         ) : (
           <>
             {children}
-            <LuChevronRightCircle size="1.2rem" className="flex-shrink-0" />
+            <LuChevronRight size="1.1rem" className="flex-shrink-0 -me-2" />
           </>
         )}
       </Button>

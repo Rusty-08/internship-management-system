@@ -124,7 +124,7 @@ export function UserForm({
 
   if (isFetching) {
     return (
-      <Skeleton className='rounded-lg h-[20rem] w-full' />
+      <Skeleton className='rounded-lg h-[30rem] w-full' />
     )
   }
 
@@ -259,7 +259,7 @@ export function UserForm({
                           <FormLabel>Mentor</FormLabel>
                           <Select
                             onValueChange={field.onChange}
-                            disabled={isSubmitting}
+                            disabled={isSubmitting || !mentorsWithoutIntern}
                             value={field.value}
                           >
                             <FormControl>
@@ -267,7 +267,7 @@ export function UserForm({
                                 <SelectTrigger className='w-full'>
                                   <SelectValue
                                     placeholder={
-                                      mentorsWithoutIntern?.length === 0
+                                      !mentorsWithoutIntern
                                         ? 'No available mentor'
                                         : 'Select the mentor'
                                     }
@@ -308,7 +308,7 @@ export function UserForm({
                       name="batch"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Batch</FormLabel>
+                          <FormLabel>Batch Name</FormLabel>
                           <Select
                             onValueChange={field.onChange}
                             defaultValue={field.value}

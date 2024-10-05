@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma"
+import { Batch, User } from "@prisma/client"
 import { revalidatePath } from "next/cache"
 
 export const getBatchById = async (id: string) => {
@@ -12,6 +13,27 @@ export const getBatchById = async (id: string) => {
   })
 
   return batch
+}
+
+// client call
+export const getClientBatchById = async (
+  id: string
+): Promise<Batch & { interns: User[] } | null> => {
+  if (id === 'create-batch' || !id) return null
+
+  const res = await fetch(`/api/batch/get/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (res.ok) {
+    const data = await res.json()
+    return data
+  } else {
+    return null
+  }
 }
 
 // client call

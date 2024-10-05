@@ -59,14 +59,20 @@ model User {
   createdAt              DateTime      @default(now())
 }
 
+enum BatchStatus {
+  PENDING
+  ONGOING
+  COMPLETED
+}
+
 model Batch {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   startDate DateTime
-  endDate   DateTime
-  isActive  Boolean  @default(false)
+  endDate   DateTime?
+  status    BatchStatus
   interns   User[]
-  createdAt DateTime @default(now())
+  createdAt DateTime    @default(now())
 }
 
 model Profile {

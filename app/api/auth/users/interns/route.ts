@@ -6,35 +6,15 @@ export async function GET() {
     const users = await prisma.user.findMany({
       where: {
         role: 'INTERN',
-      },
-      select: {
-        image: true,
-        name: true,
-        email: true,
-        internProfile: {
-          select: {
-            mentor: {
-              select: {
-                name: true,
-              },
-            },
-          },
-        },
+        isArchived: false
       },
     })
 
-    const updatedUsers = users.map(user => ({
-      image: user.image,
-      name: user.name,
-      email: user.email,
-      mentor: user.internProfile?.mentor?.name || 'none',
-    }))
-
-    if (!updatedUsers) {
+    if (!users) {
       return NextResponse.json({ message: 'No Users Exists' }, { status: 401 })
     }
 
-    return NextResponse.json(updatedUsers, { status: 200 })
+    return NextResponse.json(users, { status: 200 })
   } catch (error) {
     console.log('Error:', error)
     return NextResponse.json(

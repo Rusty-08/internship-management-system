@@ -76,7 +76,7 @@ const Profile = ({ user, isArchived, children }: ProfileProps) => {
           className="w-full max-w-full object-cover max-h-60"
         />
         <div className="px-4 w-full flex lg:ps-12 min-h-20 lg:min-h-32 relative">
-          <div className="absolute -top-4 lg:-top-10 border-card bg-background hover:border-primary/10 transition-all ease-in-out duration-300 z-10 rounded-full border-[0.2rem] lg:border-[0.4rem]">
+          <div className="absolute group -top-4 lg:-top-10 border-card bg-background hover:border-background transition-all ease-in-out duration-300 z-10 rounded-full border-[0.2rem] lg:border-[0.4rem]">
             <div className="w-20 lg:w-32 h-20 lg:h-32 overflow-hidden rounded-full">
               <Image
                 src={data.image || imagePlaceholder}
@@ -90,7 +90,7 @@ const Profile = ({ user, isArchived, children }: ProfileProps) => {
               className={`${uploading ? 'bg-black/50' : 'bg-transparent'
                 } absolute cursor-pointer w-full flex items-center justify-center h-full group-hover:bg-black/50 transition-all ease-in-out duration-300 rounded-full inset-0 border`}
             >
-              <IoImagesOutline
+              {/* <IoImagesOutline
                 size="2rem"
                 className={cn(
                   'opacity-0 transform scale-0 text-white absolute transition-all ease-in-out duration-300 group-hover:scale-100',
@@ -98,7 +98,7 @@ const Profile = ({ user, isArchived, children }: ProfileProps) => {
                     ? 'group-hover:opacity-0'
                     : 'group-hover:opacity-100',
                 )}
-              />
+              /> */}
               <Input
                 type="file"
                 onChange={uploadUserImage}
@@ -113,7 +113,7 @@ const Profile = ({ user, isArchived, children }: ProfileProps) => {
                 />
               )}
             </div>
-            <Button size='circle' className='border-[0.3rem] bg-muted hover:bg-background p-0 w-12 h-12 border-card absolute -right-0 -bottom-0'>
+            <Button size='circle' className='border-[0.3rem] shadow-none bg-background group-hover:bg-foreground hover:text-background text-foreground p-0 w-12 h-12 border-card absolute -right-0 -bottom-0'>
               <RiEdit2Line size='1.1rem' className='mb-0.5 absolute' />
               <Input
                 type="file"

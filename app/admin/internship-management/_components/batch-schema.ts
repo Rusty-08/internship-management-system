@@ -1,18 +1,18 @@
 import { RegistrationSchema } from "@/components/@core/ui/table/account-table/registration-schema"
-import { InternCourse } from "@prisma/client"
+import { BatchStatus, InternCourse } from "@prisma/client"
 import { z } from "zod"
 
 export const BatchBaseSchema = z.object({
   id: z.string().optional(),
-  name: z.string().min(1, { message: 'Name is required' }),
+  batchName: z.string().min(1, { message: 'Batch name is required' }),
   startDate: z.date(),
-  endDate: z.date(),
+  endDate: z.date().optional(),
 })
 
 export const InternUserSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, {
-    message: 'Name is required',
+    message: 'Intern name is required',
   }),
   email: z.string().email({
     message: 'Email is not valid',

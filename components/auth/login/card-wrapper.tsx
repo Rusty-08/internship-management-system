@@ -8,6 +8,7 @@ import {
 import { Header } from './header'
 import { BackButton } from './back-button'
 import Image from 'next/image'
+import { siteConfig } from '@/configs/site'
 
 type CardWrapperProps = {
   children: React.ReactNode
@@ -21,7 +22,7 @@ export const CardWrapper = ({
   children,
   headerLabel,
   subHeaderLabel,
-  backButtonLabel = 'OnDemand Innovation, LLC',
+  backButtonLabel = siteConfig.company,
   backButtonHref,
 }: CardWrapperProps) => {
   return (

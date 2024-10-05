@@ -1,7 +1,7 @@
 'use client'
 
 import { ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable } from '@tanstack/react-table'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Batch } from '@prisma/client'
 import { DataTable } from '@/components/@core/ui/table/data-table'
 import { DataTablePagination } from '@/components/@core/ui/table/pagination'
@@ -39,6 +39,8 @@ const InternshipTable = ({ data }: { data: Batch[] }) => {
     },
   })
 
+  const hasOngoingBatch = useMemo(() => data.find(batch => batch.status === 'ONGOING'), [data])
+
   return (
     <div className='flex flex-col gap-4'>
       <div className="flex items-center justify-between">
@@ -47,9 +49,13 @@ const InternshipTable = ({ data }: { data: Batch[] }) => {
           table={table}
           search={'batch'}
         />
-        <Link href='/admin/internship-management/create-batch'>
-          <AddButton>Create New Batch</AddButton>
-        </Link>
+        {!!hasOngoingBatch ? (
+          <AddButton disabled>There is already an ongoing batch</AddButton>
+        ) : (
+          <Link href='/admin/internship-management/create-batch'>
+            <AddButton>Create New Batch</AddButton>
+          </Link>
+        )}
       </div>
       <div className="rounded-md border overflow-hidden ">
         <DataTable

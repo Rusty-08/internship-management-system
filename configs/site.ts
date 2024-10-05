@@ -7,6 +7,7 @@ export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
   name: 'Internship Portal',
+  company: 'Baroque Works, LLC',
   description: 'Intership Management System in Baroque Works, LLC, a made up company',
   timeZone: 'Asia/Manila',
   socialMedia: [

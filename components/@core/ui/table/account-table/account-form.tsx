@@ -118,6 +118,9 @@ export function UserForm({
       }
 
       fetchedUser()
+    } else {
+      const _mentors = mentors?.filter(mentor => !mentor.assignedIntern)
+      setMentorsWithoutIntern(_mentors)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

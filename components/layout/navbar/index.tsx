@@ -43,9 +43,7 @@ const Navbar = async ({ profilePath, sideLinks }: SidebarSheetProps) => {
       <div className="flex items-center gap-x-3">
         <ThemeToggle />
         <ProfileAvatar
-          user={user?.name}
-          role={user?.role}
-          image={user?.image || null}
+          user={user}
           profilePath={profilePath}
         >
           <form action={logout}>

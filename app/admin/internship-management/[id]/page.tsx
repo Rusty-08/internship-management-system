@@ -9,16 +9,18 @@ export const metadata: Metadata = {
 
 const CreateInternship = async ({ params: { id } }: { params: { id: string } }) => {
   const mentors = await getMentorUsers()
-  const activeBatch = await prisma.batch.findFirst({
-    where: { status: 'ONGOING' }
-  })
+  const batches = await prisma.batch.findMany()
+
+  const batchStatus = batches.find(
+    batch => batch.status === 'ONGOING' || batch.status === 'PENDING'
+  )?.status.toLowerCase()
 
   const availableMentors = mentors?.filter(mentor => !mentor.assignedIntern)
 
   return (
     <div className="space-y-6 w-full">
       <BatchForm
-        haveOngoingBatch={!!activeBatch}
+        batchStatus={batchStatus}
         batchId={id}
         batchMentors={id === 'create-batch' ? availableMentors : mentors}
       />

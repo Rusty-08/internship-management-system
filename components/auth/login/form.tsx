@@ -127,10 +127,10 @@ const LoginForm = () => {
                 <LoadingSpinner />
               ) : (
                 <>
-                  Sign In
+                  <span className='me-2'>Sign In</span>
                   <MdOutlineArrowRight
                     size="1.2rem"
-                    className="absolute group-hover:ml-[5rem] ml-[4.5rem] transition-all ease-in-out duration-300"
+                    className="absolute group-hover:ml-[4.5rem] ml-[4rem] transition-all ease-in-out duration-300"
                   />
                 </>
               )}

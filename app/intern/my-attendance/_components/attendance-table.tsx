@@ -128,7 +128,7 @@ export default function AttendanceTable({
       <DataTable
         columns={attendanceColumns}
         table={table}
-        noRecordMessage="No attendance records.   "
+        noRecordMessage="No attendance records."
       />
     )
   }

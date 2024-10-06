@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { PiArrowUpRightLight } from 'react-icons/pi'
 import NoRecordFound from '../no-records'
+import { ViewMore } from './view-more-btn'
 
 type DetailsCardProps = {
   header: string
@@ -57,11 +58,7 @@ export const DetailsCard = ({
         ) : (
           children
         )}
-        <Link href={navigate}>
-          <Button className='flex gap-2 md:hidden w-full' variant='secondary'>
-            View More
-          </Button>
-        </Link>
+        <ViewMore navigate={navigate} />
       </CardContent>
     </Card>
   )

@@ -46,7 +46,7 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
   } = task
 
   const formattedStartDate = formatInTimeZone(startDate, 'Asia/Manila', 'LLL dd')
-  const formattedEndDate = formatInTimeZone(endDate, 'Asia/Manila', 'LLL dd')
+  const formattedEndDate = formatInTimeZone(endDate, 'Asia/Manila', 'LLL dd, yyyy')
 
   const statusIcon = {
     COMPLETED: MdTaskAlt,
@@ -84,8 +84,8 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
         </div>
         <div className="flex flex-grow flex-col lg:flex-row gap-1 lg:justify-center lg:items-center lg:gap-4">
           <div className="flex flex-col gap-1 lg:w-[15rem]">
-            {isInAdmin && <p className="flex-grow text-left font-medium text-sm">{intern}</p>}
-            <span className="font-normal text-start text-muted-foreground text-sm">
+            {isInAdmin && <p className="flex-grow text-left font-medium">{intern}</p>}
+            <span className={cn("font-normal text-start text-muted-foreground", isInAdmin ? 'text-xs' : 'text-sm')}>
               {`${formattedStartDate} - ${formattedEndDate}`}
             </span>
           </div>

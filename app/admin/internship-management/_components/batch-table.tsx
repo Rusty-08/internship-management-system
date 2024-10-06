@@ -39,7 +39,11 @@ const InternshipTable = ({ data }: { data: Batch[] }) => {
     },
   })
 
-  const hasOngoingBatch = useMemo(() => data.find(batch => batch.status === 'ONGOING'), [data])
+  const batchStatus = useMemo(() =>
+    data.find(
+      batch => batch.status === 'ONGOING' || batch.status === 'PENDING'
+    )?.status.toLowerCase(), [data]
+  )
 
   return (
     <div className='flex flex-col gap-4'>
@@ -49,8 +53,10 @@ const InternshipTable = ({ data }: { data: Batch[] }) => {
           table={table}
           search={'batch'}
         />
-        {!!hasOngoingBatch ? (
-          <AddButton disabled>There is already an ongoing batch</AddButton>
+        {batchStatus ? (
+          <AddButton disabled>
+            There is already  {batchStatus === 'ongoing' ? 'an' : 'a'} {batchStatus} batch
+          </AddButton>
         ) : (
           <Link href='/admin/internship-management/create-batch'>
             <AddButton>Create New Batch</AddButton>

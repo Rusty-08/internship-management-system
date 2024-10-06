@@ -1,8 +1,5 @@
 import { DetailsCard } from '@/components/@core/ui/dashboard/details-card'
 import { StatCard } from '@/components/@core/ui/dashboard/stat-card'
-import totalDaysImage from '@/public/dashboard/days-dashboard.svg'
-import totalHoursImage from '@/public/dashboard/hours-dashboard.svg'
-import totalTaskImage from '@/public/dashboard/task-dashboard.svg'
 import { getAllInternAttendance } from '@/utils/attendance'
 import { Metadata } from 'next'
 import Image from 'next/image'
@@ -16,25 +13,27 @@ import { Badge } from '@/components/ui/badge'
 import { TaskProps } from '@/components/@core/tasks/types'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import AvatarPlaceholder from '@/public/general/images/male-avatar.svg'
-import { Fragment } from 'react'
+import { Fragment, Suspense } from 'react'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
 import { dateInManilaTz } from '@/utils/format-date'
-
-export const revalidate = 3600 // revalidate at most every hour
+import { TotalInterns } from './_components/total-interns'
+import { TotalTasks } from './_components/total-tasks'
+import { TotalDays } from './_components/total-days'
+import { StatCardSkeleton } from './_components/stat-card-skeleton'
+import totalHoursImage from '@/public/dashboard/hours-dashboard.svg'
+import totalDaysImage from '@/public/dashboard/days-dashboard.svg'
+import totalTaskImage from '@/public/dashboard/task-dashboard.svg'
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard',
 }
 
 const AdminDashboard = async () => {
-  const interns = await getInternUsers()
   const allInternsAttendance = await getAllInternAttendance()
   const allUsers = await getAllInternsTasks()
 
   const allInterns = allUsers.filter(user => user.intern)
-  const tasks = allUsers.flatMap(user => user.tasks)
-
   const currentAttendance = allInternsAttendance.filter(attendance => dateInManilaTz(attendance.date) == dateInManilaTz(new Date()))
 
   const haveOngoingTask = (tasks: TaskProps[]) => tasks.filter(task => task.status === 'IN_PROGRESS')
@@ -42,18 +41,15 @@ const AdminDashboard = async () => {
   return (
     <div className="flex h-full flex-col gap-4">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <StatCard header="Total Interns" image={totalHoursImage}>
-          <h1 className="text-4xl font-semibold">{interns?.length}</h1>
-          <span className="text-text font-medium">students</span>
-        </StatCard>
-        <StatCard header="Total Days" image={totalDaysImage}>
-          <h1 className="text-4xl font-semibold">{interns && interns[0].attendance.length}</h1>
-          <span className="text-text font-medium">days</span>
-        </StatCard>
-        <StatCard header="Total Tasks" image={totalTaskImage}>
-          <h1 className="text-4xl font-semibold">{tasks.length}</h1>
-          <span className="text-text font-medium">tasks</span>
-        </StatCard>
+        <Suspense fallback={<StatCardSkeleton image={totalHoursImage} />}>
+          <TotalInterns />
+        </Suspense>
+        <Suspense fallback={<StatCardSkeleton image={totalDaysImage} />}>
+          <TotalDays />
+        </Suspense>
+        <Suspense fallback={<StatCardSkeleton image={totalTaskImage} />}>
+          <TotalTasks />
+        </Suspense>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <DetailsCard

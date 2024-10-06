@@ -43,12 +43,12 @@ import { ErrorCard } from '@/components/@core/errors/error-card'
 type InitialBatchState = Batch & { interns: User[] } | null
 
 type BatchFormProps = {
-  haveOngoingBatch?: boolean
+  batchStatus?: string
   batchId: string
   batchMentors: UserSubset[] | undefined
 }
 
-const BatchForm = ({ haveOngoingBatch, batchId, batchMentors }: BatchFormProps) => {
+const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
   const router = useRouter()
   const [initialState, setInitialState] = useState<InitialBatchState>(null)
   const [startDate, setStartDate] = useState<Date | undefined>(new Date())
@@ -116,9 +116,11 @@ const BatchForm = ({ haveOngoingBatch, batchId, batchMentors }: BatchFormProps) 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (haveOngoingBatch && batchId === 'create-batch') {
+  if (batchStatus && batchId === 'create-batch') {
     return (
-      <ErrorCard>There is already an ongoing batch, you cannot add new batch.</ErrorCard>
+      <ErrorCard>
+        There is already {batchStatus === 'ongoing' ? 'an' : 'a'} {batchStatus} batch, you cannot add new batch.
+      </ErrorCard>
     )
   }
 

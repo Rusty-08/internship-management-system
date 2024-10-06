@@ -18,19 +18,17 @@ import Image from 'next/image'
 import AvatarPlaceholder from '@/public/general/images/male-avatar.svg'
 import { Button } from '@/components/ui/button'
 import { RiUser4Line } from "react-icons/ri"
+import { User } from '@prisma/client'
+import { cn } from '@/lib/utils'
 
 type ProfileProps = {
-  image: string | null
-  user?: string | null
-  role?: string | null
+  user?: User | null
   profilePath: string
   children?: ReactNode
 }
 
 export const ProfileAvatar = ({
-  image,
   user,
-  role,
   profilePath,
   children,
 }: ProfileProps) => {
@@ -39,8 +37,11 @@ export const ProfileAvatar = ({
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger className="outline-none">
-        <Avatar>
-          <AvatarImage src={image ? image : undefined} />
+        <Avatar className={cn(
+          'border-2 border-transparent hover:border-primary/50',
+          isOpen && 'border-primary/50'
+        )}>
+          <AvatarImage src={user?.image ? user.image : undefined} />
           <AvatarFallback
             className={`border ${isOpen ? 'border-primary/30' : 'border-transparent'
               }`}
@@ -58,7 +59,7 @@ export const ProfileAvatar = ({
         <DropdownMenuLabel>
           <div className="flex gap-2 items-center">
             <Avatar>
-              <AvatarImage src={image ? image : undefined} />
+              <AvatarImage src={user?.image ? user.image : undefined} />
               <AvatarFallback>
                 <Image
                   src={AvatarPlaceholder}
@@ -68,13 +69,14 @@ export const ProfileAvatar = ({
                 />
               </AvatarFallback>
             </Avatar>
-            <div className="flex flex-col">
+            <div className="flex relative flex-col truncate max-w-36">
               <p className="line-clamp-1 font-medium">
-                {user ?? 'Anonymous'}
+                {user?.name ?? 'Anonymous'}
               </p>
-              <span className="text-text text-sm font-normal">
-                {role?.toLocaleLowerCase() ?? 'Unknown'}
+              <span className="text-text text-[0.8rem] font-normal">
+                {user?.email ?? 'Unknown'}
               </span>
+              <div className="absolute right-0 top-0 bg-gradient-to-l from-popover to-transparent w-6 h-full"></div>
             </div>
           </div>
         </DropdownMenuLabel>

@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { getCurrentUserMentorId, getInternUsers, getServerUserById } from './users'
+import { getCurrentUser, getCurrentUserMentorId, getInternUsers, getServerUserById } from './users'
 
 const task = {
   id: true,
@@ -65,15 +65,19 @@ export const getTaskById = async (id: string) => {
 }
 
 export const getCurrentUserTasks = async () => {
-  const mentorId = await getCurrentUserMentorId()
-  const user = await prisma.user.findUnique({
-    where: { id: mentorId },
-    include: {
-      tasks: true,
-    },
-  })
+  const intern = await getCurrentUser()
 
-  return user?.tasks
+  if (intern?.mentorId) {
+    const mentor = await prisma.user.findUnique({
+      where: { id: intern?.mentorId },
+      include: {
+        tasks: true,
+      },
+    })
+
+    return mentor?.tasks
+  }
+  return null
 }
 
 export const getAllInternsTasks = async () => {

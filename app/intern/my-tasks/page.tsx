@@ -1,6 +1,6 @@
 import { TaskSkeleton } from '@/components/@core/tasks/task-skeleton'
 import TaskWrapper from '@/components/@core/tasks/task-wrapper'
-import { getCurrentUserMentorId } from '@/utils/users'
+import { getCurrentUser } from '@/utils/users'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 
@@ -9,11 +9,11 @@ export const metadata: Metadata = {
 }
 
 const TasksManagement = async () => {
-  const mentorId = await getCurrentUserMentorId()
+  const user = await getCurrentUser()
 
   return (
     <Suspense fallback={<TaskSkeleton />}>
-      <TaskWrapper mentorId={mentorId} />
+      <TaskWrapper mentorId={user?.mentorId ?? undefined} />
     </Suspense>
   )
 }

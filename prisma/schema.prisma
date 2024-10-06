@@ -55,7 +55,7 @@ model User {
   files                  File[]
   batchId                String?       @db.ObjectId
   tasks                  Task[]        @relation("mentorTask")
-  batch                  Batch?        @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  batch                  Batch?        @relation(fields: [batchId], references: [id])
   createdAt              DateTime      @default(now())
 }
 

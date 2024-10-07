@@ -25,6 +25,7 @@ enum UserRole {
   MENTOR
   INTERN
   ADMIN
+  DEMO
 }
 
 enum InternCourse {

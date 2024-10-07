@@ -20,10 +20,10 @@ import { dateInManilaTz } from '@/utils/format-date'
 import { TotalInterns } from './_components/total-interns'
 import { TotalTasks } from './_components/total-tasks'
 import { TotalDays } from './_components/total-days'
-import { StatCardSkeleton } from './_components/stat-card-skeleton'
 import totalHoursImage from '@/public/dashboard/hours-dashboard.svg'
 import totalDaysImage from '@/public/dashboard/days-dashboard.svg'
 import totalTaskImage from '@/public/dashboard/task-dashboard.svg'
+import { StatCardSkeleton } from '@/components/@core/ui/dashboard/stat-card-skeleton'
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard',
@@ -90,7 +90,7 @@ const AdminDashboard = async () => {
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col">
-                        <p className='text-sm group-hover:text-primary transition-colors'>{user.intern}</p>
+                        <p className='text-sm group-hover:text-primary font-medium transition-colors'>{user.intern}</p>
                         <p className='text-xs text-text'>
                           {user.tasks.length} {user.tasks.length > 1 ? 'tasks' : 'task'}
                         </p>

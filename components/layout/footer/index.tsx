@@ -13,7 +13,7 @@ const Footer = () => {
           </p>
           <PiCopyrightDuotone />
         </div>
-        <p>Internship Portal v0.1.0</p>
+        <p className='font-medium'>Internship Portal v0.1.0</p>
       </div>
       <Link href="/" className="text-text text-sm hover:text-primary">
         Privacy Policy

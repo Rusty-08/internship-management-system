@@ -88,7 +88,7 @@ const Profile = ({ user, isArchived, children }: ProfileProps) => {
             </div>
             <div
               className={`${uploading ? 'bg-black/50' : 'bg-transparent'
-                } absolute cursor-pointer w-full flex items-center justify-center h-full group-hover:bg-black/50 transition-all ease-in-out duration-300 rounded-full inset-0 border`}
+                } absolute cursor-pointer overflow-hidden w-full flex items-center justify-center h-full group-hover:bg-black/50 transition-all ease-in-out duration-300 rounded-full inset-0`}
             >
               {/* <IoImagesOutline
                 size="2rem"
@@ -113,7 +113,7 @@ const Profile = ({ user, isArchived, children }: ProfileProps) => {
                 />
               )}
             </div>
-            <Button size='circle' className='border-[0.3rem] shadow-none bg-background group-hover:bg-foreground hover:text-background text-foreground p-0 w-12 h-12 border-card absolute -right-0 -bottom-0'>
+            <Button size='circle' className='border-[0.3rem] border-card shadow-none group-hover:text-background bg-background group-hover:bg-foreground hover:text-background text-foreground p-0 w-12 h-12 absolute -right-0 -bottom-0'>
               <RiEdit2Line size='1.1rem' className='mb-0.5 absolute' />
               <Input
                 type="file"

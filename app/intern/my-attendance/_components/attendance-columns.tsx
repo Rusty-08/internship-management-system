@@ -21,7 +21,7 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     accessorKey: 'name',
     header: 'Name',
     cell: ({ row }) => (
-      <p className="text-foreground text-nowrap">
+      <p className="text-foreground font-medium text-nowrap">
         {row.getValue('name')}
       </p>
     ),
@@ -89,7 +89,7 @@ export const attendanceColumns: ColumnDef<AttendanceProps>[] = [
     cell: ({ row }) => {
       const ThirtySecs = 0.008
       const total = row.getValue('totalHours') as number
-      
+
       return (
         <span className="text-foreground text-nowrap">
           {formatHours(total)}

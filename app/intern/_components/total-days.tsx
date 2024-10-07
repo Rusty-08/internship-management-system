@@ -4,17 +4,19 @@ import { Badge } from '@/components/ui/badge'
 import prisma from '@/lib/prisma'
 import totalDaysImage from '@/public/dashboard/days-dashboard.svg'
 import { differenceInDays, format } from 'date-fns'
-import { StatCardLink } from '../../../components/@core/ui/dashboard/stat-card-link'
 import { siteConfig } from '@/configs/site'
 import { formatInTimeZone } from 'date-fns-tz'
 import { getOrdinalSuffix } from '@/utils/format-number'
+import { StatCardLink } from '@/components/@core/ui/dashboard/stat-card-link'
 
-export const TotalDays = async () => {
-  const allBatches = await prisma.batch.findMany()
+type TotalDaysProps = {
+  batchId: string
+}
 
-  const recentBatch = allBatches.find(batch =>
-    batch.status === 'PENDING' || batch.status === 'ONGOING'
-  )
+export const TotalDays = async ({ batchId }: TotalDaysProps) => {
+  const recentBatch = await prisma.batch.findUnique({
+    where: { id: batchId }
+  })
 
   const haveOngoingBatch = recentBatch?.status === 'ONGOING'
 
@@ -26,28 +28,28 @@ export const TotalDays = async () => {
         <div className="flex gap-2 items-end">
           <h1 className="text-4xl font-semibold">
             {totalDays}
-            {/* {totalDays > 0 && <span className='ms-0.5 text-base'>{getOrdinalSuffix(totalDays, false)}</span>} */}
+            {/* {totalDays > 0 && <span className='ms-1 text-base text-muted-foreground'>{getOrdinalSuffix(totalDays, false)}</span>} */}
           </h1>
-          <span className="text-text mb-0.5 font-medium">{totalDays > 1 ? 'days' : 'day'}</span>
+          <span className="mb-0.5 text-muted-foreground font-medium">{totalDays > 1 ? 'days' : 'day'}</span>
         </div>
-        <div className="flex items-center flex-col lg:flex-row justify-between">
+        <div className="flex items-center flex-col gap-5 md:gap-4 md:flex-row justify-between">
           <Badge
             variant={
               recentBatch
                 ? haveOngoingBatch ? 'PRIMARY' : 'PENDING'
                 : 'secondary'
             }
-            className='py-2 px-4'
+            className='py-2 px-4 w-full justify-center md:w-auto'
           >
             {
               recentBatch
                 ? haveOngoingBatch
                   ? `Started in ${formatInTimeZone(recentBatch.startDate, siteConfig.timeZone, 'EEE, MMM dd, yyyy')}`
                   : `Start in ${formatInTimeZone(recentBatch.startDate, siteConfig.timeZone, 'EEE, MMM dd, yyyy')}`
-                : 'No ongoing or pending batch'
+                : "You don't ongoing or pending batch"
             }
           </Badge>
-          <StatCardLink path='/admin/internship-management'>View batch</StatCardLink>
+          <StatCardLink path='/intern/my-attendance'>View Attendance</StatCardLink>
         </div>
       </div>
     </StatCard>

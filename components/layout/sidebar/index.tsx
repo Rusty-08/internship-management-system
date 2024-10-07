@@ -17,9 +17,9 @@ const Sidebar = ({
   return (
     <div
       className={cn(
-        'fixed lg:flex w-16 flex-col left-0 lg:hover:w-[18rem] bg-sidebar shadow top-0 h-screen z-50 pb-4 transition-all group/sidebar duration-300 ease-in-out',
-        setOpen && 'w-[20rem]',
-        !setOpen && 'hidden'
+        'fixed lg:flex w-16 flex-col lg:hover:w-[18rem] bg-sidebar shadow top-0 h-screen z-50 pb-4 transition-all group/sidebar duration-300 ease-in-out',
+        setOpen && 'w-[20rem] right-0',
+        !setOpen && 'hidden left-0'
       )}
     >
       <div className="flex items-center p-2 h-20 px-3 border-b border-slate-800">

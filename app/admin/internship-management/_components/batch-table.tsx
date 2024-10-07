@@ -63,7 +63,7 @@ const InternshipTable = ({ data }: { data: Batch[] }) => {
           </Link>
         )}
       </div>
-      <div className="rounded-md border overflow-hidden ">
+      <div className="rounded-md overflow-hidden ">
         <DataTable
           columns={batchColumns(actions)}
           table={table}

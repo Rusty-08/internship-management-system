@@ -21,7 +21,7 @@ export function SidebarSheet({ sideLinks }: SidebarSheetProps) {
           <RiMenu3Fill size="1.5rem" />
         </Button>
       </SheetTrigger>
-      <SheetContent side='left'>
+      <SheetContent side='right'>
         <Sidebar sideLinks={sideLinks} setOpen={setIsOpen} />
       </SheetContent>
     </Sheet>

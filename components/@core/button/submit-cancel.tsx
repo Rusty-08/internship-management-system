@@ -33,18 +33,22 @@ const SubmitCancelButton = ({
       <Button
         disabled={loading}
         type="submit"
-        className={cn('gap-1.5', className)}
+        className={cn('gap-1.5 relative group', className)}
         {...props}
       >
         {loading ? (
           <LoadingSpinner />
         ) : (
           <>
-            {children}
-            <LuChevronRight size="1.1rem" className="flex-shrink-0 -me-2" />
+            <span className='mr-2'>{children}</span>
+            <LuChevronRight size="1.1rem" className="flex-shrink-0 absolute right-7 group-hover:right-6 transition-all duration-300 ease-in-out -me-2" />
           </>
         )}
       </Button>
+      {/* <Link href={path} className='text-xs relative group text-muted-foreground hover:text-primary transition-all ease-in-out duration-300 font-medium flex items-center justify-center mr-4 gap-2'>
+      {children}
+      <LuChevronRight size="1rem" className="flex-shrink-0 absolute -right-3 group-hover:-right-4 transition-[right] duration-300 ease-in-out -me-2" />
+    </Link> */}
     </div>
   )
 }

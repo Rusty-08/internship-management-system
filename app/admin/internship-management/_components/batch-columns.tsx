@@ -8,7 +8,7 @@ import { TooltipWrapper } from '@/components/ui/tooltip'
 import AvatarPlaceholder from '@/public/general/images/male-avatar.svg'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import Image from 'next/image'
-import { format } from 'date-fns'
+import { differenceInDays, format } from 'date-fns'
 import Link from 'next/link'
 import { FiEdit3 } from 'react-icons/fi'
 import { IoArchiveOutline } from 'react-icons/io5'
@@ -46,7 +46,20 @@ export const batchColumns = (actions: {
       cell: ({ row }) => {
         const formattedDate = format(`${row.original.endDate}`, 'MMM dd, yyyy')
 
-        return <p>{formattedDate}</p>
+        return <p>{row.original.endDate ? formattedDate : 'To be added later'}</p>
+      },
+    },
+    {
+      accessorKey: 'totalDays',
+      header: 'Total Days',
+      cell: ({ row }) => {
+        const startDate = row.original.startDate
+        const endDate = row.original.endDate
+
+        const totalDays = differenceInDays(`${endDate}`, startDate)
+        const days = differenceInDays(new Date(), startDate) + 1
+
+        return <p>{endDate ? `${days}/${totalDays}` : `${days} days`}</p>
       },
     },
     {

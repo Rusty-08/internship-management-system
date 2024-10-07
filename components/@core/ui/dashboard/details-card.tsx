@@ -43,10 +43,10 @@ export const DetailsCard = ({
             {header}
             <Link
               href={navigate}
-              className="text-text hidden lg:flex font-normal hover:text-primary items-center gap-2 text-sm"
+              className="text-text hidden -translate-y-1 lg:flex font-medium hover:text-foreground items-center gap-2 text-[0.8rem]"
             >
               View all
-              <PiArrowUpRightLight />
+              <PiArrowUpRightLight size='1rem' />
             </Link>
           </div>
         </CardTitle>

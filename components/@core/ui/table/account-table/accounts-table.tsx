@@ -145,7 +145,7 @@ export default function AccountsTable({
           </Link>
         )}
       </div>
-      <div className="rounded-md border overflow-hidden ">
+      <div className="rounded-md overflow-hidden ">
         <DataTable
           columns={accountColumns(actions)}
           table={table}

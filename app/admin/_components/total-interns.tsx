@@ -6,7 +6,7 @@ import totalHoursImage from '@/public/dashboard/hours-dashboard.svg'
 import { getInternUsers } from '@/utils/users'
 import Link from 'next/link'
 import { LuChevronRight } from 'react-icons/lu'
-import { StatCardLink } from './stat-card-link'
+import { StatCardLink } from '../../../components/@core/ui/dashboard/stat-card-link'
 
 export const TotalInterns = async () => {
   const interns = await getInternUsers()

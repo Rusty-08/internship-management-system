@@ -16,15 +16,33 @@ import { Metadata } from 'next'
 import Image from 'next/image'
 import { IndividualAttendance } from '../admin/intern-management/_components/individual-attendance'
 import Loading from '../loading'
+import prisma from '@/lib/prisma'
+import { differenceInDays } from 'date-fns'
+import { getOrdinalSuffix } from '@/utils/format-number'
+import { getCurrentUser } from '@/utils/users'
+import { TotalDays } from './_components/total-days'
+import { TotalHours } from './_components/total-hours'
+import { TotalTasks } from './_components/total-tasks'
 
 export const metadata: Metadata = {
   title: 'Intern Dashboard',
 }
 
 const InternDashboard = async () => {
+  const currentUser = await getCurrentUser()
   const tasks = await getCurrentUserTasks()
   const attendance = await getInternAttendance()
   const attendaceTotalHours = getAttendanceTotalHours(attendance)
+
+  const allBatches = await prisma.batch.findMany()
+
+  const recentBatch = allBatches.find(batch =>
+    batch.status === 'PENDING' || batch.status === 'ONGOING'
+  )
+
+  const haveOngoingBatch = recentBatch?.status === 'ONGOING'
+
+  const totalDays = haveOngoingBatch ? differenceInDays(new Date(), recentBatch.startDate) + 1 : 0
 
   const hours = Math.floor(attendaceTotalHours)
   const minutes = Math.round((attendaceTotalHours - hours) * 60)
@@ -44,32 +62,9 @@ const InternDashboard = async () => {
   return (
     <div className="flex h-full flex-col gap-4">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <StatCard header="Total Hours" image={totalHoursImage}>
-          {hours >= 1 && (
-            <>
-              <h1 className="text-4xl font-semibold">{hours}</h1>
-              <span className="text-text font-medium">hrs</span>
-            </>
-          )}
-          <h1 className="text-4xl font-semibold">{minutes}</h1>
-          <span className="text-text font-medium">mins</span>
-        </StatCard>
-        <StatCard header="Total Days" image={totalDaysImage}>
-          <h1 className="text-4xl font-semibold">
-            {attendance ? attendance.length : 0}
-          </h1>
-          <span className="text-text font-medium">
-            {attendance.length > 1 ? 'days' : 'day'}
-          </span>
-        </StatCard>
-        <StatCard header="Total Tasks" image={totalTaskImage}>
-          <h1 className="text-4xl font-semibold">
-            {tasks ? tasks.length : 0}
-          </h1>
-          <span className="text-text font-medium">
-            {tasks && tasks.length > 1 ? 'tasks' : 'task'}
-          </span>
-        </StatCard>
+        <TotalHours batchId={currentUser?.batchId || ''} />
+        <TotalDays batchId={currentUser?.batchId || ''} />
+        <TotalTasks userId={currentUser?.id || ''} />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <DetailsCard
@@ -84,7 +79,7 @@ const InternDashboard = async () => {
         <DetailsCard
           noRecords={sortedTaskByDate.length === 0}
           header="Tasks"
-          noRecordMessage="No assigned task found."
+          noRecordMessage="You don't have task yet."
           description="Your recent task records."
           navigate="/intern/task-management"
         >

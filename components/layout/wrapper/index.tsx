@@ -18,6 +18,7 @@ const CoreLayout = ({ children, role, withSidebar = true }: SidebarProps) => {
     ADMIN: adminSidebarLinks,
     MENTOR: mentorSidebarLinks,
     INTERN: internSidebarLinks,
+    DEMO: [] // temp
   }
 
   return (

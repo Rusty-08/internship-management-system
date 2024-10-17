@@ -17,7 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import Image from 'next/image'
 import AvatarPlaceholder from '@/public/general/images/male-avatar.svg'
 import { Button } from '@/components/ui/button'
-import { RiUser4Line } from "react-icons/ri"
+import { RiUser4Line } from 'react-icons/ri'
 import { User } from '@prisma/client'
 import { cn } from '@/lib/utils'
 
@@ -37,23 +37,24 @@ export const ProfileAvatar = ({
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger className="outline-none">
-        <Avatar className={cn(
-          'border-2 border-transparent hover:border-primary/50',
-          isOpen && 'border-primary/50'
-        )}>
-          <AvatarImage src={user?.image ? user.image : undefined} />
-          <AvatarFallback
-            className={`border ${isOpen ? 'border-primary/30' : 'border-transparent'
-              }`}
-          >
-            <Image
-              src={AvatarPlaceholder}
-              width={40}
-              height={40}
-              alt={`${user}`}
-            />
-          </AvatarFallback>
-        </Avatar>
+        <div
+          className={cn(
+            'border rounded-full border-transparent flex items-center justify-center hover:border-foreground/75 transition-all ease-in-out duration-300',
+            isOpen && 'border-foreground/75',
+          )}
+        >
+          <Avatar>
+            <AvatarImage src={user?.image ? user.image : undefined} />
+            <AvatarFallback>
+              <Image
+                src={AvatarPlaceholder}
+                width={40}
+                height={40}
+                alt={`${user}`}
+              />
+            </AvatarFallback>
+          </Avatar>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-52" align="end">
         <DropdownMenuLabel>
@@ -86,17 +87,14 @@ export const ProfileAvatar = ({
             <Link
               onClick={() => setIsOpen(false)}
               href={profilePath}
-              className='w-full'
+              className="w-full"
             >
               <Button
                 type="submit"
                 variant="ghost"
                 className="justify-start text-text px-3 gap-3 w-full"
               >
-                <RiUser4Line
-                  size="1rem"
-                  className="group-hover:text-primary"
-                />
+                <RiUser4Line size="1rem" className="group-hover:text-primary" />
                 My Profile
               </Button>
             </Link>

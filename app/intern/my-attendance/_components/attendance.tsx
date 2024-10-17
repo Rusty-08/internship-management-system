@@ -7,9 +7,9 @@ export const Attendance = async () => {
   const attendance = await getInternAttendance()
   const user = await getCurrentUser()
 
-  const descAttendance = attendance.sort((a, b) => compareDesc(
-    new Date(a.date || ''), new Date(b.date || ''))
-  )
+  // const descAttendance = attendance.sort((a, b) => compareDesc(
+  //   new Date(a.date || ''), new Date(b.date || ''))
+  // )
 
-  return <InternAttendance attendance={descAttendance} user={user} />
+  return <InternAttendance attendance={attendance} user={user} />
 }

@@ -7,8 +7,8 @@ import { SidebarSheet } from '../sidebar/sidebar-sheet'
 import { SidebarLinkProps } from '../sidebar/links'
 import { getCurrentUser, getServerUserByEmail } from '@/utils/users'
 import { BreadcrumbWrapper } from '@/components/@core/ui/breadcrumb'
-import { TbArrowRightFromArc } from "react-icons/tb"
-import { RiArrowLeftLine } from "react-icons/ri"
+import { TbArrowRightFromArc } from 'react-icons/tb'
+import { RiArrowLeftLine } from 'react-icons/ri'
 import Link from 'next/link'
 import MentorBackButton from './mentor-back-btn'
 import Image from 'next/image'
@@ -24,7 +24,7 @@ const Navbar = async ({ profilePath, sideLinks }: SidebarSheetProps) => {
   const isMentor = user?.role === 'MENTOR'
 
   return (
-    <div className="flex items-center justify-between px-4 lg:px-6 h-[5rem]">
+    <div className="flex items-center justify-between px-4 md:px-6 h-[5rem]">
       <div className="flex items-center lg:hidden gap-2">
         <Image
           src={siteConfig.logoPlaceholder}
@@ -32,20 +32,15 @@ const Navbar = async ({ profilePath, sideLinks }: SidebarSheetProps) => {
           width={35}
           height={35}
         />
-        <h1 className='font-bold text-[1.5rem] tracking-[0.1rem]'>IMS</h1>
+        <h1 className="font-bold text-[1.5rem] tracking-[0.1rem]">IMS</h1>
       </div>
       <div className="hidden lg:flex items-center gap-3">
-        {isMentor && (
-          <MentorBackButton />
-        )}
+        {isMentor && <MentorBackButton />}
         <BreadcrumbWrapper />
       </div>
       <div className="flex items-center gap-x-3">
         <ThemeToggle />
-        <ProfileAvatar
-          user={user}
-          profilePath={profilePath}
-        >
+        <ProfileAvatar user={user} profilePath={profilePath}>
           <form action={logout}>
             <DropdownMenuItem className="p-0 cursor-pointer">
               <Button

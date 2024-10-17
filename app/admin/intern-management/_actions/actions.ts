@@ -97,13 +97,16 @@ export const updatenUser = async (user: UserSchema): Promise<AccountFormState | 
 
     let updatedUser
 
+    console.log(user.role)
+    console.log(user.mentorId)
+
     if (user.role === 'INTERN') {
       updatedUser = await prisma.user.update({
         where: { id: user.id },
         data: {
           ...common,
           course: user.course,
-          mentorId: user.mentorId,
+          mentorId: user.mentorId || null,
           batchId: user.batchId,
           totalHours: user.totalHours,
         },
@@ -119,6 +122,7 @@ export const updatenUser = async (user: UserSchema): Promise<AccountFormState | 
     }
 
     if (updatedUser) {
+      console.log(updatedUser)
       return { status: 'success', data: updatedUser, message: '' }
     }
   } catch {

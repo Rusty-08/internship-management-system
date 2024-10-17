@@ -33,7 +33,7 @@ const DeleteForm = ({
         <SubmitCancelButton
           cancelOnclick={() => setIsOpenHandler(!isOpen)}
           loading={isSubmitting}
-          className="w-full lg:w-40"
+          className="w-full md:w-44"
         >
           Save Changes
         </SubmitCancelButton>

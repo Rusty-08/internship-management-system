@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { UserRole } from '@prisma/client'
+import { Prisma, UserRole } from '@prisma/client'
 import { z } from 'zod'
 
 export const RegistrationSchema = z.object({
@@ -20,7 +20,6 @@ export const RegistrationSchema = z.object({
   batch: z.string().optional(),
   assignedIntern: z.string().optional(),
 })
-
 
 export const InternRegistrationSchema = RegistrationSchema.extend({
   mentorId: z.string().optional(),

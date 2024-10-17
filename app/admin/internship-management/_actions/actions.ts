@@ -1,29 +1,13 @@
 'use server'
 
-import { z } from "zod"
-import { BatchWithUsers } from "../_components/batch-schema"
-import prisma from "@/lib/prisma"
+import { z } from 'zod'
+import { BatchWithUsers } from '../_components/batch-schema'
+import prisma from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import generator from 'generate-password'
-import { BatchStatus, User } from "@prisma/client"
-import { isBefore, isWithinInterval } from "date-fns"
-import { revalidatePath } from "next/cache"
-
-export const calculateBatchStatus = async (startDate: Date, endDate: Date | undefined) => {
-  let status: BatchStatus = BatchStatus.PENDING
-  const now = new Date()
-
-  if (isBefore(now, startDate)) {
-    status = BatchStatus.PENDING
-  } else if (!endDate || isWithinInterval(now, { start: startDate, end: endDate })) {
-    status = BatchStatus.ONGOING
-  } else {
-    status = BatchStatus.COMPLETED
-  }
-
-  return status
-}
-
+import { User } from '@prisma/client'
+import { revalidatePath } from 'next/cache'
+import { calculateBatchStatus } from '@/utils/batch-status'
 
 export const addBatch = async (data: z.infer<typeof BatchWithUsers>) => {
   const { batchName, startDate, endDate, interns } = data
@@ -36,14 +20,14 @@ export const addBatch = async (data: z.infer<typeof BatchWithUsers>) => {
         name: batchName,
         startDate,
         endDate: endDate,
-        status
+        status,
       },
     })
 
     if (interns) {
       const password = generator.generate({
         length: 10,
-        numbers: true
+        numbers: true,
       })
 
       const hashedPassword = await bcrypt.hash(password, 10)
@@ -88,8 +72,8 @@ export const updateBatch = async (data: z.infer<typeof BatchWithUsers>) => {
         name: batchName,
         startDate,
         endDate,
-        status
-      }
+        status,
+      },
     })
 
     console.log(updated)
@@ -97,17 +81,19 @@ export const updateBatch = async (data: z.infer<typeof BatchWithUsers>) => {
     const mappedInterns = interns?.map(({ mentorId, ...intern }) => {
       return {
         ...intern,
-        mentorId: mentorId || null
+        mentorId: mentorId || null,
       }
     })
 
     if (mappedInterns && mappedInterns.length > 0) {
-      await Promise.all(mappedInterns.map(async ({ id, ...intern }) => {
-        await prisma.user.update({
-          where: { id },
-          data: intern,
-        })
-      }))
+      await Promise.all(
+        mappedInterns.map(async ({ id, ...intern }) => {
+          await prisma.user.update({
+            where: { id },
+            data: intern,
+          })
+        }),
+      )
     }
 
     if (updated) {

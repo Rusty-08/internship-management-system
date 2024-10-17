@@ -21,7 +21,13 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import SubmitCancelButton from '@/components/@core/button/submit-cancel'
 import { BatchBaseSchema, BatchWithUsers, internProps } from './batch-schema'
 import { DayPicker } from '@/components/@core/ui/day-picker'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { UserSubset } from '@/components/@core/ui/table/account-table/types'
 import { Button } from '@/components/ui/button'
 import { fetchMentorUsers } from '@/utils/users'
@@ -40,7 +46,7 @@ import { GoAlert } from 'react-icons/go'
 import Link from 'next/link'
 import { ErrorCard } from '@/components/@core/errors/error-card'
 
-type InitialBatchState = Batch & { interns: User[] } | null
+type InitialBatchState = (Batch & { interns: User[] }) | null
 
 type BatchFormProps = {
   batchStatus?: string
@@ -61,7 +67,7 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
       batchName: initialState?.name || '',
       startDate,
       endDate,
-      interns: initialState?.interns || [internProps]
+      interns: initialState?.interns || [internProps],
     },
   })
 
@@ -77,13 +83,13 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
       batchName: values.batchName,
       startDate: startDate || new Date(),
       endDate,
-      interns: values.interns
+      interns: values.interns,
     }
 
     if (batchId !== 'create-batch' && initialState) {
       await updateBatch({
         id: initialState.id,
-        ...data
+        ...data,
       })
     } else {
       await addBatch(data)
@@ -119,15 +125,14 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
   if (batchStatus && batchId === 'create-batch') {
     return (
       <ErrorCard>
-        There is already {batchStatus === 'ongoing' ? 'an' : 'a'} {batchStatus} batch, you cannot add new batch.
+        There is already {batchStatus === 'ongoing' ? 'an' : 'a'} {batchStatus}{' '}
+        batch, you cannot add new batch.
       </ErrorCard>
     )
   }
 
   if (isFetching) {
-    return (
-      <Skeleton className='rounded-lg h-[30rem] w-full' />
-    )
+    return <Skeleton className="rounded-lg h-[30rem] w-full" />
   }
 
   return (
@@ -140,7 +145,7 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
           <CardContent>
             <div className="space-y-4">
               <div className="flex border bg-card p-6 pt-5 rounded-md flex-col gap-4">
-                <p className='font-medium'>Batch Details</p>
+                <p className="font-medium">Batch Details</p>
                 <div className="grid grid-cols-3 gap-4">
                   <FormField
                     control={form.control}
@@ -172,7 +177,7 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
                           <DayPicker
                             date={startDate || new Date()}
                             setDate={setStartDate}
-                            className='w-full'
+                            className="w-full"
                             disableBtn={isSubmitting}
                           />
                         </FormControl>
@@ -192,7 +197,7 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
                           <DayPicker
                             date={endDate}
                             setDate={setEndDate}
-                            className='w-full'
+                            className="w-full"
                             disableBtn={isSubmitting}
                           />
                         </FormControl>
@@ -205,18 +210,22 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
                 </div>
               </div>
               <div className="flex border bg-card p-6 pt-5 rounded-md flex-col gap-4">
-                <p className='font-medium'>Intern Accounts</p>
+                <p className="font-medium">Intern Accounts</p>
                 <div className="flex flex-col gap-4">
                   {fields.map((field, index) => {
-                    const currentMentorId = form.watch(`interns.${index}.mentorId`)
-                    const availableMentors = batchMentors?.filter(mentor =>
-                      !selectedMentors?.includes(mentor.id) || mentor.id === currentMentorId
+                    const currentMentorId = form.watch(
+                      `interns.${index}.mentorId`,
+                    )
+                    const availableMentors = batchMentors?.filter(
+                      mentor =>
+                        !selectedMentors?.includes(mentor.id) ||
+                        mentor.id === currentMentorId,
                     )
 
                     return (
                       <Fragment key={field.id}>
                         <div className="flex flex-col gap-4">
-                          <div className='grid grid-cols-3 gap-4'>
+                          <div className="grid grid-cols-3 gap-4">
                             <FormField
                               control={form.control}
                               name={`interns.${index}.name`}
@@ -224,11 +233,18 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
                                 <FormItem>
                                   <FormLabel>Intern Name</FormLabel>
                                   <FormControl>
-                                    <Input {...field} disabled={isSubmitting} placeholder="Enter the user's name here" />
+                                    <Input
+                                      {...field}
+                                      disabled={isSubmitting}
+                                      placeholder="Enter the user's name here"
+                                    />
                                   </FormControl>
-                                  {errors.interns && errors.interns[index]?.name && (
-                                    <FormMessage>{errors.interns[index]?.name?.message}</FormMessage>
-                                  )}
+                                  {errors.interns &&
+                                    errors.interns[index]?.name && (
+                                      <FormMessage>
+                                        {errors.interns[index]?.name?.message}
+                                      </FormMessage>
+                                    )}
                                 </FormItem>
                               )}
                             />
@@ -240,19 +256,33 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
                                   <FormLabel>Email</FormLabel>
                                   <FormControl>
                                     <div className="relative">
-                                      <Input {...field} disabled={isSubmitting} placeholder="sample@example.com" />
+                                      <Input
+                                        {...field}
+                                        disabled={isSubmitting}
+                                        placeholder="sample@example.com"
+                                      />
                                       {!initialState && (
-                                        <TooltipWrapper tooltip='Please use a valid and active email. This email will be used to receive the default password.' className="absolute right-1 -top-7">
-                                          <Button className='h-max w-max p-0 text-primary hover:text-primary/90' variant='ghost' size='icon'>
-                                            <HiOutlineInformationCircle size='1.2rem' />
+                                        <TooltipWrapper
+                                          tooltip="Please use a valid and active email. This email will be used to receive the default password."
+                                          className="absolute right-1 -top-7"
+                                        >
+                                          <Button
+                                            className="h-max w-max p-0 text-primary hover:text-primary/90"
+                                            variant="ghost"
+                                            size="icon"
+                                          >
+                                            <HiOutlineInformationCircle size="1.2rem" />
                                           </Button>
                                         </TooltipWrapper>
                                       )}
                                     </div>
                                   </FormControl>
-                                  {errors.interns && errors.interns[index]?.email && (
-                                    <FormMessage>{errors.interns[index]?.email?.message}</FormMessage>
-                                  )}
+                                  {errors.interns &&
+                                    errors.interns[index]?.email && (
+                                      <FormMessage>
+                                        {errors.interns[index]?.email?.message}
+                                      </FormMessage>
+                                    )}
                                 </FormItem>
                               )}
                             />
@@ -264,9 +294,13 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
                                   <FormLabel>Course</FormLabel>
                                   <Select
                                     onValueChange={value => {
-                                      field.onChange(value);
-                                      const totalHours = value === 'BSCS' ? 120 : 486;
-                                      form.setValue(`interns.${index}.totalHours`, totalHours);
+                                      field.onChange(value)
+                                      const totalHours =
+                                        value === 'BSCS' ? 120 : 486
+                                      form.setValue(
+                                        `interns.${index}.totalHours`,
+                                        totalHours,
+                                      )
                                     }}
                                     defaultValue={field.value ?? ''}
                                     disabled={isSubmitting}
@@ -278,15 +312,21 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
                                     </FormControl>
                                     <SelectContent>
                                       {['BSIT', 'BSCS', 'BSIS'].map(course => (
-                                        <SelectItem key={course} value={course ?? ''}>
+                                        <SelectItem
+                                          key={course}
+                                          value={course ?? ''}
+                                        >
                                           {course}
                                         </SelectItem>
                                       ))}
                                     </SelectContent>
                                   </Select>
-                                  {errors.interns && errors.interns[index]?.course && (
-                                    <FormMessage>{errors.interns[index]?.course?.message}</FormMessage>
-                                  )}
+                                  {errors.interns &&
+                                    errors.interns[index]?.course && (
+                                      <FormMessage>
+                                        {errors.interns[index]?.course?.message}
+                                      </FormMessage>
+                                    )}
                                 </FormItem>
                               )}
                             />
@@ -305,14 +345,22 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
                                       type="number"
                                       placeholder="Select the course to get the total hours"
                                       onChange={event =>
-                                        field.onChange(Number(event.target.value))
+                                        field.onChange(
+                                          Number(event.target.value),
+                                        )
                                       }
                                       disabled
                                     />
                                   </FormControl>
-                                  {errors.interns && errors.interns[index]?.totalHours && (
-                                    <FormMessage>{errors.interns[index]?.totalHours?.message}</FormMessage>
-                                  )}
+                                  {errors.interns &&
+                                    errors.interns[index]?.totalHours && (
+                                      <FormMessage>
+                                        {
+                                          errors.interns[index]?.totalHours
+                                            ?.message
+                                        }
+                                      </FormMessage>
+                                    )}
                                 </FormItem>
                               )}
                             />
@@ -333,7 +381,7 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
                                   >
                                     <FormControl>
                                       <div className="relative">
-                                        <SelectTrigger className='w-full'>
+                                        <SelectTrigger className="w-full">
                                           <SelectValue
                                             placeholder={
                                               availableMentors?.length === 0
@@ -342,15 +390,20 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
                                             }
                                           />
                                         </SelectTrigger>
-                                        <TooltipWrapper tooltip='Remove mentor'>
+                                        <TooltipWrapper tooltip="Remove mentor">
                                           <Button
-                                            onClick={() => form.setValue(`interns.${index}.mentorId`, '')}
-                                            type='button'
-                                            size='circle'
-                                            className='absolute right-10 text-muted-foreground top-2.5 h-fit w-fit leading-none p-0'
-                                            variant='ghost'
+                                            onClick={() =>
+                                              form.setValue(
+                                                `interns.${index}.mentorId`,
+                                                '',
+                                              )
+                                            }
+                                            type="button"
+                                            size="circle"
+                                            className="absolute right-10 text-muted-foreground top-2.5 h-fit w-fit leading-none p-0"
+                                            variant="ghost"
                                           >
-                                            <IoIosCloseCircleOutline size='1.1rem' />
+                                            <IoIosCloseCircleOutline size="1.1rem" />
                                           </Button>
                                         </TooltipWrapper>
                                       </div>
@@ -366,36 +419,53 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
                                       ))}
                                     </SelectContent>
                                   </Select>
-                                  {errors.interns && errors.interns[index]?.mentorId && (
-                                    <FormMessage>{errors.interns[index]?.mentorId?.message}</FormMessage>
-                                  )}
+                                  {errors.interns &&
+                                    errors.interns[index]?.mentorId && (
+                                      <FormMessage>
+                                        {
+                                          errors.interns[index]?.mentorId
+                                            ?.message
+                                        }
+                                      </FormMessage>
+                                    )}
                                 </FormItem>
                               )}
                             />
-                            <div className={cn(
-                              "grid gap-4",
-                              fields.length > 1 && index === fields.length - 1 && !initialState
-                              && 'grid-cols-2'
-                            )}>
+                            <div
+                              className={cn(
+                                'grid gap-4',
+                                fields.length > 1 &&
+                                  index === fields.length - 1 &&
+                                  !initialState &&
+                                  'grid-cols-2',
+                              )}
+                            >
                               {fields.length > 1 && !initialState && (
                                 <Button
-                                  variant='outline-destructive'
-                                  type='button'
-                                  className='flex-grow'
+                                  variant="outline-destructive"
+                                  type="button"
+                                  className="flex-grow"
                                   onClick={() => remove(index)}
                                 >
                                   Remove
                                 </Button>
                               )}
                               {index === fields.length - 1 && !initialState && (
-                                <AddButton variant='outline-default' type="button" onClick={() => append(internProps)} className='flex-grow'>
+                                <AddButton
+                                  variant="outline-default"
+                                  type="button"
+                                  onClick={() => append(internProps)}
+                                  className="flex-grow"
+                                >
                                   Add Another
                                 </AddButton>
                               )}
                             </div>
                           </div>
                         </div>
-                        {fields.length > 1 && index !== fields.length - 1 && <Separator className='my-4' />}
+                        {fields.length > 1 && index !== fields.length - 1 && (
+                          <Separator className="my-4" />
+                        )}
                       </Fragment>
                     )
                   })}
@@ -407,7 +477,7 @@ const BatchForm = ({ batchStatus, batchId, batchMentors }: BatchFormProps) => {
             <SubmitCancelButton
               loading={isSubmitting}
               cancelOnclick={() => router.back()}
-              className="w-full lg:w-44"
+              className="w-full md:w-44"
             >
               {initialState ? 'Save Changes' : 'Create Batch'}
             </SubmitCancelButton>

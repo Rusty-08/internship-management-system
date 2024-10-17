@@ -4,7 +4,11 @@ import { DataTable } from '@/components/@core/ui/table/data-table'
 import { DataTablePagination } from '@/components/@core/ui/table/pagination'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
-import { addAttendance, exportAttendance, getAttendanceMode } from '@/utils/attendance'
+import {
+  addAttendance,
+  exportAttendance,
+  getAttendanceMode,
+} from '@/utils/attendance'
 import { User } from '@prisma/client'
 import {
   ColumnDef,
@@ -12,7 +16,14 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { compareAsc, endOfDay, isToday, isWithinInterval, parseISO, startOfMonth } from 'date-fns'
+import {
+  compareAsc,
+  endOfDay,
+  isToday,
+  isWithinInterval,
+  parseISO,
+  startOfMonth,
+} from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useCallback, useMemo, useState } from 'react'
 import { DateRange } from 'react-day-picker'
@@ -67,7 +78,7 @@ export default function AttendanceTable({
     getPaginationRowModel: getPaginationRowModel(),
   })
 
-  const currentAttendance = attendanceData[0]
+  const currentAttendance = attendanceData[attendanceData.length - 1]
   const mode = getAttendanceMode(currentAttendance)
 
   const addCurrentAttendance = async (event: FormEvent) => {
@@ -79,8 +90,8 @@ export default function AttendanceTable({
 
       if (res.success) {
         setAttendanceData([
+          ...attendanceData.slice(0, attendanceData.length - 1),
           res.data,
-          ...attendanceData.slice(1, attendanceData.length)
         ])
 
         toast({
@@ -108,18 +119,18 @@ export default function AttendanceTable({
   }
 
   const downloadAttendance = () => {
-    const downloadedAttendance = filteredData.sort((a, b) => compareAsc(
-      new Date(a.date || ''), new Date(b.date || ''))
-    )
+    // const downloadedAttendance = filteredData.sort((a, b) =>
+    //   compareAsc(new Date(a.date || ''), new Date(b.date || '')),
+    // )
 
-    if (!downloadedAttendance.length) {
+    if (!filteredData.length) {
       toast({
         title: 'Unable to export attendance',
         description: 'The attendance list is empty.',
         variant: 'destructive',
       })
     } else {
-      exportAttendance(downloadedAttendance)
+      exportAttendance(filteredData)
     }
   }
 

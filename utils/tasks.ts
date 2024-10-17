@@ -1,33 +1,5 @@
 import prisma from '@/lib/prisma'
-import { getCurrentUser, getCurrentUserMentorId, getInternUsers, getServerUserById } from './users'
-
-const task = {
-  id: true,
-  title: true,
-  description: true,
-  status: true,
-  startDate: true,
-  endDate: true,
-  mentorId: true,
-  files: {
-    select: {
-      id: true,
-      name: true,
-      url: true,
-      userId: true,
-      taskId: true,
-    },
-  },
-  submissions: {
-    select: {
-      id: true,
-      name: true,
-      url: true,
-      date: true,
-      taskId: true,
-    },
-  },
-}
+import { getCurrentUser, getInternUsers } from './users'
 
 export const getTasks = async (id: string) => {
   if (!id) return null
@@ -35,9 +7,12 @@ export const getTasks = async (id: string) => {
     where: { id },
     include: {
       tasks: {
-        select: task,
+        include: {
+          files: true,
+          submissions: true,
+        },
       },
-    }
+    },
   })
 
   return data?.tasks || []
@@ -71,7 +46,11 @@ export const getCurrentUserTasks = async () => {
     const mentor = await prisma.user.findUnique({
       where: { id: intern?.mentorId },
       include: {
-        tasks: true,
+        tasks: {
+          orderBy: {
+            startDate: 'desc',
+          },
+        },
       },
     })
 
@@ -85,9 +64,12 @@ export const getAllInternsTasks = async () => {
     where: { role: 'MENTOR' },
     include: {
       tasks: {
-        select: task,
+        include: {
+          files: true,
+          submissions: true,
+        },
       },
-      internProfile: true
+      internProfile: true,
     },
   })
 
@@ -97,8 +79,9 @@ export const getAllInternsTasks = async () => {
     return {
       ...mentor,
       intern: allInterns?.find(intern => intern.mentorId === mentor.id)?.name,
-      internImage: allInterns?.find(intern => intern.mentorId === mentor.id)?.image,
-      internId: allInterns?.find(intern => intern.mentorId === mentor.id)?.id
+      internImage: allInterns?.find(intern => intern.mentorId === mentor.id)
+        ?.image,
+      internId: allInterns?.find(intern => intern.mentorId === mentor.id)?.id,
     }
   })
 

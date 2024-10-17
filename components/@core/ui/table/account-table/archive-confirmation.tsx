@@ -73,7 +73,7 @@ export function ArchiveConfirmation({
             <SubmitCancelButton
               cancelOnclick={setIsOpenHandler}
               loading={loading}
-              className="w-40"
+              className="w-full md:w-40"
             >
               Save Changes
             </SubmitCancelButton>

@@ -9,46 +9,37 @@ export async function PUT(
   request: Request,
   { params: { id } }: { params: { id: string } },
 ) {
-  const { title, description, date, fileUrl, fileName } = await request.json()
-
-  const taskDate = {
-    startDate: parseISO(date.startDate as string),
-    endDate: parseISO(date.endDate as string),
-  }
+  const {
+    title,
+    description,
+    date: { startDate, endDate },
+    fileUrl,
+    fileName,
+  } = await request.json()
 
   let status = 'PENDING' as TaskStatus
   const now = new Date()
 
-  if (isBefore(now, taskDate.startDate)) {
+  if (isBefore(now, startDate)) {
     status = 'PENDING'
-  } else if (
-    isWithinInterval(now, { start: taskDate.startDate, end: taskDate.endDate })
-  ) {
+  } else if (isWithinInterval(now, { start: startDate, end: endDate })) {
     status = 'IN_PROGRESS'
   }
 
   try {
     const taskUpdate = await prisma.task.findUnique({
       where: { id },
-      include: {
-        files: true,
-      },
+      include: { files: true },
     })
 
-    if (!taskUpdate) {
-      throw new Error('Task not found')
-    }
-
     const updated = await prisma.task.update({
-      where: {
-        id,
-      },
+      where: { id },
       data: {
         title,
         description,
         status,
-        startDate: taskDate.startDate,
-        endDate: taskDate.endDate,
+        startDate,
+        endDate,
         files: {
           update: {
             where: { id: taskUpdate?.files[0].id },

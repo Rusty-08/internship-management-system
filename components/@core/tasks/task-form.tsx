@@ -23,6 +23,8 @@ import SubmitCancelButton from '@/components/@core/button/submit-cancel'
 import { Textarea } from '@/components/ui/textarea'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 import { BsFillInfoCircleFill } from 'react-icons/bs'
+import { addTask } from '@/app/mentor/tasks-management/_actions/actions'
+import { cn } from '@/lib/utils'
 
 type TaskFormProps = {
   initialState: z.infer<typeof TaskFormEditSchema> | undefined
@@ -50,14 +52,18 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
 
   const onSubmitForm = async (values: z.infer<typeof TaskFormSchema>) => {
     const file = values.upload as File
-    const fileUrl = await handleFileUpload(file, 'tasks')
+    let fileUrl
+
+    if (file) {
+      fileUrl = await handleFileUpload(file, 'tasks')
+    }
 
     const data = {
       ...values,
       id: initialState?.id,
       date: {
-        startDate: dateRange?.from,
-        endDate: dateRange?.to,
+        startDate: dateRange?.from || new Date(),
+        endDate: dateRange?.to || new Date(),
       },
       fileUrl: fileUrl ? fileUrl : null,
       fileName: fileUrl ? file.name : null,
@@ -210,7 +216,7 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
             <SubmitCancelButton
               loading={isSubmitting}
               cancelOnclick={() => router.back()}
-              className="w-full lg:w-40"
+              className={cn('w-full', initialState ? 'md:w-44' : 'md:w-40')}
             >
               {initialState ? 'Save Changes' : 'Upload Task'}
             </SubmitCancelButton>

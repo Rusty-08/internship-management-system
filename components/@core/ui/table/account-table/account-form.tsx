@@ -27,15 +27,18 @@ import { RegistrationSchema } from './registration-schema'
 import { UserSubset } from './types'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Batch, User } from '@prisma/client'
-import { HiOutlineInformationCircle } from "react-icons/hi2"
+import { HiOutlineInformationCircle } from 'react-icons/hi2'
 import { RequiredLabel } from '@/components/ui/required-label'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
 import { siteConfig } from '@/configs/site'
 import { getClientUserById } from '@/utils/users'
 import { Skeleton } from '@/components/ui/skeleton'
-import { IoIosCloseCircleOutline } from "react-icons/io"
-import { registerUser, updatenUser } from '@/app/admin/intern-management/_actions/actions'
+import { IoIosCloseCircleOutline } from 'react-icons/io'
+import {
+  registerUser,
+  updatenUser,
+} from '@/app/admin/intern-management/_actions/actions'
 
 type FormDialogProps = {
   userId: string
@@ -50,13 +53,15 @@ export function UserForm({
   role,
   batches,
   mentors,
-  interns
+  interns,
 }: FormDialogProps) {
   const router = useRouter()
   const [formMessage, setFormMessage] = useState('')
   const [initialState, setInitialState] = useState<User | null>(null)
   const [isFetching, setIsFetching] = useState(false)
-  const [mentorsWithoutIntern, setMentorsWithoutIntern] = useState<UserSubset[] | null>()
+  const [mentorsWithoutIntern, setMentorsWithoutIntern] = useState<
+    UserSubset[] | null
+  >()
 
   const form = useForm<z.infer<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
@@ -73,13 +78,13 @@ export function UserForm({
       response = await updatenUser({
         ...values,
         id: initialState?.id,
-        role
+        role,
       })
     } else {
       response = await registerUser({
         ...values,
         batchId: values.batch,
-        role
+        role,
       })
     }
 
@@ -105,9 +110,16 @@ export function UserForm({
         form.setValue('expertise', user?.expertise || '')
         form.setValue('batch', user?.batchId || '')
 
-        const assignedIntern = interns?.find(intern => user?.id === intern.mentorId)?.id || ''
-        const totalHours = user?.course ? user?.course === 'BSCS' ? 120 : 486 : undefined
-        const _mentors = mentors?.filter(mentor => !mentor.assignedIntern || user?.mentorId === mentor.id)
+        const assignedIntern =
+          interns?.find(intern => user?.id === intern.mentorId)?.id || ''
+        const totalHours = user?.course
+          ? user?.course === 'BSCS'
+            ? 120
+            : 486
+          : undefined
+        const _mentors = mentors?.filter(
+          mentor => !mentor.assignedIntern || user?.mentorId === mentor.id,
+        )
 
         form.setValue('assignedIntern', assignedIntern)
         form.setValue('totalHours', totalHours)
@@ -126,9 +138,7 @@ export function UserForm({
   }, [])
 
   if (isFetching) {
-    return (
-      <Skeleton className='rounded-lg h-[30rem] w-full' />
-    )
+    return <Skeleton className="rounded-lg h-[30rem] w-full" />
   }
 
   return (
@@ -141,7 +151,7 @@ export function UserForm({
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent>
             <div className="space-y-4">
-              <div className='grid gap-4 grid-cols-2'>
+              <div className="grid gap-4 grid-cols-2">
                 <FormField
                   control={form.control}
                   name="name"
@@ -149,7 +159,11 @@ export function UserForm({
                     <FormItem>
                       <RequiredLabel>Name</RequiredLabel>
                       <FormControl>
-                        <Input {...field} disabled={isSubmitting} placeholder="John Doe" />
+                        <Input
+                          {...field}
+                          disabled={isSubmitting}
+                          placeholder="John Doe"
+                        />
                       </FormControl>
                       {errors.name && (
                         <FormMessage>{errors.name.message}</FormMessage>
@@ -177,9 +191,16 @@ export function UserForm({
                             placeholder="sample@example.com"
                           />
                           {!initialState && (
-                            <TooltipWrapper tooltip='Please use a valid and active email. This email will be used to receive the default password.' className="absolute right-1 -top-7">
-                              <Button className='h-max w-max p-0' variant='ghost' size='icon'>
-                                <HiOutlineInformationCircle size='1.2rem' />
+                            <TooltipWrapper
+                              tooltip="Please use a valid and active email. This email will be used to receive the default password."
+                              className="absolute right-1 -top-7"
+                            >
+                              <Button
+                                className="h-max w-max p-0"
+                                variant="ghost"
+                                size="icon"
+                              >
+                                <HiOutlineInformationCircle size="1.2rem" />
                               </Button>
                             </TooltipWrapper>
                           )}
@@ -194,7 +215,7 @@ export function UserForm({
               </div>
               {role === 'INTERN' && (
                 <>
-                  <div className='grid grid-cols-2 gap-4'>
+                  <div className="grid grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
                       name="course"
@@ -247,13 +268,15 @@ export function UserForm({
                             />
                           </FormControl>
                           {errors.totalHours && (
-                            <FormMessage>{errors.totalHours.message}</FormMessage>
+                            <FormMessage>
+                              {errors.totalHours.message}
+                            </FormMessage>
                           )}
                         </FormItem>
                       )}
                     />
                   </div>
-                  <div className='grid grid-cols-2 gap-4'>
+                  <div className="grid grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
                       name="mentorId"
@@ -267,7 +290,7 @@ export function UserForm({
                           >
                             <FormControl>
                               <div className="relative">
-                                <SelectTrigger className='w-full'>
+                                <SelectTrigger className="w-full">
                                   <SelectValue
                                     placeholder={
                                       !mentorsWithoutIntern
@@ -276,15 +299,17 @@ export function UserForm({
                                     }
                                   />
                                 </SelectTrigger>
-                                <TooltipWrapper tooltip='Remove mentor'>
+                                <TooltipWrapper tooltip="Remove mentor">
                                   <Button
-                                    onClick={() => form.setValue('mentorId', '')}
-                                    type='button'
-                                    size='circle'
-                                    className='absolute right-10 text-muted-foreground top-2.5 h-fit w-fit leading-none p-0'
-                                    variant='ghost'
+                                    onClick={() =>
+                                      form.setValue('mentorId', '')
+                                    }
+                                    type="button"
+                                    size="circle"
+                                    className="absolute right-10 text-muted-foreground top-2.5 h-fit w-fit leading-none p-0"
+                                    variant="ghost"
                                   >
-                                    <IoIosCloseCircleOutline size='1.1rem' />
+                                    <IoIosCloseCircleOutline size="1.1rem" />
                                   </Button>
                                 </TooltipWrapper>
                               </div>
@@ -395,7 +420,10 @@ export function UserForm({
                           </FormControl>
                           <SelectContent>
                             {interns?.map(intern => (
-                              <SelectItem key={intern.id} value={intern.id ?? ''}>
+                              <SelectItem
+                                key={intern.id}
+                                value={intern.id ?? ''}
+                              >
                                 {intern.name}
                               </SelectItem>
                             ))}
@@ -406,9 +434,7 @@ export function UserForm({
                   />
                 </div>
               )}
-              {formMessage && (
-                <ErrorCard>{formMessage}</ErrorCard>
-              )}
+              {formMessage && <ErrorCard>{formMessage}</ErrorCard>}
             </div>
           </CardContent>
           <CardFooter>
@@ -418,7 +444,7 @@ export function UserForm({
                 form.reset()
                 router.back()
               }}
-              className="w-44"
+              className="w-full md:w-44"
             >
               {`Save ${initialState ? 'Changes' : 'Account'}`}
             </SubmitCancelButton>

@@ -28,7 +28,11 @@ export const DeleteDrawer = ({
     <Drawer open={isOpen} onOpenChange={setIsOpenHandler}>
       <DrawerTrigger>
         <TooltipWrapper tooltip="Delete Task">
-          <Button variant="ghost" size="circle" className="text-muted-foreground">
+          <Button
+            variant="ghost"
+            size="circle"
+            className="text-muted-foreground"
+          >
             <MdOutlineDeleteOutline size="1.1rem" />
           </Button>
         </TooltipWrapper>

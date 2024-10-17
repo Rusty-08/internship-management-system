@@ -1,11 +1,11 @@
 'use client'
 
 import { format } from 'date-fns'
-import { DateRange } from 'react-day-picker'
+import { DateRange, DayModifiers } from 'react-day-picker'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
+import { Calendar, CalendarProps } from '@/components/ui/calendar'
 import {
   Popover,
   PopoverContent,
@@ -22,12 +22,16 @@ type DatePickerProps = {
   date: DateRange | undefined
   setDate: (date: DateRange | undefined) => void
   className?: ClassNameValue
+  disableBtn?: boolean
+  modifiers?: DayModifiers
 }
 
 export function DatePickerWithRange({
   date,
   setDate,
   className,
+  disableBtn = false,
+  modifiers,
 }: DatePickerProps) {
   return (
     <Popover>
@@ -40,13 +44,14 @@ export function DatePickerWithRange({
             !date && 'text-muted-foreground',
             className,
           )}
+          disabled={disableBtn}
         >
           <CalendarIcon className="mr-3 h-4 w-4 mb-0.5" />
           {date?.from ? (
             date.to ? (
               <>
-                {formatInTimeZone(date.from, siteConfig.timeZone, 'LLL dd, y')} -{' '}
-                {formatInTimeZone(date.to, siteConfig.timeZone, 'LLL dd, y')}
+                {formatInTimeZone(date.from, siteConfig.timeZone, 'LLL dd, y')}{' '}
+                - {formatInTimeZone(date.to, siteConfig.timeZone, 'LLL dd, y')}
               </>
             ) : (
               formatInTimeZone(date.from, siteConfig.timeZone, 'LLL dd, y')
@@ -64,9 +69,10 @@ export function DatePickerWithRange({
           selected={date}
           onSelect={setDate}
           numberOfMonths={2}
-        // modifiers={{
-        //   disabled: [{ before: new Date() }, { dayOfWeek: [0, 6] }],
-        // }}
+          // modifiers={{
+          //   disabled: [{ before: new Date() }, { dayOfWeek: [0, 6] }],
+          // }}
+          modifiers={modifiers}
         />
       </PopoverContent>
     </Popover>

@@ -2,6 +2,7 @@ import SubmitCancelButton from '@/components/@core/button/submit-cancel'
 import { format } from 'date-fns'
 import React from 'react'
 import { AttendanceConfirmationProps } from './attendance-confirmation'
+import { cn } from '@/lib/utils'
 
 const ConfirmationForm = ({
   addCurrentAttendance,
@@ -29,11 +30,13 @@ const ConfirmationForm = ({
           <span className="text-text text-sm">Time</span>
           <p className="text-foreground">{format(new Date(), 'h:mm aa')}</p>
         </div> */}
-        <p className='text-text text-sm'>
+        <p className="text-text text-sm">
           {`Your are about to `}
-          <span className='text-foreground'>{mode}</span>
+          <span className="text-foreground">{mode}</span>
           {' at '}
-          <span className='text-foreground'>{format(new Date(), 'h:mm aa')}</span>
+          <span className="text-foreground">
+            {format(new Date(), 'h:mm aa')}
+          </span>
           {`. Click '${mode}' button to continue.`}
         </p>
       </div>
@@ -41,7 +44,7 @@ const ConfirmationForm = ({
         <SubmitCancelButton
           loading={loading}
           cancelOnclick={() => setIsOpenHandler(false)}
-          className="w-full md:w-32"
+          className={cn('w-full', mode.includes('out') ? 'md:w-36' : 'md:w-32')}
         >
           {mode}
         </SubmitCancelButton>

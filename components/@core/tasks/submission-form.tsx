@@ -14,9 +14,13 @@ import { SubmissionSchema } from './task-schema'
 import { Dispatch, SetStateAction } from 'react'
 
 type SubmissionFormProps = {
-  form: UseFormReturn<{
-    file?: File
-  }, any, undefined>
+  form: UseFormReturn<
+    {
+      file: File
+    },
+    any,
+    undefined
+  >
   onSubmitForm: (values: z.infer<typeof SubmissionSchema>) => Promise<void>
   isSubmitting: boolean
   errors: FieldErrors<{
@@ -68,7 +72,7 @@ const SubmissionForm = ({
               setIsOpenHandler(false)
               form.reset()
             }}
-            className="w-full lg:w-36"
+            className="w-full md:w-40"
           >
             Upload Task
           </SubmitCancelButton>

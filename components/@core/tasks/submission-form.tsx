@@ -16,7 +16,7 @@ import { Dispatch, SetStateAction } from 'react'
 type SubmissionFormProps = {
   form: UseFormReturn<
     {
-      file: File
+      file?: File
     },
     any,
     undefined

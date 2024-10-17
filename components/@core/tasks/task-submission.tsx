@@ -29,9 +29,6 @@ export function TaskSubmission({
 
   const form = useForm<z.infer<typeof SubmissionSchema>>({
     resolver: zodResolver(SubmissionSchema),
-    defaultValues: {
-      file: undefined,
-    },
   })
 
   const onSubmitForm = async (values: z.infer<typeof SubmissionSchema>) => {

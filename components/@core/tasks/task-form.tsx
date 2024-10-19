@@ -24,6 +24,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 import { BsFillInfoCircleFill } from 'react-icons/bs'
 import { cn } from '@/lib/utils'
+import { FileUpload } from '@/components/ui/file-upload'
 
 type TaskFormProps = {
   initialState: z.infer<typeof TaskFormEditSchema> | undefined
@@ -45,16 +46,22 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
         startDate: dateRange?.from,
         endDate: dateRange?.to,
       },
-      upload: undefined,
+      files: [],
     },
   })
 
   const onSubmitForm = async (values: z.infer<typeof TaskFormSchema>) => {
-    const file = values.upload as File
-    let fileUrl
+    const files = values.files
+    const filesData = []
 
-    if (file) {
-      fileUrl = await handleFileUpload(file, 'tasks')
+    if (files) {
+      for (let file of files) {
+        const fileUrl = await handleFileUpload(file, 'tasks')
+        filesData.push({
+          fileName: file.name,
+          fileUrl: fileUrl,
+        })
+      }
     }
 
     const data = {
@@ -64,8 +71,7 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
         startDate: dateRange?.from || new Date(),
         endDate: dateRange?.to || new Date(),
       },
-      fileUrl: fileUrl ? fileUrl : null,
-      fileName: fileUrl ? file.name : null,
+      filesData,
     }
 
     if (initialState) {
@@ -176,12 +182,12 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
               />
               <FormField
                 control={form.control}
-                name="upload"
+                name="files"
                 render={({ field }) => (
                   <FormItem>
                     <TooltipWrapper tooltip="If you add a new file, the previous file will be deleted.">
                       <FormLabel className="relative">
-                        Attach Document
+                        File Attachment
                         {initialState && (
                           <>
                             <span className="text-text">{` (optional)`}</span>
@@ -191,19 +197,13 @@ const TaskForm = ({ initialState }: TaskFormProps) => {
                       </FormLabel>
                     </TooltipWrapper>
                     <FormControl>
-                      <Input
-                        {...field}
-                        type="file"
-                        value={undefined}
+                      <FileUpload
+                        onChange={field.onChange}
                         disabled={isSubmitting}
-                        className="cursor-pointer"
-                        onChange={e => {
-                          field.onChange(e.target.files?.[0])
-                        }}
                       />
                     </FormControl>
-                    {errors.upload && (
-                      <FormMessage>{errors.upload.message}</FormMessage>
+                    {errors.files && (
+                      <FormMessage>{errors.files.message}</FormMessage>
                     )}
                   </FormItem>
                 )}

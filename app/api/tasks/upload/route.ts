@@ -7,7 +7,8 @@ import { TaskStatus } from '@prisma/client'
 
 export async function POST(req: Request) {
   const user = await getCurrentUser()
-  const { title, description, date, fileUrl, fileName } = await req.json()
+  const { title, description, date, filesData, fileUrl, fileName } =
+    await req.json()
 
   const taskDate = {
     startDate: parseISO(date.startDate as string),
@@ -37,16 +38,18 @@ export async function POST(req: Request) {
       },
     })
 
-    const task = await prisma.file.create({
-      data: {
-        name: fileName,
-        url: fileUrl,
-        userId: user?.id || '',
-        taskId: newTask.id,
-      },
-    })
+    for (let file of filesData) {
+      await prisma.file.create({
+        data: {
+          name: file.fileName,
+          url: file.fileUrl,
+          userId: user?.id || '',
+          taskId: newTask.id,
+        },
+      })
+    }
 
-    if (task) {
+    if (newTask) {
       return NextResponse.json(
         { message: 'The task has been successfully added' },
         { status: 201 },

@@ -1,4 +1,3 @@
-import { connectDB } from '@/lib/connect-db'
 import prisma from '@/lib/prisma'
 import { TaskStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
@@ -13,8 +12,7 @@ export async function PUT(
     title,
     description,
     date: { startDate, endDate },
-    fileUrl,
-    fileName,
+    filesData,
   } = await request.json()
 
   let status = 'PENDING' as TaskStatus
@@ -27,12 +25,7 @@ export async function PUT(
   }
 
   try {
-    const taskUpdate = await prisma.task.findUnique({
-      where: { id },
-      include: { files: true },
-    })
-
-    const updated = await prisma.task.update({
+    const updatedTask = await prisma.task.update({
       where: { id },
       data: {
         title,
@@ -40,22 +33,25 @@ export async function PUT(
         status,
         startDate,
         endDate,
-        files: {
-          update: {
-            where: { id: taskUpdate?.files[0].id },
-            data: {
-              name: fileName ?? taskUpdate?.files[0].name,
-              url: fileUrl ?? taskUpdate?.files[0].url,
-            },
-          },
-        },
-      },
-      include: {
-        files: true,
       },
     })
 
-    if (updated) {
+    await prisma.file.deleteMany({
+      where: { taskId: id },
+    })
+
+    for (let file of filesData) {
+      await prisma.file.create({
+        data: {
+          name: file.fileName,
+          url: file.fileUrl,
+          userId: updatedTask.mentorId || '',
+          taskId: updatedTask.id,
+        },
+      })
+    }
+
+    if (updatedTask) {
       return NextResponse.json(
         { message: 'The task has been successfully added' },
         { status: 201 },

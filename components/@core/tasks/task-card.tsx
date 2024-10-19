@@ -15,7 +15,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { BiEditAlt } from 'react-icons/bi'
-import { MdDownloading, MdOutlinePending, MdTaskAlt, MdOutlineWarningAmber } from 'react-icons/md'
+import {
+  MdDownloading,
+  MdOutlinePending,
+  MdTaskAlt,
+  MdOutlineWarningAmber,
+} from 'react-icons/md'
 import DeleteConfirmation from './delete-confirmation'
 import { TaskSubmission } from './task-submission'
 import { TaskProps } from './types'
@@ -42,17 +47,25 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
     endDate,
     submissions,
     files,
-    intern
+    intern,
   } = task
 
-  const formattedStartDate = formatInTimeZone(startDate, 'Asia/Manila', 'LLL dd')
-  const formattedEndDate = formatInTimeZone(endDate, 'Asia/Manila', 'LLL dd, yyyy')
+  const formattedStartDate = formatInTimeZone(
+    startDate,
+    'Asia/Manila',
+    'LLL dd',
+  )
+  const formattedEndDate = formatInTimeZone(
+    endDate,
+    'Asia/Manila',
+    'LLL dd, yyyy',
+  )
 
   const statusIcon = {
     COMPLETED: MdTaskAlt,
     PENDING: MdOutlinePending,
     IN_PROGRESS: MdDownloading,
-    OVERDUE: MdOutlineWarningAmber
+    OVERDUE: MdOutlineWarningAmber,
   }
 
   const Icon = statusIcon[status]
@@ -78,14 +91,30 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
 
   return (
     <AccordionItem value={task.id}>
-      <AccordionTrigger className='py-4'>
-        <div className={`w-10 h-10 flex flex-shrink-0 items-center justify-center rounded-full shadow-sm bg-${statusColor}/10`}>
-          <Icon size="1.3rem" className={`text-${statusColor} ${status === 'OVERDUE' && 'mb-0.5'}`} />
+      <AccordionTrigger className="py-4">
+        <div
+          className={`w-10 h-10 flex flex-shrink-0 items-center justify-center rounded-full shadow-sm bg-${statusColor}/10`}
+        >
+          <Icon
+            size="1.3rem"
+            className={`text-${statusColor} ${
+              status === 'OVERDUE' && 'mb-0.5'
+            }`}
+          />
         </div>
         <div className="flex flex-grow flex-col lg:flex-row gap-1 lg:justify-center lg:items-center lg:gap-4">
           <div className="flex flex-col gap-1 lg:w-[15rem]">
-            {isInAdmin && <p className="flex-grow text-left text-base font-medium">{intern}</p>}
-            <span className={cn("font-normal text-start text-muted-foreground", isInAdmin ? 'text-xs' : 'text-sm')}>
+            {isInAdmin && (
+              <p className="flex-grow text-left text-base font-medium">
+                {intern}
+              </p>
+            )}
+            <span
+              className={cn(
+                'font-normal text-start text-muted-foreground',
+                isInAdmin ? 'text-xs' : 'text-sm',
+              )}
+            >
               {`${formattedStartDate} - ${formattedEndDate}`}
             </span>
           </div>
@@ -104,17 +133,24 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
               Attachment
             </span>
             {files ? (
-              <a
-                className="text-blue-500 text-sm hover:underline"
-                href={files[0].url || ''}
-                target="_blank"
-              >
-                {files[0].name}
-              </a>
+              <ul className="flex flex-col pl-4 text-muted-foreground list-disc gap-1">
+                {files.map(file => (
+                  <li key={file.url}>
+                    <a
+                      className="text-sm text-blue-500 truncate hover:underline"
+                      href={file.url || ''}
+                      target="_blank"
+                    >
+                      {file.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             ) : (
-              <p className='text-sm text-muted-foreground whitespace-pre-line'>None</p>
-            )
-            }
+              <p className="text-sm text-muted-foreground whitespace-pre-line">
+                None
+              </p>
+            )}
           </div>
           <div className="flex gap-2 lg:gap-4 flex-col lg:flex-row">
             <span className="text-sm font-medium lg:w-[18.5rem] flex-shrink-0">
@@ -146,10 +182,7 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
                   Date Submitted
                 </span>
                 <p className="text-sm text-muted-foreground">
-                  {format(
-                    submissions[0].date,
-                    'LLLL dd, y',
-                  )}
+                  {format(submissions[0].date, 'LLLL dd, y')}
                 </p>
               </div>
               <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
@@ -166,10 +199,11 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
               </div>
             </div>
           ) : null}
-          <div className={cn(
-            !isMentor && 'relative',
-            "lg:absolute right-0 bottom-0",
-          )}
+          <div
+            className={cn(
+              !isMentor && 'relative',
+              'lg:absolute right-0 bottom-0',
+            )}
           >
             {!isMentor && task.status !== 'COMPLETED' && !isInAdmin ? (
               <TaskSubmission

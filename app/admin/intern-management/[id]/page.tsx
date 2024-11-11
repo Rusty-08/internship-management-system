@@ -6,16 +6,11 @@ import React from 'react'
 const InternUser = async ({ params: { id } }: { params: { id: string } }) => {
   const [batches, mentors] = await Promise.all([
     getAllBatchInServer(),
-    getMentorUsers()
+    getMentorUsers(),
   ])
 
   return (
-    <UserForm
-      role='INTERN'
-      userId={id}
-      mentors={mentors}
-      batches={batches}
-    />
+    <UserForm role="INTERN" userId={id} mentors={mentors} batches={batches} />
   )
 }
 

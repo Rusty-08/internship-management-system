@@ -2,7 +2,7 @@ import { auth } from '@/auth'
 import prisma from '@/lib/prisma'
 import { User } from '@prisma/client'
 import { revalidatePath, unstable_noStore as noStore } from 'next/cache'
-import { getBatchById } from './batch'
+import { getAllBatchInServer, getBatchById } from './batch'
 import { UserSubset } from '@/components/@core/ui/table/account-table/types'
 
 export async function getCurrentUserEmail() {
@@ -59,8 +59,8 @@ export async function getServerUserById(id: string, isArchived?: boolean) {
   const user = await prisma.user.findUnique({
     where: { id, isArchived },
     include: {
-      attendance: true
-    }
+      attendance: true,
+    },
   })
 
   return user
@@ -91,8 +91,8 @@ export async function getCurrentUser() {
   const user = await prisma.user.findUnique({
     where: { email, isArchived: false },
     include: {
-      attendance: true
-    }
+      attendance: true,
+    },
   })
 
   return user
@@ -108,7 +108,7 @@ export const fetchMentorUsers = async (): Promise<UserSubset[] | null> => {
   })
 
   if (res.ok) {
-    const data = await res.json() as UserSubset[]
+    const data = (await res.json()) as UserSubset[]
 
     const interns = await fetchInternUsers()
     const internsWithMentors = interns?.flatMap(intern => intern.mentorId)
@@ -163,16 +163,16 @@ export const getInternUsers = async (withNoMentors?: boolean) => {
           return {
             ...user,
             mentor: mentor?.name,
-            batch: batch?.name
+            batch: batch?.name,
           }
         }
 
         return {
           ...user,
           mentor: null,
-          batch: batch?.name
+          batch: batch?.name,
         }
-      })
+      }),
     )
 
     return usersWithMentors
@@ -191,20 +191,26 @@ export const getMentorUsers = async () => {
       },
     })
 
+    const allBatches = await getAllBatchInServer()
+    const currentBatch = allBatches
+      ? allBatches[allBatches.length - 1]
+      : undefined
+
     const mentorsWithIntern = await Promise.all(
       mentors.map(async mentor => {
         const intern = await prisma.user.findFirst({
           where: {
             isArchived: false,
-            mentorId: mentor.id
-          }
+            batchId: currentBatch ? currentBatch.id : undefined,
+            mentorId: mentor.id,
+          },
         })
 
         return {
           ...mentor,
           assignedIntern: intern?.name,
         }
-      })
+      }),
     )
 
     return mentorsWithIntern

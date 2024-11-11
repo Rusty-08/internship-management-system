@@ -3,6 +3,7 @@
 import { DataTableColumnHeader } from '@/components/@core/ui/table/column-header'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { IconLinkButton } from '@/components/ui/icon-link-button'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 import { Batch } from '@prisma/client'
 import { ColumnDef, Row } from '@tanstack/react-table'
@@ -104,20 +105,13 @@ export const batchColumns = (actions: {
     cell: ({ row }) => {
       return (
         <div className="flex justify-end gap-1">
-          <TooltipWrapper tooltip="Edit">
-            <Button
-              disabled={row.original.status === 'COMPLETED'}
-              variant="ghost"
-              size="circle"
-            >
-              <Link
-                className="h-full w-full flex items-center justify-center"
-                href={`/admin/internship-management/${row.original.id}`}
-              >
-                <FiEdit3 size="1.1rem" />
-              </Link>
-            </Button>
-          </TooltipWrapper>
+          <IconLinkButton
+            path={`/admin/internship-management/${row.original.id}`}
+            tooltip="Edit"
+            disabled={row.original.status === 'COMPLETED'}
+          >
+            <FiEdit3 size="1.1rem" />
+          </IconLinkButton>
         </div>
       )
     },

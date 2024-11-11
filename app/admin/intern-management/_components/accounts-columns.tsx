@@ -5,6 +5,7 @@ import { DataTableColumnHeader } from '@/components/@core/ui/table/column-header
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { IconLinkButton } from '@/components/ui/icon-link-button'
 import { TooltipWrapper } from '@/components/ui/tooltip'
 import AvatarPlaceholder from '@/public/general/images/male-avatar.svg'
 import { getAttendanceTotalHours } from '@/utils/attendance'
@@ -91,32 +92,32 @@ export const accountColumns = (actions: {
       )
     },
   },
-  {
-    accessorKey: 'createdAt',
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Created At" />
-    },
-    cell: ({ row }) => {
-      const formattedDate = format(`${row.original.createdAt}`, 'MMM dd, yyyy')
+  // {
+  //   accessorKey: 'createdAt',
+  //   header: ({ column }) => {
+  //     return <DataTableColumnHeader column={column} title="Created At" />
+  //   },
+  //   cell: ({ row }) => {
+  //     const formattedDate = format(`${row.original.createdAt}`, 'MMM dd, yyyy')
 
-      return <p>{formattedDate}</p>
-    },
-  },
+  //     return <p>{formattedDate}</p>
+  //   },
+  // },
   {
     id: 'actions',
     cell: ({ row }) => {
       return (
         <div className="flex justify-end">
           {!row.original.isArchived && (
-            <TooltipWrapper tooltip="Edit">
-              <Link href={`/admin/intern-management/${row.original.id}`}>
-                <Button variant="ghost" size="circle">
-                  {row.original.isArchived === false && (
-                    <FiEdit3 className="text-primary" size="1.1rem" />
-                  )}
-                </Button>
-              </Link>
-            </TooltipWrapper>
+            <IconLinkButton
+              path={`/admin/intern-management/${row.original.id}`}
+              tooltip="Edit"
+              disabled={row.original.isActive ? false : true}
+            >
+              {row.original.isArchived === false && (
+                <FiEdit3 className="text-muted-foreground" size="1.1rem" />
+              )}
+            </IconLinkButton>
           )}
           <div>
             <TooltipWrapper

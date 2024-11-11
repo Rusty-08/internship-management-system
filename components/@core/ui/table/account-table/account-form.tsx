@@ -339,8 +339,12 @@ export function UserForm({
                           <FormLabel>Batch Name</FormLabel>
                           <Select
                             onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            disabled={isSubmitting}
+                            defaultValue={
+                              batches
+                                ? batches[batches.length - 1].id
+                                : field.value
+                            }
+                            disabled
                           >
                             <FormControl>
                               <SelectTrigger>
@@ -354,14 +358,21 @@ export function UserForm({
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {batches?.map(batch => (
+                              {/* {batches?.map(batch => ( */}
+                              {batches ? (
                                 <SelectItem
-                                  key={batch.id}
-                                  value={batch.id ?? ''}
+                                  // key={batches[batches.length - 1].id}
+                                  value={batches[batches.length - 1].id}
                                 >
-                                  {batch.name}
+                                  {batches[batches.length - 1].name}
                                 </SelectItem>
-                              ))}
+                              ) : (
+                                <SelectItem value="">
+                                  No available batch yet
+                                </SelectItem>
+                              )}
+
+                              {/* ))} */}
                             </SelectContent>
                           </Select>
                           {errors.batch && (

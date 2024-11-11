@@ -1,14 +1,14 @@
 'use client'
 
 import { DataTableColumnHeader } from '@/components/@core/ui/table/column-header'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { TooltipWrapper } from '@/components/ui/tooltip'
+import { Batch } from '@prisma/client'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { differenceInDays, format } from 'date-fns'
 import Link from 'next/link'
 import { FiEdit3 } from 'react-icons/fi'
-import { Batch } from '@prisma/client'
-import { Badge } from '@/components/ui/badge'
 
 export const batchColumns = (actions: {
   [key: string]: (row: Row<Batch>) => void
@@ -105,11 +105,18 @@ export const batchColumns = (actions: {
       return (
         <div className="flex justify-end gap-1">
           <TooltipWrapper tooltip="Edit">
-            <Link href={`/admin/internship-management/${row.original.id}`}>
-              <Button variant="ghost" size="circle">
+            <Button
+              disabled={row.original.status === 'COMPLETED'}
+              variant="ghost"
+              size="circle"
+            >
+              <Link
+                className="h-full w-full flex items-center justify-center"
+                href={`/admin/internship-management/${row.original.id}`}
+              >
                 <FiEdit3 size="1.1rem" />
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </TooltipWrapper>
         </div>
       )

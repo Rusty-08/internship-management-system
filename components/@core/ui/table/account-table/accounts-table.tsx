@@ -16,14 +16,18 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useRouter } from 'next/navigation'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { ArchiveConfirmation } from './archive-confirmation'
-import SelectFilter from '@/components/@core/tasks/status-filter'
+import SelectFilter, {
+  ItemsProps,
+} from '@/components/@core/tasks/status-filter'
 import { useUpdateParams } from '@/hooks/useUpdateParams'
 import AddButton from '../../add-button'
 import Link from 'next/link'
+import { Batch } from '@prisma/client'
 
 type AccountsTableProps = {
+  batchesFilter?: ItemsProps[]
   data: UserSubset[]
   isArchivedPage?: boolean
   user?: 'INTERN' | 'MENTOR'
@@ -33,6 +37,7 @@ type AccountsTableProps = {
 }
 
 export default function AccountsTable({
+  batchesFilter,
   data,
   isArchivedPage = false,
   user,
@@ -40,22 +45,34 @@ export default function AccountsTable({
 }: AccountsTableProps) {
   const router = useRouter()
   const { searchParams, updateParams } = useUpdateParams()
-  const [roleFilter, setRoleFilter] = useState(searchParams.get('role') || 'all')
+  const [roleFilter, setRoleFilter] = useState(
+    searchParams.get('role') || 'all',
+  )
+  const [activeBatch, setActiveBatch] = useState(
+    searchParams.get('batch') ||
+      (batchesFilter ? batchesFilter[batchesFilter.length - 1].name : ''),
+  )
   const [sorting, setSorting] = useState<SortingState>([])
   const [rowSelection, setRowSelection] = useState({})
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([{
-    id: 'name',
-    value: searchParams.get(user ? user.toLowerCase() : 'user') ?? ''
-  }])
-  const [archiveIntern, setArchiveIntern] = useState<Row<UserSubset> | null>(null)
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+    {
+      id: 'name',
+      value: searchParams.get(user ? user.toLowerCase() : 'user') ?? '',
+    },
+  ])
+  const [archiveIntern, setArchiveIntern] = useState<Row<UserSubset> | null>(
+    null,
+  )
   const [openDialog, setOpenDialog] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const filteredData = useMemo(() => {
     return roleFilter !== 'all'
-      ? data.filter(d => d.role === roleFilter.toUpperCase())
+      ? data.filter(_user => _user.role === roleFilter.toUpperCase()) // for role in archived records table
+      : batchesFilter && activeBatch !== 'all'
+      ? data.filter(_user => _user.batch === activeBatch) // for interns-management table in batch filter
       : data
-  }, [roleFilter, data])
+  }, [roleFilter, data, batchesFilter, activeBatch])
 
   const handleArchive = async () => {
     setLoading(true)
@@ -82,8 +99,13 @@ export default function AccountsTable({
     setOpenDialog(true)
   }
 
+  const getActiveBatch = () => {
+    return activeBatch
+  }
+
   const actions = {
     openArchiveConfirmation,
+    getActiveBatch,
   }
 
   const table = useReactTable({
@@ -104,7 +126,7 @@ export default function AccountsTable({
   })
 
   return (
-    <div className='flex flex-col gap-4'>
+    <div className="flex flex-col gap-4">
       <ArchiveConfirmation
         isOpen={openDialog}
         user={archiveIntern?.original}
@@ -122,7 +144,7 @@ export default function AccountsTable({
           />
           {isArchivedPage && (
             <SelectFilter
-              defaultValue='all'
+              defaultValue="all"
               value={roleFilter}
               handleStatusChange={role => {
                 setRoleFilter(role)
@@ -133,16 +155,25 @@ export default function AccountsTable({
                 { value: 'intern', name: 'Interns', color: 'bg-completed' },
                 { value: 'mentor', name: 'Mentors', color: 'bg-primary' },
               ]}
-              className='w-32'
+              className="w-32"
             />
           )}
         </div>
         {!isArchivedPage && user && (
-          <Link href={`/admin/${user.toLowerCase()}-management/create-user`}>
-            <AddButton>
-              Add New Account
-            </AddButton>
-          </Link>
+          <div className="flex space-x-4">
+            <SelectFilter
+              defaultValue={batchesFilter ? batchesFilter[0].value : ''}
+              value={activeBatch}
+              handleStatusChange={batch => {
+                setActiveBatch(batch)
+                updateParams('batch', batch)
+              }}
+              items={batchesFilter}
+            />
+            <Link href={`/admin/${user.toLowerCase()}-management/create-user`}>
+              <AddButton>Add New Account</AddButton>
+            </Link>
+          </div>
         )}
       </div>
       <div className="rounded-md overflow-hidden ">

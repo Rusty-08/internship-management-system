@@ -1,6 +1,5 @@
-import prisma from "@/lib/prisma"
-import { Batch, User } from "@prisma/client"
-import { revalidatePath } from "next/cache"
+import prisma from '@/lib/prisma'
+import { Batch, User } from '@prisma/client'
 
 export const getBatchById = async (id: string) => {
   if (id === 'create-batch' || !id) return null
@@ -8,8 +7,8 @@ export const getBatchById = async (id: string) => {
   const batch = await prisma.batch.findUnique({
     where: { id },
     include: {
-      interns: true
-    }
+      interns: true,
+    },
   })
 
   return batch
@@ -17,8 +16,8 @@ export const getBatchById = async (id: string) => {
 
 // client call
 export const getClientBatchById = async (
-  id: string
-): Promise<Batch & { interns: User[] } | null> => {
+  id: string,
+): Promise<(Batch & { interns: User[] }) | null> => {
   if (id === 'create-batch' || !id) return null
 
   const res = await fetch(`/api/batch/get/${id}`, {
@@ -51,6 +50,6 @@ export const getAllBatch = async () => {
 }
 
 // server call
-export const getAllBatchInServer = async () => {
+export const getAllBatchInServer = async (): Promise<Batch[] | undefined> => {
   return await prisma.batch.findMany()
 }

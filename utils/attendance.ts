@@ -76,7 +76,7 @@ export const addAttendance = async (internId: string) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      internId
+      internId,
     }),
   })
 
@@ -122,15 +122,18 @@ export const exportAttendance = (data: AttendanceProps[]) => {
   /* flatten objects */
   const rows = data.map(row => ({
     date: row.date ? format(row.date, 'EEE, MMM dd') : '',
-    timeInAM: row.timeInAM ? format(row.timeInAM, 'hh:mm aa') : '',
-    timeOutAM: row.timeOutAM ? format(row.timeOutAM, 'hh:mm aa') : '',
-    timeInPM: row.timeInPM ? format(row.timeInPM, 'hh:mm aa') : '',
-    timeOutPM: row.timeOutPM ? format(row.timeOutPM, 'hh:mm aa') : '',
+    timeInAM: row.timeInAM ? format(row.timeInAM, 'hh:mm:ss aa') : '',
+    timeOutAM: row.timeOutAM ? format(row.timeOutAM, 'hh:mm:ss aa') : '',
+    timeInPM: row.timeInPM ? format(row.timeInPM, 'hh:mm:ss aa') : '',
+    timeOutPM: row.timeOutPM ? format(row.timeOutPM, 'hh:mm:ss aa') : '',
     totalHours: formatHours(row.totalHours || 0),
   }))
 
   // Calculate the total of all totalHours
-  const totalHoursSum = data.reduce((sum, row) => sum + (row.totalHours ?? 0), 0)
+  const totalHoursSum = data.reduce(
+    (sum, row) => sum + (row.totalHours ?? 0),
+    0,
+  )
 
   // Create a new worksheet from the rows array
   const worksheet = XLSX.utils.json_to_sheet(rows)
@@ -191,7 +194,7 @@ export const getAllInternAttendance = async () => {
   noStore()
   const users = await prisma.user.findMany({
     where: {
-      isArchived: false
+      isArchived: false,
     },
     select: {
       name: true,

@@ -15,5 +15,6 @@ export type UserSubset = {
   mentorId?: string | null
   assignedIntern?: string | null
   isArchived?: boolean | null
+  isActive?: boolean | null
   createdAt?: Date | null
 }

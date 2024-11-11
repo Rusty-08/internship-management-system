@@ -7,24 +7,28 @@ import {
 import AttendanceTable from '@/app/intern/my-attendance/_components/attendance-table'
 import { DayPicker } from '@/components/@core/ui/day-picker'
 import { dateInManilaTz } from '@/utils/format-date'
+import { Batch } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useState } from 'react'
 
 type AdminAttendanceProps = {
   currentAttendance: AttendanceProps[]
   isInDashboard?: boolean
+  recentBatch?: Batch
 }
 
 const Attendance = ({
   currentAttendance,
   isInDashboard = false,
+  recentBatch,
 }: AdminAttendanceProps) => {
   const [date, setDate] = useState<Date | undefined>(new Date())
 
   const filteredAttendance = date
     ? currentAttendance.filter(
-      attendance => dateInManilaTz(attendance.date) == dateInManilaTz(date)
-    ) : []
+        attendance => dateInManilaTz(attendance.date) == dateInManilaTz(date),
+      )
+    : []
 
   const dashboardAttendance = (attendance: ColumnDef<AttendanceProps>[]) => {
     const _attendance = [...attendance]
@@ -41,7 +45,18 @@ const Attendance = ({
   return (
     <div className="flex flex-col gap-4">
       {!isInDashboard && (
-        <DayPicker date={date || undefined} setDate={setDate} disabled={[{ dayOfWeek: [0, 6] }]} />
+        <DayPicker
+          date={date || undefined}
+          setDate={setDate}
+          disabled={[
+            { dayOfWeek: [0, 6] },
+            {
+              before: recentBatch
+                ? recentBatch.startDate
+                : new Date('2000, 01, 01'),
+            },
+          ]}
+        />
       )}
       <AttendanceTable
         data={filteredAttendance}

@@ -46,7 +46,7 @@ export function DatePickerWithRange({
           )}
           disabled={disableBtn}
         >
-          <CalendarIcon className="mr-3 h-4 w-4 mb-0.5" />
+          <CalendarIcon className="mr-3 flex-shrink-0 h-4 w-4 mb-0.5" />
           {date?.from ? (
             date.to ? (
               <>

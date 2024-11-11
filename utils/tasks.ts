@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma'
 import { getCurrentUser, getInternUsers } from './users'
+import { getAllBatchInServer } from './batch'
 
 export const getTasks = async (id: string) => {
   if (!id) return null
@@ -60,6 +61,12 @@ export const getCurrentUserTasks = async () => {
 }
 
 export const getAllInternsTasks = async () => {
+  const allBatch = await getAllBatchInServer()
+
+  if (allBatch && allBatch[allBatch.length - 1]) {
+    return null
+  }
+
   const mentors = await prisma.user.findMany({
     where: { role: 'MENTOR' },
     include: {

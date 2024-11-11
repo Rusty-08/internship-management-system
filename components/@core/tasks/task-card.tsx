@@ -93,7 +93,7 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
     <AccordionItem value={task.id}>
       <AccordionTrigger className="py-4">
         <div
-          className={`w-10 h-10 flex flex-shrink-0 items-center justify-center rounded-full shadow-sm bg-${statusColor}/10`}
+          className={`w-10 h-10 hidden md:flex flex-shrink-0 items-center justify-center rounded-full shadow-sm bg-${statusColor}/10`}
         >
           <Icon
             size="1.3rem"
@@ -109,14 +109,22 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
                 {intern}
               </p>
             )}
-            <span
-              className={cn(
-                'font-normal text-start text-muted-foreground',
-                isInAdmin ? 'text-xs' : 'text-sm',
-              )}
-            >
-              {`${formattedStartDate} - ${formattedEndDate}`}
-            </span>
+            <div className="flex items-center gap-2">
+              <Icon
+                size="0.8rem"
+                className={`flex md:hidden text-${statusColor} ${
+                  status === 'OVERDUE' && 'mb-0.5'
+                }`}
+              />
+              <span
+                className={cn(
+                  'font-normal text-start text-muted-foreground',
+                  isInAdmin ? 'text-xs' : 'text-xs md:text-sm',
+                )}
+              >
+                {`${formattedStartDate} - ${formattedEndDate}`}
+              </span>
+            </div>
           </div>
           <p className="flex-grow text-left font-medium text-[0.9rem]">
             {title}

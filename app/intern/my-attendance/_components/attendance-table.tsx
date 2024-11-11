@@ -32,6 +32,7 @@ import { AttendanceProps } from './attendance-columns'
 import { AttendanceConfirmation } from './attendance-confirmation'
 import { DateRangeFilter } from './data-picker'
 import { dateInManilaTz } from '@/utils/format-date'
+import { TooltipWrapper } from '@/components/ui/tooltip'
 
 type AttendanceTableProps = {
   data: AttendanceProps[]
@@ -149,14 +150,16 @@ export default function AttendanceTable({
       <div className="flex gap-2 justify-between max-w-full">
         <DateRangeFilter date={date} setDate={setDate} />
         <div className="flex gap-3 flex-shrink-0">
-          <Button
-            variant="outline"
-            onClick={downloadAttendance}
-            className="px-4"
-          >
-            <GrDocumentDownload size="1rem" className="mr-2" />
-            <span>Export</span>
-          </Button>
+          <TooltipWrapper tooltip="The attendance data will depend on the selected range of date.">
+            <Button
+              variant="outline"
+              onClick={downloadAttendance}
+              className="px-4"
+            >
+              <GrDocumentDownload size="1rem" className="mr-2 hidden md:flex" />
+              <span>Export</span>
+            </Button>
+          </TooltipWrapper>
           {showTimeInBtn && mode && user && (
             <div className="fixed right-0 w-full px-4 py-6 bg-background lg:p-0 lg:w-auto z-50 bottom-0 lg:right-0 lg:bottom-0 lg:relative">
               <AttendanceConfirmation

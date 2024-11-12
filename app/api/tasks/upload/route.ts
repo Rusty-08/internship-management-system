@@ -4,9 +4,12 @@ import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 import { isBefore, isWithinInterval, parseISO } from 'date-fns'
 import { TaskStatus } from '@prisma/client'
+import { getAllBatchInServer } from '@/utils/batch'
 
 export async function POST(req: Request) {
   const user = await getCurrentUser()
+  const allBatches = await getAllBatchInServer()
+
   const { title, description, date, filesData, fileUrl, fileName } =
     await req.json()
 
@@ -35,6 +38,7 @@ export async function POST(req: Request) {
         startDate: taskDate.startDate,
         endDate: taskDate.endDate,
         mentorId: user?.id || '',
+        batchId: allBatches ? allBatches[allBatches.length - 1].id : '',
       },
     })
 

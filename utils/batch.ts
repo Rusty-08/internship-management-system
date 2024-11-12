@@ -53,3 +53,30 @@ export const getAllBatch = async () => {
 export const getAllBatchInServer = async (): Promise<Batch[] | undefined> => {
   return await prisma.batch.findMany()
 }
+
+// server call
+export const getBatchFilterItems = async () => {
+  const batches = await getAllBatchInServer()
+
+  const batchesFilter = batches?.map(batch => {
+    return {
+      value: batch.name,
+      name: batch.name,
+      color:
+        batch.status === 'ONGOING'
+          ? 'bg-in-progress'
+          : `bg-${batch.status.toLowerCase()}`,
+    }
+  })
+
+  batchesFilter?.unshift({
+    value: 'all',
+    name: 'All interns',
+    color: 'all',
+  })
+
+  return {
+    batchesFilter,
+    batches,
+  }
+}

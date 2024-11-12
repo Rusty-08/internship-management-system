@@ -111,6 +111,7 @@ model Task {
   status      TaskStatus
   startDate   DateTime
   endDate     DateTime
+  batchId     String     @db.ObjectId
   mentorId    String     @db.ObjectId
 
   mentor      User         @relation("mentorTask", fields: [mentorId], references: [id], onDelete: Cascade)

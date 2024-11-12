@@ -61,11 +61,7 @@ export const getCurrentUserTasks = async () => {
 }
 
 export const getAllInternsTasks = async () => {
-  const allBatch = await getAllBatchInServer()
-
-  if (allBatch && allBatch[allBatch.length - 1]) {
-    return null
-  }
+  // const allBatch = await getAllBatchInServer()
 
   const mentors = await prisma.user.findMany({
     where: { role: 'MENTOR' },

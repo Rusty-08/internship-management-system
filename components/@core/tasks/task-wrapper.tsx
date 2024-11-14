@@ -1,11 +1,8 @@
-import NoRecords from '@/components/@core/ui/no-records'
-import { Accordion } from '@/components/ui/accordion'
 import { getTasks } from '@/utils/tasks'
 import { getCurrentUser } from '@/utils/users'
-import TaskCard from './task-card'
 import { TaskWrapperProps } from './types'
-import { Badge } from '@/components/ui/badge'
 import { TaskAccordions } from './task-accordions'
+import { getAllBatchInServer } from '@/utils/batch'
 
 const TaskWrapper = async ({
   isMentor = false,
@@ -15,14 +12,26 @@ const TaskWrapper = async ({
   const userId = mentorId || user?.id
   const tasks = await getTasks(userId || '')
 
+  const allBatches = await getAllBatchInServer()
+
+  const IsAllowedToAddTasks = allBatches
+    ? allBatches[allBatches.length - 1].status === 'ONGOING'
+    : false
+
   const sortedTasks = tasks
     ? tasks.sort(
-      (a, b) =>
-        new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
-    )
+        (a, b) =>
+          new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
+      )
     : []
 
-  return <TaskAccordions isMentor={isMentor} tasks={sortedTasks} />
+  return (
+    <TaskAccordions
+      isMentor={isMentor}
+      tasks={sortedTasks}
+      IsAllowedToAddTasks={IsAllowedToAddTasks}
+    />
+  )
 }
 
 export default TaskWrapper

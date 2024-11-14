@@ -11,6 +11,7 @@ export type UserSubset = {
   role: string | null
   expertise?: string | null
   batch?: string | null
+  batchId?: string | null
   mentor?: string | null
   mentorId?: string | null
   assignedIntern?: string | null

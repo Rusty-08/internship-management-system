@@ -16,7 +16,16 @@ export const getTasks = async (id: string) => {
     },
   })
 
-  return data?.tasks || []
+  const allBatches = await getAllBatchInServer()
+
+  const tasks =
+    allBatches && data
+      ? data?.tasks.filter(
+          task => task.batchId === allBatches[allBatches?.length - 1].id,
+        )
+      : []
+
+  return tasks
 }
 
 export const getTaskById = async (id: string) => {
@@ -55,14 +64,21 @@ export const getCurrentUserTasks = async () => {
       },
     })
 
-    return mentor?.tasks
+    const allBatches = await getAllBatchInServer()
+
+    const tasks =
+      allBatches && mentor
+        ? mentor.tasks.filter(
+            task => task.batchId === allBatches[allBatches?.length - 1].id,
+          )
+        : []
+
+    return tasks
   }
   return null
 }
 
 export const getAllInternsTasks = async () => {
-  // const allBatch = await getAllBatchInServer()
-
   const mentors = await prisma.user.findMany({
     where: { role: 'MENTOR' },
     include: {
@@ -81,10 +97,15 @@ export const getAllInternsTasks = async () => {
   const flattedTasks = mentors.map(mentor => {
     return {
       ...mentor,
-      intern: allInterns?.find(intern => intern.mentorId === mentor.id)?.name,
-      internImage: allInterns?.find(intern => intern.mentorId === mentor.id)
+      intern: allInterns?.findLast(intern => intern.mentorId === mentor.id)
+        ?.name,
+      internBatchId: allInterns?.findLast(
+        intern => intern.mentorId === mentor.id,
+      )?.batchId,
+      internImage: allInterns?.findLast(intern => intern.mentorId === mentor.id)
         ?.image,
-      internId: allInterns?.find(intern => intern.mentorId === mentor.id)?.id,
+      internId: allInterns?.findLast(intern => intern.mentorId === mentor.id)
+        ?.id,
     }
   })
 

@@ -14,12 +14,14 @@ import SelectFilter from './status-filter'
 import { useUpdateParams } from '@/hooks/useUpdateParams'
 
 type TaskWrapperProps = {
+  IsAllowedToAddTasks?: boolean
   isMentor?: boolean
   tasks: TaskProps[]
   isInAdmin?: boolean
 }
 
 export const TaskAccordions = ({
+  IsAllowedToAddTasks,
   tasks,
   isMentor = false,
   isInAdmin = false,
@@ -85,7 +87,7 @@ export const TaskAccordions = ({
           ]}
           className="w-40"
         />
-        {isMentor && (
+        {isMentor && IsAllowedToAddTasks && (
           <Link
             href="/mentor/tasks-management/create-task"
             className="fixed right-0 w-full px-4 py-6 bg-background lg:p-0 lg:w-auto z-50 bottom-0 lg:right-0 lg:bottom-0 lg:relative"

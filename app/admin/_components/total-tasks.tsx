@@ -11,7 +11,11 @@ type TotalTasksProps = {
 
 export const TotalTasks = async ({ recentBatch }: TotalTasksProps) => {
   const allUsers = await getAllInternsTasks()
-  const tasks = allUsers ? allUsers.flatMap(user => user.tasks) : []
+  const tasks = allUsers
+    ? allUsers
+        .flatMap(user => user.tasks)
+        .filter(task => task.batchId === recentBatch?.id)
+    : []
 
   const haveOngoingBatch = recentBatch?.status === 'ONGOING'
 

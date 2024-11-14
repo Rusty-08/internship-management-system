@@ -1,10 +1,11 @@
-import { Input } from '@/components/ui/input'
+import { Input, InputProps } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 import { Table } from '@tanstack/react-table'
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { FiSearch } from 'react-icons/fi'
 
-interface SearchFilterProps<TData> {
+interface SearchFilterProps<TData> extends InputProps {
   column: string
   table: Table<TData>
   search?: string
@@ -14,6 +15,7 @@ export function SearchFilter<TData>({
   column,
   table,
   search,
+  ...props
 }: SearchFilterProps<TData>) {
   const searchParams = useSearchParams()
   const pathName = usePathname()
@@ -47,7 +49,8 @@ export function SearchFilter<TData>({
       icon={FiSearch}
       onChange={event => handleSearch(event.target.value)}
       defaultValue={searchParams.get(search || '')?.toString()}
-      className="w-[25rem] bg-card"
+      className={cn('w-[25rem] bg-card', props.className)}
+      {...props}
     />
   )
 }

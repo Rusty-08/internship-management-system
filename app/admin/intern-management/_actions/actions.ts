@@ -1,12 +1,12 @@
 'use server'
 
-import { RegistrationSchema } from "@/components/@core/ui/table/account-table/registration-schema"
-import prisma from "@/lib/prisma"
-import { getBatchById } from "@/utils/batch"
-import { getServerUserById } from "@/utils/users"
-import { User } from "@prisma/client"
-import { revalidatePath } from "next/cache"
-import { z } from "zod"
+import { RegistrationSchema } from '@/components/@core/ui/table/account-table/registration-schema'
+import prisma from '@/lib/prisma'
+import { getBatchById } from '@/utils/batch'
+import { getServerUserById } from '@/utils/users'
+import { User } from '@prisma/client'
+import { revalidatePath } from 'next/cache'
+import { z } from 'zod'
 import bcrypt from 'bcryptjs'
 import generator from 'generate-password'
 import sgMail from '@/components/email/send-grid'
@@ -46,16 +46,16 @@ export const getInternUsers = async (withNoMentors?: boolean) => {
           return {
             ...user,
             mentor: mentor?.name,
-            batch: batch?.name
+            batch: batch?.name,
           }
         }
 
         return {
           ...user,
           mentor: null,
-          batch: batch?.name
+          batch: batch?.name,
         }
-      })
+      }),
     )
 
     return usersWithMentors
@@ -66,25 +66,27 @@ export const getInternUsers = async (withNoMentors?: boolean) => {
   }
 }
 
-export const updatenUser = async (user: UserSchema): Promise<AccountFormState | undefined> => {
+export const updatenUser = async (
+  user: UserSchema,
+): Promise<AccountFormState | undefined> => {
   try {
     if (!user) throw new Error('No user found')
 
     const selectedUser = await prisma.user.findUnique({
-      where: { id: user.id }
+      where: { id: user.id },
     })
 
     // if the user change its email: verify if it is already taken or not
     if (selectedUser?.email !== user.email) {
       const emailIsTaken = await prisma.user.findUnique({
-        where: { email: user.email }
+        where: { email: user.email },
       })
 
       if (emailIsTaken) {
         return {
           status: 'error',
           data: null,
-          message: 'The email address is already taken'
+          message: 'The email address is already taken',
         }
       }
     }
@@ -116,7 +118,7 @@ export const updatenUser = async (user: UserSchema): Promise<AccountFormState | 
         where: { id: user.id },
         data: {
           ...common,
-          expertise: user.expertise
+          expertise: user.expertise,
         },
       })
     }
@@ -132,23 +134,25 @@ export const updatenUser = async (user: UserSchema): Promise<AccountFormState | 
   }
 }
 
-export const registerUser = async (user: UserSchema): Promise<AccountFormState | undefined> => {
+export const registerUser = async (
+  user: UserSchema,
+): Promise<AccountFormState | undefined> => {
   try {
     const emailIsTaken = await prisma.user.findUnique({
-      where: { email: user.email }
+      where: { email: user.email },
     })
 
     if (emailIsTaken) {
       return {
         status: 'error',
         data: null,
-        message: 'The email address is already taken'
+        message: 'The email address is already taken',
       }
     }
 
     const password = generator.generate({
       length: 10,
-      numbers: true
+      numbers: true,
     })
 
     const hashedPassword = await bcrypt.hash(password, 10)
@@ -170,7 +174,7 @@ export const registerUser = async (user: UserSchema): Promise<AccountFormState |
           batchId: user.batchId,
           course: user.course,
           totalHours: user.totalHours,
-          mentorId: user.mentorId
+          mentorId: user.mentorId,
         },
       })
     } else {
@@ -191,21 +195,31 @@ export const registerUser = async (user: UserSchema): Promise<AccountFormState |
         html: NEWUSER_TEMPLATE(password),
       }
 
-      sgMail.send(msg).then(() => {
-        console.log('Email sent')
-      }).catch((error) => {
-        console.error(error)
-      })
+      sgMail
+        .send(msg)
+        .then(() => {
+          console.log('Email sent')
+        })
+        .catch(error => {
+          console.error(error)
+        })
 
       return { status: 'success', data: createdUser, message: '' }
     } else {
-      return { status: 'error', data: null, message: 'Failed to create the account' }
+      return {
+        status: 'error',
+        data: null,
+        message: 'Failed to create the account',
+      }
     }
   } catch {
-    return { status: 'error', data: null, message: 'Failed to create the account' }
+    return {
+      status: 'error',
+      data: null,
+      message: 'Failed to create the account',
+    }
   } finally {
     await prisma.$disconnect()
     revalidatePath(`/admin/${user.role?.toLowerCase()}-management`)
   }
 }
-

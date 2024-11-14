@@ -103,9 +103,9 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
           />
         </div>
         <div className="flex flex-grow flex-col lg:flex-row gap-1 lg:justify-center lg:items-center lg:gap-4">
-          <div className="flex flex-col gap-1 lg:w-[15rem]">
+          <div className="flex flex-col gap-0.5 lg:w-[15rem]">
             {isInAdmin && (
-              <p className="flex-grow text-left text-base font-medium">
+              <p className="flex-grow text-left text-sm font-medium">
                 {intern}
               </p>
             )}
@@ -138,7 +138,7 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
         <div className="flex flex-col gap-4 relative">
           <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
             <span className="text-sm font-medium lg:w-[18.5rem]">
-              Attachment
+              {files && files.length > 1 ? 'Attachment' : 'Attachment'}
             </span>
             {files ? (
               <ul className="flex flex-col pl-4 text-muted-foreground list-disc gap-1">

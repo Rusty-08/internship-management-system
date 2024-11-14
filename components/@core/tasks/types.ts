@@ -7,6 +7,7 @@ export type TaskProps = {
   status: TaskStatus
   startDate: Date
   endDate: Date
+  batchId: string
   files?: File[]
   submissions?: Submission[]
   intern?: string | null

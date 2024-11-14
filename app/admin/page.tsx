@@ -32,40 +32,43 @@ export const metadata: Metadata = {
 
 const AdminDashboard = async () => {
   const allBatches = await getAllBatchInServer()
-  const haveOngoingBatch = allBatches
-    ? allBatches[allBatches.length - 1].status === 'ONGOING'
+  const currentBatch = allBatches?.[allBatches.length - 1]
+
+  const haveOngoingBatch = currentBatch
+    ? currentBatch.status === 'ONGOING'
     : false
 
   const allInternsAttendance = await getAllInternAttendance()
   const allUsers = await getAllInternsTasks()
 
-  const allInterns = allUsers ? allUsers.filter(user => user.intern) : []
+  const allInterns = allUsers?.filter(
+    user => user.internBatchId === currentBatch?.id,
+  )
+
   const currentAttendance = allInternsAttendance.filter(
     attendance => dateInManilaTz(attendance.date) == dateInManilaTz(new Date()),
   )
 
-  const haveOngoingTask = (tasks: TaskProps[]) =>
-    tasks.filter(task => task.status === 'IN_PROGRESS')
+  const getCurrentTask = (tasks: TaskProps[]) => {
+    return tasks.filter(task => task.batchId === currentBatch?.id)
+  }
+
+  const haveOngoingTask = (tasks: TaskProps[]) => {
+    const internCurrentTasks = getCurrentTask(tasks)
+    return internCurrentTasks.filter(task => task.status === 'IN_PROGRESS')
+  }
 
   return (
     <div className="flex h-full flex-col gap-4">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <Suspense fallback={<StatCardSkeleton image={totalHoursImage} />}>
-          <TotalInterns
-            recentBatch={
-              allBatches ? allBatches[allBatches.length - 1] : undefined
-            }
-          />
+          <TotalInterns recentBatch={currentBatch || undefined} />
         </Suspense>
         <Suspense fallback={<StatCardSkeleton image={totalDaysImage} />}>
           <TotalDays />
         </Suspense>
         <Suspense fallback={<StatCardSkeleton image={totalTaskImage} />}>
-          <TotalTasks
-            recentBatch={
-              allBatches ? allBatches[allBatches.length - 1] : undefined
-            }
-          />
+          <TotalTasks recentBatch={currentBatch || undefined} />
         </Suspense>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -127,8 +130,10 @@ const AdminDashboard = async () => {
                           {user.intern}
                         </p>
                         <p className="text-xs text-text">
-                          {user.tasks.length}{' '}
-                          {user.tasks.length > 1 ? 'tasks' : 'task'}
+                          {getCurrentTask(user.tasks).length}{' '}
+                          {getCurrentTask(user.tasks).length > 1
+                            ? 'tasks'
+                            : 'task'}
                         </p>
                       </div>
                     </div>

@@ -155,22 +155,13 @@ export const getInternUsers = async (withNoMentors?: boolean) => {
 
     const usersWithMentors = await Promise.all(
       users.map(async user => {
-        const batch = await getBatchById(user.batchId || '')
-
-        if (user.mentorId) {
-          const mentor = await getServerUserById(user.mentorId)
-
-          return {
-            ...user,
-            mentor: mentor?.name,
-            batch: batch?.name,
-          }
-        }
+        const mentor = user.mentorId
+          ? await getServerUserById(user.mentorId)
+          : null
 
         return {
           ...user,
-          mentor: null,
-          batch: batch?.name,
+          mentor: mentor ? mentor.name : null,
         }
       }),
     )
@@ -181,7 +172,6 @@ export const getInternUsers = async (withNoMentors?: boolean) => {
   }
 }
 
-// get mentor users in the server-side
 export const getMentorUsers = async () => {
   try {
     const mentors = await prisma.user.findMany({
@@ -191,29 +181,36 @@ export const getMentorUsers = async () => {
       },
     })
 
-    const allBatches = await getAllBatchInServer()
-    const currentBatch = allBatches
-      ? allBatches[allBatches.length - 1]
-      : undefined
+    const interns = await prisma.user.findMany({
+      where: {
+        role: 'INTERN',
+        isArchived: false,
+      },
+    })
 
-    const mentorsWithIntern = await Promise.all(
-      mentors.map(async mentor => {
-        const intern = await prisma.user.findFirst({
-          where: {
-            isArchived: false,
-            batchId: currentBatch ? currentBatch.id : undefined,
-            mentorId: mentor.id,
-          },
-        })
+    const formattedMentors = mentors.flatMap(mentor => {
+      const assignedInterns = interns.filter(
+        intern => intern.mentorId === mentor.id,
+      )
 
-        return {
-          ...mentor,
-          assignedIntern: intern?.name,
+      return assignedInterns.map(intern => ({
+        ...mentor,
+        assignedIntern: intern.name,
+        batchId: intern.batchId,
+      }))
+    })
+
+    const mentorsWithBatch = await Promise.all(
+      formattedMentors.map(async mentor => {
+        if (mentor.batchId) {
+          const batch = await getBatchById(mentor.batchId)
+          return { ...mentor, batch: batch?.name }
         }
+        return mentor
       }),
     )
 
-    return mentorsWithIntern
+    return mentorsWithBatch
   } catch {
     console.log("Can't fetch the mentor users")
   }

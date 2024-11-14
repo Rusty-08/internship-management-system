@@ -16,7 +16,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useRouter } from 'next/navigation'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ArchiveConfirmation } from './archive-confirmation'
 import SelectFilter, {
   ItemsProps,
@@ -24,16 +24,18 @@ import SelectFilter, {
 import { useUpdateParams } from '@/hooks/useUpdateParams'
 import AddButton from '../../add-button'
 import Link from 'next/link'
-import { Batch } from '@prisma/client'
 
 type AccountsTableProps = {
   batchesFilter?: ItemsProps[]
   data: UserSubset[]
   isArchivedPage?: boolean
   user?: 'INTERN' | 'MENTOR'
-  accountColumns: (actions: {
-    [key: string]: (row: Row<UserSubset>) => void
-  }) => ColumnDef<UserSubset, any>[]
+  accountColumns: (
+    actions: {
+      [key: string]: (row: Row<UserSubset>) => void
+    },
+    selectedBatch?: string,
+  ) => ColumnDef<UserSubset, any>[]
 }
 
 export default function AccountsTable({
@@ -45,21 +47,11 @@ export default function AccountsTable({
 }: AccountsTableProps) {
   const router = useRouter()
   const { searchParams, updateParams } = useUpdateParams()
-  const [roleFilter, setRoleFilter] = useState(
-    searchParams.get('role') || 'all',
-  )
-  const [activeBatch, setActiveBatch] = useState(
-    searchParams.get('batch') ||
-      (batchesFilter ? batchesFilter[batchesFilter.length - 1].name : ''),
-  )
+  const [roleFilter, setRoleFilter] = useState('')
+  const [activeBatch, setActiveBatch] = useState('')
   const [sorting, setSorting] = useState<SortingState>([])
   const [rowSelection, setRowSelection] = useState({})
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
-    {
-      id: 'name',
-      value: searchParams.get(user ? user.toLowerCase() : 'user') ?? '',
-    },
-  ])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [archiveIntern, setArchiveIntern] = useState<Row<UserSubset> | null>(
     null,
   )
@@ -67,25 +59,35 @@ export default function AccountsTable({
   const [loading, setLoading] = useState(false)
 
   const filteredData = useMemo(() => {
-    return roleFilter !== 'all'
-      ? data.filter(_user => _user.role === roleFilter.toUpperCase()) // for role in archived records table
-      : batchesFilter && activeBatch !== 'all'
-      ? data.filter(_user => _user.batch === activeBatch) // for interns-management table in batch filter
-      : data
-  }, [roleFilter, data, batchesFilter, activeBatch])
+    if (isArchivedPage && roleFilter !== 'all') {
+      return data.filter(_user => _user.role === roleFilter.toUpperCase())
+    }
+
+    if (batchesFilter && activeBatch !== 'all') {
+      return data.filter(_user => _user.batchId === activeBatch)
+    }
+
+    return data
+  }, [isArchivedPage, roleFilter, batchesFilter, activeBatch, data])
 
   const handleArchive = async () => {
     setLoading(true)
+
     try {
-      await fetch('/api/auth/users/update-account', {
-        method: 'PUT',
-        body: JSON.stringify({
-          id: archiveIntern?.original.id || '',
-          name: archiveIntern?.original.name || '',
-          email: archiveIntern?.original.email || '',
-          isArchived: archiveIntern?.original.isArchived ? false : true,
-        }),
-      })
+      if (archiveIntern) {
+        const { id, name, email, isArchived } = archiveIntern.original
+
+        await fetch('/api/auth/users/update-account', {
+          method: 'PUT',
+          body: JSON.stringify({
+            id,
+            name,
+            email,
+            isArchived: !isArchived,
+          }),
+        })
+      }
+
       setLoading(false)
       setOpenDialog(false)
       router.refresh()
@@ -99,18 +101,13 @@ export default function AccountsTable({
     setOpenDialog(true)
   }
 
-  const getActiveBatch = () => {
-    return activeBatch
-  }
-
   const actions = {
     openArchiveConfirmation,
-    getActiveBatch,
   }
 
   const table = useReactTable({
     data: filteredData,
-    columns: accountColumns(actions),
+    columns: accountColumns(actions, activeBatch),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -125,6 +122,26 @@ export default function AccountsTable({
     },
   })
 
+  useEffect(() => {
+    const searchFilters = [
+      {
+        id: 'name',
+        value: searchParams.get(user ? user.toLowerCase() : 'user') ?? '',
+      },
+    ]
+
+    const currentBatch = batchesFilter?.[batchesFilter.length - 1].value || ''
+
+    setActiveBatch(searchParams.get('batch') || currentBatch)
+
+    if (isArchivedPage) {
+      setRoleFilter(searchParams.get('role') || 'all')
+    }
+
+    setColumnFilters(searchFilters)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <div className="flex flex-col gap-4">
       <ArchiveConfirmation
@@ -135,12 +152,13 @@ export default function AccountsTable({
         loading={loading}
         isArchivedPage={isArchivedPage}
       />
-      <div className="flex items-center justify-between">
-        <div className="flex w-full justify-between">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex w-full justify-between gap-2">
           <SearchFilter
             column="name"
             table={table}
             search={user ? user.toLowerCase() : 'user'}
+            className="flex-grow"
           />
           {isArchivedPage && (
             <SelectFilter
@@ -160,9 +178,13 @@ export default function AccountsTable({
           )}
         </div>
         {!isArchivedPage && user && (
-          <div className="flex space-x-4">
+          <div className="flex space-x-2">
             <SelectFilter
-              defaultValue={batchesFilter ? batchesFilter[0].value : ''}
+              defaultValue={
+                batchesFilter
+                  ? batchesFilter[batchesFilter.length - 1].value
+                  : ''
+              }
               value={activeBatch}
               handleStatusChange={batch => {
                 setActiveBatch(batch)

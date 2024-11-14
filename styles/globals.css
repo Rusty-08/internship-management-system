@@ -54,7 +54,7 @@ body,
     --border: 214.3 31.8% 90%;
     --input: 214.3 31.8% 85%;
     --ring: 221.2 83.2% 53.3%;
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     --completed: 120 100% 25%; /* green */
     --pending: 60 100% 30%; /* yellow */

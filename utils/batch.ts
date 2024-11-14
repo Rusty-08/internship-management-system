@@ -55,12 +55,12 @@ export const getAllBatchInServer = async (): Promise<Batch[] | undefined> => {
 }
 
 // server call
-export const getBatchFilterItems = async () => {
+export const getBatchFilterItems = async (recordLabel?: string) => {
   const batches = await getAllBatchInServer()
 
   const batchesFilter = batches?.map(batch => {
     return {
-      value: batch.name,
+      value: batch.id,
       name: batch.name,
       color:
         batch.status === 'ONGOING'
@@ -71,7 +71,7 @@ export const getBatchFilterItems = async () => {
 
   batchesFilter?.unshift({
     value: 'all',
-    name: 'All interns',
+    name: `All ${recordLabel || 'interns'}`,
     color: 'all',
   })
 

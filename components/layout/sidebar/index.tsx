@@ -10,16 +10,13 @@ type SidebarProps = {
   setOpen?: Dispatch<SetStateAction<boolean>>
 }
 
-const Sidebar = ({
-  sideLinks,
-  setOpen,
-}: SidebarProps) => {
+const Sidebar = ({ sideLinks, setOpen }: SidebarProps) => {
   return (
     <div
       className={cn(
-        'fixed lg:flex w-16 flex-col lg:hover:w-[18rem] bg-sidebar shadow top-0 h-screen z-50 pb-4 transition-all group/sidebar duration-300 ease-in-out',
+        'fixed lg:flex w-16 flex-col border-r lg:hover:w-[18rem] bg-sidebar shadow top-0 h-screen z-50 pb-4 transition-all group/sidebar duration-300 ease-in-out',
         setOpen && 'w-[20rem] right-0',
-        !setOpen && 'hidden left-0'
+        !setOpen && 'hidden left-0',
       )}
     >
       <div className="flex items-center p-2 h-20 px-3 border-b border-slate-800">
@@ -31,7 +28,7 @@ const Sidebar = ({
             height={37}
             className="flex-shrink-0"
           />
-          <div className='flex flex-col justify-center leading-6 whitespace-nowrap border-primary/50 group-hover/sidebar:inline-flex'>
+          <div className="flex flex-col justify-center leading-6 whitespace-nowrap border-primary/50 group-hover/sidebar:inline-flex">
             <h1 className="font-bold text-[1.2rem] tracking-wider text-sky-50">
               INTERNSHIP PORTAL
             </h1>
@@ -41,10 +38,7 @@ const Sidebar = ({
           </div>
         </div>
       </div>
-      <SidebarLinks
-        sideLinks={sideLinks}
-        setOpen={setOpen}
-      />
+      <SidebarLinks sideLinks={sideLinks} setOpen={setOpen} />
     </div>
   )
 }

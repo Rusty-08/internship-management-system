@@ -20,7 +20,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ArchiveConfirmation } from './archive-confirmation'
 import SelectFilter, {
   ItemsProps,
-} from '@/components/@core/tasks/status-filter'
+} from '@/components/@core/ui/table/select-filter'
 import { useUpdateParams } from '@/hooks/useUpdateParams'
 import AddButton from '../../add-button'
 import Link from 'next/link'

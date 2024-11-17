@@ -10,7 +10,7 @@ import Link from 'next/link'
 import AddButton from '@/components/@core/ui/add-button'
 import { Button } from '@/components/ui/button'
 import { MdAdd } from 'react-icons/md'
-import SelectFilter from './status-filter'
+import SelectFilter from '../ui/table/select-filter'
 import { useUpdateParams } from '@/hooks/useUpdateParams'
 
 type TaskWrapperProps = {

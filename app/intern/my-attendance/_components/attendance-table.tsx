@@ -140,7 +140,7 @@ export default function AttendanceTable({
       <DataTable
         columns={attendanceColumns}
         table={table}
-        noRecordMessage="No attendance records."
+        noRecordMessage="No attendance records yet"
       />
     )
   }
@@ -180,7 +180,7 @@ export default function AttendanceTable({
           <DataTable
             columns={attendanceColumns}
             table={table}
-            noRecordMessage="No attendance records."
+            noRecordMessage="No attendance records yet"
           />
         </div>
         <div className="flex items-center justify-between py-3">

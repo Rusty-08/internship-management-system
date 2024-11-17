@@ -1,6 +1,14 @@
 'use client'
 
-import { ColumnFiltersState, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable } from '@tanstack/react-table'
+import {
+  ColumnFiltersState,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+} from '@tanstack/react-table'
 import React, { useMemo, useState } from 'react'
 import { Batch } from '@prisma/client'
 import { DataTable } from '@/components/@core/ui/table/data-table'
@@ -15,10 +23,12 @@ const InternshipTable = ({ data }: { data: Batch[] }) => {
   const [rowSelection, setRowSelection] = useState({})
   const [sorting, setSorting] = useState<SortingState>([])
   const searchParams = useSearchParams()
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([{
-    id: 'name',
-    value: searchParams.get('batch') ?? ''
-  }])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+    {
+      id: 'name',
+      value: searchParams.get('batch') ?? '',
+    },
+  ])
 
   const actions = {}
 
@@ -39,26 +49,30 @@ const InternshipTable = ({ data }: { data: Batch[] }) => {
     },
   })
 
-  const batchStatus = useMemo(() =>
-    data.find(
-      batch => batch.status === 'ONGOING' || batch.status === 'PENDING'
-    )?.status.toLowerCase(), [data]
+  const batchStatus = useMemo(
+    () =>
+      data
+        .find(batch => batch.status === 'ONGOING' || batch.status === 'PENDING')
+        ?.status.toLowerCase(),
+    [data],
   )
 
   return (
-    <div className='flex flex-col gap-4'>
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between gap-2">
         <SearchFilter
           column="name"
           table={table}
           search={'batch'}
+          className="flex-grow"
         />
         {batchStatus ? (
           <AddButton disabled>
-            There is already  {batchStatus === 'ongoing' ? 'an' : 'a'} {batchStatus} batch
+            There is already {batchStatus === 'ongoing' ? 'an' : 'a'}{' '}
+            {batchStatus} batch
           </AddButton>
         ) : (
-          <Link href='/admin/internship-management/create-batch'>
+          <Link href="/admin/internship-management/create-batch">
             <AddButton>Create New Batch</AddButton>
           </Link>
         )}

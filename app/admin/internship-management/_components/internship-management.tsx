@@ -1,14 +1,10 @@
-import prisma from "@/lib/prisma"
-import InternshipTable from "./batch-table"
+import InternshipTable from './batch-table'
+import { getAllBatchInServer } from '@/utils/batch'
 
 const InternshipManagementTable = async () => {
-  const batches = await prisma.batch.findMany({
-    include: { interns: true }
-  })
+  const batches = await getAllBatchInServer()
 
-  return (
-    <InternshipTable data={batches} />
-  )
+  return <InternshipTable data={batches} />
 }
 
 export default InternshipManagementTable

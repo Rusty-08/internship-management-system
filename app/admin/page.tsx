@@ -79,9 +79,9 @@ const AdminDashboard = async () => {
             siteConfig.timeZone,
             'MMMM dd y - EEEE',
           )}
-          noRecordMessage="No attendance records found."
           className="col-span-2"
           noRecords={!currentAttendance}
+          noRecordMessage="No attendance records yet"
           navigate="/admin/interns-attendance"
         >
           <Attendance
@@ -91,6 +91,7 @@ const AdminDashboard = async () => {
         </DetailsCard>
         <DetailsCard
           noRecords={!allUsers || !haveOngoingBatch}
+          noRecordMessage="No task records yet"
           header="Tasks"
           description="All of the intern's task records"
           navigate="/intern/task-management"

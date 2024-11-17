@@ -12,15 +12,25 @@ export async function InternTable() {
     return {
       ...intern,
       isActive: batches
-        ? batches[batches.length - 1].id === intern.batchId
+        ? batches[batches.length - 1].id === intern.batchId &&
+          batches[batches.length - 1].status !== 'COMPLETED'
         : false,
     }
   })
 
+  const AllBatchFilters = [
+    {
+      value: 'all',
+      name: 'All interns',
+      color: 'all',
+    },
+    ...batchesFilter,
+  ]
+
   return (
     <AccountsTable
       data={dataWithStatus || []}
-      batchesFilter={batchesFilter ? batchesFilter : undefined}
+      batchesFilter={AllBatchFilters || undefined}
       user={userRole}
       accountColumns={accountColumns}
     />

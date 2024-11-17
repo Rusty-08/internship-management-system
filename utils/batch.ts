@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { Batch, User } from '@prisma/client'
+import { Batch, Prisma, User } from '@prisma/client'
 
 export const getBatchById = async (id: string) => {
   if (id === 'create-batch' || !id) return null
@@ -50,8 +50,12 @@ export const getAllBatch = async () => {
 }
 
 // server call
-export const getAllBatchInServer = async (): Promise<Batch[] | undefined> => {
-  return await prisma.batch.findMany()
+export const getAllBatchInServer = async () => {
+  return await prisma.batch.findMany({
+    include: {
+      interns: true,
+    },
+  })
 }
 
 // server call
@@ -67,12 +71,6 @@ export const getBatchFilterItems = async (recordLabel?: string) => {
           ? 'bg-in-progress'
           : `bg-${batch.status.toLowerCase()}`,
     }
-  })
-
-  batchesFilter?.unshift({
-    value: 'all',
-    name: `All ${recordLabel || 'interns'}`,
-    color: 'all',
   })
 
   return {

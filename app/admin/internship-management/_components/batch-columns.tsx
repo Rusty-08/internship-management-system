@@ -66,9 +66,9 @@ export const batchColumns = (actions: {
       const days =
         endDate && new Date() >= endDate
           ? totalDays
-          : dateDiff + 1
+          : dateDiff
           ? dateDiff + 1
-          : dateDiff + 1
+          : dateDiff
 
       return <p>{endDate ? `${days}/${totalDays ?? 'N/A'}` : `${days} days`}</p>
     },

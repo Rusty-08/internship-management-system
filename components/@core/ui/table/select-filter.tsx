@@ -61,10 +61,10 @@ const SelectFilter = ({
               <div className="flex items-center gap-2">
                 {item.color && (
                   <>
-                    {idx !== 0 ? (
+                    {item.color !== 'all' ? (
                       <div
                         className={cn(
-                          'h-2.5 w-2.5 rounded-full border',
+                          'h-2.5 w-2.5 flex-shrink-0 rounded-full border',
                           item.color === 'all' ? 'bg-slate-100' : item.color,
                         )}
                       />
@@ -74,11 +74,11 @@ const SelectFilter = ({
                           <div
                             key={_item.value}
                             className={cn(
-                              'h-2.5 w-2.5 rounded-full border',
+                              'h-2.5 w-2.5 flex-shrink-0 rounded-full border',
                               _item.color === 'all'
                                 ? 'bg-slate-100'
                                 : _item.color,
-                              index !== 0 && colorMargin[index - 1],
+                              _item.color !== 'all' && colorMargin[index - 1],
                             )}
                           />
                         ))}
@@ -88,8 +88,9 @@ const SelectFilter = ({
                 )}
                 <span
                   className={cn(
-                    'ml-0',
-                    item.color && idx === 0 && `-ml-${items.length - 2}`,
+                    item.color === 'all'
+                      ? `-translate-x-${items.length - 2}`
+                      : 'ml-0',
                   )}
                 >
                   {item.name}

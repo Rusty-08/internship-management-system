@@ -12,6 +12,8 @@ import { format } from 'date-fns'
 import Link from 'next/link'
 import { FiEdit3 } from 'react-icons/fi'
 import { IoArchiveOutline } from 'react-icons/io5'
+import { IconLinkButton } from '@/components/ui/icon-link-button'
+import { Badge } from '@/components/ui/badge'
 
 export const accountColumns = (
   actions: {
@@ -67,17 +69,18 @@ export const accountColumns = (
   },
   {
     accessorKey: 'batch',
-    header: 'Batch',
+    header: 'Intern Batch',
   },
   {
-    accessorKey: 'createdAt',
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Created At" />
-    },
+    accessorKey: 'isActive',
+    header: 'Status',
     cell: ({ row }) => {
-      const formattedDate = format(`${row.original.createdAt}`, 'MMM dd, yyyy')
+      const isActive = row.original.isActive
+      const status = isActive ? 'Active' : 'Inactive'
 
-      return <p>{formattedDate}</p>
+      return (
+        <Badge variant={isActive ? 'COMPLETED' : 'secondary'}>{status}</Badge>
+      )
     },
   },
   {
@@ -85,15 +88,13 @@ export const accountColumns = (
     cell: ({ row }) => {
       return (
         <div className="flex justify-end gap-1">
-          <TooltipWrapper tooltip="Edit">
-            <Link href={`/admin/mentor-management/${row.original.id}`}>
-              <Button variant="ghost" size="circle">
-                {row.original.isArchived === false && (
-                  <FiEdit3 size="1.1rem" className="text-primary" />
-                )}
-              </Button>
-            </Link>
-          </TooltipWrapper>
+          <IconLinkButton
+            path={`/admin/mentor-management/${row.original.id}`}
+            tooltip="Edit"
+            disabled={row.original.isActive ? false : true}
+          >
+            <FiEdit3 size="1.1rem" />
+          </IconLinkButton>
           <TooltipWrapper tooltip="Archive">
             <Button
               variant="ghost"

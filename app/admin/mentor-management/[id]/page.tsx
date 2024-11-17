@@ -8,17 +8,13 @@ const MentorUser = async ({ params: { id } }: { params: { id: string } }) => {
   const interns = await getInternUsers(WITHOUT_MENTORS)
   const allBatches = await getAllBatchInServer()
 
-  const assignedIntern = interns?.find(
-    intern =>
-      intern.mentorId === id &&
-      allBatches?.[allBatches?.length - 1].id === intern.batchId,
-  )
+  const assignedIntern = interns?.filter(intern => intern.mentorId === id)
 
   return (
     <UserForm
       role="MENTOR"
       userId={id}
-      interns={assignedIntern ? [assignedIntern] : []}
+      interns={assignedIntern ? assignedIntern : []}
     />
   )
 }

@@ -108,17 +108,13 @@ export const accountColumns = (actions: {
     cell: ({ row }) => {
       return (
         <div className="flex justify-end">
-          {!row.original.isArchived && (
-            <IconLinkButton
-              path={`/admin/intern-management/${row.original.id}`}
-              tooltip="Edit"
-              disabled={row.original.isActive ? false : true}
-            >
-              {row.original.isArchived === false && (
-                <FiEdit3 className="text-muted-foreground" size="1.1rem" />
-              )}
-            </IconLinkButton>
-          )}
+          <IconLinkButton
+            path={`/admin/intern-management/${row.original.id}`}
+            tooltip="Edit"
+            disabled={row.original.isActive ? false : true}
+          >
+            <FiEdit3 className="text-muted-foreground" size="1.1rem" />
+          </IconLinkButton>
           <div>
             <TooltipWrapper
               tooltip={

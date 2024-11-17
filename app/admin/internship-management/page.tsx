@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
-import TableSkeleton from '@/components/@core/skeletons/table-skeleton'
 import InternshipManagementTable from './_components/internship-management'
+import { BatchTableSkeleton } from './_components/table-skeleton'
 
 export const metadata: Metadata = {
   title: 'Internship Management',
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const InternshipManagement = () => {
   return (
-    <Suspense fallback={<TableSkeleton rows={8} cols={6} haveSearch haveButton />}>
+    <Suspense fallback={<BatchTableSkeleton />}>
       <InternshipManagementTable />
     </Suspense>
   )

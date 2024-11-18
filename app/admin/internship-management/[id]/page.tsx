@@ -21,7 +21,7 @@ const CreateInternship = async ({
 
   const availableMentors = mentors?.filter(
     (mentor, index, self) =>
-      index === self.findIndex(obj => obj.name === mentor.name),
+      index === self.findLastIndex(obj => obj.name === mentor.name),
   )
 
   return (

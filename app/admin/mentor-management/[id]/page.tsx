@@ -6,7 +6,6 @@ import React from 'react'
 const MentorUser = async ({ params: { id } }: { params: { id: string } }) => {
   const WITHOUT_MENTORS = true
   const interns = await getInternUsers(WITHOUT_MENTORS)
-  const allBatches = await getAllBatchInServer()
 
   const assignedIntern = interns?.filter(intern => intern.mentorId === id)
 

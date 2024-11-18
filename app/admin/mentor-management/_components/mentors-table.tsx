@@ -16,7 +16,8 @@ export async function MentorTable() {
       isActive: batches
         ? prevBatch.interns
             .map(intern => intern.name)
-            .includes(mentor.assignedIntern) && prevBatch.status !== 'COMPLETED'
+            .includes(`${mentor.assignedIntern}`) &&
+          prevBatch.status !== 'COMPLETED'
         : false,
     }
   })

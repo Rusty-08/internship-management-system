@@ -39,6 +39,7 @@ import {
   registerUser,
   updatenUser,
 } from '@/app/admin/intern-management/_actions/actions'
+import { calculateCourseHours } from '@/utils/course-hours'
 
 type FormDialogProps = {
   userId: string
@@ -60,7 +61,7 @@ export function UserForm({
   const [initialState, setInitialState] = useState<User | null>(null)
   const [isFetching, setIsFetching] = useState(false)
   const [mentorsWithoutIntern, setMentorsWithoutIntern] = useState<
-    UserSubset[] | null
+    UserSubset[] | undefined
   >()
 
   const form = useForm<z.infer<typeof RegistrationSchema>>({
@@ -112,27 +113,41 @@ export function UserForm({
 
         const assignedIntern =
           interns?.find(intern => user?.id === intern.mentorId)?.id || ''
-        const totalHours = user?.course
-          ? user?.course === 'BSCS'
-            ? 120
-            : 486
-          : undefined
-        const _mentors = mentors?.filter(
-          mentor => !mentor.assignedIntern || user?.mentorId === mentor.id,
-        )
+        const totalHours = calculateCourseHours(user?.course)
 
         form.setValue('assignedIntern', assignedIntern)
         form.setValue('totalHours', totalHours)
 
         setInitialState(user)
         setIsFetching(false)
-        setMentorsWithoutIntern(_mentors)
+
+        if (batches && mentors) {
+          const currBatch = batches[batches.length - 1]
+
+          const filteredMentors = mentors.filter(
+            mentor =>
+              user?.mentorId === mentor.id ||
+              mentor.batchId !== currBatch.id ||
+              (mentor.batchId === currBatch.id && !mentor.assignedIntern),
+          )
+
+          setMentorsWithoutIntern(filteredMentors)
+        }
       }
 
       fetchedUser()
     } else {
-      const _mentors = mentors?.filter(mentor => !mentor.assignedIntern)
-      setMentorsWithoutIntern(_mentors)
+      if (batches && mentors) {
+        const currBatch = batches[batches.length - 1]
+
+        const filteredMentors = mentors.filter(
+          mentor =>
+            mentor.batchId !== currBatch.id ||
+            (mentor.batchId === currBatch.id && !mentor.assignedIntern),
+        )
+
+        setMentorsWithoutIntern(filteredMentors)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -285,7 +300,9 @@ export function UserForm({
                           <FormLabel>Mentor</FormLabel>
                           <Select
                             onValueChange={field.onChange}
-                            disabled={isSubmitting || !mentorsWithoutIntern}
+                            disabled={
+                              isSubmitting || !mentorsWithoutIntern?.length
+                            }
                             value={field.value}
                           >
                             <FormControl>
@@ -293,9 +310,9 @@ export function UserForm({
                                 <SelectTrigger className="w-full">
                                   <SelectValue
                                     placeholder={
-                                      !mentorsWithoutIntern
-                                        ? 'No available mentor'
-                                        : 'Select the mentor'
+                                      mentorsWithoutIntern?.length
+                                        ? 'Select the mentor'
+                                        : 'No available mentor'
                                     }
                                   />
                                 </SelectTrigger>

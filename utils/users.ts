@@ -172,7 +172,13 @@ export const getInternUsers = async (withNoMentors?: boolean) => {
   }
 }
 
-export const getMentorUsers = async () => {
+type MentorWithIntern = User & {
+  assignedIntern: string | null
+  batchId: string | null
+  batch?: string | null
+}
+
+export const getMentorUsers = async (): Promise<MentorWithIntern[]> => {
   try {
     const mentors = await prisma.user.findMany({
       where: {
@@ -188,31 +194,36 @@ export const getMentorUsers = async () => {
       },
     })
 
-    const formattedMentors = mentors.flatMap(mentor => {
+    const formattedMentors = mentors.flatMap((mentor): MentorWithIntern[] => {
       const assignedInterns = interns.filter(
         intern => intern.mentorId === mentor.id,
       )
 
-      return assignedInterns.map(intern => ({
-        ...mentor,
-        assignedIntern: intern.name,
-        batchId: intern.batchId,
-      }))
+      if (assignedInterns.length > 0) {
+        return assignedInterns.map(intern => ({
+          ...mentor,
+          assignedIntern: intern.name,
+          batchId: intern.batchId,
+        }))
+      }
+
+      return [{ ...mentor, assignedIntern: null, batchId: null }]
     })
 
     const mentorsWithBatch = await Promise.all(
       formattedMentors.map(async mentor => {
         if (mentor.batchId) {
           const batch = await getBatchById(mentor.batchId)
-          return { ...mentor, batch: batch?.name }
+          return { ...mentor, batch: batch?.name || null }
         }
-        return mentor
+        return { ...mentor, batch: null }
       }),
     )
 
     return mentorsWithBatch
-  } catch {
-    console.log("Can't fetch the mentor users")
+  } catch (error) {
+    console.error("Can't fetch the mentor users", error)
+    return []
   }
 }
 

@@ -105,7 +105,7 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
         <div className="flex flex-grow flex-col lg:flex-row gap-1 lg:justify-center lg:items-center lg:gap-4">
           <div className="flex flex-col gap-0.5 lg:w-[15rem]">
             {isInAdmin && (
-              <p className="flex-grow text-left text-sm font-medium">
+              <p className="flex-grow text-left text-sm font-semibold">
                 {intern}
               </p>
             )}
@@ -118,8 +118,8 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
               />
               <span
                 className={cn(
-                  'font-normal text-start text-muted-foreground',
-                  isInAdmin ? 'text-xs' : 'text-xs md:text-sm',
+                  'font-normal text-start tracking-wide text-muted-foreground',
+                  isInAdmin ? 'text-[0.8rem]' : 'text-xs md:text-sm',
                 )}
               >
                 {`${formattedStartDate} - ${formattedEndDate}`}

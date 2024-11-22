@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/select'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { RegistrationSchema } from './registration-schema'
@@ -64,8 +64,16 @@ export function UserForm({
     UserSubset[] | undefined
   >()
 
+  const ongoingBatch = useMemo(
+    () => batches?.find(batch => batch.status === 'ONGOING'),
+    [batches],
+  )
+
   const form = useForm<z.infer<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
+    defaultValues: {
+      batchId: ongoingBatch?.id,
+    },
   })
 
   const { isSubmitting, errors } = form.formState
@@ -84,7 +92,6 @@ export function UserForm({
     } else {
       response = await registerUser({
         ...values,
-        batchId: values.batch,
         role,
       })
     }
@@ -109,7 +116,7 @@ export function UserForm({
         form.setValue('course', user?.course || undefined)
         form.setValue('mentorId', user?.mentorId || '')
         form.setValue('expertise', user?.expertise || '')
-        form.setValue('batch', user?.batchId || '')
+        form.setValue('batchId', user?.batchId || '')
 
         const assignedIntern =
           interns?.find(intern => user?.id === intern.mentorId)?.id || ''
@@ -350,17 +357,13 @@ export function UserForm({
                     />
                     <FormField
                       control={form.control}
-                      name="batch"
+                      name="batchId"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Batch Name</FormLabel>
                           <Select
                             onValueChange={field.onChange}
-                            defaultValue={
-                              batches
-                                ? batches[batches.length - 1].id
-                                : field.value
-                            }
+                            defaultValue={ongoingBatch?.id}
                             disabled
                           >
                             <FormControl>
@@ -379,9 +382,9 @@ export function UserForm({
                               {batches ? (
                                 <SelectItem
                                   // key={batches[batches.length - 1].id}
-                                  value={batches[batches.length - 1].id}
+                                  value={ongoingBatch?.id || ''}
                                 >
-                                  {batches[batches.length - 1].name}
+                                  {ongoingBatch?.name}
                                 </SelectItem>
                               ) : (
                                 <SelectItem value="">

@@ -24,11 +24,11 @@ export const TotalTasks = async () => {
         </div>
         <div className="flex items-center flex-col gap-5 md:gap-4 md:flex-row justify-between">
           <Badge
-            variant={tasks ? 'PRIMARY' : 'OVERDUE'}
+            variant={tasks && tasks.length > 1 ? 'PRIMARY' : 'secondary'}
             className="py-2 px-4 w-full justify-center md:w-auto"
           >
-            {tasks
-              ? `${completedTasks.length} completed and ${
+            {tasks && tasks.length > 1
+              ? `${completedTasks.length || 'No'} completed and ${
                   ongoingTasks.length > 0
                     ? `${ongoingTasks.length || 'no'} ongoing ${
                         completedTasks.length + ongoingTasks.length > 1

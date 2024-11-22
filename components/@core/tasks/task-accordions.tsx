@@ -116,6 +116,13 @@ export const TaskAccordions = ({
           <NoRecords
             searchOutput={taskSearch ?? ''}
             className="border bg-card rounded-md pb-8"
+            noRecordMessage={
+              isMentor
+                ? "You haven't created a task yet"
+                : isInAdmin
+                ? 'No records found'
+                : "You don't have task yet"
+            }
           />
         )}
       </div>

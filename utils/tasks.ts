@@ -2,7 +2,7 @@ import prisma from '@/lib/prisma'
 import { getCurrentUser, getInternUsers } from './users'
 import { getAllBatchInServer } from './batch'
 
-export const getTasks = async (id: string) => {
+export const getTasks = async (id: string, isMentor: boolean) => {
   if (!id) return null
   const data = await prisma.user.findUnique({
     where: { id },
@@ -18,12 +18,15 @@ export const getTasks = async (id: string) => {
 
   const allBatches = await getAllBatchInServer()
 
-  const tasks =
-    allBatches && data
-      ? data?.tasks.filter(
-          task => task.batchId === allBatches[allBatches?.length - 1].id,
-        )
+  let tasks
+
+  if (isMentor) {
+    tasks = data?.tasks
+  } else {
+    tasks = data
+      ? data?.tasks.filter(task => task.batchId === data.batchId)
       : []
+  }
 
   return tasks
 }
@@ -52,11 +55,14 @@ export const getTaskById = async (id: string) => {
 export const getCurrentUserTasks = async () => {
   const intern = await getCurrentUser()
 
-  if (intern?.mentorId) {
+  if (intern?.mentorId && intern.batchId) {
     const mentor = await prisma.user.findUnique({
       where: { id: intern?.mentorId },
       include: {
         tasks: {
+          where: {
+            batchId: intern.batchId,
+          },
           orderBy: {
             startDate: 'desc',
           },
@@ -64,16 +70,16 @@ export const getCurrentUserTasks = async () => {
       },
     })
 
-    const allBatches = await getAllBatchInServer()
+    // const allBatches = await getAllBatchInServer()
 
-    const tasks =
-      allBatches && mentor
-        ? mentor.tasks.filter(
-            task => task.batchId === allBatches[allBatches?.length - 1].id,
-          )
-        : []
+    // const tasks =
+    //   allBatches && mentor
+    //     ? mentor.tasks.filter(
+    //         task => task.batchId === allBatches[allBatches?.length - 1].id,
+    //       )
+    //     : []
 
-    return tasks
+    return mentor?.tasks
   }
   return null
 }

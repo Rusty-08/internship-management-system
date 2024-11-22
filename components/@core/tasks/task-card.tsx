@@ -25,6 +25,7 @@ import DeleteConfirmation from './delete-confirmation'
 import { TaskSubmission } from './task-submission'
 import { TaskProps } from './types'
 import { formatInTimeZone } from 'date-fns-tz'
+import { IconLinkButton } from '@/components/ui/icon-link-button'
 
 export type TaskCardProps = {
   task: TaskProps
@@ -231,17 +232,13 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
                       loading={isLoading}
                       setIsOpenHandler={setIsOpenDelete}
                     />
-                    <TooltipWrapper tooltip="Edit Task">
-                      <Link href={`/mentor/tasks-management/${task.id}`}>
-                        <Button
-                          variant="ghost"
-                          size="circle"
-                          className="text-muted-foreground"
-                        >
-                          <BiEditAlt size="1.1rem" />
-                        </Button>
-                      </Link>
-                    </TooltipWrapper>
+                    <IconLinkButton
+                      tooltip="Edit Task"
+                      path={`/mentor/tasks-management/${task.id}`}
+                      className="text-muted-foreground"
+                    >
+                      <BiEditAlt size="1.1rem" />
+                    </IconLinkButton>
                   </>
                 )}
               </>

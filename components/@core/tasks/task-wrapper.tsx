@@ -10,7 +10,7 @@ const TaskWrapper = async ({
 }: TaskWrapperProps) => {
   const user = await getCurrentUser()
   const userId = mentorId || user?.id
-  const tasks = await getTasks(userId || '')
+  const tasks = await getTasks(userId || '', isMentor)
 
   const allBatches = await getAllBatchInServer()
 

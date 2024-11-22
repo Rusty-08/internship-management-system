@@ -70,11 +70,11 @@ const InternDashboard = async () => {
           description="Your recent task records."
           navigate="/intern/task-management"
         >
-          <div className="flex flex-col w-full gap-4">
+          <div className="flex flex-col w-full gap-2">
             {tasks?.map(task => (
               <div
                 key={task.id}
-                className="flex bg-muted max-w-full border items-center relative justify-between w-full gap-2 py-3 px-4 lg:px-5 rounded-md"
+                className="flex bg-background max-w-full border items-center relative justify-between w-full gap-2 py-3 px-4 lg:px-5 rounded-md"
               >
                 <div className="flex items-center truncate flex-grow gap-4">
                   <div className="flex flex-col relative truncate gap-0.5 w-full">
@@ -88,7 +88,7 @@ const InternDashboard = async () => {
                       -{' '}
                       {formatInTimeZone(task.endDate, 'Asia/Manila', 'LLL dd')}
                     </p>
-                    <div className="absolute right-0 top-0 w-6 h-full bg-gradient-to-l from-muted to-transparent" />
+                    <div className="absolute right-0 top-0 w-6 h-full bg-gradient-to-l from-background to-transparent" />
                   </div>
                 </div>
                 <Badge variant={task.status} className="flex-shrink-0">

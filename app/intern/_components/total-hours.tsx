@@ -48,12 +48,18 @@ export const TotalHours = async ({ batchId }: TotalDaysProps) => {
               myBatch
                 ? myBatch.status === 'ONGOING'
                   ? 'PRIMARY'
+                  : myBatch.status === 'COMPLETED'
+                  ? 'COMPLETED'
                   : 'PENDING'
                 : 'secondary'
             }
             className="py-2 px-4 w-full justify-center md:w-auto"
           >
-            {myBatch ? `Your batch — ${myBatch.name}` : 'No ongoing batch'}
+            {myBatch
+              ? myBatch.status !== 'COMPLETED'
+                ? `Your batch — ${myBatch.name}`
+                : 'Your batch is already completed'
+              : 'No ongoing batch'}
           </Badge>
           <StatCardLink path="/intern/my-attendance">
             View Attendance

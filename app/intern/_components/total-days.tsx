@@ -15,11 +15,12 @@ type TotalDaysProps = {
 }
 
 export const TotalDays = async ({ attendance, batchId }: TotalDaysProps) => {
-  const recentBatch = await prisma.batch.findUnique({
+  const currentUserBatch = await prisma.batch.findUnique({
     where: { id: batchId },
   })
 
-  const haveOngoingBatch = recentBatch?.status === 'ONGOING'
+  const haveOngoingBatch = currentUserBatch?.status === 'ONGOING'
+  const haveEndedBatch = currentUserBatch?.status === 'COMPLETED'
 
   const totalDays = attendance.length
 
@@ -38,25 +39,33 @@ export const TotalDays = async ({ attendance, batchId }: TotalDaysProps) => {
         <div className="flex items-center flex-col gap-5 md:gap-4 md:flex-row justify-between">
           <Badge
             variant={
-              recentBatch
+              currentUserBatch
                 ? haveOngoingBatch
                   ? 'PRIMARY'
+                  : haveEndedBatch
+                  ? 'COMPLETED'
                   : 'PENDING'
                 : 'secondary'
             }
             className="py-2 px-4 w-full justify-center md:w-auto"
           >
-            {recentBatch
+            {currentUserBatch
               ? haveOngoingBatch
                 ? `Started in ${formatInTimeZone(
-                    recentBatch.startDate,
+                    currentUserBatch.startDate,
                     siteConfig.timeZone,
-                    'EEE, MMM dd, yyyy',
+                    'EEEE, MMM dd, yyyy',
+                  )}`
+                : haveEndedBatch && currentUserBatch.endDate
+                ? `Ended in ${formatInTimeZone(
+                    currentUserBatch.endDate,
+                    siteConfig.timeZone,
+                    'EEEE, MMM dd, yyyy',
                   )}`
                 : `Start in ${formatInTimeZone(
-                    recentBatch.startDate,
+                    currentUserBatch.startDate,
                     siteConfig.timeZone,
-                    'EEE, MMM dd, yyyy',
+                    'EEEE, MMM dd, yyyy',
                   )}`
               : "You don't ongoing or pending batch"}
           </Badge>

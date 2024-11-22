@@ -36,19 +36,21 @@ export async function PUT(
       },
     })
 
-    await prisma.file.deleteMany({
-      where: { taskId: id },
-    })
-
-    for (let file of filesData) {
-      await prisma.file.create({
-        data: {
-          name: file.fileName,
-          url: file.fileUrl,
-          userId: updatedTask.mentorId || '',
-          taskId: updatedTask.id,
-        },
+    if (filesData && filesData.length > 0) {
+      await prisma.file.deleteMany({
+        where: { taskId: id },
       })
+
+      for (let file of filesData) {
+        await prisma.file.create({
+          data: {
+            name: file.fileName,
+            url: file.fileUrl,
+            userId: updatedTask.mentorId || '',
+            taskId: updatedTask.id,
+          },
+        })
+      }
     }
 
     if (updatedTask) {

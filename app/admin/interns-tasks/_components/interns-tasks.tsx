@@ -1,11 +1,12 @@
 import { TaskAccordions } from '@/components/@core/tasks/task-accordions'
-import { getAllBatchInServer } from '@/utils/batch'
+import { getAllBatchInServer, getBatchFilterItems } from '@/utils/batch'
 import { getAllInternsTasks } from '@/utils/tasks'
 import React from 'react'
 
 export const InternsTasksWrapper = async () => {
   const allUsers = await getAllInternsTasks()
   const allBatches = await getAllBatchInServer()
+  // const { batchesFilter } = await getBatchFilterItems()
 
   const currentBatch = allBatches?.[allBatches.length - 1]
 
@@ -24,5 +25,20 @@ export const InternsTasksWrapper = async () => {
       )
     : []
 
-  return <TaskAccordions tasks={sortedTasks} isInAdmin />
+  // const AllBatchFilters = [
+  //   {
+  //     value: 'all',
+  //     name: 'All interns',
+  //     color: 'all',
+  //   },
+  //   ...batchesFilter,
+  // ]
+
+  return (
+    <TaskAccordions
+      tasks={sortedTasks}
+      // batchesFilter={AllBatchFilters || undefined}
+      isInAdmin
+    />
+  )
 }

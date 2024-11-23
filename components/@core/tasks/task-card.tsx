@@ -26,6 +26,7 @@ import { TaskSubmission } from './task-submission'
 import { TaskProps } from './types'
 import { formatInTimeZone } from 'date-fns-tz'
 import { IconLinkButton } from '@/components/ui/icon-link-button'
+import { BsDot } from 'react-icons/bs'
 
 export type TaskCardProps = {
   task: TaskProps
@@ -103,33 +104,31 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
             }`}
           />
         </div>
-        <div className="flex flex-grow flex-col lg:flex-row gap-1 lg:justify-center lg:items-center lg:gap-4">
-          <div className="flex flex-col gap-0.5 lg:w-[15rem]">
-            {isInAdmin && (
-              <p className="flex-grow text-left text-sm font-semibold">
-                {intern}
-              </p>
-            )}
-            <div className="flex items-center gap-2">
-              <Icon
-                size="0.8rem"
-                className={`flex md:hidden text-${statusColor} ${
-                  status === 'OVERDUE' && 'mb-0.5'
-                }`}
-              />
+        <div className="flex flex-col flex-grow gap-1 lg:gap-4">
+          {/* {isInAdmin && (
+            <p className="flex-grow text-left text-sm font-semibold">
+              {intern}
+            </p>
+          )} */}
+          <div className="flex items-center gap-2">
+            <Icon
+              size="0.8rem"
+              className={`flex md:hidden text-${statusColor} ${
+                status === 'OVERDUE' && 'mb-0.5'
+              }`}
+            />
+            <div className="flex flex-col gap-1">
+              <p className="font-medium text-start text-[0.9rem]">{title}</p>
               <span
                 className={cn(
                   'font-normal text-start tracking-wide text-muted-foreground',
-                  isInAdmin ? 'text-[0.8rem]' : 'text-xs md:text-sm',
+                  isInAdmin ? 'text-[0.8rem]' : 'text-xs md:text-[0.8rem]',
                 )}
               >
                 {`${formattedStartDate} - ${formattedEndDate}`}
               </span>
             </div>
           </div>
-          <p className="flex-grow text-left font-medium text-[0.9rem]">
-            {title}
-          </p>
         </div>
         <Badge variant={status} className="hidden lg:inline-flex">
           {statusName === 'In_progress' ? 'In Progress' : statusName}
@@ -169,23 +168,29 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
               {description}
             </p>
           </div>
-          {status !== 'COMPLETED' && (
-            <div
-              className={cn(
-                'flex relative gap-2 lg:gap-4 flex-col lg:items-center lg:flex-row',
-                // !isMentor && 'mt-2',
-              )}
-            >
-              <span className="text-sm font-medium lg:w-[18.5rem] flex-shrink-0">
+          <div className="flex relative gap-2 lg:gap-4 flex-col lg:items-center lg:flex-row">
+            <span className="text-sm font-medium lg:w-[18.5rem] flex-shrink-0">
+              Assigned Intern
+            </span>
+            <p className="text-sm text-muted-foreground text-start whitespace-pre-line">
+              {intern}
+            </p>
+          </div>
+          <div className="flex relative gap-2 border-t pt-4 lg:gap-4 flex-col lg:items-center lg:flex-row">
+            <div className="flex items-center gap-1.5 lg:w-[18.5rem] flex-shrink-0">
+              <Icon className={`text-${statusColor}`} />
+              <span className="text-sm font-medium">
                 {!isMentor && !isInAdmin ? 'Your Submission' : 'Submission'}
               </span>
+            </div>
+            {status !== 'COMPLETED' && (
               <p className="text-sm text-muted-foreground text-start whitespace-pre-line">
                 {status === 'PENDING' ? 'Unavailable' : 'None'}
               </p>
-            </div>
-          )}
+            )}
+          </div>
           {submissions?.length ? (
-            <div className="border-t pt-4 flex flex-col gap-4">
+            <div className="flex flex-col gap-4">
               <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
                 <span className="text-sm font-medium lg:w-[18.5rem]">
                   Date Submitted

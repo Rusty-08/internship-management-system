@@ -2,7 +2,7 @@ import { getTasks } from '@/utils/tasks'
 import { getCurrentUser } from '@/utils/users'
 import { TaskWrapperProps } from './types'
 import { TaskAccordions } from './task-accordions'
-import { getAllBatchInServer } from '@/utils/batch'
+import { getAllBatchInServer, getBatchFilterItems } from '@/utils/batch'
 
 const TaskWrapper = async ({
   isMentor = false,
@@ -11,8 +11,8 @@ const TaskWrapper = async ({
   const user = await getCurrentUser()
   const userId = mentorId || user?.id
   const tasks = await getTasks(userId || '', isMentor)
-
   const allBatches = await getAllBatchInServer()
+  const { batchesFilter, batches } = await getBatchFilterItems()
 
   const IsAllowedToAddTasks = allBatches
     ? allBatches[allBatches.length - 1].status === 'ONGOING'
@@ -25,11 +25,21 @@ const TaskWrapper = async ({
       )
     : []
 
+  const AllBatchFilters = [
+    {
+      value: 'all',
+      name: 'All tasks',
+      color: 'all',
+    },
+    ...batchesFilter,
+  ]
+
   return (
     <TaskAccordions
       isMentor={isMentor}
       tasks={sortedTasks}
       IsAllowedToAddTasks={IsAllowedToAddTasks}
+      batchesFilter={AllBatchFilters || undefined}
     />
   )
 }

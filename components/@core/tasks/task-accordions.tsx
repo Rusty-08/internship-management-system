@@ -3,24 +3,27 @@
 import { Accordion } from '@/components/ui/accordion'
 import TaskCard from './task-card'
 import NoRecords from '../ui/no-records'
-import { useMemo, useState, useCallback } from 'react'
+import { useMemo, useState, useCallback, useEffect } from 'react'
 import { SearchFilter } from './search-filter'
 import { TaskProps } from './types'
 import Link from 'next/link'
 import AddButton from '@/components/@core/ui/add-button'
 import { Button } from '@/components/ui/button'
 import { MdAdd } from 'react-icons/md'
-import SelectFilter from '../ui/table/select-filter'
+import SelectFilter, { ItemsProps } from '../ui/table/select-filter'
 import { useUpdateParams } from '@/hooks/useUpdateParams'
+import { taskStatusFilter } from './filter-items'
 
 type TaskWrapperProps = {
   IsAllowedToAddTasks?: boolean
   isMentor?: boolean
   tasks: TaskProps[]
   isInAdmin?: boolean
+  batchesFilter?: ItemsProps[]
 }
 
 export const TaskAccordions = ({
+  batchesFilter,
   IsAllowedToAddTasks,
   tasks,
   isMentor = false,
@@ -31,19 +34,34 @@ export const TaskAccordions = ({
   const [taskStatus, setTaskStatus] = useState(
     searchParams.get('status') || 'all',
   )
+  const [selectedBatch, setSelectedBatch] = useState('')
 
   const handleSearch = useCallback(
     (task: string) => {
-      setTaskSearch(task)
-      updateParams('task', task)
+      if (task) {
+        setTaskSearch(task)
+        updateParams('task', task)
+      }
     },
     [updateParams],
   )
 
   const handleStatusChange = useCallback(
     (value: string) => {
-      setTaskStatus(value)
-      updateParams('status', value)
+      if (value) {
+        setTaskStatus(value)
+        updateParams('status', value)
+      }
+    },
+    [updateParams],
+  )
+
+  const handleBatchChange = useCallback(
+    (value: string) => {
+      if (value) {
+        setSelectedBatch(value)
+        updateParams('batch', value)
+      }
     },
     [updateParams],
   )
@@ -58,10 +76,21 @@ export const TaskAccordions = ({
         : true
       const statusMatch =
         taskStatus !== 'all' ? task.status.toLowerCase() === taskStatus : true
+      const batchMatch =
+        selectedBatch !== 'all' ? task.batchId === selectedBatch : true
 
-      return isInAdmin ? internMatch && statusMatch : titleMatch && statusMatch
+      return isInAdmin
+        ? internMatch && statusMatch
+        : titleMatch && statusMatch && batchMatch
     })
-  }, [isInAdmin, taskSearch, taskStatus, tasks])
+  }, [isInAdmin, selectedBatch, taskSearch, taskStatus, tasks])
+
+  useEffect(() => {
+    const currentBatch = batchesFilter?.[batchesFilter.length - 1].value || ''
+
+    setSelectedBatch(searchParams.get('batch') || currentBatch)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="space-y-4">
@@ -71,20 +100,20 @@ export const TaskAccordions = ({
           defaultValue={taskSearch}
           isInAdmin={isInAdmin}
         />
+        {(isMentor || isInAdmin) && (
+          <SelectFilter
+            defaultValue={
+              batchesFilter ? batchesFilter[batchesFilter.length - 1].value : ''
+            }
+            value={selectedBatch}
+            handleStatusChange={handleBatchChange}
+            items={batchesFilter}
+          />
+        )}
         <SelectFilter
           defaultValue={taskStatus}
           handleStatusChange={handleStatusChange}
-          items={[
-            { value: 'all', name: 'Status', color: 'all' },
-            { value: 'pending', name: 'Pending', color: 'bg-pending' },
-            {
-              value: 'in_progress',
-              name: 'In Progress',
-              color: 'bg-in-progress',
-            },
-            { value: 'completed', name: 'Completed', color: 'bg-completed' },
-            { value: 'overdue', name: 'Overdue', color: 'bg-overdue' },
-          ]}
+          items={taskStatusFilter}
           className="w-40"
         />
         {isMentor && IsAllowedToAddTasks && (

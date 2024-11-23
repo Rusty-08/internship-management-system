@@ -16,12 +16,20 @@ export const getTasks = async (id: string, isMentor: boolean) => {
     },
   })
 
-  const allBatches = await getAllBatchInServer()
+  // const allBatches = await getAllBatchInServer()
 
   let tasks
 
   if (isMentor) {
-    tasks = data?.tasks
+    const allInterns = await getInternUsers()
+
+    tasks = data?.tasks.map(task => {
+      return {
+        ...task,
+        intern: allInterns?.find(intern => intern.batchId === task.batchId)
+          ?.name,
+      }
+    })
   } else {
     tasks = data
       ? data?.tasks.filter(task => task.batchId === data.batchId)

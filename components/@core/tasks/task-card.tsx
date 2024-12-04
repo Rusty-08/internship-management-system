@@ -216,7 +216,7 @@ const TaskCard = ({ task, isMentor, isInAdmin }: TaskCardProps) => {
           <div
             className={cn(
               !isMentor && 'relative',
-              'lg:absolute right-0 bottom-0',
+              'lg:absolute right-0 -bottom-3',
             )}
           >
             {!isMentor && task.status !== 'COMPLETED' && !isInAdmin ? (

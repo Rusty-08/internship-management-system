@@ -28,7 +28,7 @@ const TaskWrapper = async ({
   const AllBatchFilters = [
     {
       value: 'all',
-      name: 'All tasks',
+      name: 'All batch tasks',
       color: 'all',
     },
     ...batchesFilter,
@@ -40,6 +40,7 @@ const TaskWrapper = async ({
       tasks={sortedTasks}
       IsAllowedToAddTasks={IsAllowedToAddTasks}
       batchesFilter={AllBatchFilters || undefined}
+      batches={batches}
     />
   )
 }

@@ -36,7 +36,7 @@ export function DayPicker({
         <Button
           variant={'outline'}
           className={cn(
-            'w-64 px-4 justify-start text-left font-normal',
+            'w-64 px-4 justify-start text-left hover:bg-transparent hover:border-text font-normal',
             !date && 'text-muted-foreground',
             className,
           )}

@@ -21,7 +21,7 @@ export async function InternTable() {
   const AllBatchFilters = [
     {
       value: 'all',
-      name: 'All interns',
+      name: 'All batch interns',
       color: 'all',
     },
     ...batchesFilter,
@@ -33,6 +33,7 @@ export async function InternTable() {
       batchesFilter={AllBatchFilters || undefined}
       user={userRole}
       accountColumns={accountColumns}
+      batches={batches}
     />
   )
 }

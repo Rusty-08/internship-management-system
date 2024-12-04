@@ -6,15 +6,15 @@ import NoRecords from '../ui/no-records'
 import { useMemo, useState, useCallback, useEffect } from 'react'
 import { SearchFilter } from './search-filter'
 import { TaskProps } from './types'
-import Link from 'next/link'
-import AddButton from '@/components/@core/ui/add-button'
-import { Button } from '@/components/ui/button'
 import { MdAdd } from 'react-icons/md'
 import SelectFilter, { ItemsProps } from '../ui/table/select-filter'
 import { useUpdateParams } from '@/hooks/useUpdateParams'
 import { taskStatusFilter } from './filter-items'
+import { Batch } from '@prisma/client'
+import { LinkButton } from '@/components/ui/link-button'
 
 type TaskWrapperProps = {
+  batches?: Batch[]
   IsAllowedToAddTasks?: boolean
   isMentor?: boolean
   tasks: TaskProps[]
@@ -23,6 +23,7 @@ type TaskWrapperProps = {
 }
 
 export const TaskAccordions = ({
+  batches,
   batchesFilter,
   IsAllowedToAddTasks,
   tasks,
@@ -76,19 +77,26 @@ export const TaskAccordions = ({
         : true
       const statusMatch =
         taskStatus !== 'all' ? task.status.toLowerCase() === taskStatus : true
+
+      const recentBatch = batches?.[batches?.length - 1]
       const batchMatch =
-        selectedBatch !== 'all' ? task.batchId === selectedBatch : true
+        selectedBatch !== 'all' && recentBatch?.status !== 'COMPLETED'
+          ? task.batchId === selectedBatch
+          : true
 
       return isInAdmin
         ? internMatch && statusMatch
         : titleMatch && statusMatch && batchMatch
     })
-  }, [isInAdmin, selectedBatch, taskSearch, taskStatus, tasks])
+  }, [batches, isInAdmin, selectedBatch, taskSearch, taskStatus, tasks])
 
   useEffect(() => {
+    const recentBatch = batches?.[batches?.length - 1]
     const currentBatch = batchesFilter?.[batchesFilter.length - 1].value || ''
+    const defaultBatch =
+      recentBatch?.status === 'COMPLETED' ? 'all' : currentBatch
 
-    setSelectedBatch(searchParams.get('batch') || currentBatch)
+    setSelectedBatch(searchParams.get('batch') || defaultBatch)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -99,6 +107,7 @@ export const TaskAccordions = ({
           handleSearch={handleSearch}
           defaultValue={taskSearch}
           isInAdmin={isInAdmin}
+          className="hidden md:flex"
         />
         {(isMentor || isInAdmin) && (
           <SelectFilter
@@ -116,17 +125,18 @@ export const TaskAccordions = ({
           items={taskStatusFilter}
           className="w-40"
         />
-        {isMentor && IsAllowedToAddTasks && (
-          <Link
-            href="/mentor/tasks-management/create-task"
-            className="fixed right-0 w-full px-4 py-6 bg-background lg:p-0 lg:w-auto z-50 bottom-0 lg:right-0 lg:bottom-0 lg:relative"
-          >
-            <AddButton className="hidden lg:inline-flex">Create Task</AddButton>
-            <Button className="inline-flex w-full lg:w-auto z-50 font-normal h-12 pe-6 md:hidden gap-2">
-              <MdAdd size="1.5rem" className="hidden lg:flex" />
+        {isMentor && (
+          <div className="fixed right-0 w-full px-4 py-6 bg-background lg:p-0 lg:w-auto z-50 bottom-0 lg:right-0 lg:bottom-0 lg:relative">
+            <LinkButton
+              path="/mentor/tasks-management/create-task"
+              iconClassName="hidden lg:flex"
+              className="w-full lg:w-auto"
+              icon={MdAdd}
+              disabled={!IsAllowedToAddTasks}
+            >
               Create Task
-            </Button>
-          </Link>
+            </LinkButton>
+          </div>
         )}
       </div>
       <div>

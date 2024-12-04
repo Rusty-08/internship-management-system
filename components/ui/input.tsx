@@ -11,10 +11,23 @@ export interface InputProps
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, icon: Icon, endIcon: EndIcon, endIconOnClick, disabled, ...props }, ref) => {
+  (
+    {
+      className,
+      type,
+      icon: Icon,
+      endIcon: EndIcon,
+      endIconOnClick,
+      disabled,
+      ...props
+    },
+    ref,
+  ) => {
     return (
-      <div className="relative w-full">
-        {Icon && <Icon className="absolute top-[0.7rem] left-4 text-muted-foreground pointer-events-none" />}
+      <div className={cn('relative w-full', className)}>
+        {Icon && (
+          <Icon className="absolute top-[0.7rem] left-4 text-muted-foreground pointer-events-none" />
+        )}
         <input
           type={type}
           className={cn(
@@ -22,7 +35,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             EndIcon ? 'pe-10 ps-4' : 'px-4',
             Icon ? 'ps-10 pe-4' : 'px-4',
             'py-2 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
-            className,
+            // className,
           )}
           ref={ref}
           disabled={disabled}

@@ -24,8 +24,12 @@ import SelectFilter, {
 import { useUpdateParams } from '@/hooks/useUpdateParams'
 import AddButton from '../../add-button'
 import Link from 'next/link'
+import { Batch } from '@prisma/client'
+import { LinkButton } from '@/components/ui/link-button'
+import { MdAdd } from 'react-icons/md'
 
 type AccountsTableProps = {
+  batches?: Batch[]
   batchesFilter?: ItemsProps[]
   data: UserSubset[]
   isArchivedPage?: boolean
@@ -39,6 +43,7 @@ type AccountsTableProps = {
 }
 
 export default function AccountsTable({
+  batches,
   batchesFilter,
   data,
   isArchivedPage = false,
@@ -57,6 +62,8 @@ export default function AccountsTable({
   )
   const [openDialog, setOpenDialog] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  const recentBatch = batches?.[batches?.length - 1]
 
   const filteredData = useMemo(() => {
     if (isArchivedPage && roleFilter !== 'all') {
@@ -130,9 +137,14 @@ export default function AccountsTable({
       },
     ]
 
-    const currentBatch = batchesFilter?.[batchesFilter.length - 1].value || ''
+    const recentBatchFilter =
+      batchesFilter?.[batchesFilter.length - 1].value || ''
 
-    setActiveBatch(searchParams.get('batch') || currentBatch)
+    setActiveBatch(
+      searchParams.get('batch') || recentBatch?.status !== 'COMPLETED'
+        ? recentBatchFilter
+        : 'all',
+    )
 
     if (isArchivedPage) {
       setRoleFilter(searchParams.get('role') || 'all')
@@ -192,9 +204,18 @@ export default function AccountsTable({
               }}
               items={batchesFilter}
             />
-            <Link href={`/admin/${user.toLowerCase()}-management/create-user`}>
+            {/* <Link href={`/admin/${user.toLowerCase()}-management/create-user`}>
               <AddButton>Add New Account</AddButton>
-            </Link>
+            </Link> */}
+            <LinkButton
+              path={`/admin/${user.toLowerCase()}-management/create-user`}
+              icon={MdAdd}
+              disabled={
+                user === 'INTERN' && recentBatch?.status === 'COMPLETED'
+              }
+            >
+              Add New Account
+            </LinkButton>
           </div>
         )}
       </div>

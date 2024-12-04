@@ -18,6 +18,8 @@ import Link from 'next/link'
 import { batchColumns } from './batch-columns'
 import AddButton from '@/components/@core/ui/add-button'
 import { useSearchParams } from 'next/navigation'
+import { LinkButton } from '@/components/ui/link-button'
+import { MdAdd } from 'react-icons/md'
 
 const InternshipTable = ({ data }: { data: Batch[] }) => {
   const [rowSelection, setRowSelection] = useState({})
@@ -49,7 +51,7 @@ const InternshipTable = ({ data }: { data: Batch[] }) => {
     },
   })
 
-  const batchStatus = useMemo(
+  const hasActiveBatch = useMemo(
     () =>
       data
         .find(batch => batch.status === 'ONGOING' || batch.status === 'PENDING')
@@ -66,16 +68,13 @@ const InternshipTable = ({ data }: { data: Batch[] }) => {
           search={'batch'}
           className="flex-grow"
         />
-        {batchStatus ? (
-          <AddButton disabled>
-            There is already {batchStatus === 'ongoing' ? 'an' : 'a'}{' '}
-            {batchStatus} batch
-          </AddButton>
-        ) : (
-          <Link href="/admin/internship-management/create-batch">
-            <AddButton>Create New Batch</AddButton>
-          </Link>
-        )}
+        <LinkButton
+          path="/admin/internship-management/create-batch"
+          icon={MdAdd}
+          disabled={!hasActiveBatch}
+        >
+          Create New Batch
+        </LinkButton>
       </div>
       <div className="rounded-md overflow-hidden ">
         <DataTable
